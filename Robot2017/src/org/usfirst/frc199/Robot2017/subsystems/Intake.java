@@ -18,10 +18,8 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- *
- */
 public class Intake extends Subsystem implements DashboardInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
@@ -29,28 +27,49 @@ public class Intake extends Subsystem implements DashboardInterface {
 	private final SpeedController indexMotor = RobotMap.intakeIndexMotor;
 
 	private boolean isPistonUp = false;
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-
 	public void initDefaultCommand() {
 	}
 
+	/**
+	 * This method runs the index motor at a specified speed
+	 * 
+	 * @param speed
+	 *            - How fast you want the index motor to go -1 -> 1
+	 */
 	public void runIndex(double speed) {
 		indexMotor.set(speed);
 	}
 
+	/**
+	 * ' This method stops the index motor
+	 */
 	public void stopIndex() {
 		indexMotor.set(0);
 	}
 
+	/**
+	 * This method runs the intake motor at a set speed
+	 * 
+	 * @param speed
+	 *            - the speed you want the intake motor to run at -1 -> 1
+	 */
 	public void runIntake(double speed) {
 		intakeMotor.set(speed);
 	}
 
+	/**
+	 * This method stops the intake motor
+	 */
 	public void stopIntake() {
 		intakeMotor.set(0);
 	}
 
+	/**
+	 * This method moves the intake up if it is down, and vice versa
+	 */
 	public void toggleIntake() {
 		isPistonUp = !isPistonUp;
 		if (isPistonUp) {
@@ -60,11 +79,18 @@ public class Intake extends Subsystem implements DashboardInterface {
 		}
 	}
 
+	/**
+	 * This method stops the DoubleSolenoid responsible for intaking
+	 */
 	public void stopIntakeDoubleSolenoid() {
 		pivotPiston.set(DoubleSolenoid.Value.kOff);
 	}
 
 	@Override
+	/**
+	 * This method displays data to SmartDashboard
+	 */
 	public void displayData() {
+		SmartDashboard.putBoolean("isPistonUp", isPistonUp);
 	}
 }
