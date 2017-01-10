@@ -107,7 +107,7 @@ public class OI {
 
         // SmartDashboard Buttons
         SmartDashboard.putData("MainAutoMode", new MainAutoMode());
-        SmartDashboard.putData("AutoDrive", new AutoDrive());
+        SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0));
         SmartDashboard.putData("AutoAlignAngle", new AutoAlignAngle());
         SmartDashboard.putData("AutoAlignDistance", new AutoAlignDistance());
         SmartDashboard.putData("AutoShoot", new AutoShoot());

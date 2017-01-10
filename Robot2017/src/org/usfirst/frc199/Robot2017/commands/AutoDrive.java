@@ -42,23 +42,24 @@ public class AutoDrive extends Command {
     protected void initialize() {
     	Robot.drivetrain.resetEncoder();
     	Robot.drivetrain.resetGyro();
-    	//TODO
+    	Robot.drivetrain.drivePID.setTarget(targetDist);
+    	Robot.drivetrain.turnPID.setTarget(targetAngle);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//TODO
+    	Robot.drivetrain.autoDrive();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	//TODO
-        return false;
+    	return Robot.drivetrain.drivePID.reachedTarget();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	//TODO
+    	Robot.drivetrain.stopDrive();
     }
 
     // Called when another command which requires one or more of the same
