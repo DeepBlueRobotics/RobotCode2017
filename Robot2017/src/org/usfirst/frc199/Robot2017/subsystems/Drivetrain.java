@@ -12,10 +12,10 @@
 package org.usfirst.frc199.Robot2017.subsystems;
 
 import org.usfirst.frc199.Robot2017.Robot;
-import org.usfirst.frc199.Robot2017.PID;
 import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
+import org.usfirst.frc199.Robot2017.motion.PID;
 
 import com.kauailabs.navx.frc.AHRS;
 

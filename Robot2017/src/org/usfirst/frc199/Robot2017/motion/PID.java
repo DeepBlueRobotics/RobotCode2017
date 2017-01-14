@@ -1,4 +1,4 @@
-package org.usfirst.frc199.Robot2017;
+package org.usfirst.frc199.Robot2017.motion;
 
 import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.Robot;
@@ -60,9 +60,9 @@ public class PID implements DashboardInterface {
 	 * @param newValue - new input value in real units
 	 */
 	public void update(double newValue) {
-		kP = getNumber("kP");
-		kI = getNumber("kI");
-		kD = getNumber("kD");
+		kP = getNumber("kP", 0);
+		kI = getNumber("kI", 0);
+		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;
 		interval = intervalTimer.get();
