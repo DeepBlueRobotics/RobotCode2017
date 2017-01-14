@@ -37,7 +37,8 @@ public class Climber extends Subsystem implements DashboardInterface {
 	/**
 	 * This method uses the winch to let the robot climb
 	 * 
-	 * @param speed - the speed that you want the winch to run on -1 -> 1
+	 * @param speed
+	 *            - the speed that you want the winch to run on -1 -> 1
 	 */
 	public void climb(double speed) {
 		winchMotor.set(speed);

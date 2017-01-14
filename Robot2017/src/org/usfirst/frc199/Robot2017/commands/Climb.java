@@ -8,8 +8,8 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.usfirst.frc199.Robot2017.commands;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
@@ -18,42 +18,43 @@ public class Climb extends Command {
 
 	Timer tim = new Timer();
 	boolean isTouching = false;
+
 	public Climb() {
 
-        requires(Robot.climber);
-    }
-    
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	tim.stop();
-    	tim.reset();
-    }
+		requires(Robot.climber);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.climber.climb(1);
-    	if(Robot.climber.returnPlate() && !isTouching) {
-    		tim.start();
-    		isTouching = !isTouching;
-    	} else if(!Robot.climber.returnPlate() && isTouching) {
-    		tim.reset();
-    		tim.stop();
-    		isTouching = !isTouching;
-    	}
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		tim.stop();
+		tim.reset();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return (tim.get() == 1);
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		Robot.climber.climb(1);
+		if (Robot.climber.returnPlate() && !isTouching) {
+			tim.start();
+			isTouching = !isTouching;
+		} else if (!Robot.climber.returnPlate() && isTouching) {
+			tim.reset();
+			tim.stop();
+			isTouching = !isTouching;
+		}
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	Robot.climber.stopWinch();
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return (tim.get() == 1);
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+		Robot.climber.stopWinch();
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

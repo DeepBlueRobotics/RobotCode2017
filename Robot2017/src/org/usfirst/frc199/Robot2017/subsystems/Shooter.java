@@ -57,7 +57,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0).
 	 * 
-	 * @param rate - speed to give the shooter motor
+	 * @param rate
+	 *            - speed to give the shooter motor
 	 */
 	public void shoot(double rate) {
 		RobotMap.shooterShootMotor.set(rate);
@@ -66,7 +67,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	/**
 	 * Sets the feeder motor's speed (from -1.0 to 1.0).
 	 * 
-	 * @param rate - speed to give the feeder motor
+	 * @param rate
+	 *            - speed to give the feeder motor
 	 */
 	public void feeder(double rate) {
 		RobotMap.shooterFeedMotor.set(rate);
@@ -75,7 +77,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
-	 * @param targetRate - target speed for shooter motor PID
+	 * @param targetRate
+	 *            - target speed for shooter motor PID
 	 */
 	public void setPIDTarget(double targetRate) {
 		ShooterPID.setTarget(targetRate);
@@ -84,7 +87,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	/**
 	 * Updates the shooter motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValuecurrent shooter motor encoder speed
+	 * @param updateValuecurrent
+	 *            shooter motor encoder speed
 	 */
 	public void updatePID(double updateValue) {
 		ShooterPID.update(updateValue);
@@ -103,7 +107,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * Passes the distance of the robot from the boiler through an equation to
 	 * compute the speed at which we should be shooting.
 	 * 
-	 * @param distance - in inches of the front of the robot from the boiler
+	 * @param distance
+	 *            - in inches of the front of the robot from the boiler
 	 * @return the ideal exit speed of the ball in inches/second
 	 */
 	public double convertDistanceToTargetSpeed(double distance) {
