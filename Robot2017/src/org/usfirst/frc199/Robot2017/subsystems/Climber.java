@@ -13,7 +13,8 @@ package org.usfirst.frc199.Robot2017.subsystems;
 import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
-import edu.wpi.first.wpilibj.DigitalInput;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Climber extends Subsystem implements DashboardInterface {
 
 	private final SpeedController winchMotor = RobotMap.climberWinchMotor;
-	private final DigitalInput plateLimit = RobotMap.climberPlateLimit;
+	private final AnalogInput plateLimit = RobotMap.climberPlateIRSensor;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.

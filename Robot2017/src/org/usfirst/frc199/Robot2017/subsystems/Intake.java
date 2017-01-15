@@ -24,30 +24,12 @@ public class Intake extends Subsystem implements DashboardInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
-	private final SpeedController indexMotor = RobotMap.intakeIndexMotor;
 
 	private boolean isPistonUp = false;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	public void initDefaultCommand() {
-	}
-
-	/**
-	 * This method runs the index motor at a specified speed
-	 * 
-	 * @param speed
-	 *            - How fast you want the index motor to go -1 -> 1
-	 */
-	public void runIndex(double speed) {
-		indexMotor.set(speed);
-	}
-
-	/**
-	 * ' This method stops the index motor
-	 */
-	public void stopIndex() {
-		indexMotor.set(0);
 	}
 
 	/**
