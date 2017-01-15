@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 
-public class TrapezoidalControl implements DashboardInterface{
+public class TrapezoidalControl implements DashboardInterface {
 	private double target;
 	private final String name; // The name of the loop for preferences and
 								// SmartDashboard
@@ -25,26 +25,28 @@ public class TrapezoidalControl implements DashboardInterface{
 	private double input; // Current input value
 	private double error; // Current error value
 	private double lastError; // Previous error value
-	//private double totalError; // Integral of error over time
+	// private double totalError; // Integral of error over time
 	private double output; // The computed TrapezoidalControl output
 	private double rate; // Change in error over time
-	//private double interval; // Time elapsed since last update
+	// private double interval; // Time elapsed since last update
 	private double maxspeed; // Maximum rate
-	//private double accel; // Change in rate over time
+	// private double accel; // Change in rate over time
 	private double jerk; // Change in accel over time
 	private double offset; // Sets what the "zero" value is
-	//private boolean reset; // Flag indicating loop needs to be reset
+	// private boolean reset; // Flag indicating loop needs to be reset
 
 	/**
 	 * Creates a new TrapezoidalControl loop
-	 * @param name - The identifier of the loop
+	 * 
+	 * @param name
+	 *            - The identifier of the loop
 	 */
 	public TrapezoidalControl(String name) {
 		this.name = name;
 		Robot.subsystems.add(this);
 		motionTimer.start();
 		putNumber("MaxSpeed", getPref("MaxSpeed"));
-		//putNumber("Acceleration", getPref("Acceleration"));
+		// putNumber("Acceleration", getPref("Acceleration"));
 		putNumber("Jerk", getPref("Jerk"));
 		putNumber("TestTarget", 0);
 	}
@@ -57,13 +59,13 @@ public class TrapezoidalControl implements DashboardInterface{
 	 */
 	public void setTarget(double value) {
 		target = value;
-		//reset = true;
+		// reset = true;
 		output = 0.0;
 	}
 
 	/**
-	 * Updates state based on a new input value
-	 * velocity = min(t*accel, max_speed, sqrt(2*error*accel))
+	 * Updates state based on a new input value velocity = min(t*accel,
+	 * max_speed, sqrt(2*error*accel))
 	 * 
 	 * @param newValue
 	 *            - new input value in real units
@@ -75,21 +77,21 @@ public class TrapezoidalControl implements DashboardInterface{
 		error = target - input;
 		double time = motionTimer.get();
 		double phasetime = Math.sqrt(maxspeed / jerk);
-		if (time < phasetime) output = jerk * time * time / 2;
+		if (time < phasetime)
+			output = jerk * time * time / 2;
 		else if (time < 2 * phasetime) {
 			double temp = 2 * phasetime - time;
 			output = maxspeed - jerk * temp * temp / 2;
-		}
-		else if (time < target / maxspeed) output = maxspeed;
+		} else if (time < target / maxspeed)
+			output = maxspeed;
 		else if (time < target / maxspeed + phasetime) {
 			double temp = time - target / maxspeed;
 			output = maxspeed - jerk * temp * temp / 2;
-		}
-		else {
+		} else {
 			double temp = target / maxspeed + 2 * phasetime - time;
 			output = jerk * temp * temp / 2;
 		}
-		
+
 		lastError = error;
 		SmartDashboard.putNumber(name + "Error", error);
 		SmartDashboard.putNumber(name + "Output", output);
@@ -131,11 +133,15 @@ public class TrapezoidalControl implements DashboardInterface{
 	 * @return True if error and rate are within acceptable tolerances
 	 */
 	public boolean reachedTarget() {
-		return Math.abs(lastError) < getPref("ErrorTolerance");// && Math.abs(rate) < getPref("RateTolerance");
+		return Math.abs(lastError) < getPref("ErrorTolerance");// &&
+																// Math.abs(rate)
+																// <
+																// getPref("RateTolerance");
 	}
 
 	/**
-	 * Gets a preference for the specific instance of the TrapezoidalControl class
+	 * Gets a preference for the specific instance of the TrapezoidalControl
+	 * class
 	 * 
 	 * @param key
 	 *            - The name of the preference
@@ -157,7 +163,7 @@ public class TrapezoidalControl implements DashboardInterface{
 		putNumber("Output", output);
 		putNumber("MaxSpeed", maxspeed);
 		putNumber("Rate", rate);
-		//putNumber("Acceleration", accel);
+		// putNumber("Acceleration", accel);
 		putNumber("Jerk", jerk);
 		putBoolean("Reached Target", reachedTarget());
 	}
