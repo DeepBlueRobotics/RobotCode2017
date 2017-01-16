@@ -32,7 +32,8 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * @author kevin
+ * @version 0.0.001
  */
 public class Drivetrain extends Subsystem implements DashboardInterface {
 
@@ -60,6 +61,9 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
+	/**
+	 * this method initializes the command used in teleop
+	 */
 	public void initDefaultCommand() {
 
 		// Set the default command for a subsystem here.
@@ -68,27 +72,46 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 
 	}
 
+	
+	/**
+	 * resets the encoders so that a program can test distance
+	 */
 	public void resetEncoder() {
 		leftEncoder.reset();
 		rightEncoder.reset();
 	}
 
+	/**
+	 * resets the gyro so that a program can test turn angle
+	 */
 	public void resetGyro() {
 		gyro.reset();
 	}
 
+	/**
+	 * @return the angle that the robot turned relative to the gyro's last reset
+	 */
 	public double getAngle() {
 		return gyro.getAngle();
 	}
 
+	/**
+	 * @return the distance that the robot moved relative to the encoders' last reset
+	 */
 	public double getDistance() {
 		return (leftEncoder.get() + rightEncoder.get()) / 2;
 	}
 
+	/**
+	 * @return the average speed of the two sides of the robot at the current time
+	 */
 	public double getSpeed() {
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
 	}
 
+	/**
+	 * forces the robot's turn and move speed to change at a max of 5% each iteration
+	 */
 	public void gradualDrive() {
 		if (isInArcadeDrive) {
 			currentSpeed += Math.signum(Robot.oi.rightJoy.getY() - currentSpeed) * 0.05;
@@ -100,8 +123,10 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 		}
 	}
 
+	/**
+	 * just drives the robot normally, nothing to see here, move on.
+	 */
 	public void drive() {
-
 		if (isInArcadeDrive) {
 			currentSpeed = Robot.oi.rightJoy.getY();
 			currentTurn = Robot.oi.leftJoy.getX();
@@ -111,12 +136,22 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 		}
 	}
 
+	/**
+	 * for autonomous period, drives to angle given and then to distance given.
+	 */
 	public void autoDrive() {
 		drivePID.update(getDistance());
 		turnPID.update(getAngle());
-		robotDrive.arcadeDrive(drivePID.getOutput(), turnPID.getOutput());
+		if (!turnPID.reachedTarget()) {
+			robotDrive.arcadeDrive(0, turnPID.getOutput());
+		} else {
+			robotDrive.arcadeDrive(drivePID.getOutput(), 0);
+		}
 	}
 
+	/**
+	 * just stops the robot. Usually called after a program finishes.
+	 */
 	public void stopDrive() {
 		robotDrive.arcadeDrive(0, 0);
 	}

@@ -70,17 +70,17 @@ public class OI {
 		manipulator = new Joystick(2);
 
 		feedOutButton = new JoystickButton(manipulator, 8);
-		feedOutButton.whileHeld(new FeederOut());
+		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1)));
 		feedInButton = new JoystickButton(manipulator, 6);
-		feedInButton.whileHeld(new FeederIn());
+		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1)));
 		winchButton = new JoystickButton(manipulator, 2);
 		winchButton.whileHeld(new Climb());
 		shootOutButton = new JoystickButton(manipulator, 4);
-		shootOutButton.whileHeld(new ShootOut());
+		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1)));
 		outputButton = new JoystickButton(manipulator, 5);
-		outputButton.whileHeld(new IntakeOut());
+		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1)));
 		intakeButton = new JoystickButton(manipulator, 7);
-		intakeButton.whileHeld(new IntakeIn());
+		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1)));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
 		toggleIntakeButton.whenPressed(new ToggleIntake());
 		rightJoy = new Joystick(1);
@@ -109,10 +109,8 @@ public class OI {
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift());
 		SmartDashboard.putData("TestPID", new TestPID());
-		SmartDashboard.putData("IntakeIn", new IntakeIn());
-		SmartDashboard.putData("IntakeOut", new IntakeOut());
-		SmartDashboard.putData("FeederIn", new FeederIn());
-		SmartDashboard.putData("FeederOut", new FeederOut());
+		SmartDashboard.putData("IntakeIn", new RunIntake(0));
+		SmartDashboard.putData("FeederIn", new RunFeeder(0));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
 		SmartDashboard.putData("ToggleIntake", new ToggleIntake());
 		SmartDashboard.putData("Climb", new Climb());
