@@ -54,7 +54,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 *            - speed to give the shooter motor
 	 */
 	public void shoot(double rate) {
-		RobotMap.shooterShootMotor.set(rate);
+		shootMotor.set(rate);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 *            - speed to give the feeder motor
 	 */
 	public void feeder(double rate) {
-		RobotMap.shooterFeedMotor.set(rate);
+		feedMotor.set(rate);
 	}
 
 	/**
