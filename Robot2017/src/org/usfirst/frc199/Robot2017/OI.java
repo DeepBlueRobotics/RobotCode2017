@@ -114,7 +114,7 @@ public class OI {
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
 		SmartDashboard.putData("ToggleIntake", new ToggleIntake());
 		SmartDashboard.putData("Climb", new Climb());
-		SmartDashboard.putData("ManualControlMechs", new ManualControlMechs());
+		SmartDashboard.putData("ManualControl\Command", new ManualControlMechs());
 
 	}
 
