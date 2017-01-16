@@ -10,14 +10,12 @@
 
 package org.usfirst.frc199.Robot2017.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
 
 public class Climb extends Command {
 
-	Timer tim = new Timer();
-	boolean isTouching = false;
+	boolean isStopped = false;
 
 	public Climb() {
 
@@ -26,26 +24,33 @@ public class Climb extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		tim.stop();
-		tim.reset();
+		Robot.climber.encoderReset();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.climber.climb(1);
-		if (Robot.climber.returnPlate() && !isTouching) {
-			tim.start();
-			isTouching = !isTouching;
-		} else if (!Robot.climber.returnPlate() && isTouching) {
-			tim.reset();
-			tim.stop();
-			isTouching = !isTouching;
+		if (Robot.climber.getEncoder() >= 48 && Robot.climber.AIEnabled == false) {
+			Robot.climber.AIEnabled = !Robot.climber.AIEnabled;
 		}
+		if (!Robot.climber.returnPlate()) {
+			isStopped = false;
+			Robot.climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
+		} else if (!isStopped) {
+			isStopped = true;
+			Robot.climber.stopWinch();
+		}
+
+		// if(Robot.climber.returnPlate()) {
+		// Robot.climber.stopWinch();
+		// } else {
+		// Robot.climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
+		// }
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return (tim.get() == 1);
+		return Robot.climber.getEncoder() >= 58;
 	}
 
 	// Called once after isFinished returns true

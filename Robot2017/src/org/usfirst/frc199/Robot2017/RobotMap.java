@@ -58,6 +58,7 @@ public class RobotMap {
 	public static Encoder turretTurretEncoder;
 	public static SpeedController climberWinchMotor;
 	public static AnalogInput climberPlateIRSensor;
+	public static Encoder winchEncoder;
 	public static AHRS ahrs;
 
 	public static void init() {
