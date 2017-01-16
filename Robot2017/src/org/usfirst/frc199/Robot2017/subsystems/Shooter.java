@@ -105,8 +105,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @return the ideal exit speed of the ball in inches/second
 	 */
 	public double convertDistanceToTargetSpeed(double distance) {
-		return (distance / Math.cos(shootingAngle)
-				* (Math.sqrt(386.09 / 2 * (distance * Math.tan(shootingAngle)) + height)));
+		return distance / Math.cos(shootingAngle)
+				* Math.sqrt(386.09 / (2 * (distance * Math.tan(shootingAngle) - height)));
 	}
 
 	@Override
