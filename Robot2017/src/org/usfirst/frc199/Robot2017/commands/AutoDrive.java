@@ -50,12 +50,13 @@ public class AutoDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drivetrain.autoDrive();
+		Robot.drivetrain.autoDrive(targetAngle);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return Robot.drivetrain.drivePID.reachedTarget();
+		return Robot.drivetrain.drivePID.reachedTarget() || Robot.drivetrain.drivePID.reachedTarget();
+		
 	}
 
 	// Called once after isFinished returns true
