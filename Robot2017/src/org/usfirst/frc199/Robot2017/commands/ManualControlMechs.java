@@ -30,13 +30,17 @@ public class ManualControlMechs extends Command {
     protected void execute() {
     	String system = SmartDashboard.getString("Manual Control Mech");
     	switch (system.toLowerCase()){
-	    	case "intake": Robot.intake.runIntake(Robot.oi.manipulator.getThrottle());
+	    	case "Intake": Robot.intake.runIntake(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "feeder": Robot.shooter.feeder(Robot.oi.manipulator.getThrottle());
+	    	case "Feeder": Robot.shooter.feeder(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "climber": Robot.climber.runClimber(Robot.oi.manipulator.getThrottle());
+	    	case "Climber": Robot.climber.runClimber(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "shooter": Robot.shooter.shoot(Robot.oi.manipulator.getThrottle());
+	    	case "Shooter": Robot.shooter.shoot(Robot.oi.manipulator.getThrottle());
+	    		break;
+	    	case "Turret": Robot.shooter.turret(Robot.oi.manipulator.getThrottle());
+	    		break;
+	    	case "Hood": Robot.shooter.adjustHood(Robot.oi.manipulator.getThrottle());
 	    		break;
     	}
     }

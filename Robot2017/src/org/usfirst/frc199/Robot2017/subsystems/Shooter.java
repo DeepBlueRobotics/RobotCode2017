@@ -36,6 +36,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	private final Encoder shootEncoder = RobotMap.shooterShootEncoder;
 	private final SpeedController turnMotor = RobotMap.turretTurnMotor;
 	private final Encoder turretEncoder = RobotMap.turretTurretEncoder;
+	private final SpeedController hoodMotor = RobotMap.hoodAngleMotor;
+	private final Encoder hoodEncoder = RobotMap.hoodAngleEncoder;
 
 	private PID ShooterPID = new PID("ShooterPID");
 
@@ -93,7 +95,27 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	public void runFeederMotor(double rate) {
 		feedMotor.set(rate);
 	}
-
+	
+	/**
+	 * Sets the turret motor's speed (from -1.0 to 1.0).
+	 * 
+	 * @param rate
+	 *            - speed to give the turret motor
+	 */
+	public void turret(double rate) {
+		turnMotor.set(rate);
+	}
+	
+	/**
+	 * Sets the hood motor's speed (from -1.0 to 1.0).
+	 * 
+	 * @param rate
+	 *            - speed to give the hood motor
+	 */
+	public void adjustHood(double rate) {
+		hoodMotor.set(rate);
+	}
+	
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
