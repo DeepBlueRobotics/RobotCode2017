@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -133,6 +134,16 @@ public class Drivetrain extends Subsystem implements DashboardInterface{
 	@Override
 	public void displayData() {
 		// TODO Auto-generated method stub
+		SmartDashboard.putNumber("Left Speed", leftEncoder.getRate());
+		SmartDashboard.putNumber("Right Speed", rightEncoder.getRate());
+		SmartDashboard.putNumber("Average Speed", getSpeed());
+		
+		SmartDashboard.putNumber("Left Distance", leftEncoder.get());
+		SmartDashboard.putNumber("Right Distance", rightEncoder.get());
+		SmartDashboard.putNumber("Average Distance", getDistance());
+		
+		SmartDashboard.putNumber("Angle", gyro.getAngle());
+		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
 		
 	}
 }
