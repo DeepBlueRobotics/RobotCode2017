@@ -49,10 +49,12 @@ public class AutoShoot extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		Robot.shooter.updatePID(RobotMap.shooterShootEncoder.getRate());
-		Robot.shooter.shoot(Robot.shooter.getPIDOutput());
+		if (!Robot.shooter.shooterMotorStalled()) {
+			Robot.shooter.runShootMotor(Robot.shooter.getPIDOutput());
+		}
 		if (Math.abs(RobotMap.shooterShootEncoder.getRate() - target) <= Robot.getPref("speedErrorConstant", .05)
 				* target) {
-			Robot.shooter.feeder(1);
+			Robot.shooter.runFeederMotor(1);
 		}
 	}
 
@@ -63,7 +65,7 @@ public class AutoShoot extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.shooter.shoot(0);
+		Robot.shooter.runShootMotor(0);
 	}
 
 	// Called when another command which requires one or more of the same

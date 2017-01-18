@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -38,6 +39,9 @@ public class Shooter extends Subsystem implements DashboardInterface {
 
 	private PID ShooterPID = new PID("ShooterPID");
 
+	private double prevEncoder = 0;
+	private boolean shooterMotorStalled = false;
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -48,12 +52,35 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	}
 
 	/**
+	 * This method checks if 1)shootMotor is set to a high value 2)encoder is
+	 * saying the shooter isn't moving 3)getPref is saying the shooterEncoder
+	 * works
+	 * 
+	 * @return return whether shooter motor is deemed stalled, however, if it is
+	 *         it automatically sets it to 0
+	 */
+	public boolean shooterMotorStalled() {
+
+		if (Math.abs(shootMotor.get()) >= 0.2 && (shootEncoder.get() - prevEncoder) <= Robot.getPref("encoderOffset", 5)
+				&& Robot.getPref("shooterEncoderWorks", 0) == 1) {
+			shootMotor.set(0);
+			System.out.println("Shooter Motor stalled, stopping motor.");
+			prevEncoder = shootEncoder.get();
+			shooterMotorStalled = true;
+		} else {
+			prevEncoder = shootEncoder.get();
+			shooterMotorStalled = false;
+		}
+		return shooterMotorStalled;
+	}
+
+	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0).
 	 * 
 	 * @param rate
 	 *            - speed to give the shooter motor
 	 */
-	public void shoot(double rate) {
+	public void runShootMotor(double rate) {
 		shootMotor.set(rate);
 	}
 
@@ -63,7 +90,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @param rate
 	 *            - speed to give the feeder motor
 	 */
-	public void feeder(double rate) {
+	public void runFeederMotor(double rate) {
 		feedMotor.set(rate);
 	}
 
@@ -112,6 +139,6 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	@Override
 	public void displayData() {
 		// TODO Auto-generated method stub
-
+		SmartDashboard.putBoolean("shooterMotorStalled", shooterMotorStalled);
 	}
 }
