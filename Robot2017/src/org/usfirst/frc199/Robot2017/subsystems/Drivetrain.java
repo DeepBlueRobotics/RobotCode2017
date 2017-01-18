@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -50,6 +51,8 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 	private final DoubleSolenoid rightShiftPiston = RobotMap.drivetrainRightShiftPiston;
 
 	private final AHRS gyro = RobotMap.ahrs;
+	
+	private final PowerDistributionPanel pdp = RobotMap.pdp;
 
 	public boolean isInArcadeDrive = true;
 	private double currentSpeed = 0; // only used and changed in Arcade Drive
@@ -159,6 +162,33 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 	@Override
 	public void displayData() {
 		// TODO (Ana T.) Display all data that may be useful to us
-
+		putBoolean("high gear", false);
+	}
+	
+	/**
+	 * shifts gears
+	 * */
+	public void shiftGears(){
+		if(leftShiftPiston.get().toString().equals("kForward")){
+			//shift to low gear
+			leftShiftPiston.set(DoubleSolenoid.Value.kReverse);
+			rightShiftPiston.set(DoubleSolenoid.Value.kReverse);
+		}
+		else{
+			//shift to high gear
+			leftShiftPiston.set(DoubleSolenoid.Value.kForward);
+			rightShiftPiston.set(DoubleSolenoid.Value.kForward);
+		}
+	}
+	
+	/**
+	 * @return should the robot shift to low gear or not
+	 * */
+	public boolean currentControl(){
+		int channel = (int)(Robot.getPref("drivetrain channel", 0));
+		double current = pdp.getCurrent(channel);
+		if(current >= 110)
+			return true;
+		return false;
 	}
 }

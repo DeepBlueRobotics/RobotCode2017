@@ -44,6 +44,9 @@ public class TeleopDrive extends Command {
 	protected void execute() {
 
 		Robot.drivetrain.drive();
+		if(Robot.drivetrain.currentControl()){
+			Robot.drivetrain.shiftGears();
+		}
 
 	}
 

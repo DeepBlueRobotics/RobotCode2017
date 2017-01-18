@@ -101,8 +101,8 @@ public class OI {
 		// SmartDashboard Buttons
 		SmartDashboard.putData("MainAutoMode", new MainAutoMode());
 		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0));
-		SmartDashboard.putData("AutoAlignAngle", new AutoAlignAngle());
-		SmartDashboard.putData("AutoAlignDistance", new AutoAlignDistance());
+		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood());
+		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret());
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0));
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive());
 		SmartDashboard.putData("GradualDrive", new GradualDrive());
@@ -114,7 +114,7 @@ public class OI {
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
 		SmartDashboard.putData("ToggleIntake", new ToggleIntake());
 		SmartDashboard.putData("Climb", new Climb());
-		SmartDashboard.putData("ManualControl\Command", new ManualControlMechs());
+		SmartDashboard.putData("ManualControl/Command", new ManualControlMechs());
 
 	}
 

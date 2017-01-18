@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -60,6 +61,7 @@ public class RobotMap {
 	public static AnalogInput climberPlateIRSensor;
 	public static Encoder winchEncoder;
 	public static AHRS ahrs;
+	public static PowerDistributionPanel pdp;
 
 	public static void init() {
 		drivetrainLeftMotor = new Talon(0);
@@ -129,5 +131,6 @@ public class RobotMap {
 		ahrs = new AHRS(SerialPort.Port.kMXP); // Alternatives: SPI.Port.kMXP,
 												// I2C.Port.kMXP or
 												// SerialPort.Port.kUSB
+		pdp = new PowerDistributionPanel();
 	}
 }
