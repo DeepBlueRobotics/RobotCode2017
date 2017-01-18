@@ -16,8 +16,11 @@ import org.usfirst.frc199.Robot2017.Robot;
 /**
  *
  */
-public class IndexerOut extends Command {
-	public IndexerOut() {
+public class RunShooter extends Command {
+	double speed;
+
+	public RunShooter(double speed) {
+		this.speed = speed;
 	}
 
 	// Called just before this Command runs the first time
@@ -26,7 +29,9 @@ public class IndexerOut extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.intake.runIndex(-1);
+		if (!Robot.shooter.shooterMotorStalled()) {
+			Robot.shooter.runShootMotor(speed);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -36,7 +41,7 @@ public class IndexerOut extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.intake.stopIndex();
+		Robot.shooter.runShootMotor(0);
 	}
 
 	// Called when another command which requires one or more of the same

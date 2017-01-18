@@ -13,7 +13,9 @@ package org.usfirst.frc199.Robot2017.subsystems;
 import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
-import edu.wpi.first.wpilibj.DigitalInput;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -23,7 +25,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Climber extends Subsystem implements DashboardInterface {
 
 	private final SpeedController winchMotor = RobotMap.climberWinchMotor;
-	private final DigitalInput plateLimit = RobotMap.climberPlateLimit;
+	private final AnalogInput plateLimit = RobotMap.climberPlateIRSensor;
+	private final Encoder winchEncoder = RobotMap.winchEncoder;
+	public boolean AIEnabled = false;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -37,9 +41,10 @@ public class Climber extends Subsystem implements DashboardInterface {
 	/**
 	 * This method uses the winch to let the robot climb
 	 * 
-	 * @param speed - the speed that you want the winch to run on -1 -> 1
+	 * @param speed
+	 *            - the speed that you want the winch to run on -1 -> 1
 	 */
-	public void climb(double speed) {
+	public void runClimber(double speed) {
 		winchMotor.set(speed);
 	}
 
@@ -49,7 +54,13 @@ public class Climber extends Subsystem implements DashboardInterface {
 	 * @return
 	 */
 	public boolean returnPlate() {
-		return plateLimit.get();
+		if (((plateLimit.getVoltage() > 1234 && plateLimit.getVoltage() < 1234)
+				|| (plateLimit.getVoltage() > 1111 && plateLimit.getVoltage() < 1111)) 
+				&& AIEnabled) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -58,12 +69,19 @@ public class Climber extends Subsystem implements DashboardInterface {
 	public void stopWinch() {
 		winchMotor.set(0);
 	}
+	public void encoderReset() {
+		winchEncoder.reset();
+	}
+	public double getEncoder() {
+		//TODO: anyone, set distance per pulse to inches per pulse
+		return winchEncoder.getDistance();
+	}
 
 	@Override
 	/**
 	 * This method displays data to SmartDashboard
 	 */
 	public void displayData() {
-		SmartDashboard.putBoolean("plateLimit", plateLimit.get());
+//		SmartDashboard.putBoolean("plateLimit", plateLimit.get());
 	}
 }

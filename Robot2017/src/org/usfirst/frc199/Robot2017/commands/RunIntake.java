@@ -16,9 +16,11 @@ import org.usfirst.frc199.Robot2017.Robot;
 /**
  *
  */
-public class IntakeIn extends Command {
-	public IntakeIn() {
+public class RunIntake extends Command {
+	double speed;
 
+	public RunIntake(double speed) {
+		this.speed = speed;
 	}
 
 	// Called just before this Command runs the first time
@@ -27,7 +29,7 @@ public class IntakeIn extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.intake.runIntake(1);
+		Robot.intake.runIntake(speed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

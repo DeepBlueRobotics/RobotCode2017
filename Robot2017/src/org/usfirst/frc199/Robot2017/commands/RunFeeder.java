@@ -16,8 +16,11 @@ import org.usfirst.frc199.Robot2017.Robot;
 /**
  *
  */
-public class IntakeOut extends Command {
-	public IntakeOut() {
+public class RunFeeder extends Command {
+	double speed;
+
+	public RunFeeder(double speed) {
+		this.speed = speed;
 	}
 
 	// Called just before this Command runs the first time
@@ -26,7 +29,7 @@ public class IntakeOut extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.intake.runIntake(-1);
+		Robot.shooter.runFeederMotor(speed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -36,7 +39,7 @@ public class IntakeOut extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.intake.stopIntake();
+		Robot.shooter.runFeederMotor(0);
 	}
 
 	// Called when another command which requires one or more of the same
