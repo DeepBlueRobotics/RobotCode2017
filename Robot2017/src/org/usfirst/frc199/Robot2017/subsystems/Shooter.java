@@ -36,11 +36,18 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	private final Encoder shootEncoder = RobotMap.shooterShootEncoder;
 	private final SpeedController turnMotor = RobotMap.turretTurnMotor;
 	private final Encoder turretEncoder = RobotMap.turretTurretEncoder;
+	private final SpeedController hoodMotor = RobotMap.hoodAngleMotor;
+	private final Encoder hoodEncoder = RobotMap.hoodAngleEncoder;
 
 	private PID ShooterPID = new PID("ShooterPID");
+	private PID TurretPID = new PID("TurretPID");
+	private PID HoodPID = new PID("HoodPID");
 
-	private double prevEncoder = 0;
+	private double prevShooterEncoder = 0;
 	private boolean shooterMotorStalled = false;
+	
+	private double prevTurretEncoder = 0;
+	private double prevHoodEncoder = 0;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -61,14 +68,14 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 */
 	public boolean shooterMotorStalled() {
 
-		if (Math.abs(shootMotor.get()) >= 0.2 && (shootEncoder.get() - prevEncoder) <= Robot.getPref("encoderOffset", 5)
+		if (Math.abs(shootMotor.get()) >= 0.2 && (shootEncoder.get() - prevShooterEncoder) <= Robot.getPref("encoderOffset", 5)
 				&& Robot.getPref("shooterEncoderWorks", 0) == 1) {
 			shootMotor.set(0);
 			System.out.println("Shooter Motor stalled, stopping motor.");
-			prevEncoder = shootEncoder.get();
+			prevShooterEncoder = shootEncoder.get();
 			shooterMotorStalled = true;
 		} else {
-			prevEncoder = shootEncoder.get();
+			prevShooterEncoder = shootEncoder.get();
 			shooterMotorStalled = false;
 		}
 		return shooterMotorStalled;
@@ -93,7 +100,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	public void runFeederMotor(double rate) {
 		feedMotor.set(rate);
 	}
-
+	
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
@@ -107,7 +114,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	/**
 	 * Updates the shooter motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValuecurrent
+	 * @param updateValue current
 	 *            shooter motor encoder speed
 	 */
 	public void updatePID(double updateValue) {
@@ -135,10 +142,39 @@ public class Shooter extends Subsystem implements DashboardInterface {
 		return distance / Math.cos(shootingAngle)
 				* Math.sqrt(386.09 / (2 * (distance * Math.tan(shootingAngle) - height)));
 	}
+	
+	
+	//come up with PID methods (for turret and hood) similar to those of shooter
+	//turret should use vision
+	//hood should convert real angles to encoder values (test to find a ratio)
+	
+	
+	/**
+	 * Sets the turret motor's speed (from -1.0 to 1.0).
+	 * 
+	 * @param rate
+	 *            - speed to give the turret motor
+	 */
+	public void turret(double rate) {
+		turnMotor.set(rate);
+	}
+	
+	/**
+	 * Sets the hood motor's speed (from -1.0 to 1.0).
+	 * 
+	 * @param rate
+	 *            - speed to give the hood motor
+	 */
+	public void adjustHood(double rate) {
+		hoodMotor.set(rate);
+	}
 
 	@Override
 	public void displayData() {
-		// TODO Auto-generated method stub
-		SmartDashboard.putBoolean("shooterMotorStalled", shooterMotorStalled);
+		SmartDashboard.putBoolean("Shooter motor stalled", shooterMotorStalled);
+		SmartDashboard.putNumber("Shoot encoder rate", shootEncoder.getRate());
+		SmartDashboard.putNumber("Shooter PID output", getPIDOutput());
+		SmartDashboard.putNumber("Turret encoder value", turretEncoder.get());
+		SmartDashboard.putNumber("Hood encoder value", hoodEncoder.get());
 	}
 }

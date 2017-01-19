@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class VisionAssistedShoot extends CommandGroup {
 
-    public VisionAssistedShoot() {
+    public VisionAssistedShoot(double shooterTargetDist, double shooterRunTime, double turretTarget, double hoodTarget) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -24,5 +24,9 @@ public class VisionAssistedShoot extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	
+    	addParallel(new AutoShoot(shooterTargetDist, shooterRunTime));
+    	addParallel(new AutoAdjustHood(hoodTarget));
+    	addParallel(new AutoAdjustTurret(turretTarget));
     }
 }
