@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoAdjustHood extends Command {
 
-    public AutoAdjustHood() {
+    public AutoAdjustHood(double targetAngle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -18,6 +18,9 @@ public class AutoAdjustHood extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	//use the HoodPID in Shooter subsystem
+    	//be able to convert targetAngle to encoder value to use for PID
+    	//Good luck to whoever does this :)
     }
 
     // Make this return true when this Command no longer needs to run execute()

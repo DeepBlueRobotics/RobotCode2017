@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoAdjustTurret extends Command {
 
-    public AutoAdjustTurret() {
+    public AutoAdjustTurret(double target) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -18,6 +18,8 @@ public class AutoAdjustTurret extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	//will use feedback loop with Vision and PID. Somehow...
+    	//Good luck to whoever does this :)
     }
 
     // Make this return true when this Command no longer needs to run execute()
