@@ -160,7 +160,10 @@ public class Shooter extends Subsystem implements DashboardInterface {
 
 	@Override
 	public void displayData() {
-		// TODO Auto-generated method stub
-		SmartDashboard.putBoolean("shooterMotorStalled", shooterMotorStalled);
+		SmartDashboard.putBoolean("Shooter motor stalled", shooterMotorStalled);
+		SmartDashboard.putNumber("Shoot encoder rate", shootEncoder.getRate());
+		SmartDashboard.putNumber("Shooter PID output", getPIDOutput());
+		SmartDashboard.putNumber("Turret encoder value", turretEncoder.get());
+		SmartDashboard.putNumber("Hood encoder value", hoodEncoder.get());
 	}
 }
