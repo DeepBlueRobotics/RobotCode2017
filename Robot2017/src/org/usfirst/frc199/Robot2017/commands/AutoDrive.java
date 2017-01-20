@@ -50,7 +50,7 @@ public class AutoDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.drivetrain.autoDrive(targetAngle);
+		Robot.drivetrain.autoDrive();
 		if(Robot.drivetrain.currentControl()){
 			Robot.drivetrain.shiftGears();
 		}
