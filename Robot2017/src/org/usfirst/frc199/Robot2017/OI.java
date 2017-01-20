@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.buttons.*;
 import org.usfirst.frc199.Robot2017.subsystems.*;
 
 public class OI {
-
 	public JoystickButton switchDrive;
 	public Joystick leftJoy;
 	public JoystickButton shiftGears;
@@ -25,7 +24,6 @@ public class OI {
 	public Joystick manipulator;
 
 	public OI() {
-
 		manipulator = new Joystick(2);
 
 		feedOutButton = new JoystickButton(manipulator, 8);

@@ -156,19 +156,21 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 
 		SmartDashboard.putNumber("Angle", gyro.getAngle());
 		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
+		
 		putBoolean("high gear", false);
 	}
 
 	/**
-	 * Shifts gears
-	 */
-	public void shiftGears() {
-		if (leftShiftPiston.get().toString().equals("kForward")) {
-			// shift to low gear
+	 * Shifts gears to whatever state they are not in
+	 * */
+	public void shiftGears(){
+		if(leftShiftPiston.get().toString().equals("kForward")){
+			//shift to high gear
 			leftShiftPiston.set(DoubleSolenoid.Value.kReverse);
 			rightShiftPiston.set(DoubleSolenoid.Value.kReverse);
-		} else {
-			// shift to high gear
+		}
+		else{
+			//shift to low gear
 			leftShiftPiston.set(DoubleSolenoid.Value.kForward);
 			rightShiftPiston.set(DoubleSolenoid.Value.kForward);
 		}
