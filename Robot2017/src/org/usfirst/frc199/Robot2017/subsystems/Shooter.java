@@ -30,11 +30,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter extends Subsystem implements DashboardInterface {
 	double shootingAngle = Robot.getPref("shootingAngle", 0);
 	double height = Robot.getPref("relativeHeightOfBoiler", 0);
+	double encoderAngleRatio = Robot.getPref("encoderAngleRatio", 0);
 
 	private final SpeedController shootMotor = RobotMap.shooterShootMotor;
 	private final SpeedController feedMotor = RobotMap.shooterFeedMotor;
 	private final Encoder shootEncoder = RobotMap.shooterShootEncoder;
-	private final SpeedController turnMotor = RobotMap.turretTurnMotor;
+	private final SpeedController turretMotor = RobotMap.turretTurnMotor;
 	private final Encoder turretEncoder = RobotMap.turretTurretEncoder;
 	private final SpeedController hoodMotor = RobotMap.hoodAngleMotor;
 	private final Encoder hoodEncoder = RobotMap.hoodAngleEncoder;
@@ -87,8 +88,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @param rate
 	 *            - speed to give the shooter motor
 	 */
-	public void runShootMotor(double rate) {
-		shootMotor.set(rate);
+	public void runShootMotor(double speed) {
+		shootMotor.set(speed);
 	}
 
 	/**
@@ -97,8 +98,8 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @param rate
 	 *            - speed to give the feeder motor
 	 */
-	public void runFeederMotor(double rate) {
-		feedMotor.set(rate);
+	public void runFeederMotor(double speed) {
+		feedMotor.set(speed);
 	}
 	
 	/**
@@ -107,7 +108,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @param targetRate
 	 *            - target speed for shooter motor PID
 	 */
-	public void setPIDTarget(double targetRate) {
+	public void setShooterPIDTarget(double targetRate) {
 		ShooterPID.setTarget(targetRate);
 	}
 
@@ -117,7 +118,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @param updateValue current
 	 *            shooter motor encoder speed
 	 */
-	public void updatePID(double updateValue) {
+	public void updateShooterPID(double updateValue) {
 		ShooterPID.update(updateValue);
 	}
 
@@ -126,7 +127,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * 
 	 * @return speed for motor
 	 */
-	public double getPIDOutput() {
+	public double getShooterPIDOutput() {
 		return ShooterPID.getOutput();
 	}
 
@@ -155,8 +156,37 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @param rate
 	 *            - speed to give the turret motor
 	 */
-	public void turret(double rate) {
-		turnMotor.set(rate);
+	public void runTurretMotor(double speed) {
+		turretMotor.set(speed);
+	}
+	
+	/**
+	 * Tells the hood motor's PID the target speed to reach.
+	 * 
+	 * @param targetRate
+	 *            - target speed for hood motor PID
+	 */
+	public void setHoodPIDTarget(double target) {
+		HoodPID.setTarget(target);
+	}
+
+	/**
+	 * Updates the hood motor PID with the current speed from the encoder.
+	 * 
+	 * @param updateValue current
+	 *            hood motor encoder speed
+	 */
+	public void updateHoodPID(double updateValue) {
+		HoodPID.update(updateValue);
+	}
+
+	/**
+	 * Gets the speed for the hood motor from the hood PID.
+	 * 
+	 * @return speed for motor
+	 */
+	public double getHoodPIDOutput() {
+		return HoodPID.getOutput();
 	}
 	
 	/**
@@ -165,15 +195,22 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 * @param rate
 	 *            - speed to give the hood motor
 	 */
-	public void adjustHood(double rate) {
-		hoodMotor.set(rate);
+	public void runHoodMotor(double speed) {
+		hoodMotor.set(speed);
+	}
+	
+	public double convertAngleToTargetSpeed(double targetAngle){
+		//do some math
+		double angle = targetAngle;
+		double encoderVal = angle*encoderAngleRatio;
+		return 0.0;
 	}
 
 	@Override
 	public void displayData() {
 		SmartDashboard.putBoolean("Shooter motor stalled", shooterMotorStalled);
 		SmartDashboard.putNumber("Shoot encoder rate", shootEncoder.getRate());
-		SmartDashboard.putNumber("Shooter PID output", getPIDOutput());
+		SmartDashboard.putNumber("Shooter PID output", getShooterPIDOutput());
 		SmartDashboard.putNumber("Turret encoder value", turretEncoder.get());
 		SmartDashboard.putNumber("Hood encoder value", hoodEncoder.get());
 	}

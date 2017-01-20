@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoAdjustTurret extends Command {
 
-    public AutoAdjustTurret(double target) {
+    public AutoAdjustTurret() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }

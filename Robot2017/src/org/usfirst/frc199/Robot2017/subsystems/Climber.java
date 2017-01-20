@@ -58,9 +58,8 @@ public class Climber extends Subsystem implements DashboardInterface {
 				|| (plateLimit.getVoltage() > 1111 && plateLimit.getVoltage() < 1111)) 
 				&& AIEnabled) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**

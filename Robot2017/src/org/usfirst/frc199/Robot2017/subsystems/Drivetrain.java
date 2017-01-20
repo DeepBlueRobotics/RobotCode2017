@@ -177,7 +177,7 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 		
 =======
 		// TODO (Ana T.) Display all data that may be useful to us
-		putBoolean("high gear", false);
+		putBoolean("low gear", false);
 	}
 	
 	/**
@@ -185,12 +185,12 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 	 * */
 	public void shiftGears(){
 		if(leftShiftPiston.get().toString().equals("kForward")){
-			//shift to low gear
+			//shift to high gear
 			leftShiftPiston.set(DoubleSolenoid.Value.kReverse);
 			rightShiftPiston.set(DoubleSolenoid.Value.kReverse);
 		}
 		else{
-			//shift to high gear
+			//shift to low gear
 			leftShiftPiston.set(DoubleSolenoid.Value.kForward);
 			rightShiftPiston.set(DoubleSolenoid.Value.kForward);
 		}

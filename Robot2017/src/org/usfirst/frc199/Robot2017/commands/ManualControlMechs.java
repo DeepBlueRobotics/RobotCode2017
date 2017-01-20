@@ -30,17 +30,17 @@ public class ManualControlMechs extends Command {
     protected void execute() {
     	String system = SmartDashboard.getString("Manual Control Mech");
     	switch (system.toLowerCase()){
-	    	case "Intake": Robot.intake.runIntake(Robot.oi.manipulator.getThrottle());
+	    	case "intake": Robot.intake.runIntake(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "Feeder": Robot.shooter.feeder(Robot.oi.manipulator.getThrottle());
+	    	case "feeder": Robot.shooter.runFeederMotor(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "Climber": Robot.climber.runClimber(Robot.oi.manipulator.getThrottle());
+	    	case "climber": Robot.climber.runClimber(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "Shooter": Robot.shooter.shoot(Robot.oi.manipulator.getThrottle());
+	    	case "shooter": Robot.shooter.runShootMotor(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "Turret": Robot.shooter.turret(Robot.oi.manipulator.getThrottle());
+	    	case "turret": Robot.shooter.runTurretMotor(Robot.oi.manipulator.getThrottle());
 	    		break;
-	    	case "Hood": Robot.shooter.adjustHood(Robot.oi.manipulator.getThrottle());
+	    	case "hood": Robot.shooter.runHoodMotor(Robot.oi.manipulator.getThrottle());
 	    		break;
     	}
     }
@@ -54,13 +54,17 @@ public class ManualControlMechs extends Command {
 	protected void end() {
 		String system = SmartDashboard.getString("Manual Control Mech");
     	switch (system.toLowerCase()){
-	    	case "Intake": Robot.intake.runIntake(0);
+	    	case "intake": Robot.intake.runIntake(0);
 	    		break;
-	    	case "Feeder": Robot.shooter.feeder(0);
+	    	case "feeder": Robot.shooter.runFeederMotor(0);
 	    		break;
-	    	case "Climber": Robot.climber.runClimber(0);
+	    	case "climber": Robot.climber.runClimber(0);
 	    		break;
-	    	case "Shooter": Robot.shooter.shoot(0);
+	    	case "shooter": Robot.shooter.runShootMotor(0);
+	    		break;
+	    	case "turret": Robot.shooter.runTurretMotor(0);
+    			break;
+	    	case "hood": Robot.shooter.runHoodMotor(0);
 	    		break;
     	}
 	}
