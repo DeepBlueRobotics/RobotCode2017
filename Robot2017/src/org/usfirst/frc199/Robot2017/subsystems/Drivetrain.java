@@ -95,6 +95,49 @@ public class Drivetrain extends Subsystem implements DashboardInterface {
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
 	}
 
+/**
+	 * Checks to see if the distance PID has reached the target
+	 * @return Whether distance target has been reached
+	 */
+	public boolean distanceReachedTarget() {
+		return drivePID.reachedTarget();
+	}
+    
+	/**
+	 * Checks to see if the angle PID has reached the target
+	 * @return Whether angle target has been reached
+	 */
+	public boolean angleReachedTarget() {
+		return turnPID.reachedTarget();
+	}
+	/**
+	 * Updates and tests anglePID
+	 */
+	public void updateAngle(){
+		turnPID.update(getAngle());
+		robotDrive.arcadeDrive(0, turnPID.getOutput());
+	}
+
+	/**
+	 * Sets the distance for PID target
+	 * @param targetDistance - the target distance being set to PID
+	 */
+	public void setDistanceTarget(double targetDistance){
+		drivePID.update((leftEncoder.get() + rightEncoder.get()) / 2);
+		drivePID.setRelativeLocation(0);
+		drivePID.setTarget(targetDistance);
+	}
+	
+	/**
+	 * Sets the angle for PID target
+	 * @param targetAngle - the target angle in being set to PID
+	 */
+	public void setAngleTarget(double targetAngle) {
+		turnPID.update(getAngle());
+		turnPID.setRelativeLocation(0);
+		turnPID.setTarget(targetAngle);
+	}
+	
 	/**
 	 * Forces the robot's turn and move speed to change at a max of 5% each
 	 * iteration

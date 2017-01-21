@@ -11,36 +11,98 @@
 package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc199.Robot2017.Robot;
 
 /**
- *
+ * Causes the PID code for a specific subsystem to attempt to reach a value
+ * specified on the SmartDashboard.
  */
 public class TestPID extends Command {
-	
-	public TestPID() {
-		
+
+	private final System system;
+	private double target = 0;
+
+	// The various PID loops of the robot
+	public enum System {
+		DRIVEDISTANCE, DRIVEANGLE, SHOOTER, DRIVEVELOCITY, DRIVEANGULARVELOCITY;
+	}
+
+	/**
+	 * @param system - The PID system to be tested
+	 */
+	public TestPID(System system) {
+		this.system = system;
+		switch(system) {
+			case SHOOTER: requires(Robot.shooter); break;
+			default: requires(Robot.drivetrain);
+		}
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		switch(system) {
+			case DRIVEDISTANCE:
+				target = SmartDashboard.getNumber("PID/DriveDistance/TestTarget" , 0);
+				Robot.drivetrain.setDistanceTarget(target);
+				Robot.drivetrain.setAngleTarget(0);
+				break;
+			case DRIVEANGLE:
+				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
+				Robot.drivetrain.setAngleTarget(target);
+				break;
+			case SHOOTER:
+				target = SmartDashboard.getNumber("PID/Shooter/TestTarget" , 0);
+				Robot.shooter.setShooterPIDTarget(target);
+				Robot.shooter.updateShooterPID(Robot.shooter.currentSpeed());
+				break;
+			case DRIVEVELOCITY:
+				target = SmartDashboard.getNumber("PID/DriveVelocity/TestTarget");
+				Robot.drivetrain.setVelocityTarget(target, 0);
+				break;
+			case DRIVEANGULARVELOCITY:
+				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget");
+				Robot.drivetrain.setVelocityTarget(0, target);
+				break;
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		switch(system) {
+			case SHOOTER: Robot.shooter.runShootMotor(Robot.shooter.updateSpeed(target)); break;
+			case DRIVEDISTANCE: Robot.drivetrain.autoDrive(); break;
+			case DRIVEANGLE: Robot.drivetrain.updateAngle(); break;
+			case DRIVEVELOCITY: Robot.drivetrain.updateVelocity(); break;
+			case DRIVEANGULARVELOCITY: Robot.drivetrain.updateVelocity(); break;
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		switch(system) {
+			case SHOOTER: return false;
+			case DRIVEDISTANCE: return Robot.drivetrain.distanceReachedTarget() && 
+					Robot.drivetrain.angleReachedTarget();
+			case DRIVEANGLE: return Robot.drivetrain.angleReachedTarget();
+			case DRIVEVELOCITY: return false;
+			case DRIVEANGULARVELOCITY: return false;
+			default: return false;
+		}
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		switch(system) {
+			case SHOOTER: Robot.shooter.runShootMotor(0.0); break;
+			default: Robot.drivetrain.stopDrive();
+		}
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }

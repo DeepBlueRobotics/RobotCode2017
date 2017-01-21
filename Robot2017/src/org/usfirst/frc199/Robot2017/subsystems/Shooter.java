@@ -108,7 +108,7 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	public void updateShooterPID(double updateValue) {
 		ShooterPID.update(updateValue);
 	}
-
+	
 	/**
 	 * Gets the speed for the shooter motor from the shooter PID.
 	 * 
@@ -116,6 +116,25 @@ public class Shooter extends Subsystem implements DashboardInterface {
 	 */
 	public double getShooterPIDOutput() {
 		return ShooterPID.getOutput();
+	}
+	
+	/**
+	 * 
+	 * @param target - the target value for PID
+	 * @return speed of motor
+	 */
+	public double updateSpeed(double target){
+		ShooterPID.setTarget(target);
+		ShooterPID.update(currentSpeed());
+		return ShooterPID.getOutput();
+	}
+
+/**
+	 * Returns the current speed of the shooter wheel.
+	 * @return shooter speed in inches per second
+	 */
+	public double currentSpeed(){
+		return shootEncoder.getRate();
 	}
 
 	/**
