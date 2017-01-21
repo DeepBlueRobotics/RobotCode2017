@@ -1,6 +1,8 @@
 package org.usfirst.frc199.Robot2017.subsystems;
 
-public interface ClimberInterface {
+import org.usfirst.frc199.Robot2017.DashboardInterface;
+
+public interface ClimberInterface extends DashboardInterface {
 	public void initDefaultCommand();
 
 	public void runClimber(double speed);
@@ -8,9 +10,9 @@ public interface ClimberInterface {
 	public boolean returnPlate();
 
 	public void stopWinch();
-	
+
 	public void encoderReset();
-	
+
 	public double getEncoder();
 
 }

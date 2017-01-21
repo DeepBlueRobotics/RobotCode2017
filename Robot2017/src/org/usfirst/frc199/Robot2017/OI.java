@@ -58,14 +58,14 @@ public class OI {
 		// SmartDashboard Buttons
 		SmartDashboard.putData("MainAutoMode", new MainAutoMode());
 		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0));
-		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(0));
-		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret(0));
+		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood());
+		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret());
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0));
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive());
 		SmartDashboard.putData("GradualDrive", new GradualDrive());
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift());
-		SmartDashboard.putData("TestPID", new TestPID());
+		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE));
 		SmartDashboard.putData("IntakeIn", new RunIntake(0));
 		SmartDashboard.putData("FeederIn", new RunFeeder(0));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
@@ -73,7 +73,7 @@ public class OI {
 		SmartDashboard.putData("Climb", new Climb());
 		
 		//For use by Manual Control Widget
-		SmartDashboard.putData("ManualControl/Command", new ManualControlMechs());
+		SmartDashboard.putData("ManualControl/Command", new ManualControlMechs(Robot.intake, Robot.shooter, Robot.climber));
 
 	}
 

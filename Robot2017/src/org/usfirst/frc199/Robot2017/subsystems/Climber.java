@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Climber extends Subsystem implements DashboardInterface, ClimberInterface {
+public class Climber extends Subsystem implements ClimberInterface {
 
 	private final SpeedController winchMotor = RobotMap.climberWinchMotor;
 	private final AnalogInput plateLimit = RobotMap.climberPlateIRSensor;

@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Intake extends Subsystem implements DashboardInterface {
+public class Intake extends Subsystem implements IntakeInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;

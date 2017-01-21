@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drivetrain extends Subsystem implements DashboardInterface, DrivetrainInterface {
+public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	private final SpeedController leftMotor = RobotMap.drivetrainLeftMotor;
 	private final SpeedController rightMotor = RobotMap.drivetrainRightMotor;
@@ -95,49 +95,56 @@ public class Drivetrain extends Subsystem implements DashboardInterface, Drivetr
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
 	}
 
-/**
+	/**
 	 * Checks to see if the distance PID has reached the target
+	 * 
 	 * @return Whether distance target has been reached
 	 */
 	public boolean distanceReachedTarget() {
 		return drivePID.reachedTarget();
 	}
-    
+
 	/**
 	 * Checks to see if the angle PID has reached the target
+	 * 
 	 * @return Whether angle target has been reached
 	 */
 	public boolean angleReachedTarget() {
 		return turnPID.reachedTarget();
 	}
+
 	/**
 	 * Updates and tests anglePID
 	 */
-	public void updateAngle(){
+	public void updateAngle() {
 		turnPID.update(getAngle());
 		robotDrive.arcadeDrive(0, turnPID.getOutput());
 	}
 
 	/**
 	 * Sets the distance for PID target
-	 * @param targetDistance - the target distance being set to PID
+	 * 
+	 * @param targetDistance
+	 *            - the target distance being set to PID
 	 */
-	public void setDistanceTarget(double targetDistance){
+	public void setDistanceTarget(double targetDistance) {
 		drivePID.update((leftEncoder.get() + rightEncoder.get()) / 2);
 		drivePID.setRelativeLocation(0);
 		drivePID.setTarget(targetDistance);
 	}
-	
+
 	/**
 	 * Sets the angle for PID target
-	 * @param targetAngle - the target angle in being set to PID
+	 * 
+	 * @param targetAngle
+	 *            - the target angle in being set to PID
 	 */
 	public void setAngleTarget(double targetAngle) {
 		turnPID.update(getAngle());
 		turnPID.setRelativeLocation(0);
 		turnPID.setTarget(targetAngle);
 	}
-	
+
 	/**
 	 * Forces the robot's turn and move speed to change at a max of 5% each
 	 * iteration
@@ -199,21 +206,20 @@ public class Drivetrain extends Subsystem implements DashboardInterface, Drivetr
 
 		SmartDashboard.putNumber("Angle", gyro.getAngle());
 		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
-		
+
 		putBoolean("high gear", false);
 	}
 
 	/**
 	 * Shifts gears to whatever state they are not in
-	 * */
-	public void shiftGears(){
-		if(leftShiftPiston.get().toString().equals("kForward")){
-			//shift to high gear
+	 */
+	public void shiftGears() {
+		if (leftShiftPiston.get().toString().equals("kForward")) {
+			// shift to high gear
 			leftShiftPiston.set(DoubleSolenoid.Value.kReverse);
 			rightShiftPiston.set(DoubleSolenoid.Value.kReverse);
-		}
-		else{
-			//shift to low gear
+		} else {
+			// shift to low gear
 			leftShiftPiston.set(DoubleSolenoid.Value.kForward);
 			rightShiftPiston.set(DoubleSolenoid.Value.kForward);
 		}
@@ -230,5 +236,25 @@ public class Drivetrain extends Subsystem implements DashboardInterface, Drivetr
 		if (current >= 110)
 			return true;
 		return false;
+	}
+
+	/**
+	 * Sets targets for tracking velocity of robot for motion profiling
+	 * @param linVelTarget
+	 * @param angVelTarget
+	 */
+	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
+		// TODO (Ana T.) Write method for setting target of velocity PID. Check last
+		// year's code cause that looked more complicated than it needs to be.
+		// Figure out why
+
+	}
+	
+	/**
+	 * Updates linear and angular velocity PIDs for motion profiling
+	 */
+	public void updateVelocity() {
+		// TODO (Ana T.) See todo of setVelocityTarget method
+		
 	}
 }

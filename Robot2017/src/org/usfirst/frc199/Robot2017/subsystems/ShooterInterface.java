@@ -1,8 +1,9 @@
 package org.usfirst.frc199.Robot2017.subsystems;
 
+import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.Robot;
 
-public interface ShooterInterface {
+public interface ShooterInterface extends DashboardInterface {
 	public void initDefaultCommand();
 
 	/**
@@ -30,7 +31,7 @@ public interface ShooterInterface {
 	 *            - speed to give the feeder motor
 	 */
 	public void runFeederMotor(double speed);
-	
+
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
@@ -42,34 +43,44 @@ public interface ShooterInterface {
 	/**
 	 * Updates the shooter motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValue current
-	 *            shooter motor encoder speed
+	 * @param updateValue
+	 *            current shooter motor encoder speed
 	 */
 	public void updateShooterPID(double updateValue);
-	
+
 	/**
 	 * Gets the speed for the shooter motor from the shooter PID.
 	 * 
 	 * @return speed for motor
 	 */
 	public double getShooterPIDOutput();
+
 	/**
 	 * 
-	 * @param target - the target value for PID
+	 * @param target
+	 *            - the target value for PID
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target);
-/**
+
+	/**
 	 * Returns the current speed of the shooter wheel.
+	 * 
 	 * @return shooter speed in inches per second
 	 */
 	public double currentSpeed();
+
 	public double convertDistanceToTargetSpeed(double distance);
+
 	public void runTurretMotor(double speed);
+
 	public void setHoodPIDTarget(double target);
+
 	public void updateHoodPID(double updateValue);
+
 	public double getHoodPIDOutput();
+
 	public void runHoodMotor(double speed);
-	
+
 	public double convertAngleToTargetSpeed(double targetAngle);
 }

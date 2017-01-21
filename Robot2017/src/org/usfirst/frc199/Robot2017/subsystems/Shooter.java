@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class Shooter extends Subsystem implements DashboardInterface, ShooterInterface {
+public class Shooter extends Subsystem implements ShooterInterface {
 	double shootingAngle = Robot.getPref("shootingAngle", 0);
 	double height = Robot.getPref("relativeHeightOfBoiler", 0);
 	double encoderAngleRatio = Robot.getPref("encoderAngleRatio", 0);

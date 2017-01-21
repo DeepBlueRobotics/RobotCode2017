@@ -4,12 +4,23 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.subsystems.ClimberInterface;
+import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
+import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 /**
  *
  */
 public class ManualControlMechs extends Command {
-	public ManualControlMechs() {
+	private ClimberInterface climber;
+	private ShooterInterface shooter;
+	private IntakeInterface intake;
+	
+	
+	public ManualControlMechs(IntakeInterface intake, ShooterInterface shooter, ClimberInterface climber) {
+		this.shooter = shooter;
+		this.climber = climber;
+		this.intake = intake;
 	}
 
 	// Called just before this Command runs the first time
@@ -21,22 +32,25 @@ public class ManualControlMechs extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	String system = SmartDashboard.getString("Manual Control Mech");
+    	manualSwitch(system, Robot.oi.manipulator.getThrottle());
+    }
+    
+    public void manualSwitch(String system, double speed) {
     	switch (system.toLowerCase()){
-	    	case "intake": Robot.intake.runIntake(Robot.oi.manipulator.getThrottle());
+	    	case "intake": this.intake.runIntake(speed);
 	    		break;
-	    	case "feeder": Robot.shooter.runFeederMotor(Robot.oi.manipulator.getThrottle());
+	    	case "feeder": this.shooter.runFeederMotor(speed);
 	    		break;
-	    	case "climber": Robot.climber.runClimber(Robot.oi.manipulator.getThrottle());
+	    	case "climber": this.climber.runClimber(speed);
 	    		break;
-	    	case "shooter": Robot.shooter.runShootMotor(Robot.oi.manipulator.getThrottle());
+	    	case "shooter": this.shooter.runShootMotor(speed);
 	    		break;
-	    	case "turret": Robot.shooter.runTurretMotor(Robot.oi.manipulator.getThrottle());
+	    	case "turret": this.shooter.runTurretMotor(speed);
 	    		break;
-	    	case "hood": Robot.shooter.runHoodMotor(Robot.oi.manipulator.getThrottle());
+	    	case "hood": this.shooter.runHoodMotor(speed);
 	    		break;
     	}
     }
-
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		return false;
@@ -45,21 +59,7 @@ public class ManualControlMechs extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		String system = SmartDashboard.getString("Manual Control Mech");
-		
-    	switch (system.toLowerCase()){
-	    	case "intake": Robot.intake.runIntake(0);
-	    		break;
-	    	case "feeder": Robot.shooter.runFeederMotor(0);
-	    		break;
-	    	case "climber": Robot.climber.runClimber(0);
-	    		break;
-	    	case "shooter": Robot.shooter.runShootMotor(0);
-	    		break;
-	    	case "turret": Robot.shooter.runTurretMotor(0);
-    			break;
-	    	case "hood": Robot.shooter.runHoodMotor(0);
-	    		break;
-    	}
+		manualSwitch(system, 0);
 	}
 
 	// Called when another command which requires one or more of the same
