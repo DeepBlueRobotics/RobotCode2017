@@ -12,15 +12,18 @@ package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 /**
  *
  */
 public class RunShooter extends Command {
 	double speed;
+	ShooterInterface shooter;
 
-	public RunShooter(double speed) {
+	public RunShooter(double speed, ShooterInterface shooter) {
 		this.speed = speed;
+		this.shooter = shooter;
 	}
 
 	// Called just before this Command runs the first time
@@ -28,9 +31,9 @@ public class RunShooter extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-		if (!Robot.shooter.shooterMotorStalled()) {
-			Robot.shooter.runShootMotor(speed);
+	public void execute() {
+		if (!shooter.shooterMotorStalled()) {
+			shooter.runShootMotor(speed);
 		}
 	}
 
@@ -40,8 +43,8 @@ public class RunShooter extends Command {
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
-		Robot.shooter.runShootMotor(0);
+	public void end() {
+		shooter.runShootMotor(0);
 	}
 
 	// Called when another command which requires one or more of the same

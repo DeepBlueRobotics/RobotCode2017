@@ -27,17 +27,17 @@ public class OI {
 		manipulator = new Joystick(2);
 
 		feedOutButton = new JoystickButton(manipulator, 8);
-		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1)));
+		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1), Robot.shooter));
 		feedInButton = new JoystickButton(manipulator, 6);
-		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1)));
+		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 2);
 		winchButton.whileHeld(new Climb());
 		shootOutButton = new JoystickButton(manipulator, 4);
-		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1)));
+		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter));
 		outputButton = new JoystickButton(manipulator, 5);
-		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1)));
+		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), Robot.intake));
 		intakeButton = new JoystickButton(manipulator, 7);
-		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1)));
+		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
 		toggleIntakeButton.whenPressed(new ToggleIntake());
 		rightJoy = new Joystick(1);
@@ -66,8 +66,8 @@ public class OI {
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift());
 		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE));
-		SmartDashboard.putData("IntakeIn", new RunIntake(0));
-		SmartDashboard.putData("FeederIn", new RunFeeder(0));
+		SmartDashboard.putData("IntakeIn", new RunIntake(0, Robot.intake));
+		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
 		SmartDashboard.putData("ToggleIntake", new ToggleIntake());
 		SmartDashboard.putData("Climb", new Climb());
