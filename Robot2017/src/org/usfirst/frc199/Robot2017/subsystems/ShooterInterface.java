@@ -54,6 +54,12 @@ public interface ShooterInterface extends DashboardInterface {
 	 * @return speed for motor
 	 */
 	public double getShooterPIDOutput();
+	
+	/**
+	 * Gets the hood encoder value
+	 * @return the hood encoder value
+	 * */
+	public double getHoodEncoder();
 
 	/**
 	 * 
@@ -62,6 +68,11 @@ public interface ShooterInterface extends DashboardInterface {
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target);
+	
+	/**
+	 * Stops the hood motor
+	 * */
+	public void stopHoodMotor();
 
 	/**
 	 * Returns the current speed of the shooter wheel.

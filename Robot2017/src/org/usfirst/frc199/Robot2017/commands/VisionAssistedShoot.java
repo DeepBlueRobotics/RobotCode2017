@@ -1,5 +1,7 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -9,7 +11,7 @@ public class VisionAssistedShoot extends CommandGroup {
 
     public VisionAssistedShoot(double shooterTargetDist, double shooterRunTime) {
         
-    	addParallel(new AutoAdjustHood());
+    	addParallel(new AutoAdjustHood(Robot.shooter));
     	addParallel(new AutoAdjustTurret());
     	addSequential(new AutoShoot(shooterTargetDist, shooterRunTime));
     }

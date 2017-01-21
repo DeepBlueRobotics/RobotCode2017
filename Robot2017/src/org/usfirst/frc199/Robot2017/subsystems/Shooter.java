@@ -205,6 +205,21 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		hoodMotor.set(speed);
 	}
 	
+	/**
+	 * Gets the hood encoder value
+	 * @return the hood encoder value
+	 * */
+	public double getHoodEncoder(){
+		return hoodEncoder.get();
+	}
+	
+	/**
+	 * Stops the hood motor
+	 * */
+	public void stopHoodMotor(){
+		runHoodMotor(0);
+	}
+	
 	public double convertAngleToTargetSpeed(double targetAngle){
 		//do some math
 		double angle = targetAngle;
