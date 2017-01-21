@@ -1,9 +1,10 @@
-package org.usfirst.frc199.Robot2017.commands;
+package tests;
 
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.commands.ManualControlMechs;
 import org.usfirst.frc199.Robot2017.subsystems.ClimberInterface;
 import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
