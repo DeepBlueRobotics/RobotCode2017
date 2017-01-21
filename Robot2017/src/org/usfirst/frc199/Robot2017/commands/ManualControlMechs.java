@@ -16,30 +16,7 @@ public class ManualControlMechs extends Command {
 	protected void initialize() {
 	}
 
-	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-		String system = SmartDashboard.getString("Manual Control Mech");
-		switch (system.toLowerCase()) {
-		case "Intake":
-			Robot.intake.runIntake(Robot.oi.manipulator.getThrottle());
-			break;
-		case "Feeder":
-			Robot.shooter.runFeederMotor(Robot.oi.manipulator.getThrottle());
-			break;
-		case "Climber":
-			Robot.climber.runClimber(Robot.oi.manipulator.getThrottle());
-			break;
-		case "Shooter":
-			Robot.shooter.runShootMotor(Robot.oi.manipulator.getThrottle());
-			break;
-		case "Turret":
-			Robot.shooter.turret(Robot.oi.manipulator.getThrottle());
-			break;
-		case "Hood":
-			Robot.shooter.adjustHood(Robot.oi.manipulator.getThrottle());
-			break;
-		}
-	}
+	
 	
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {

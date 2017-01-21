@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drivetrain extends Subsystem implements DashboardInterface {
+public class Drivetrain extends Subsystem implements DashboardInterface, DrivetrainInterface {
 
 	private final SpeedController leftMotor = RobotMap.drivetrainLeftMotor;
 	private final SpeedController rightMotor = RobotMap.drivetrainRightMotor;
