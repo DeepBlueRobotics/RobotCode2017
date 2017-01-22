@@ -12,12 +12,13 @@ package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
 /**
  *
  */
 public class TeleopDrive extends Command {
-	
+
 	public TeleopDrive() {
 		requires(Robot.drivetrain);
 	}
@@ -28,9 +29,9 @@ public class TeleopDrive extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
+	public void execute() {
 		Robot.drivetrain.drive();
-		if(Robot.drivetrain.currentControl()){
+		if (Robot.drivetrain.currentControl()) {
 			Robot.drivetrain.shiftGears();
 		}
 
@@ -43,6 +44,7 @@ public class TeleopDrive extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
+		Robot.drivetrain.stopDrive();
 	}
 
 	// Called when another command which requires one or more of the same

@@ -49,7 +49,7 @@ public class OI {
 		driveGradually = new JoystickButton(rightJoy, 1);
 		driveGradually.whileHeld(new GradualDrive());
 		shiftGears = new JoystickButton(rightJoy, 2);
-		shiftGears.whenPressed(new ToggleDrivetrainShift());
+		shiftGears.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
 		leftJoy = new Joystick(0);
 
 		switchDrive = new JoystickButton(leftJoy, 2);
@@ -64,16 +64,17 @@ public class OI {
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive());
 		SmartDashboard.putData("GradualDrive", new GradualDrive());
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
-		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift());
+		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift(Robot.drivetrain));
 		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE));
 		SmartDashboard.putData("IntakeIn", new RunIntake(0, Robot.intake));
 		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
 		SmartDashboard.putData("ToggleIntake", new ToggleIntake());
 		SmartDashboard.putData("Climb", new Climb());
-		
-		//For use by Manual Control Widget
-		SmartDashboard.putData("ManualControl/Command", new ManualControlMechs(Robot.intake, Robot.shooter, Robot.climber));
+
+		// For use by Manual Control Widget
+		SmartDashboard.putData("ManualControl/Command",
+				new ManualControlMechs(Robot.intake, Robot.shooter, Robot.climber));
 
 	}
 
