@@ -39,7 +39,7 @@ public class OI {
 		intakeButton = new JoystickButton(manipulator, 7);
 		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
-		toggleIntakeButton.whenPressed(new ToggleIntake());
+		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
 		rightJoy = new Joystick(1);
 
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
@@ -69,7 +69,7 @@ public class OI {
 		SmartDashboard.putData("IntakeIn", new RunIntake(0, Robot.intake));
 		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
-		SmartDashboard.putData("ToggleIntake", new ToggleIntake());
+		SmartDashboard.putData("ToggleIntake", new ToggleIntake(Robot.intake));
 		SmartDashboard.putData("Climb", new Climb());
 
 		// For use by Manual Control Widget
