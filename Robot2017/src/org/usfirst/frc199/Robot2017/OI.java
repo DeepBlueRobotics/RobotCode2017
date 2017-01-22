@@ -45,7 +45,7 @@ public class OI {
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
 		// TODO: (Ana T.) Insert accurate AutoShoot arguments to be executed
 		// when autoShootRoutineButton is held
-		autoShootRoutineButton.whileHeld(new AutoShoot(0, 0));
+		autoShootRoutineButton.whileHeld(new AutoShoot(0, 0, Robot.shooter));
 		driveGradually = new JoystickButton(rightJoy, 1);
 		driveGradually.whileHeld(new GradualDrive());
 		shiftGears = new JoystickButton(rightJoy, 2);
@@ -57,10 +57,10 @@ public class OI {
 
 		// SmartDashboard Buttons
 		SmartDashboard.putData("MainAutoMode", new MainAutoMode());
-		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0));
+		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0, Robot.drivetrain));
 		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(Robot.shooter));
 		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret());
-		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0));
+		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive());
 		SmartDashboard.putData("GradualDrive", new GradualDrive());
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());

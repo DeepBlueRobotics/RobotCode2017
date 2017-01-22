@@ -69,7 +69,15 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		}
 		return shooterMotorStalled;
 	}
-
+	
+	/**
+	 * Gets the shooter encoder rate
+	 * @return the shooter encoder rate
+	 * */
+	public double getShootEncoderRate(){
+		return shootEncoder.getRate();
+	}
+	
 	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0).
 	 * 
@@ -78,6 +86,13 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 */
 	public void runShootMotor(double speed) {
 		shootMotor.set(speed);
+	}
+	
+	/**
+	 * Stops the shooter motor
+	 * */
+	public void stopShootMotor(){
+		runShootMotor(0);
 	}
 
 	/**

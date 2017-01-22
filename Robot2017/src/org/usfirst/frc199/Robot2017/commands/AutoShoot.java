@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.RobotMap;
+import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 /**
  * 
@@ -22,6 +23,7 @@ public class AutoShoot extends Command {
 	double target;
 	Timer tim = new Timer();
 	double duration;
+	ShooterInterface shooter;
 
 	/**
 	 * Figures out speed at which to run motors (with static hood) for provided
@@ -35,26 +37,27 @@ public class AutoShoot extends Command {
 	 *            - duration to run the shooter motor
 	 */
 
-	public AutoShoot(double targetDistance, double runTime) {
-		target = Robot.shooter.convertDistanceToTargetSpeed(targetDistance);
+	public AutoShoot(double targetDistance, double runTime, ShooterInterface shooter) {
+		this.shooter = shooter;
+		target = this.shooter.convertDistanceToTargetSpeed(targetDistance);
 		duration = runTime;
 	}
 
 	// Called just before this Command runs the first time
-	protected void initialize() {
+	public void initialize() {
 		tim.start();
-		Robot.shooter.setShooterPIDTarget(target);
+		shooter.setShooterPIDTarget(target);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-		Robot.shooter.updateShooterPID(RobotMap.shooterShootEncoder.getRate());
-		if (!Robot.shooter.shooterMotorStalled()) {
-			Robot.shooter.runShootMotor(Robot.shooter.getShooterPIDOutput());
+	public void execute() {
+		shooter.updateShooterPID(shooter.getShootEncoderRate());
+		if (!shooter.shooterMotorStalled()) {
+			shooter.runShootMotor(shooter.getShooterPIDOutput());
 		}
-		if (Math.abs(RobotMap.shooterShootEncoder.getRate() - target) <= Robot.getPref("speedErrorConstant", .05)
+		if (Math.abs(shooter.getShootEncoderRate() - target) <= Robot.getPref("speedErrorConstant", .05)
 				* target) {
-			Robot.shooter.runFeederMotor(1);
+			shooter.runFeederMotor(1);
 		}
 	}
 
@@ -64,8 +67,8 @@ public class AutoShoot extends Command {
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
-		Robot.shooter.runShootMotor(0);
+	public void end() {
+		shooter.stopShootMotor();
 	}
 
 	// Called when another command which requires one or more of the same

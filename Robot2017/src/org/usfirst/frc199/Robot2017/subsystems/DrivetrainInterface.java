@@ -3,6 +3,7 @@ package org.usfirst.frc199.Robot2017.subsystems;
 import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.commands.TeleopDrive;
+import org.usfirst.frc199.Robot2017.motion.PID;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,6 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public interface DrivetrainInterface extends DashboardInterface {
 	public void initDefaultCommand();
 
+	public PID getDrivePID();
+	
+	public PID getTurnPID();
+	
 	public void resetEncoder();
 
 	public void resetGyro();

@@ -15,6 +15,12 @@ public interface ShooterInterface extends DashboardInterface {
 	 *         it automatically sets it to 0
 	 */
 	public boolean shooterMotorStalled();
+	
+	/**
+	 * Gets the shooter encoder rate
+	 * @return the shooter encoder rate
+	 * */
+	public double getShootEncoderRate();
 
 	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0).
@@ -23,6 +29,11 @@ public interface ShooterInterface extends DashboardInterface {
 	 *            - speed to give the shooter motor
 	 */
 	public void runShootMotor(double speed);
+	
+	/**
+	 * Stops the shooter motor
+	 * */
+	public void stopShootMotor();
 
 	/**
 	 * Sets the feeder motor's speed (from -1.0 to 1.0).

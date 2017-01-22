@@ -56,6 +56,22 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		setDefaultCommand(new TeleopDrive());
 
 	}
+	
+	/**
+	 * Gets the drivePID object
+	 * @return the drivePID object
+	 * */
+	public PID getDrivePID(){
+		return drivePID;
+	}
+	
+	/**
+	 * Gets the turnPID object 
+	 * @return the turnPID object
+	 * */
+	public PID getTurnPID(){
+		return turnPID;
+	}
 
 	/**
 	 * Resets the encoders to return zero at that point
