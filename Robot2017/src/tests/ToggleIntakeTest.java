@@ -15,5 +15,7 @@ public class ToggleIntakeTest {
 		testCommand.execute();
 		verify(mockIntake).toggleIntake();
 
+		testCommand.end();
+		verify(mockIntake).stopIntakeDoubleSolenoid();
 	}
 }
