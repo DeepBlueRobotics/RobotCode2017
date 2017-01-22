@@ -11,11 +11,13 @@
 package org.usfirst.frc199.Robot2017.subsystems;
 
 import org.usfirst.frc199.Robot2017.DashboardInterface;
+import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -27,6 +29,7 @@ public class Climber extends Subsystem implements ClimberInterface {
 	private final SpeedController winchMotor = RobotMap.climberWinchMotor;
 	private final AnalogInput plateLimit = RobotMap.climberPlateIRSensor;
 	private final Encoder winchEncoder = RobotMap.winchEncoder;
+	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	public boolean AIEnabled = false;
 
 	// Put methods for controlling this subsystem
@@ -47,6 +50,9 @@ public class Climber extends Subsystem implements ClimberInterface {
 	public void runClimber(double speed) {
 		winchMotor.set(speed);
 	}
+	public double getClimber() {
+		return winchMotor.get();
+	}
 
 	/**
 	 * This method returns whether the plate is sensing being touched
@@ -62,6 +68,14 @@ public class Climber extends Subsystem implements ClimberInterface {
 		return false;
 	}
 
+	public boolean checkMotorDraw() {
+		int channel = (int) (Robot.getPref("climber channel", 1));
+		double current = pdp.getCurrent(channel);
+		if (current >= (int) Robot.getPref("maxClimberCurrent", 50)) {
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * This method stops the winch
 	 */
