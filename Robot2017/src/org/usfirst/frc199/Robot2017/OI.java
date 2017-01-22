@@ -47,7 +47,7 @@ public class OI {
 		// when autoShootRoutineButton is held
 		autoShootRoutineButton.whileHeld(new AutoShoot(0, 0, Robot.shooter));
 		driveGradually = new JoystickButton(rightJoy, 1);
-		driveGradually.whileHeld(new GradualDrive());
+		driveGradually.whileHeld(new GradualDrive(Robot.drivetrain));
 		shiftGears = new JoystickButton(rightJoy, 2);
 		shiftGears.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
 		leftJoy = new Joystick(0);
@@ -62,7 +62,7 @@ public class OI {
 		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret());
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive());
-		SmartDashboard.putData("GradualDrive", new GradualDrive());
+		SmartDashboard.putData("GradualDrive", new GradualDrive(Robot.drivetrain));
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift(Robot.drivetrain));
 		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE));

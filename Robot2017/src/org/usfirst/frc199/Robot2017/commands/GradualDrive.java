@@ -12,14 +12,16 @@ package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
 /**
  *
  */
 public class GradualDrive extends Command {
+	DrivetrainInterface drivetrain;
 	
-	public GradualDrive() {
-		
+	public GradualDrive(DrivetrainInterface drivetrain) {
+		this.drivetrain = drivetrain;
 	}
 
 	// Called just before this Command runs the first time
@@ -27,10 +29,10 @@ public class GradualDrive extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-		Robot.drivetrain.gradualDrive();
-		if(Robot.drivetrain.currentControl()){
-			Robot.drivetrain.shiftGears();
+	public void execute() {
+		drivetrain.gradualDrive();
+		if(drivetrain.currentControl()){
+			drivetrain.shiftGears();
 		}
 	}
 
