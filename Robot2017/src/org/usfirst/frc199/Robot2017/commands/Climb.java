@@ -26,8 +26,8 @@ public class Climb extends Command {
 			isStopped = false;
 			if (!Robot.climber.checkMotorDraw()) {
 				Robot.climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
-			} else if (Robot.climber.getClimber() > getPref("climberSlowStep", 0.05)) {
-				Robot.climber.runClimber(Robot.climber.getClimber() - getPref("climberSlowStep", 0.05));
+			} else if (Robot.climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
+				Robot.climber.runClimber(Robot.climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
 			} else {
 				Robot.climber.stopWinch();
 			}
