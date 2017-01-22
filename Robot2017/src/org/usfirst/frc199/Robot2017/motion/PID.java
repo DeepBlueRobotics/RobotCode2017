@@ -1,4 +1,4 @@
-package org.usfirst.frc199.Robot2017;
+package org.usfirst.frc199.Robot2017.motion;
 
 import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.Robot;
