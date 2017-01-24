@@ -11,7 +11,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * Summary:
  * The robot drives forward, turns 60 degrees to be parallel with the
  * desired lift, drives forward to the lift, auto-aligns, and then
- * the gear is taken
+ * the gear is taken (5 seconds allotted)
+ * 
+ * Next, it reverses the path it took to the boiler, turns away from
+ * the boiler and backs up towards it, then shoots
+ * 
+ * 
  **/
 public class AutoModeLoadSide extends CommandGroup {
 
@@ -66,9 +71,37 @@ public class AutoModeLoadSide extends CommandGroup {
      	
      	//Waits to allow gear to be lifted
      	addSequential(new AutoDelay(5));
+    	 
+     	//backs up
+     	addSequential(new AutoDrive(0-LENGTH_2, 0));
+     	
+     	//Turns away from lift
+    	if(alliance)
+    	{
+    		addSequential(new AutoDrive(0,LEFT*60));
+    	}
+    	else
+    	{
+    		addSequential(new AutoDrive(0,RIGHT*60));
+    	}
     	
+    	//backs up
+    	addSequential(new AutoDrive(6-LENGTH_1, 0));
     	
+    	//turns away from boiler and drives backward
+    	if(alliance)
+    	{
+    		addSequential(new AutoDrive(0,LEFT*90));
+    	}
+    	else
+    	{
+    		addSequential(new AutoDrive(0,RIGHT*90));
+    	}
+    	addSequential(new AutoDrive(-120, 0));
     	
+    	//Aims and shoots
+    	addParallel(new VisionAssistedShoot());
+   
     	
     }
 }
