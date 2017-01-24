@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * 
  **/
 public class AutoModeLoadSide extends CommandGroup {
-
-	private boolean alliance;
 	
 	/***
 	 * Commands for autonomous starting at left
@@ -46,9 +44,6 @@ public class AutoModeLoadSide extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
-    	this.alliance = alliance;
-    	
- 
     	final double LEFT = -1;
     	final double RIGHT = 1;
     	final double LENGTH_1 = 101.908; //in. from front end of robot to point on field
