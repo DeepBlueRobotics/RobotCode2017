@@ -20,9 +20,15 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 public class AutoDrive extends Command {
 
 	double targetDist, targetAngle;
+<<<<<<< Updated upstream
 	DrivetrainInterface drivetrain;
 	
 	public AutoDrive(double targetDist, double targetAngle, DrivetrainInterface drivetrain) {
+=======
+
+	public AutoDrive(double targetDist, double targetAngle) {
+
+>>>>>>> Stashed changes
 		requires(Robot.drivetrain);
 		this.targetDist = targetDist;
 		this.targetAngle = targetAngle;
@@ -39,10 +45,17 @@ public class AutoDrive extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
+<<<<<<< Updated upstream
 	public void execute() {
 		drivetrain.autoDrive();
 		if(drivetrain.currentControl()){
 			drivetrain.shiftGears();
+=======
+	protected void execute() {
+		Robot.drivetrain.autoDrive();
+		if(Robot.drivetrain.currentControl()){
+			Robot.drivetrain.shiftGears();
+>>>>>>> Stashed changes
 		}
 	}
 
