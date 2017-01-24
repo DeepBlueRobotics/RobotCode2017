@@ -1,5 +1,7 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -53,54 +55,54 @@ public class AutoModeLoadSide extends CommandGroup {
     	final double LENGTH_2 = 11; //in. from front of robot to lift (after pivot)
     	
     	//Drives to hexagon
-    	addSequential(new AutoDrive(LENGTH_1, 0));
+    	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
     	//Turns toward lift
     	if(alliance)
     	{
-    		addSequential(new AutoDrive(0,RIGHT*60));
+    		addSequential(new AutoDrive(0,RIGHT*60, Robot.drivetrain));
     	}
     	else
     	{
-    		addSequential(new AutoDrive(0,LEFT*60));
+    		addSequential(new AutoDrive(0,LEFT*60, Robot.drivetrain));
     	}
     	
     	//drives up to lift and aligns
-    	addSequential(new AutoDrive(LENGTH_2, 0));
+    	addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
      	addSequential(new AutoAlignGear());
      	
      	//Waits to allow gear to be lifted
      	addSequential(new AutoDelay(5));
     	 
      	//backs up
-     	addSequential(new AutoDrive(0-LENGTH_2, 0));
+     	addSequential(new AutoDrive(0-LENGTH_2, 0, Robot.drivetrain));
      	
      	//Turns away from lift
     	if(alliance)
     	{
-    		addSequential(new AutoDrive(0,LEFT*60));
+    		addSequential(new AutoDrive(0,LEFT*60, Robot.drivetrain));
     	}
     	else
     	{
-    		addSequential(new AutoDrive(0,RIGHT*60));
+    		addSequential(new AutoDrive(0,RIGHT*60, Robot.drivetrain));
     	}
     	
     	//backs up
-    	addSequential(new AutoDrive(6-LENGTH_1, 0));
+    	addSequential(new AutoDrive(6-LENGTH_1, 0, Robot.drivetrain));
     	
     	//turns away from boiler and drives backward
     	if(alliance)
     	{
-    		addSequential(new AutoDrive(0,LEFT*90));
+    		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
     	}
     	else
     	{
-    		addSequential(new AutoDrive(0,RIGHT*90));
+    		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
     	}
-    	addSequential(new AutoDrive(-120, 0));
+    	addSequential(new AutoDrive(-120, 0, Robot.drivetrain));
     	
     	//Aims and shoots
-    	addParallel(new VisionAssistedShoot());
+    	addParallel(new VisionAssistedShoot(0,0));
    
     	
     }

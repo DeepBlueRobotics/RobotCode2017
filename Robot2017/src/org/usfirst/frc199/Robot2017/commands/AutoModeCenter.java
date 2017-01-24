@@ -1,5 +1,7 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -48,41 +50,41 @@ public class AutoModeCenter extends CommandGroup {
     	final double RIGHT = 1;
     
 		//Drives to lift and aligns
-    	addSequential(new AutoDrive(DIST_TO_LIFT - ROBOT_LENGTH, 0));
+    	addSequential(new AutoDrive(DIST_TO_LIFT - ROBOT_LENGTH, 0, Robot.drivetrain));
     	addSequential(new AutoAlignGear());
     	
     	//Aims and shoots
-    	addParallel(new VisionAssistedShoot());
+    	addParallel(new VisionAssistedShoot(0,0));
     	addSequential(new AutoDelay(5));
     	
     	//Backs out of dividers, giving 6 inches of extra space for the pivot
-    	addSequential(new AutoDrive(0-(DIVIDER_DEPTH + 6),0));
+    	addSequential(new AutoDrive(0-(DIVIDER_DEPTH + 6),0, Robot.drivetrain));
     	
     	//Turns away from boiler
     	if(alliance)
     	{
-    		addSequential(new AutoDrive(0,LEFT*90));
+    		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
     	}
     	else
     	{
-    		addSequential(new AutoDrive(0,RIGHT*90));
+    		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
     	}
     	
     	//Drives past airship
-    	addSequential(new AutoDrive((AIRSHIP_DIAGONAL / 2) + 36, 0));
+    	addSequential(new AutoDrive((AIRSHIP_DIAGONAL / 2) + 36, 0, Robot.drivetrain));
     	
     	//Turns toward center of field
     	if(alliance)
     	{
-    		addSequential(new AutoDrive(0,RIGHT*90));
+    		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
     	}
     	else
     	{
-    		addSequential(new AutoDrive(0,LEFT*90));
+    		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
     	}
     	
     	//Passes baseline
-    	addSequential(new AutoDrive(DIVIDER_DEPTH + 24,0));
+    	addSequential(new AutoDrive(DIVIDER_DEPTH + 24,0, Robot.drivetrain));
 	
     		
     }
