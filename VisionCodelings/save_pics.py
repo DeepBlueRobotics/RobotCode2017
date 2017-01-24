@@ -1,3 +1,7 @@
+# Status: Works. Tool.
+# Displays normal live feed from cam. On esc, it closes but saves 
+# the final frame to the file system as picture.jpg (line 20).
+
 import cv2
 import numpy as np
  
@@ -13,6 +17,6 @@ while(1):
     k = cv2.waitKey(1) & 0xFF
     if k == 27:
         break
-cv2.imwrite('dark.jpg',frame)
+cv2.imwrite('picture.jpg',frame)
 cap.release()
 cv2.destroyAllWindows()

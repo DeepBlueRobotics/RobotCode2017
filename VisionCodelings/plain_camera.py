@@ -1,3 +1,6 @@
+# Status: Works. Tool.
+# Plain ol' camera. No alteration; just for testing cameras and choosing ports.
+
 import numpy as np
 import cv2
 

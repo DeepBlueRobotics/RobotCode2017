@@ -1,3 +1,9 @@
+# Status: Works with the right image files. Tool.
+# Takes two static images: a picture of the tape with the light on 
+# and one with the light off, with the camera in the same position.
+# Does Arthur (HSV sliders) on the absdiff between the two images.
+# Use save_pics.py to take those pictures.
+
 import numpy as np
 import cv2
 
