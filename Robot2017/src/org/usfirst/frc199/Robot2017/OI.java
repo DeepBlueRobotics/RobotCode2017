@@ -65,7 +65,7 @@ public class OI {
 		SmartDashboard.putData("GradualDrive", new GradualDrive(Robot.drivetrain));
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift(Robot.drivetrain));
-		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE));
+		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("IntakeIn", new RunIntake(0, Robot.intake));
 		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());

@@ -46,4 +46,6 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public void shiftGears();
 
 	public boolean currentControl();
+	public void setVelocityTarget(double linVelTarget, double angVelTarget);
+	public void updateVelocity();
 }
