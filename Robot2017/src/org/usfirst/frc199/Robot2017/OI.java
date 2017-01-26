@@ -21,6 +21,7 @@ public class OI {
 	public JoystickButton feedInButton;
 	public JoystickButton feedOutButton;
 	public JoystickButton toggleIntakeButton;
+	public JoystickButton toggleRampButton;
 	public Joystick manipulator;
 
 	public OI() {
@@ -40,6 +41,8 @@ public class OI {
 		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
 		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
+		toggleRampButton = new JoystickButton(manipulator, 9);
+		toggleRampButton.whenPressed(new ToggleRamp(Robot.intake));
 		rightJoy = new Joystick(1);
 
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);

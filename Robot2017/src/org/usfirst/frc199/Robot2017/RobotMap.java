@@ -51,6 +51,7 @@ public class RobotMap {
 	public static DoubleSolenoid drivetrainRightShiftPiston;
 	public static DigitalInput gearLiftedLimitSwitch;
 	public static DoubleSolenoid intakePivotPiston;
+	public static DoubleSolenoid intakeRampPiston;
 	public static SpeedController intakeIntakeMotor;
 	public static SpeedController shooterShootMotor;
 	public static SpeedController shooterFeedMotor;
@@ -100,7 +101,10 @@ public class RobotMap {
 
 		intakePivotPiston = new DoubleSolenoid(0, 4, 5);
 		LiveWindow.addActuator("Intake", "PivotPiston", intakePivotPiston);
-
+		
+		intakeRampPiston = new DoubleSolenoid(0, 6, 7);
+		LiveWindow.addActuator("Intake", "RampPiston", intakeRampPiston);
+		
 		intakeIntakeMotor = new Talon(2);
 		LiveWindow.addActuator("Intake", "IntakeMotor", (Talon) intakeIntakeMotor);
 

@@ -24,8 +24,10 @@ public class Intake extends Subsystem implements IntakeInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
-
+	private final DoubleSolenoid rampPiston = RobotMap.intakeRampPiston;
+	
 	private boolean isPistonUp = false;
+	private boolean isRampUp = false;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -59,6 +61,17 @@ public class Intake extends Subsystem implements IntakeInterface {
 		} else {
 			pivotPiston.set(DoubleSolenoid.Value.kReverse);
 		}
+	}
+	
+	/**
+	 * This method moves the Ramp up if it is down, otherwise goes up
+	 */
+	public void toggleRamp() {
+		isRampUp = !isRampUp;
+		if (isRampUp)
+			rampPiston.set(DoubleSolenoid.Value.kForward);
+		else
+			rampPiston.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	/**
