@@ -48,25 +48,25 @@ public class TestPID extends Command {
 	public void initialize() {
 		switch(system) {
 			case DRIVEDISTANCE:
-//				target = SmartDashboard.getNumber("PID/DriveDistance/TestTarget" , 0);
+				target = SmartDashboard.getNumber("PID/DriveDistance/TestTarget" , 0);
 				drivetrain.setDistanceTarget(target);
 				drivetrain.setAngleTarget(0);
 				break;
 			case DRIVEANGLE:
-//				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
+				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
 				drivetrain.setAngleTarget(target);
 				break;
 			case SHOOTER:
-//				target = SmartDashboard.getNumber("PID/Shooter/TestTarget" , 0);
+				target = SmartDashboard.getNumber("PID/Shooter/TestTarget" , 0);
 				shooter.setShooterPIDTarget(target);
 				shooter.updateShooterPID(shooter.currentSpeed());
 				break;
 			case DRIVEVELOCITY:
-//				target = SmartDashboard.getNumber("PID/DriveVelocity/TestTarget");
+				target = SmartDashboard.getNumber("PID/DriveVelocity/TestTarget");
 				drivetrain.setVelocityTarget(target, 0);
 				break;
 			case DRIVEANGULARVELOCITY:
-//				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget");
+				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget");
 				drivetrain.setVelocityTarget(0, target);
 				break;
 		}
