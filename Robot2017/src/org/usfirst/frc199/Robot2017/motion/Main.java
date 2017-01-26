@@ -32,7 +32,6 @@ public class Main {
 		JTextField f1 = new JTextField("0");
 		JTextField f2 = new JTextField("0");
 		JTextField f3 = new JTextField("2");
-		JTextField f4 = new JTextField("1");
 		@SuppressWarnings("serial")
 		class MyPanel extends JPanel {
 			ArrayList<Double> xarray = new ArrayList<>();
@@ -98,9 +97,8 @@ public class Main {
 				double angle0 = Double.parseDouble(f1.getText());
 				double angle1 = Double.parseDouble(f2.getText());
 				double k = Double.parseDouble(f3.getText());
-				double jerkmax = Double.parseDouble(f4.getText());
 				p = new Path(25,25,x,y,angle0,angle1,k);
-				trajectory = new Trajectory(p, .01, .01, 10, .8, 10, .8, jerkmax, 1007);
+				trajectory = new Trajectory(p, .01, .01, 5, .8, 5, .8, 1007);
 				panel.draw();
 			}
 		});
@@ -113,7 +111,6 @@ public class Main {
 		frame.add(f1);
 		frame.add(f2);
 		frame.add(f3);
-		frame.add(f4);
 		frame.setVisible(true);
 	}
 }
