@@ -61,7 +61,7 @@ public class OI {
 		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(Robot.shooter));
 		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret());
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
-		SmartDashboard.putData("TeleopDrive", new TeleopDrive());
+		SmartDashboard.putData("TeleopDrive", new TeleopDrive(Robot.drivetrain));
 		SmartDashboard.putData("GradualDrive", new GradualDrive(Robot.drivetrain));
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift(Robot.drivetrain));

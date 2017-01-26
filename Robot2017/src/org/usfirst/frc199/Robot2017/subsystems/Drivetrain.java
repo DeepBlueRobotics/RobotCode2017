@@ -53,7 +53,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void initDefaultCommand() {
 
-		setDefaultCommand(new TeleopDrive());
+		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 
 	}
 	
