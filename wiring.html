@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Wiring</title>
+    <style type="text/css" media="screen">
+      table {
+          text-align: left;
+          width: 400px;
+
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+          border-collapse:collapse;
+          border-spacing:0px;
+      }
+      th {
+          border-top: 2px solid black;
+          border-bottom: 2px solid black;
+      }
+      .pound {
+          width: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Wiring</h1>
+                    <h2>DIO</h2>
+	    <table><tr>
+	        <th class="pound">#</th>
+	        <th>Sensor</th></tr>
+	                                               <tr><td>0</td><td>Drivetrain LeftEncoder</td><td></td></tr>
+            	                                         <tr><td>1</td><td>Drivetrain LeftEncoder</td><td></td></tr>
+            	                                         <tr><td>2</td><td>Drivetrain RightEncoder</td><td></td></tr>
+            	                                         <tr><td>3</td><td>Drivetrain RightEncoder</td><td></td></tr>
+            	                                         <tr><td>4</td><td>Shooter ShootEncoder</td><td></td></tr>
+            	                                         <tr><td>5</td><td>Shooter ShootEncoder</td><td></td></tr>
+            	                                         <tr><td>6</td><td>Turret TurretEncoder</td><td></td></tr>
+            	                                         <tr><td>7</td><td>Turret TurretEncoder</td><td></td></tr>
+            	                                         <tr><td>8</td><td>Turret HoodEncoder</td><td></td></tr>
+            	                                         <tr><td>9</td><td>Turret HoodEncoder</td><td></td></tr>
+            	                                                     <tr><td>11</td><td>Climber WinchEncoder</td><td></td></tr>
+            	                                         <tr><td>12</td><td>Climber WinchEncoder</td><td></td></tr>
+            	                                                                                                                                                                 	    </table>
+                    <h2>PWMs</h2>
+	    <table><tr>
+	        <th class="pound">#</th>
+	        <th>Motor</th>
+                <th>Type</th></tr>
+	                                               <tr><td>0</td><td>Drivetrain LeftMotor</td><td>Talon</td></tr>
+            	                                         <tr><td>1</td><td>Drivetrain RightMotor</td><td>Talon</td></tr>
+            	                                         <tr><td>2</td><td>Intake IntakeMotor</td><td>Talon</td></tr>
+            	                                         <tr><td>3</td><td>Shooter ShootMotor</td><td>Talon</td></tr>
+            	                                         <tr><td>4</td><td>Shooter FeedMotor</td><td>Talon</td></tr>
+            	                                                     <tr><td>6</td><td>Turret TurnMotor</td><td>Talon</td></tr>
+            	                                         <tr><td>7</td><td>Turret HoodMotor</td><td>Talon</td></tr>
+            	                                         <tr><td>8</td><td>Climber WinchMotor</td><td>Talon</td></tr>
+            	                                                                                                                                                                                                                 	    </table>
+     
+        
+            
+                    <h2>Analog Inputs</h2>
+	    <table><tr>
+	        <th class="pound">#</th>
+	        <th>Sensor</th></tr>
+	                                               <tr><td>0</td><td>Drivetrain Gyro</td><td></td></tr>
+            	                                         <tr><td>1</td><td>Climber PlateIRSensor</td><td></td></tr>
+            	                                         <tr><td>2</td><td>Intake UltrasonicDistSensor</td><td></td></tr>
+            	                                                                                                                                                                                                                                                                                         	    </table>
+    
+                    <h2>PCM 0</h2>
+	    <table><tr>
+	        <th class="pound">#</th>
+	        <th>Solenoid</th></tr>
+	                                               <tr><td>0</td><td>Drivetrain LeftShiftPiston Forward </td><td></td></tr>
+            	                                         <tr><td>1</td><td>Drivetrain LeftShiftPiston Reverse </td><td></td></tr>
+            	                                         <tr><td>2</td><td>Drivetrain RightShiftPiston Forward </td><td></td></tr>
+            	                                         <tr><td>3</td><td>Drivetrain RightShiftPiston Reverse </td><td></td></tr>
+            	                                         <tr><td>4</td><td>Intake PivotPiston Forward </td><td></td></tr>
+            	                                         <tr><td>5</td><td>Intake PivotPiston Reverse </td><td></td></tr>
+            	                                                                                                                                                                                                                                                     	    </table>
+                                                                                                                                                                                                                                                    
+                <h2>Compressor</h2>
+	<table><tr>
+	<th class="pound">PCM</th>
+	<th>Device</th></tr>
+	                                         <tr><td>0</td><td>Drivetrain Compressor</td><td></td></tr>
+            	                                                                                                                                                                                                                                                                                                                 	</table>
+      </body>
+</html>
