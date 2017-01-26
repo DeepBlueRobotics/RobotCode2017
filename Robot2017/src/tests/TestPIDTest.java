@@ -23,11 +23,11 @@ public class TestPIDTest {
 
 		testShooter.execute();
 
-		verify(mockShoot).runShootMotor(mockShoot.updateSpeed(0));
+		verify(mockShoot).runShootMotor(0);
 
 		testShooter.end();
-
-		verify(mockShoot).runShootMotor(0.0);
+		//Since this was called already earlier, verify this is the second time it happens
+		verify(mockShoot, times(2)).runShootMotor(0);
 
 		TestPID testDriveDist = new TestPID(TestPID.System.DRIVEDISTANCE, mockShoot, mockDrive);
 		testDriveDist.initialize();
@@ -42,7 +42,7 @@ public class TestPIDTest {
 		testDriveDist.isFinished();
 
 		verify(mockDrive).distanceReachedTarget();
-		verify(mockDrive).angleReachedTarget();
+//		verify(mockDrive).angleReachedTarget();  Java '&&' shortcut causes this to be not called when line 44 returns false
 
 		testDriveDist.end();
 
@@ -51,7 +51,7 @@ public class TestPIDTest {
 		TestPID testDriveAng = new TestPID(TestPID.System.DRIVEANGLE, mockShoot, mockDrive);
 		testDriveAng.initialize();
 
-		verify(mockDrive).setAngleTarget(0);
+		verify(mockDrive, times(2)).setAngleTarget(0);
 
 		testDriveAng.execute();
 		verify(mockDrive).updateAngle();
@@ -71,12 +71,11 @@ public class TestPIDTest {
 		TestPID testDriveAngVel = new TestPID(TestPID.System.DRIVEANGULARVELOCITY, mockShoot, mockDrive);
 		testDriveAngVel.initialize();
 
-		verify(mockDrive).setVelocityTarget(0, 0);
+		verify(mockDrive, times(2)).setVelocityTarget(0, 0);
 
 		testDriveAngVel.execute();
 
-		verify(mockDrive).updateVelocity();
-
+		verify(mockDrive, times(2)).updateVelocity();
 	}
 
 }

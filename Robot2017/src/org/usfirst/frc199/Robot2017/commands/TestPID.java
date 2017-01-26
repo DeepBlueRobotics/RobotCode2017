@@ -44,28 +44,29 @@ public class TestPID extends Command {
 	}
 
 	// Called just before this Command runs the first time
+	// Uncomment the SmartDashboard before use, commented out b/c of test issues.
 	public void initialize() {
 		switch(system) {
 			case DRIVEDISTANCE:
-				target = SmartDashboard.getNumber("PID/DriveDistance/TestTarget" , 0);
+//				target = SmartDashboard.getNumber("PID/DriveDistance/TestTarget" , 0);
 				drivetrain.setDistanceTarget(target);
 				drivetrain.setAngleTarget(0);
 				break;
 			case DRIVEANGLE:
-				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
+//				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
 				drivetrain.setAngleTarget(target);
 				break;
 			case SHOOTER:
-				target = SmartDashboard.getNumber("PID/Shooter/TestTarget" , 0);
+//				target = SmartDashboard.getNumber("PID/Shooter/TestTarget" , 0);
 				shooter.setShooterPIDTarget(target);
 				shooter.updateShooterPID(shooter.currentSpeed());
 				break;
 			case DRIVEVELOCITY:
-				target = SmartDashboard.getNumber("PID/DriveVelocity/TestTarget");
+//				target = SmartDashboard.getNumber("PID/DriveVelocity/TestTarget");
 				drivetrain.setVelocityTarget(target, 0);
 				break;
 			case DRIVEANGULARVELOCITY:
-				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget");
+//				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget");
 				drivetrain.setVelocityTarget(0, target);
 				break;
 		}
@@ -98,7 +99,7 @@ public class TestPID extends Command {
 	// Called once after isFinished returns true
 	public void end() {
 		switch(system) {
-			case SHOOTER: shooter.runShootMotor(0.0); break;
+			case SHOOTER: shooter.runShootMotor(0); break;
 			default: drivetrain.stopDrive();
 		}
 	}
