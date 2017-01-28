@@ -64,6 +64,7 @@ public class RobotMap {
 	public static Encoder winchEncoder;
 	public static AHRS ahrs;
 	public static PowerDistributionPanel pdp;
+	public static AnalogInput driverAI;
 
 	public static void init() {
 		drivetrainLeftMotor = new Talon(0);
@@ -129,6 +130,10 @@ public class RobotMap {
 		
 		climberPlateIRSensor = new AnalogInput(0);
 		LiveWindow.addSensor("Climber", "ClimberInfrared", climberPlateIRSensor);
+		
+		driverAI = new AnalogInput(1);
+		LiveWindow.addSensor("Drivetrain", "ClimberInfrared", driverAI);
+
 
 		ahrs = new AHRS(SerialPort.Port.kMXP); // Alternatives: SPI.Port.kMXP,
 												// I2C.Port.kMXP or

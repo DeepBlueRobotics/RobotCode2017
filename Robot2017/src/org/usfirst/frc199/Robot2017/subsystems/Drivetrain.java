@@ -9,6 +9,7 @@ import org.usfirst.frc199.Robot2017.motion.PID;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -32,6 +33,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final Encoder rightEncoder = RobotMap.drivetrainRightEncoder;
 	// private final AnalogGyro gyro = RobotMap.drivetrainGyro;
 	private final DigitalInput gearLiftedSwitch = RobotMap.gearLiftedLimitSwitch;
+	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final Compressor compressor = RobotMap.drivetrainCompressor;
 	private final DoubleSolenoid leftShiftPiston = RobotMap.drivetrainLeftShiftPiston;
@@ -269,9 +271,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	
 	public boolean gearLifted(){
 		//return if gear lifted or not
-		return true;
+		if(AI.getVoltage() > 0.15) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
 	/**
 	 * Updates linear and angular velocity PIDs for motion profiling
 	 */

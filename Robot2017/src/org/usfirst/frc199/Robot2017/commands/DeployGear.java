@@ -17,7 +17,7 @@ public class DeployGear extends CommandGroup {
     	addSequential(new AutoAlignGear());
     	addSequential(new AutoDrive(targetDist, 0, Robot.drivetrain));
     	
-    	//don't be fooled, this does make the robot wait until gearLifted()
+    	//don't be fooled, this makes the robot wait until gearLifted()
     	addSequential(new AutoDelay(0));
     	
     	SmartDashboard.putBoolean("gear has been lifted", true);
