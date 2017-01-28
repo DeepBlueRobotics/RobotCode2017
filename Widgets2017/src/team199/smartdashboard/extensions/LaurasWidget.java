@@ -148,7 +148,7 @@ public class LaurasWidget extends StaticWidget {
     
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);       
+        super.paintComponent(g);     
         g.setColor(Color.BLUE);
         g.fillRect(drawRobotX,drawRobotY,robotW,robotH);
         g.setColor(Color.BLACK);
