@@ -268,7 +268,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		// year's code cause that looked more complicated than it needs to be.
 		// Figure out why
 	}
-	
+	/**
+	 * returns whether or not the AnalogInput detects an object blocking the light
+	 */
 	public boolean gearLifted(){
 		//return if gear lifted or not
 		if(AI.getVoltage() > 0.19) {
