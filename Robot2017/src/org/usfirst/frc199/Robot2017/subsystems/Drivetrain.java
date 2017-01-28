@@ -223,7 +223,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		SmartDashboard.putNumber("Angle", gyro.getAngle());
 		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
 
-		putBoolean("high gear", false);
+		SmartDashboard.putBoolean("high gear", false);
+		
+		SmartDashboard.putBoolean("gear has been lifted", false);
 	}
 
 	/**
@@ -263,7 +265,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		// TODO (Ana T.) Write method for setting target of velocity PID. Check last
 		// year's code cause that looked more complicated than it needs to be.
 		// Figure out why
-
+	}
+	
+	public boolean gearLifted(){
+		//return if gear lifted or not
+		return true;
 	}
 	
 	/**
