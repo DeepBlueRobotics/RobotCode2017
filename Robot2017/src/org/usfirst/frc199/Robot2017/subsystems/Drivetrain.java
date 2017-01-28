@@ -271,7 +271,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	
 	public boolean gearLifted(){
 		//return if gear lifted or not
-		if(AI.getVoltage() > 0.15) {
+		if(AI.getVoltage() > 0.19) {
 			return true;
 		} else {
 			return false;
