@@ -64,9 +64,39 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * This method initializes the command used in teleop
 	 */
 	public void initDefaultCommand() {
-
 		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
+	}
 
+	/**
+	 * Allows toggling between arcade and tank teleop driving
+	 */
+	public void drive() {
+		if (isInArcadeDrive) {
+			currentSpeed = Robot.oi.rightJoy.getY();
+			currentTurn = Robot.oi.leftJoy.getX();
+			arcadeDrive(currentTurn, currentSpeed);
+		} else {
+			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
+		}
+	}
+
+	public void arcadeDrive(double speed, double turn) {
+		robotDrive.arcadeDrive(speed, turn);
+	}
+
+	/**
+	 * Forces the robot's turn and move speed to change at a max of 5% each
+	 * iteration
+	 */
+	public void gradualDrive() {
+		if (isInArcadeDrive) {
+			currentSpeed += Math.signum(Robot.oi.rightJoy.getY() - currentSpeed) * 0.05;
+			currentTurn += Math.signum(Robot.oi.leftJoy.getX() - currentTurn) * 0.05;
+			robotDrive.arcadeDrive(currentTurn, currentSpeed);
+		} else {
+			robotDrive.tankDrive(leftMotor.get() + Math.signum(Robot.oi.leftJoy.getY() - leftMotor.get()) * 0.05,
+					rightMotor.get() + Math.signum(Robot.oi.rightJoy.getY() - rightMotor.get()) * 0.05);
+		}
 	}
 
 	/**
@@ -176,43 +206,15 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * Forces the robot's turn and move speed to change at a max of 5% each
-	 * iteration
-	 */
-	public void gradualDrive() {
-		if (isInArcadeDrive) {
-			currentSpeed += Math.signum(Robot.oi.rightJoy.getY() - currentSpeed) * 0.05;
-			currentTurn += Math.signum(Robot.oi.leftJoy.getX() - currentTurn) * 0.05;
-			robotDrive.arcadeDrive(currentTurn, currentSpeed);
-		} else {
-			robotDrive.tankDrive(leftMotor.get() + Math.signum(Robot.oi.leftJoy.getY() - leftMotor.get()) * 0.05,
-					rightMotor.get() + Math.signum(Robot.oi.rightJoy.getY() - rightMotor.get()) * 0.05);
-		}
-	}
-
-	/**
-	 * Allows toggling between arcade and tank teleop driving
-	 */
-	public void drive() {
-		if (isInArcadeDrive) {
-			currentSpeed = Robot.oi.rightJoy.getY();
-			currentTurn = Robot.oi.leftJoy.getX();
-			robotDrive.arcadeDrive(currentTurn, currentSpeed);
-		} else {
-			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
-		}
-	}
-
-	/**
 	 * For autonomous period, drives to angle given and then to distance given.
 	 */
 	public void autoDrive() {
 		drivePID.update(getDistance());
 		turnPID.update(getAngle());
 		if (!turnPID.reachedTarget()) {
-			robotDrive.arcadeDrive(0, turnPID.getOutput());
+			arcadeDrive(0, turnPID.getOutput());
 		} else {
-			robotDrive.arcadeDrive(drivePID.getOutput(), 0);
+			arcadeDrive(drivePID.getOutput(), 0);
 		}
 	}
 
@@ -221,7 +223,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * command finishes.
 	 */
 	public void stopDrive() {
-		robotDrive.arcadeDrive(0, 0);
+		arcadeDrive(0, 0);
 	}
 
 	@Override
@@ -270,18 +272,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return false;
 	}
 
-	/**
-	 * Sets targets for tracking velocity of robot for motion profiling
-	 * 
-	 * @param linVelTarget
-	 * @param angVelTarget
-	 */
-	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
-		// TODO (Ana T.) Write method for setting target of velocity PID. Check
-		// last
-		// year's code cause that looked more complicated than it needs to be.
-		// Figure out why
-	}
 
 	/**
 	 * returns whether or not the AnalogInput detects an object blocking the
@@ -297,6 +287,19 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
+	 * Sets targets for tracking velocity of robot for motion profiling
+	 * 
+	 * @param linVelTarget
+	 * @param angVelTarget
+	 */
+	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
+		// TODO (Ana T.) Write method for setting target of velocity PID. Check
+		// last
+		// year's code cause that looked more complicated than it needs to be.
+		// Figure out why
+	}
+	
+	/**
 	 * Updates linear and angular velocity PIDs for motion profiling
 	 */
 	public void updateVelocity() {
@@ -307,14 +310,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Uses PID to reach target velocity
 	 * 
-	 * @param v
-	 *            - linear velocity in inches/second
-	 * @param w
-	 *            - angular velocity in degrees/second
-	 * @param a
-	 *            - acceleration in inches/second/second
-	 * @param alpha
-	 *            - angular acceleration in degrees/second/second
+	 * @param v - linear velocity in inches/second
+	 * @param w - angular velocity in degrees/second
+	 * @param a - acceleration in inches/second/second
+	 * @param alpha - angular acceleration in degrees/second/second
 	 */
 	public void followTrajectory(double v, double w, double a, double alpha) {
 		velocityPID.setTarget(v);
@@ -327,17 +326,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		double kA = SmartDashboard.getNumber("MotionProfile/kA", Robot.getPref("DrivekA", 0.0));
 		double kAlpha = SmartDashboard.getNumber("MotionProfile/kAlpha", Robot.getPref("DrivekAlpha", 0.0));
 
-		double outputV = velocityPID.getOutput() + kV * v + kA * a; // Computes
-																	// Output
-																	// Velocity
-																	// Using PID
-		double outputW = angularVelocityPID.getOutput() + kW * w + kAlpha * alpha; // Computes
-																					// Output
-																					// Angular
-																					// Velocity
-																					// Using
-																					// PID
-
+		// Computes output velocity using PID
+		double outputV = velocityPID.getOutput() + kV * v + kA * a;
+		// Computes output angular velocity using PID
+		double outputW = angularVelocityPID.getOutput() + kW * w + kAlpha * alpha;
+		
 		arcadeDrive(outputV, outputW);
 
 		SmartDashboard.putNumber("MotionProfile/L", getEncoderDistance());
@@ -353,29 +346,20 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		prevTime = Timer.getFPGATimestamp();
 	}
 
-	public void arcadeDrive(double speed, double turn) {
-		// TODO Auto-generated method stub
-		robotDrive.arcadeDrive(speed, -turn);
-	}
-
 	private double getGyroAngle() {
-		// TODO Auto-generated method stub
 		return gyro.getAngle() - gyroDriftRate * gyroDriftTimer.get();
 
 	}
 
 	public double getEncoderDistance() {
-		// TODO Auto-generated method stub
 		return (-leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
 	}
 
 	private double getGyroRate() {
-		// TODO Auto-generated method stub
 		return gyro.getRate() - gyroDriftRate;
 	}
 
 	private double getEncoderRate() {
-		// TODO Auto-generated method stub
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
 	}
 }
