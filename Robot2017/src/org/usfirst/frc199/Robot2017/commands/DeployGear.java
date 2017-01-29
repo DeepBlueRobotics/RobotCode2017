@@ -12,14 +12,14 @@ public class DeployGear extends CommandGroup {
 	
     public DeployGear(double targetDist) {
         
-    	SmartDashboard.putBoolean("gear has been lifted", false);
+    	SmartDashboard.putBoolean("Gear has been lifted", false);
     	
     	addSequential(new AutoAlignGear());
     	addSequential(new AutoDrive(targetDist, 0, Robot.drivetrain));
     	
     	//don't be fooled, this makes the robot wait until gearLifted()
-    	addSequential(new AutoDelay(0));
+    	addSequential(new AutoDelay(0, Robot.intake));
     	
-    	SmartDashboard.putBoolean("gear has been lifted", true);
+    	SmartDashboard.putBoolean("Gear has been lifted", true);
     }
 }

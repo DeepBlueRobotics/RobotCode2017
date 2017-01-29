@@ -14,4 +14,10 @@ public interface IntakeInterface extends DashboardInterface {
 	public void toggleIntake();
 
 	public void stopIntakeDoubleSolenoid();
+	
+	public boolean intakeCurrentOverflow();
+	
+	public boolean gearLifted();
+	
+	public double getIntake();
 }

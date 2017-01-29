@@ -1,9 +1,13 @@
 package org.usfirst.frc199.Robot2017.subsystems;
 
 import org.usfirst.frc199.Robot2017.DashboardInterface;
+import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -14,7 +18,9 @@ public class Intake extends Subsystem implements IntakeInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
+	private final AnalogInput AI = RobotMap.driverAI;
 
+	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	private boolean isPistonUp = false;
 
 	// Put methods for controlling this subsystem
@@ -58,11 +64,36 @@ public class Intake extends Subsystem implements IntakeInterface {
 		pivotPiston.set(DoubleSolenoid.Value.kOff);
 	}
 
+	/**
+	 * This method returns whether or not the pdp detects the intake drawing more current than allowed
+	 */
+	public boolean intakeCurrentOverflow() {
+		int channel = (int) (Robot.getPref("Intake PDP channel", 2));
+		double current = pdp.getCurrent(channel);
+		if (current >= Robot.getPref("maxIntakeCurrent", 40))
+			return true;
+		return false;
+	}
+	public boolean gearLifted() {
+		// return if gear lifted or not
+		if (AI.getVoltage() > 0.19) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/**
+	 * This method returns the current value of the intakeMotor
+	 */
+	public double getIntake() {
+		return intakeMotor.get();
+	}
 	@Override
 	/**
 	 * This method displays data to SmartDashboard
 	 */
 	public void displayData() {
 		SmartDashboard.putBoolean("isPistonUp", isPistonUp);
+		SmartDashboard.putNumber("intakeCurrent", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
 	}
 }

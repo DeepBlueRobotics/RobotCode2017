@@ -65,6 +65,7 @@ public class OI {
 		// SmartDashboard Buttons
 		SmartDashboard.putData("MainAutoMode", new MainAutoMode());
 		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0, Robot.drivetrain));
+		SmartDashboard.putData("AutoDelay", new AutoDelay(0, Robot.intake));
 		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(Robot.shooter));
 		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret());
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
