@@ -31,8 +31,7 @@ public class RobotMap {
 	public static Encoder drivetrainRightEncoder;
 	public static AnalogGyro drivetrainGyro;
 	public static Compressor drivetrainCompressor;
-	public static DoubleSolenoid drivetrainLeftShiftPiston;
-	public static DoubleSolenoid drivetrainRightShiftPiston;
+	public static DoubleSolenoid drivetrainShiftPiston;
 	public static DigitalInput gearLiftedLimitSwitch;
 	public static DoubleSolenoid intakePivotPiston;
 	public static SpeedController intakeIntakeMotor;
@@ -80,11 +79,8 @@ public class RobotMap {
 		drivetrainGyro.setSensitivity(0.007);
 		drivetrainCompressor = new Compressor(0);
 
-		drivetrainLeftShiftPiston = new DoubleSolenoid(0, 0, 1);
-		LiveWindow.addActuator("Drivetrain", "LeftShiftPiston", drivetrainLeftShiftPiston);
-
-		drivetrainRightShiftPiston = new DoubleSolenoid(0, 2, 3);
-		LiveWindow.addActuator("Drivetrain", "RightShiftPiston", drivetrainRightShiftPiston);
+		drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
+		LiveWindow.addActuator("Drivetrain", "ShiftPiston", drivetrainShiftPiston);
 
 		intakePivotPiston = new DoubleSolenoid(0, 4, 5);
 		LiveWindow.addActuator("Intake", "PivotPiston", intakePivotPiston);

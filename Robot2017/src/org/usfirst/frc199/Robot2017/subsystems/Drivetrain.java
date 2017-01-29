@@ -35,8 +35,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final DigitalInput gearLiftedSwitch = RobotMap.gearLiftedLimitSwitch;
 
 	private final Compressor compressor = RobotMap.drivetrainCompressor;
-	private final DoubleSolenoid leftShiftPiston = RobotMap.drivetrainLeftShiftPiston;
-	private final DoubleSolenoid rightShiftPiston = RobotMap.drivetrainRightShiftPiston;
+	private final DoubleSolenoid shiftPiston = RobotMap.drivetrainShiftPiston;
 
 	private final AHRS gyro = RobotMap.ahrs;
 
@@ -322,14 +321,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Shifts gears to whatever state they are not in
 	 */
 	public void shiftGears() {
-		if (leftShiftPiston.get().toString().equals("kForward")) {
+		if (shiftPiston.get().toString().equals("kForward")) {
 			// shift to high gear
-			leftShiftPiston.set(DoubleSolenoid.Value.kReverse);
-			rightShiftPiston.set(DoubleSolenoid.Value.kReverse);
+			shiftPiston.set(DoubleSolenoid.Value.kReverse);
 		} else {
 			// shift to low gear
-			leftShiftPiston.set(DoubleSolenoid.Value.kForward);
-			rightShiftPiston.set(DoubleSolenoid.Value.kForward);
+			shiftPiston.set(DoubleSolenoid.Value.kForward);
 		}
 	}
 
