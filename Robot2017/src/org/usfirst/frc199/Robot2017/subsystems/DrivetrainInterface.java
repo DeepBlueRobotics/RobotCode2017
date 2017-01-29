@@ -49,7 +49,5 @@ public interface DrivetrainInterface extends DashboardInterface {
 	
 	public void setVelocityTarget(double linVelTarget, double angVelTarget);
 	
-	public boolean gearLifted();
-	
 	public void updateVelocity();
 }

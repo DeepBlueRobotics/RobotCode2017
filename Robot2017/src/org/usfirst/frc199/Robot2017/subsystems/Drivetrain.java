@@ -33,7 +33,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final Encoder rightEncoder = RobotMap.drivetrainRightEncoder;
 	// private final AnalogGyro gyro = RobotMap.drivetrainGyro;
 	private final DigitalInput gearLiftedSwitch = RobotMap.gearLiftedLimitSwitch;
-	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final Compressor compressor = RobotMap.drivetrainCompressor;
 	private final DoubleSolenoid leftShiftPiston = RobotMap.drivetrainLeftShiftPiston;
@@ -267,7 +266,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean currentControl() {
 		int channel = (int) (Robot.getPref("drivetrain channel", 0));
 		double current = pdp.getCurrent(channel);
-		if (current >= 110)
+		if (current >= Robot.getPref("drivetrainMaxCurrent", 110))
 			return true;
 		return false;
 	}
@@ -277,14 +276,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * returns whether or not the AnalogInput detects an object blocking the
 	 * light
 	 */
-	public boolean gearLifted() {
-		// return if gear lifted or not
-		if (AI.getVoltage() > 0.19) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+
 
 	/**
 	 * Sets targets for tracking velocity of robot for motion profiling

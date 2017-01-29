@@ -4,6 +4,8 @@ import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -16,6 +18,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
+	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	private boolean isPistonUp = false;
@@ -70,6 +73,14 @@ public class Intake extends Subsystem implements IntakeInterface {
 		if (current >= Robot.getPref("maxIntakeCurrent", 40))
 			return true;
 		return false;
+	}
+	public boolean gearLifted() {
+		// return if gear lifted or not
+		if (AI.getVoltage() > 0.19) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	/**
 	 * This method returns the current value of the intakeMotor
