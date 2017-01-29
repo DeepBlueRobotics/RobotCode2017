@@ -7,10 +7,11 @@ import edu.wpi.first.wpilibj.buttons.*;
 import org.usfirst.frc199.Robot2017.subsystems.*;
 
 public class OI {
-	public JoystickButton switchDrive;
+	public JoystickButton switchDriveButton;
+	public JoystickButton autoAlignGearRoutineButton;
 	public Joystick leftJoy;
-	public JoystickButton shiftGears;
-	public JoystickButton driveGradually;
+	public JoystickButton shiftGearsButton;
+	public JoystickButton gradualDriveButton;
 	public JoystickButton autoShootRoutineButton;
 	public Joystick rightJoy;
 	public JoystickButton intakeButton;
@@ -40,20 +41,26 @@ public class OI {
 		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
 		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
+		
 		rightJoy = new Joystick(1);
-
+		
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
 		// TODO: (Ana T.) Insert accurate AutoShoot arguments to be executed
 		// when autoShootRoutineButton is held
 		autoShootRoutineButton.whileHeld(new AutoShoot(0, 0, Robot.shooter));
-		driveGradually = new JoystickButton(rightJoy, 1);
-		driveGradually.whileHeld(new GradualDrive(Robot.drivetrain));
-		shiftGears = new JoystickButton(rightJoy, 2);
-		shiftGears.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
+		gradualDriveButton = new JoystickButton(rightJoy, 1);
+		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
+		shiftGearsButton = new JoystickButton(rightJoy, 2);
+		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
+		
 		leftJoy = new Joystick(0);
 
-		switchDrive = new JoystickButton(leftJoy, 2);
-		switchDrive.whenPressed(new ToggleDriveType());
+		switchDriveButton = new JoystickButton(leftJoy, 4);
+		switchDriveButton.whenPressed(new ToggleDriveType());
+		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
+		// TODO: (Ana T.) Insert accurate AutoAlignGear arguments to be executed
+		// when autoShootRoutineButton is held
+		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear());
 
 		// SmartDashboard Buttons
 		SmartDashboard.putData("MainAutoMode", new MainAutoMode());
