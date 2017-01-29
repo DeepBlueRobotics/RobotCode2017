@@ -60,9 +60,7 @@ public class Climber extends Subsystem implements ClimberInterface {
 	 * @return
 	 */
 	public boolean returnPlate() {
-		if (((plateLimit.getVoltage() > 1234 && plateLimit.getVoltage() < 1234)
-				|| (plateLimit.getVoltage() > 1111 && plateLimit.getVoltage() < 1111)) 
-				&& AIEnabled) {
+		if (plateLimit.getVoltage() < 0.102 && AIEnabled) {
 			return true;
 		}
 		return false;
