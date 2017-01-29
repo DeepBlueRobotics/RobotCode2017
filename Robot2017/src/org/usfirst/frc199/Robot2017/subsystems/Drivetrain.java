@@ -43,8 +43,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 
-	private PID distancePID = new PID("DriveDistance");
-	private PID anglePID = new PID("DriveAngle");
 	private PID velocityPID = new PID("DriveVelocity");
 	private PID angularVelocityPID = new PID("DriveAngularVelocity");
 
@@ -57,8 +55,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private double currentSpeed = 0; // only used and changed in Arcade Drive
 	private double currentTurn = 0;
 
-	public PID drivePID = new PID("drivePID");
-	public PID turnPID = new PID("turnPID");
+	public PID distancePID = new PID("DriveDistance");
+	public PID anglePID = new PID("DriveAngle");
 
 	/**
 	 * This method initializes the command used in teleop
@@ -100,21 +98,39 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * Gets the drivePID object
+	 * Gets the distancePID object
 	 * 
 	 * @return the drivePID object
 	 */
 	public PID getDrivePID() {
-		return drivePID;
+		return distancePID;
 	}
 
 	/**
-	 * Gets the turnPID object
+	 * Gets the anglePID object
 	 * 
 	 * @return the turnPID object
 	 */
 	public PID getTurnPID() {
-		return turnPID;
+		return anglePID;
+	}
+	
+	/**
+	 * Gets the velocityPID object
+	 * 
+	 * @return the velocityPID object
+	 */
+	public PID getVelocityPID() {
+		return velocityPID;
+	}
+	
+	/**
+	 * Gets the angularVelocityPID object
+	 * 
+	 * @return the angularVelocityPID object
+	 */
+	public PID getAngularVelocityPID() {
+		return angularVelocityPID;
 	}
 
 	/**
@@ -133,18 +149,18 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * @return the angle that the robot turned relative to the gyro's last reset
-	 */
-	public double getAngle() {
-		return gyro.getAngle();
-	}
-
-	/**
 	 * @return the distance that the robot moved relative to the encoders' last
 	 *         reset
 	 */
 	public double getDistance() {
 		return (leftEncoder.get() + rightEncoder.get()) / 2;
+	}
+	
+	/**
+	 * @return the angle that the robot turned relative to the gyro's last reset
+	 */
+	public double getAngle() {
+		return gyro.getAngle();
 	}
 
 	/**
@@ -156,12 +172,19 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
+	 * @return the angular velocity
+	 */
+	public double getAngularVelocity() {
+		return gyro.getRate();
+	}
+
+	/**
 	 * Checks to see if the distance PID has reached the target
 	 * 
 	 * @return Whether distance target has been reached
 	 */
 	public boolean distanceReachedTarget() {
-		return drivePID.reachedTarget();
+		return distancePID.reachedTarget();
 	}
 
 	/**
@@ -170,17 +193,53 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return Whether angle target has been reached
 	 */
 	public boolean angleReachedTarget() {
-		return turnPID.reachedTarget();
+		return anglePID.reachedTarget();
+	}
+	
+	/**
+	 * Checks to see if the speed PID has reached the target
+	 * 
+	 * @return Whether speed target has been reached
+	 */
+	public boolean speedReachedTarget() {
+		return velocityPID.reachedTarget();
+	}
+	
+	/**
+	 * Checks to see if the angular velocity PID has reached the target
+	 *  
+	 * @return Whether angular velocity PID has reached the target
+	 */
+	public boolean angularVelocityReachedTarget() {
+		return angularVelocityPID.reachedTarget();
 	}
 
+	/** 
+	 * Updates and tests distancePID
+	 */
+	public void updateDistance() {
+		distancePID.update(getDistance());
+		robotDrive.arcadeDrive(distancePID.getOutput(), 0);
+	}
+	
 	/**
 	 * Updates and tests anglePID
 	 */
 	public void updateAngle() {
-		turnPID.update(getAngle());
-		robotDrive.arcadeDrive(0, turnPID.getOutput());
+		anglePID.update(getAngle());
+		robotDrive.arcadeDrive(0, anglePID.getOutput());
 	}
-
+	
+	/**
+	 * Updates linear and angular velocity PIDs for motion profiling
+	 */
+	public void updateVelocity() {
+		// TODO (Ana T.) See todo of setVelocityTarget method
+		velocityPID.update(getDistance());
+		angularVelocityPID.update(getAngle());
+		robotDrive.arcadeDrive(velocityPID.getOutput(), angularVelocityPID.getOutput());
+	}
+	
 	/**
 	 * Sets the distance for PID target
 	 * 
@@ -188,9 +247,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target distance being set to PID
 	 */
 	public void setDistanceTarget(double targetDistance) {
-		drivePID.update((leftEncoder.get() + rightEncoder.get()) / 2);
-		drivePID.setRelativeLocation(0);
-		drivePID.setTarget(targetDistance);
+		distancePID.update((leftEncoder.get() + rightEncoder.get()) / 2);
+		distancePID.setRelativeLocation(0);
+		distancePID.setTarget(targetDistance);
 	}
 
 	/**
@@ -200,21 +259,37 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target angle in being set to PID
 	 */
 	public void setAngleTarget(double targetAngle) {
-		turnPID.update(getAngle());
-		turnPID.setRelativeLocation(0);
-		turnPID.setTarget(targetAngle);
+		anglePID.update(getAngle());
+		anglePID.setRelativeLocation(0);
+		anglePID.setTarget(targetAngle);
+	}
+	
+	/**
+	 * Sets targets for tracking velocity of robot for motion profiling
+	 * 
+	 * @param linVelTarget
+	 * @param angVelTarget
+	 */
+	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
+		velocityPID.update(getSpeed());
+		velocityPID.setRelativeLocation(0);
+		velocityPID.setTarget(linVelTarget);
+
+		angularVelocityPID.update(getAngularVelocity());
+		angularVelocityPID.setRelativeLocation(0);
+		angularVelocityPID.setTarget(angVelTarget);
 	}
 
 	/**
 	 * For autonomous period, drives to angle given and then to distance given.
 	 */
 	public void autoDrive() {
-		drivePID.update(getDistance());
-		turnPID.update(getAngle());
-		if (!turnPID.reachedTarget()) {
-			arcadeDrive(0, turnPID.getOutput());
+		distancePID.update(getDistance());
+		anglePID.update(getAngle());
+		if (!anglePID.reachedTarget()) {
+			arcadeDrive(0, anglePID.getOutput());
 		} else {
-			arcadeDrive(drivePID.getOutput(), 0);
+			arcadeDrive(distancePID.getOutput(), 0);
 		}
 	}
 
@@ -239,9 +314,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		SmartDashboard.putNumber("Angle", gyro.getAngle());
 		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
 
-		SmartDashboard.putBoolean("high gear", false);
+		SmartDashboard.putBoolean("High Gear", false);
 
-		SmartDashboard.putBoolean("gear has been lifted", false);
+		SmartDashboard.putBoolean("Gear has been lifted", false);
 	}
 
 	/**
@@ -272,7 +347,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return false;
 	}
 
-
 	/**
 	 * returns whether or not the AnalogInput detects an object blocking the
 	 * light
@@ -287,33 +361,16 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * Sets targets for tracking velocity of robot for motion profiling
-	 * 
-	 * @param linVelTarget
-	 * @param angVelTarget
-	 */
-	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
-		// TODO (Ana T.) Write method for setting target of velocity PID. Check
-		// last
-		// year's code cause that looked more complicated than it needs to be.
-		// Figure out why
-	}
-	
-	/**
-	 * Updates linear and angular velocity PIDs for motion profiling
-	 */
-	public void updateVelocity() {
-		// TODO (Ana T.) See todo of setVelocityTarget method
-
-	}
-
-	/**
 	 * Uses PID to reach target velocity
 	 * 
-	 * @param v - linear velocity in inches/second
-	 * @param w - angular velocity in degrees/second
-	 * @param a - acceleration in inches/second/second
-	 * @param alpha - angular acceleration in degrees/second/second
+	 * @param v
+	 *            - linear velocity in inches/second
+	 * @param w
+	 *            - angular velocity in degrees/second
+	 * @param a
+	 *            - acceleration in inches/second/second
+	 * @param alpha
+	 *            - angular acceleration in degrees/second/second
 	 */
 	public void followTrajectory(double v, double w, double a, double alpha) {
 		velocityPID.setTarget(v);
@@ -330,7 +387,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		double outputV = velocityPID.getOutput() + kV * v + kA * a;
 		// Computes output angular velocity using PID
 		double outputW = angularVelocityPID.getOutput() + kW * w + kAlpha * alpha;
-		
+
 		arcadeDrive(outputV, outputW);
 
 		SmartDashboard.putNumber("MotionProfile/L", getEncoderDistance());
@@ -362,4 +419,5 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private double getEncoderRate() {
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
 	}
+
 }

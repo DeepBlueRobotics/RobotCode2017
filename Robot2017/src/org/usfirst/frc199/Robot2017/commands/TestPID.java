@@ -62,11 +62,11 @@ public class TestPID extends Command {
 				shooter.updateShooterPID(shooter.currentSpeed());
 				break;
 			case DRIVEVELOCITY:
-				target = SmartDashboard.getNumber("PID/DriveVelocity/TestTarget");
+				target = SmartDashboard.getNumber("PID/DriveVelocity/TestTarget", 0);
 				drivetrain.setVelocityTarget(target, 0);
 				break;
 			case DRIVEANGULARVELOCITY:
-				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget");
+				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget", 0);
 				drivetrain.setVelocityTarget(0, target);
 				break;
 		}
