@@ -51,7 +51,7 @@ public class AutoModeLoadSide extends CommandGroup {
      	addSequential(new AutoAlignGear());
      	
      	//Waits to allow gear to be lifted
-     	addSequential(new AutoDelay(5));
+     	addSequential(new AutoDelay(5, Robot.intake));
     	 
      	//backs up
      	addSequential(new AutoDrive(0-LENGTH_2, 0, Robot.drivetrain));

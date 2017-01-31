@@ -49,7 +49,7 @@ public class AutoModeBoilerSide extends CommandGroup {
      	
      	//Aims and shoots
     	addParallel(new VisionAssistedShoot(0,0));
-    	addSequential(new AutoDelay(5));
+    	addSequential(new AutoDelay(5, Robot.intake));
     	
     	
     	
