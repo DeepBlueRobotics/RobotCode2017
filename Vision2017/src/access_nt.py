@@ -2,7 +2,13 @@ from networktables import NetworkTables
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-debug = false
+debug = False
+
+def valueChanged(key, value, isnew):
+        print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isnew))
+
+def connectionListener(connected, info):
+        print(info, '; Connected=%s' %connected)
 
 class NTClient:
     def __init__(self): 
@@ -11,6 +17,8 @@ class NTClient:
         if debug:
             NetworkTables.addGlobalListener(valueChanged)
             
+    def changeSubTable(self, subtable):
+        self.nt = NetworkTables.getTable("SmartDashboard/" + subtable)
     
     def write(self, key, value):
         if type(value) == bool:
@@ -28,8 +36,4 @@ class NTClient:
         if type(defaultValue) == type(""):
             self.nt.getString(key, defaultValue)
             
-    def valueChanged(key, value, isnew):
-        print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isnew))
-
-    def connectionListener(connected, info):
-        print(info, '; Connected=%s' %connected)
+    

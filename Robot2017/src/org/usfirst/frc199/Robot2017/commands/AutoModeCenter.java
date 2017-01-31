@@ -23,9 +23,9 @@ public class AutoModeCenter extends CommandGroup {
         
     	final double ROBOT_LENGTH = 36.875; //in.
     	final double ROBOT_WIDTH = 34.75; //in
-    	final double DIST_TO_LIFT = 114.3; //in. from alliance wall to lift (approx.)
-    	final double DIVIDER_DEPTH = 21.5; //in. dividers protrude from the airship toward alliance wall (approx.)
-    	final double AIRSHIP_DIAGONAL = 80.07;//in. from corner to corner of airship;
+    	final double DIST_TO_LIFT = Robot.getPref("WallToLift", 114.3); //in. from alliance wall to lift (approx.)
+    	final double DIVIDER_DEPTH = Robot.getPref("DividerDepth", 21.5); //in. dividers protrude from the airship toward alliance wall (approx.)
+    	final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07); //in. from corner to corner of airship;
     	final double LEFT = -1;
     	final double RIGHT = 1;
     
@@ -36,6 +36,7 @@ public class AutoModeCenter extends CommandGroup {
     	//Aims and shoots
     	addParallel(new VisionAssistedShoot(0,0));
     	addSequential(new AutoDelay(5, Robot.intake));
+    	
     	
     	//Backs out of dividers, giving 6 inches of extra space for the pivot
     	addSequential(new AutoDrive(0-(DIVIDER_DEPTH + 6),0, Robot.drivetrain));
@@ -50,6 +51,7 @@ public class AutoModeCenter extends CommandGroup {
     		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
     	}
     	
+    	//METHOD 1:
     	//Drives past airship
     	addSequential(new AutoDrive((AIRSHIP_DIAGONAL / 2) + 36, 0, Robot.drivetrain));
     	
@@ -66,7 +68,10 @@ public class AutoModeCenter extends CommandGroup {
     	//Passes baseline
     	addSequential(new AutoDrive(DIVIDER_DEPTH + 24,0, Robot.drivetrain));
 	
-    		
+    	/*
+    	//METHOD 2:
+    	addSequential(new FollowTrajectory(0-((AIRSHIP_DIAGONAL / 2) + 36)), (AIRSHIP_DIAGONAL / 2) + 36), 90));
+    	*/
     }
     	
     

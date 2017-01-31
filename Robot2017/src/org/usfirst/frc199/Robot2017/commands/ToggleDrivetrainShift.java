@@ -4,18 +4,20 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
+import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 
 /**
  *
  */
 public class ToggleDrivetrainShift extends Command {
-	
-	DrivetrainInterface drivetrain;
-	Timer tim = new Timer();
-	
-	public ToggleDrivetrainShift(DrivetrainInterface drivetrain) {
-		this.drivetrain = drivetrain;
+	DrivetrainInterface toggleGear;
+	boolean firstTime = true;
+	public ToggleDrivetrainShift(DrivetrainInterface toggleGear) {
+		this.toggleGear = toggleGear;
 	}
+	
+	Timer tim = new Timer();
+	IntakeInterface intake;
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
@@ -24,14 +26,18 @@ public class ToggleDrivetrainShift extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		this.drivetrain.shiftGears();
-		while( tim.get() < 0.0625){}
+		if(firstTime) {
+			this.toggleGear.shiftGears();
+			firstTime = false;
+		}
 		
+		        
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		return tim.get() >= 0.0625;
+    	
 	}
 
 	// Called once after isFinished returns true
