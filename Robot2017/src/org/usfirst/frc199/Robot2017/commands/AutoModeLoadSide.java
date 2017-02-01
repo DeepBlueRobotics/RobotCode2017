@@ -30,11 +30,11 @@ public class AutoModeLoadSide extends CommandGroup {
         
     	final double LEFT = -1;
     	final double RIGHT = 1;
-    	final double LENGTH_1 = Robot.getPref("ForwardTravelLoadSide", 101.908); //in. from front end of robot to point on field
-    	final double LENGTH_2 = Robot.getPref("DiagonalTravelLoadSide", 11); //in. from front of robot to lift (after pivot)
-    	final double DIST_TO_LIFT = Robot.getPref("WallToLift", 114.3); //in. from alliance wall to lift (approx.)
-    	final double LIFT_TO_PEG_X = Robot.getPref("LiftCornerToPegHorizLoadSide", 30.739); //in horizontally from front of lift to the peg
-    	final double LIFT_TO_PEG_Y = Robot.getPref("LiftCornerToPegVerticalLoadSide", 17.647); //in vertically from front of lift to the peg
+    	final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 101.908); //in. from front end of robot to point on field
+    	final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 11); //in. from front of robot to lift (after pivot)
+    	final double DIST_TO_LIFT = Robot.getPref("Wall To Lift", 114.3); //in. from alliance wall to lift (approx.)
+    	final double LIFT_TO_PEG_X = Robot.getPref("Lift Corner to Peg (Horizontal) LoadSide", 30.739); //in horizontally from front of lift to the peg
+    	final double LIFT_TO_PEG_Y = Robot.getPref("Lift Corner to Peg (Vertical) LoadSide", 17.647); //in vertically from front of lift to the peg
     	
     	//METHOD 1
     	//Drives to hexagon
@@ -91,6 +91,8 @@ public class AutoModeLoadSide extends CommandGroup {
     		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
     	}
     	addSequential(new AutoDrive(-120, 0, Robot.drivetrain));
+    	
+    	//TODO: Method 2
     	
     	//Aims and shoots
     	addParallel(new VisionAssistedShoot(0,0));
