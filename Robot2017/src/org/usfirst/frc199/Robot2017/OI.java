@@ -23,6 +23,7 @@ public class OI {
 	public JoystickButton feedOutButton;
 	public JoystickButton toggleIntakeButton;
 	public Joystick manipulator;
+	public JoystickButton toggleFlipper;
 
 	public OI() {
 		manipulator = new Joystick(2);
@@ -52,6 +53,8 @@ public class OI {
 		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
 		shiftGearsButton = new JoystickButton(rightJoy, 2);
 		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
+		toggleFlipper = new JoystickButton(rightJoy, 5);
+		toggleFlipper.whenPressed(new FlipperFlapper(Robot.intake));
 		
 		leftJoy = new Joystick(0);
 
