@@ -59,6 +59,7 @@ public class Robot extends IterativeRobot {
 
 		// instantiate the command used for the autonomous period
 		autonomousCommand = new MainAutoMode();
+		new DisplayDashboardData().start();
 
 	}
 
@@ -78,6 +79,7 @@ public class Robot extends IterativeRobot {
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
+		new DisplayDashboardData().start();
 	}
 
 	/**
@@ -94,6 +96,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		new DisplayDashboardData().start();
 	}
 
 	/**

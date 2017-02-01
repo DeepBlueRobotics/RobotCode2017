@@ -110,7 +110,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * This method displays data to SmartDashboard
 	 */
 	public void displayData() {
-		SmartDashboard.putBoolean("isPistonUp", isPistonUp);
-		SmartDashboard.putNumber("intakeCurrent", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
+		putBoolean("isPistonUp", isPistonUp);
+		putNumber("intakeCurrent", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
 	}
 }
