@@ -7,6 +7,9 @@ Run gear mark identification only ~three times and put to SmartDashboard if gear
 
 from access_nt import NTClient  # have similar lines to import the boiler identifier and gear identifier class 
 
+import boiler_identify
+import lift_marks_indentify
+
 nt = NTClient()
 
 
