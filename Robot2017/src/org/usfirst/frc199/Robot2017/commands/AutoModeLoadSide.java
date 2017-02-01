@@ -30,9 +30,13 @@ public class AutoModeLoadSide extends CommandGroup {
         
     	final double LEFT = -1;
     	final double RIGHT = 1;
-    	final double LENGTH_1 = 101.908; //in. from front end of robot to point on field
-    	final double LENGTH_2 = 11; //in. from front of robot to lift (after pivot)
+    	final double LENGTH_1 = Robot.getPref("ForwardTravelLoadSide", 101.908); //in. from front end of robot to point on field
+    	final double LENGTH_2 = Robot.getPref("DiagonalTravelLoadSide", 11); //in. from front of robot to lift (after pivot)
+    	final double DIST_TO_LIFT = Robot.getPref("WallToLift", 114.3); //in. from alliance wall to lift (approx.)
+    	final double LIFT_TO_PEG_X = Robot.getPref("LiftCornerToPegHorizLoadSide", 30.739); //in horizontally from front of lift to the peg
+    	final double LIFT_TO_PEG_Y = Robot.getPref("LiftCornerToPegVerticalLoadSide", 17.647); //in vertically from front of lift to the peg
     	
+    	//METHOD 1
     	//Drives to hexagon
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
@@ -50,9 +54,17 @@ public class AutoModeLoadSide extends CommandGroup {
     	addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
      	addSequential(new AutoAlignGear());
      	
+     	/*
+     	//METHOD 2:
+     	addSequential(new FollowTrajectory(LIFT_TO_PEG_X, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG_Y, 60));
+     	addSequential(new AutoAlignGear());
+     	*/
+     	
      	//Waits to allow gear to be lifted
      	addSequential(new AutoDelay(5));
-    	 
+    	
+     	
+     	//METHOD 1:
      	//backs up
      	addSequential(new AutoDrive(0-LENGTH_2, 0, Robot.drivetrain));
      	
