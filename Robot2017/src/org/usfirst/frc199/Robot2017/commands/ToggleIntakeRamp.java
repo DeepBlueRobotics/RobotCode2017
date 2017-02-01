@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FlipperFlapper extends Command {
+public class ToggleIntakeRamp extends Command {
 	IntakeInterface intake;
-    public FlipperFlapper(IntakeInterface intake) {
+    public ToggleIntakeRamp(IntakeInterface intake) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.intake = intake;

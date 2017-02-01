@@ -54,7 +54,7 @@ public class OI {
 		shiftGearsButton = new JoystickButton(rightJoy, 2);
 		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
 		toggleFlipper = new JoystickButton(rightJoy, 5);
-		toggleFlipper.whenPressed(new FlipperFlapper(Robot.intake));
+		toggleFlipper.whenPressed(new ToggleIntakeRamp(Robot.intake));
 		
 		leftJoy = new Joystick(0);
 
