@@ -48,6 +48,7 @@ public class RobotMap {
 	public static AHRS ahrs;
 	public static PowerDistributionPanel pdp;
 	public static AnalogInput driverAI;
+	public static DoubleSolenoid flipperFlapper;
 
 	public static void init() {
 		drivetrainLeftMotor = new Talon(0);
@@ -117,6 +118,8 @@ public class RobotMap {
 		driverAI = new AnalogInput(1);
 		LiveWindow.addSensor("Drivetrain", "ClimberInfrared", driverAI);
 
+		flipperFlapper = new DoubleSolenoid(3,4,5);
+		LiveWindow.addActuator("Intake", "FlipperFlapper", flipperFlapper);
 		// Alternatives: SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB
 		ahrs = new AHRS(SerialPort.Port.kMXP); 
 		pdp = new PowerDistributionPanel();

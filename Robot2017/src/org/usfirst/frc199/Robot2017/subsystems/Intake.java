@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends Subsystem implements IntakeInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
+	private final DoubleSolenoid flipperFlapper = RobotMap.flipperFlapper;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
 	private final AnalogInput AI = RobotMap.driverAI;
 
@@ -81,6 +82,22 @@ public class Intake extends Subsystem implements IntakeInterface {
 		} else {
 			return false;
 		}
+	}
+	/**
+	 * This method sets flipperFlapper to forward unless it already is, then sets to backwards
+	 */
+	public void toggleFlipperFlapper() {
+		if (flipperFlapper.get() != DoubleSolenoid.Value.kForward) {
+			flipperFlapper.set(DoubleSolenoid.Value.kForward);
+		} else {
+			flipperFlapper.set(DoubleSolenoid.Value.kReverse);
+		}
+	}
+	/**
+	 * This method stops the flipperFlapper
+	 */
+	public void stopFlipperFlapper() {
+		flipperFlapper.set(DoubleSolenoid.Value.kOff);
 	}
 	/**
 	 * This method returns the current value of the intakeMotor
