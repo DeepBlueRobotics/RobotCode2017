@@ -36,7 +36,7 @@ public class ToggleDrivetrainShift extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return (tim.get() >= 1);
+		return tim.get() >= 0.0625;
     	
 	}
 

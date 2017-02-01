@@ -68,11 +68,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void drive() {
 		if (isInArcadeDrive) {
-			currentSpeed = Robot.oi.rightJoy.getY();
-			currentTurn = Robot.oi.leftJoy.getX();
+			currentSpeed = -Robot.oi.rightJoy.getY();
+			currentTurn = -Robot.oi.leftJoy.getX();
 			arcadeDrive(currentTurn, currentSpeed);
 		} else {
-			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
+			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
 		}
 	}
 
@@ -301,20 +301,26 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
-		SmartDashboard.putNumber("Left Speed", leftEncoder.getRate());
-		SmartDashboard.putNumber("Right Speed", rightEncoder.getRate());
-		SmartDashboard.putNumber("Average Speed", getSpeed());
+		putNumber("Left Speed", leftEncoder.getRate());
+		putNumber("Right Speed", rightEncoder.getRate());
+		putNumber("Average Speed", getSpeed());
 
-		SmartDashboard.putNumber("Left Distance", leftEncoder.get());
-		SmartDashboard.putNumber("Right Distance", rightEncoder.get());
-		SmartDashboard.putNumber("Average Distance", getDistance());
+		putNumber("Left Distance", leftEncoder.get());
+		putNumber("Right Distance", rightEncoder.get());
+		putNumber("Average Distance", getDistance());
+		
+		putNumber("Acceleration", (getEncoderRate() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
+		putNumber("Angular acceleration", (getGyroRate() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
 
-		SmartDashboard.putNumber("Angle", gyro.getAngle());
-		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
+		putNumber("Angle", gyro.getAngle());
+		putNumber("Turn Speed", gyro.getRate());
 
-		SmartDashboard.putBoolean("High Gear", false);
+		putBoolean("High Gear", false);
 
-		SmartDashboard.putBoolean("Gear has been lifted", false);
+		putBoolean("Gear has been lifted", false);
+		prevEncoderRate = getEncoderRate();
+		prevGyroRate = getGyroRate();
+		prevTime = Timer.getFPGATimestamp();
 	}
 
 	/**

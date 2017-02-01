@@ -27,9 +27,14 @@ public class AutoModeBoilerSide extends CommandGroup {
     	final double ROBOT_WIDTH = 34.75; //in
     	final double LEFT = -1;
     	final double RIGHT = 1;
-    	final double LENGTH_1 = 95.742; //in. from front end of robot to point on field
-    	final double LENGTH_2 = 23.5; //in. from front of robot to lift (after pivot)
+    	final double LENGTH_1 = Robot.getPref("ForwardTravelLoadSide", 95.742);; //in. from front end of robot to point on field
+    	final double LENGTH_2 = Robot.getPref("DiagonalTravelLoadSide", 23.5); //in. from front of robot to lift (after pivot)
+    	final double DIST_TO_LIFT = 114.3; //in. from alliance wall to lift (approx.)
+    	final double LIFT_TO_PEG_X = 41.42; //in horizontally from front of lift to the peg
+    	final double LIFT_TO_PEG_Y = 17.647; //in vertically from front of lift to the peg
     	
+    	
+    	//METHOD 1:
     	//Drives to airlift
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
@@ -47,11 +52,17 @@ public class AutoModeBoilerSide extends CommandGroup {
     	addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
      	addSequential(new AutoAlignGear());
      	
+     	/*
+     	//METHOD 2:
+     	addSequential(new FollowTrajectory(0-LIFT_TO_PEG_X, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG_Y, -60));
+     	addSequential(new AutoAlignGear());
+     	*/
+     	
      	//Aims and shoots
     	addParallel(new VisionAssistedShoot(0,0));
-    	addSequential(new AutoDelay(5));
+    	addSequential(new AutoDelay(5, Robot.intake));
     	
-    	
+    	//TODO: Dispense boiler
     	
     }
 }

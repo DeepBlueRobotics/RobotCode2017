@@ -20,4 +20,8 @@ public interface IntakeInterface extends DashboardInterface {
 	public boolean gearLifted();
 	
 	public double getIntake();
+	
+	public void toggleFlipperFlapper();
+	
+	public void stopFlipperFlapper();
 }

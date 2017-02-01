@@ -245,10 +245,10 @@ public class Shooter extends Subsystem implements ShooterInterface {
 
 	@Override
 	public void displayData() {
-		SmartDashboard.putBoolean("Shooter motor stalled", shooterMotorStalled);
-		SmartDashboard.putNumber("Shoot encoder rate", shootEncoder.getRate());
-		SmartDashboard.putNumber("Shooter PID output", getShooterPIDOutput());
-		SmartDashboard.putNumber("Turret encoder value", turretEncoder.get());
-		SmartDashboard.putNumber("Hood encoder value", hoodEncoder.get());
+		putBoolean("Shooter motor stalled", shooterMotorStalled);
+		putNumber("Shoot encoder rate", shootEncoder.getRate());
+		putNumber("Shooter PID output", getShooterPIDOutput());
+		putNumber("Turret encoder value", turretEncoder.get());
+		putNumber("Hood encoder value", hoodEncoder.get());
 	}
 }
