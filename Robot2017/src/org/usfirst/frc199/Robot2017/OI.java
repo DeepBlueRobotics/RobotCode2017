@@ -22,6 +22,7 @@ public class OI {
 	public JoystickButton feedInButton;
 	public JoystickButton feedOutButton;
 	public JoystickButton toggleIntakeButton;
+	public JoystickButton autoUSAdjustButton;
 	public Joystick manipulator;
 	public JoystickButton toggleFlipper;
 
@@ -42,6 +43,8 @@ public class OI {
 		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
 		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
+		autoUSAdjustButton = new JoystickButton(manipulator, 1);
+		autoUSAdjustButton.whenPressed(new AutoDrive(15.65 + 3, Robot.drivetrain.calcUSTargetAngle(), Robot.drivetrain));
 		
 		rightJoy = new Joystick(1);
 		

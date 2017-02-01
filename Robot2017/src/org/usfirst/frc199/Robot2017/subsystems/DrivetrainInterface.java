@@ -10,6 +10,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public interface DrivetrainInterface extends DashboardInterface {
 	public void initDefaultCommand();
+	
+	public double convertVoltsToInches(double volts);
+	
+	public double getUSVoltage(boolean side);
+	
+	public double calcUSTargetAngle();
 
 	public PID getDrivePID();
 	

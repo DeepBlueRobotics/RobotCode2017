@@ -46,7 +46,12 @@ public class RobotMap {
 	public static AHRS ahrs;
 	public static PowerDistributionPanel pdp;
 	public static AnalogInput driverAI;
+<<<<<<< Updated upstream
 	public static DoubleSolenoid flipperFlapper;
+=======
+	public static AnalogInput drivetrainLeftUSsensor;
+	public static AnalogInput drivetrainRightUSsensor;
+>>>>>>> Stashed changes
 
 	public static void init() {
 		drivetrainLeftMotor = new Talon(0);
@@ -115,9 +120,19 @@ public class RobotMap {
 		
 		driverAI = new AnalogInput(2);
 		LiveWindow.addSensor("Drivetrain", "ClimberInfrared", driverAI);
+<<<<<<< Updated upstream
 
 		flipperFlapper = new DoubleSolenoid(3,4,5);
 		LiveWindow.addActuator("Intake", "FlipperFlapper", flipperFlapper);
+=======
+		
+		drivetrainLeftUSsensor = new AnalogInput(2);
+		LiveWindow.addSensor("Drivetrain", "LeftUltrasonic", drivetrainLeftUSsensor);
+		
+		drivetrainRightUSsensor = new AnalogInput(3);
+		LiveWindow.addSensor("Drivetrain", "RightUltrasonic", drivetrainRightUSsensor);
+		
+>>>>>>> Stashed changes
 		// Alternatives: SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB
 		ahrs = new AHRS(SerialPort.Port.kMXP); 
 		pdp = new PowerDistributionPanel();

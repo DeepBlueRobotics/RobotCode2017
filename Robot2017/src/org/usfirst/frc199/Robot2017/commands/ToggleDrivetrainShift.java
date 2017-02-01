@@ -10,10 +10,12 @@ import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
  *
  */
 public class ToggleDrivetrainShift extends Command {
-	DrivetrainInterface toggleGear;
+	
+	DrivetrainInterface drivetrain;
 	boolean firstTime = true;
-	public ToggleDrivetrainShift(DrivetrainInterface toggleGear) {
-		this.toggleGear = toggleGear;
+	
+	public ToggleDrivetrainShift(DrivetrainInterface drivetrain) {
+		this.drivetrain = drivetrain;
 	}
 	
 	Timer tim = new Timer();
@@ -27,11 +29,9 @@ public class ToggleDrivetrainShift extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		if(firstTime) {
-			this.toggleGear.shiftGears();
+			this.drivetrain.shiftGears();
 			firstTime = false;
 		}
-		
-		        
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

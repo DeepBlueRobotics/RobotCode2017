@@ -40,6 +40,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final AHRS gyro = RobotMap.ahrs;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
+	
+	private final AnalogInput leftUSsensor = RobotMap.drivetrainLeftUSsensor;
+	private final AnalogInput rightUSsensor = RobotMap.drivetrainRightUSsensor;
 
 	private PID velocityPID = new PID("DriveVelocity");
 	private PID angularVelocityPID = new PID("DriveAngularVelocity");
@@ -52,6 +55,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean isInArcadeDrive = true;
 	private double currentSpeed = 0; // only used and changed in Arcade Drive
 	private double currentTurn = 0;
+	private final double distBtwnUSsensors = 25;
 
 	public PID distancePID = new PID("DriveDistance");
 	public PID anglePID = new PID("DriveAngle");
@@ -62,7 +66,40 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
-
+	
+	/**
+	 * Gets the voltage from one of two ultrasonic sensors.
+	 * @param side tells which ultrasonic sensor to pull data from (left or right)
+	 * 	if side true, gets left voltage
+	 * 	if side false, gets right voltage
+	 * */
+	public double getUSVoltage(boolean side){
+		if(side){
+			return leftUSsensor.getVoltage();
+		} else{
+			return rightUSsensor.getVoltage();
+		}
+	}
+	
+	/**
+	 * Converts volts from ultrasonic sensors into inches based on equation derived from testing.
+	 * @return distance in inches
+	 * */
+	public double convertVoltsToInches(double volts){
+		return (volts + 4.38e-3)/0.012;
+	}
+	
+	/**
+	 * Calculates the angle needed to turn to to approach the wall head on.
+	 * @return the angle to turn to
+	 * */
+	public double calcUSTargetAngle(){
+		double distBtwnSensors = 25;
+		double leftDist = convertVoltsToInches(getUSVoltage(true));
+		double rightDist = convertVoltsToInches(getUSVoltage(false));
+		return Math.toDegrees(Math.atan((leftDist-rightDist)/(distBtwnSensors)));
+	}
+	
 	/**
 	 * Allows toggling between arcade and tank teleop driving
 	 */
@@ -327,7 +364,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Shifts gears to whatever state they are not in
 	 */
 	public void shiftGears() {
-		if (shiftPiston.get().toString().equals("kForward")) {
+		if (!shiftPiston.get().toString().equals("k")) {
 			// shift to high gear
 			shiftPiston.set(DoubleSolenoid.Value.kReverse);
 		} else {
