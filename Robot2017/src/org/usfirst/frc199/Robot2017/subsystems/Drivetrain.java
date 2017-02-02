@@ -84,7 +84,19 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			return rightUSsensor.getVoltage();
 		}
 	}
-	
+	/**
+	 * changes the value of isInArcadeDrive
+	 */
+	public void toggleArcadeDrive() {
+		isInArcadeDrive = !isInArcadeDrive;
+	}
+	/**
+	 * 
+	 * @return the value of isInArcadeDrive
+	 */
+	public boolean getArcadeDrive() {
+		return isInArcadeDrive;
+	}
 	/**
 	 * Calculates the distance the robot needs to drive to reach target distance from wall
 	 * 	based on the average of the current US sensor readings.
