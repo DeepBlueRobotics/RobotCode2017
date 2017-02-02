@@ -84,7 +84,7 @@ centers = sorted(centers, key=lambda x: x[0])
 closest = 1000
 index = -1;
 
-for i in range (0, centers.length() - 1):
+for i in range (0, len(centers) - 1):
 	dist = abs(centers[i][0] - centers[i + 1][0])
 	if (dist < closest):
 		closest = dist
@@ -92,6 +92,9 @@ for i in range (0, centers.length() - 1):
 
 center1 = centers[index]
 center2 = centers[index + 1]
+
+print center1
+print center2
 
 cv2.imshow("Image", frame)
 
