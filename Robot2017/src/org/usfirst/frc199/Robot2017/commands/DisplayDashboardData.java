@@ -21,7 +21,7 @@ public class DisplayDashboardData extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	for(DashboardSubsystem s: Robot.subsystems) {
+    	for(DashboardInterface s: Robot.subsystems) {
     		s.displayData();
     	}
     }
