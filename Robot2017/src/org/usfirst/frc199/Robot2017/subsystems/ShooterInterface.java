@@ -105,6 +105,4 @@ public interface ShooterInterface extends DashboardInterface {
 	public double getHoodPIDOutput();
 
 	public void runHoodMotor(double speed);
-
-	public double convertAngleToTargetSpeed(double targetAngle);
 }

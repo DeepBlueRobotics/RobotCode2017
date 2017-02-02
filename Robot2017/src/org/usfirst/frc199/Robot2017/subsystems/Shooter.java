@@ -170,7 +170,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 */
 	public double convertDistanceToTargetVelocity(double distance) { 
 		return Math.sqrt(2 * gravity * height + (gravity * distance * distance)
-				/ (2 * cos(targetAngle) * cos(targetAngle) * (height + distance * Math.tan(targetAngle))));
+				/ (2 * Math.cos(targetAngle) * Math.cos(targetAngle) * (height + distance * Math.tan(targetAngle))));
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 */
 	public double convertDistanceToTargetAngle(double distance) {
 		double v0 = convertDistanceToTargetVelocity(distance);
-		return Math.asin(v0 / (cos(targetAngle) * Math.sqrt(v0 * v0 - 2 * gravity * height)));
+		return Math.asin(v0 / (Math.cos(targetAngle) * Math.sqrt(v0 * v0 - 2 * gravity * height)));
 	}
 
 	// come up with PID methods (for turret and hood) similar to those of
@@ -254,13 +254,6 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 */
 	public void stopHoodMotor() {
 		runHoodMotor(0);
-	}
-
-	public double convertAngleToTargetSpeed(double targetAngle) {
-		// do some math
-		double angle = targetAngle;
-		double encoderVal = angle * encoderAngleRatio;
-		return 0.0;
 	}
 
 	@Override
