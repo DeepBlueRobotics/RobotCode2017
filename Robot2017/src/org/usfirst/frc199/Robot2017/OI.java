@@ -44,7 +44,8 @@ public class OI {
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
 		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
 		autoUSAdjustButton = new JoystickButton(manipulator, 1);
-		autoUSAdjustButton.whenPressed(new AutoDrive(15.65 + 3, Robot.drivetrain.calcUSTargetAngle(), Robot.drivetrain));
+		autoUSAdjustButton.whenPressed(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
+				Robot.drivetrain.calcUSTargetAngle(), Robot.drivetrain));
 		
 		rightJoy = new Joystick(1);
 		

@@ -15,6 +15,8 @@ public interface DrivetrainInterface extends DashboardInterface {
 	
 	public double getUSVoltage(boolean side);
 	
+	public double getUSDistToDrive();
+	
 	public double calcUSTargetAngle();
 
 	public PID getDrivePID();
