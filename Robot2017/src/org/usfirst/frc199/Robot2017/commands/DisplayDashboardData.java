@@ -1,7 +1,7 @@
 package org.usfirst.frc199.Robot2017.commands;
 
-import org.usfirst.frc199.Robot2016.DashboardSubsystem;
-import org.usfirst.frc199.Robot2016.Robot;
+import org.usfirst.frc199.Robot2017.DashboardInterface;
+import org.usfirst.frc199.Robot2017.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
