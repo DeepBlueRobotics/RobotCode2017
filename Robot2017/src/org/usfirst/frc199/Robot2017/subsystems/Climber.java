@@ -30,7 +30,19 @@ public class Climber extends Subsystem implements ClimberInterface {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
 	}
-
+	/**
+	 * 
+	 * @return - returns the value of AIEnabled
+	 */
+	public boolean getAIEnabled() {
+		return AIEnabled;
+	}
+	/**
+	 * this method sets the value of AIEnabled
+	 */
+	public void setAIEnabled(boolean value) {
+		AIEnabled = value;
+	}
 	/**
 	 * This method uses the winch to let the robot climb
 	 * 

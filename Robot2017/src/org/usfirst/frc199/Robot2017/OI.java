@@ -34,7 +34,7 @@ public class OI {
 		feedInButton = new JoystickButton(manipulator, 6);
 		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 2);
-		winchButton.whileHeld(new Climb());
+		winchButton.whileHeld(new Climb(Robot.climber));
 		shootOutButton = new JoystickButton(manipulator, 4);
 		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter));
 		outputButton = new JoystickButton(manipulator, 5);
@@ -85,7 +85,7 @@ public class OI {
 		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
 		SmartDashboard.putData("ToggleIntake", new ToggleIntake(Robot.intake));
-		SmartDashboard.putData("Climb", new Climb());
+		SmartDashboard.putData("Climb", new Climb(Robot.climber));
 
 		// For use by Manual Control Widget
 		SmartDashboard.putData("ManualControl/Command",

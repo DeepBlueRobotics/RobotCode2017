@@ -14,5 +14,15 @@ public interface ClimberInterface extends DashboardInterface {
 	public void encoderReset();
 
 	public double getEncoder();
+	
+	public boolean checkMotorDraw();
+	
+	public double getClimber();
+	
+	public boolean getAIEnabled();
+	
+	public void setAIEnabled(boolean value);
+//	boolean AIEnabled = false;
+
 
 }
