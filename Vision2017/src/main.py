@@ -12,9 +12,6 @@ import numpy as np
 import boiler_identify
 import lift_marks_indentify
 
-import boiler_identify
-import lift_marks_indentify
-
 nt = NTClient()
 
 # cameras
