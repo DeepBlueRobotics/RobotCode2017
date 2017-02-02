@@ -1,7 +1,7 @@
 package org.usfirst.frc199.Robot2017.commands;
 
-import org.usfirst.frc199.Robot2016.DashboardSubsystem;
-import org.usfirst.frc199.Robot2016.Robot;
+import org.usfirst.frc199.Robot2017.DashboardInterface;
+import org.usfirst.frc199.Robot2017.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -21,7 +21,7 @@ public class DisplayDashboardData extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	for(DashboardSubsystem s: Robot.subsystems) {
+    	for(DashboardInterface s: Robot.subsystems) {
     		s.displayData();
     	}
     }

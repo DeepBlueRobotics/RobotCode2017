@@ -55,7 +55,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean isInArcadeDrive = true;
 	private double currentSpeed = 0; // only used and changed in Arcade Drive
 	private double currentTurn = 0;
+	
+	//for ultrasonic sensors
 	private final double distBtwnUSsensors = 25;
+	private final double distFromUSToRobotFront = 15.65;
+	private final double targetUSDist = 3;
 
 	public PID distancePID = new PID("DriveDistance");
 	public PID anglePID = new PID("DriveAngle");
@@ -82,6 +86,21 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
+	 * Calculates the distance the robot needs to drive to reach target distance from wall
+	 * 	based on the average of the current US sensor readings.
+	 * Uses the average of the readings because this is measured before the robot auto truns
+	 * 	but is used to execute auto drive after the robot auto turns. The average distance from
+	 * 	the wall will not change in and ideal scenario because the distance from the robot center
+	 * 	will not change. Henceforth, average is used.
+	 * @return the distance to be antered into a drive PID 
+	 * */
+	public double getUSDistToDrive(){
+		double leftDist = convertVoltsToInches(getUSVoltage(true));
+		double rightDist = convertVoltsToInches(getUSVoltage(false));
+		return ((leftDist+rightDist)/2 - distFromUSToRobotFront) - targetUSDist;
+	}
+	
+	/**
 	 * Converts volts from ultrasonic sensors into inches based on equation derived from testing.
 	 * @return distance in inches
 	 * */
@@ -94,10 +113,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return the angle to turn to
 	 * */
 	public double calcUSTargetAngle(){
-		double distBtwnSensors = 25;
 		double leftDist = convertVoltsToInches(getUSVoltage(true));
 		double rightDist = convertVoltsToInches(getUSVoltage(false));
-		return Math.toDegrees(Math.atan((leftDist-rightDist)/(distBtwnSensors)));
+		return Math.toDegrees(Math.atan((leftDist-rightDist)/(distBtwnUSsensors)));
 	}
 	
 	/**
