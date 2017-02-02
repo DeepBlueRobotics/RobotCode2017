@@ -20,7 +20,7 @@ public class ToggleIntakeRamp extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    public void execute() {
     	intake.toggleFlipperFlapper();
     }
 
@@ -30,7 +30,7 @@ public class ToggleIntakeRamp extends Command {
     }
 
     // Called once after isFinished returns true
-    protected void end() {
+    public void end() {
     	intake.stopFlipperFlapper();
     }
 
