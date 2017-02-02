@@ -21,6 +21,7 @@ import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
  */
 public class AutoShoot extends Command {
 	double target;
+	double angle;
 	Timer tim = new Timer();
 	double duration;
 	ShooterInterface shooter;
@@ -39,7 +40,8 @@ public class AutoShoot extends Command {
 
 	public AutoShoot(double targetDistance, double runTime, ShooterInterface shooter) {
 		this.shooter = shooter;
-		target = this.shooter.convertDistanceToTargetSpeed(targetDistance);
+		target = this.shooter.convertDistanceToTargetVelocity(targetDistance);
+		angle = this.shooter.convertDistanceToTargetAngle(targetDistance);
 		duration = runTime;
 	}
 
@@ -47,6 +49,7 @@ public class AutoShoot extends Command {
 	public void initialize() {
 		tim.start();
 		shooter.setShooterPIDTarget(target);
+		shooter.setHoodPIDTarget(angle);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -59,6 +62,8 @@ public class AutoShoot extends Command {
 				* target) {
 			shooter.runFeederMotor(1);
 		}
+		shooter.updateHoodPID(shooter.getHoodEncoder());
+		shooter.runHoodMotor(shooter.getHoodPIDOutput());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -19,9 +19,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class Shooter extends Subsystem implements ShooterInterface {
-	double shootingAngle = Robot.getPref("shootingAngle", 0);
+	double targetAngle = Robot.getPref("targetAngle", 0); // angle that the ball
+															// hits the boiler
 	double height = Robot.getPref("relativeHeightOfBoiler", 0);
 	double encoderAngleRatio = Robot.getPref("encoderAngleRatio", 0);
+
+	private final double gravity = 9.81;
 
 	private final SpeedController shootMotor = RobotMap.shooterShootMotor;
 	private final SpeedController feedMotor = RobotMap.shooterFeedMotor;
@@ -37,7 +40,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 
 	private double prevShooterEncoder = 0;
 	private boolean shooterMotorStalled = false;
-	
+
 	private double prevTurretEncoder = 0;
 	private double prevHoodEncoder = 0;
 
@@ -57,7 +60,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 */
 	public boolean shooterMotorStalled() {
 
-		if (Math.abs(shootMotor.get()) >= 0.2 && (shootEncoder.get() - prevShooterEncoder) <= Robot.getPref("encoderOffset", 5)
+		if (Math.abs(shootMotor.get()) >= 0.2
+				&& (shootEncoder.get() - prevShooterEncoder) <= Robot.getPref("encoderOffset", 5)
 				&& Robot.getPref("shooterEncoderWorks", 0) == 1) {
 			shootMotor.set(0);
 			System.out.println("Shooter Motor stalled, stopping motor.");
@@ -69,15 +73,16 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		}
 		return shooterMotorStalled;
 	}
-	
+
 	/**
 	 * Gets the shooter encoder rate
+	 * 
 	 * @return the shooter encoder rate
-	 * */
-	public double getShootEncoderRate(){
+	 */
+	public double getShootEncoderRate() {
 		return shootEncoder.getRate();
 	}
-	
+
 	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0).
 	 * 
@@ -87,11 +92,11 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public void runShootMotor(double speed) {
 		shootMotor.set(speed);
 	}
-	
+
 	/**
 	 * Stops the shooter motor
-	 * */
-	public void stopShootMotor(){
+	 */
+	public void stopShootMotor() {
 		runShootMotor(0);
 	}
 
@@ -104,7 +109,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public void runFeederMotor(double speed) {
 		feedMotor.set(speed);
 	}
-	
+
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
@@ -118,13 +123,13 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Updates the shooter motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValue current
-	 *            shooter motor encoder speed
+	 * @param updateValue
+	 *            current shooter motor encoder speed
 	 */
 	public void updateShooterPID(double updateValue) {
 		ShooterPID.update(updateValue);
 	}
-	
+
 	/**
 	 * Gets the speed for the shooter motor from the shooter PID.
 	 * 
@@ -133,23 +138,25 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public double getShooterPIDOutput() {
 		return ShooterPID.getOutput();
 	}
-	
+
 	/**
 	 * 
-	 * @param target - the target value for PID
+	 * @param target
+	 *            - the target value for PID
 	 * @return speed of motor
 	 */
-	public double updateSpeed(double target){
+	public double updateSpeed(double target) {
 		ShooterPID.setTarget(target);
 		ShooterPID.update(currentSpeed());
 		return ShooterPID.getOutput();
 	}
 
-/**
+	/**
 	 * Returns the current speed of the shooter wheel.
+	 * 
 	 * @return shooter speed in inches per second
 	 */
-	public double currentSpeed(){
+	public double currentSpeed() {
 		return shootEncoder.getRate();
 	}
 
@@ -161,17 +168,29 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 *            - in inches of the front of the robot from the boiler
 	 * @return the ideal exit speed of the ball in inches/second
 	 */
-	public double convertDistanceToTargetSpeed(double distance) {
-		return distance / Math.cos(shootingAngle)
-				* Math.sqrt(386.09 / (2 * (distance * Math.tan(shootingAngle) - height)));
+	public double convertDistanceToTargetVelocity(double distance) { 
+		return Math.sqrt(2 * gravity * height + (gravity * distance * distance)
+				/ (2 * cos(targetAngle) * cos(targetAngle) * (height + distance * Math.tan(targetAngle))));
 	}
-	
-	
-	//come up with PID methods (for turret and hood) similar to those of shooter
-	//turret should use vision
-	//hood should convert real angles to encoder values (test to find a ratio)
-	
-	
+
+	/**
+	 * Passes the distance of the robot from the boiler through an equation to
+	 * compute the speed at which we should be shooting.
+	 * 
+	 * @param distance
+	 *            - in inches of the front of the robot from the boiler
+	 * @return the ideal exit angle of the ball in radians
+	 */
+	public double convertDistanceToTargetAngle(double distance) {
+		double v0 = convertDistanceToTargetVelocity(distance);
+		return Math.asin(v0 / (cos(targetAngle) * Math.sqrt(v0 * v0 - 2 * gravity * height)));
+	}
+
+	// come up with PID methods (for turret and hood) similar to those of
+	// shooter
+	// turret should use vision
+	// hood should convert real angles to encoder values (test to find a ratio)
+
 	/**
 	 * Sets the turret motor's speed (from -1.0 to 1.0).
 	 * 
@@ -181,7 +200,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public void runTurretMotor(double speed) {
 		turretMotor.set(speed);
 	}
-	
+
 	/**
 	 * Tells the hood motor's PID the target speed to reach.
 	 * 
@@ -195,8 +214,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Updates the hood motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValue current
-	 *            hood motor encoder speed
+	 * @param updateValue
+	 *            current hood motor encoder speed
 	 */
 	public void updateHoodPID(double updateValue) {
 		HoodPID.update(updateValue);
@@ -210,7 +229,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public double getHoodPIDOutput() {
 		return HoodPID.getOutput();
 	}
-	
+
 	/**
 	 * Sets the hood motor's speed (from -1.0 to 1.0).
 	 * 
@@ -220,26 +239,27 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public void runHoodMotor(double speed) {
 		hoodMotor.set(speed);
 	}
-	
+
 	/**
 	 * Gets the hood encoder value
+	 * 
 	 * @return the hood encoder value
-	 * */
-	public double getHoodEncoder(){
+	 */
+	public double getHoodEncoder() {
 		return hoodEncoder.get();
 	}
-	
+
 	/**
 	 * Stops the hood motor
-	 * */
-	public void stopHoodMotor(){
+	 */
+	public void stopHoodMotor() {
 		runHoodMotor(0);
 	}
-	
-	public double convertAngleToTargetSpeed(double targetAngle){
-		//do some math
+
+	public double convertAngleToTargetSpeed(double targetAngle) {
+		// do some math
 		double angle = targetAngle;
-		double encoderVal = angle*encoderAngleRatio;
+		double encoderVal = angle * encoderAngleRatio;
 		return 0.0;
 	}
 
