@@ -368,19 +368,25 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
-		putNumber("Left Speed", leftEncoder.getRate());
-		putNumber("Right Speed", rightEncoder.getRate());
-		putNumber("Average Speed", getSpeed());
+		SmartDashboard.putNumber("Left Speed", leftEncoder.getRate());
+		SmartDashboard.putNumber("Right Speed", rightEncoder.getRate());
+		SmartDashboard.putNumber("Average Speed", getSpeed());
 
-		putNumber("Left Distance", leftEncoder.get());
-		putNumber("Right Distance", rightEncoder.get());
-		putNumber("Average Distance", getDistance());
+		SmartDashboard.putNumber("Left Distance", leftEncoder.get());
+		SmartDashboard.putNumber("Right Distance", rightEncoder.get());
+		SmartDashboard.putNumber("Average Distance", getDistance());
 		
-		putNumber("Acceleration", (getEncoderRate() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
-		putNumber("Angular acceleration", (getGyroRate() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
+		SmartDashboard.putNumber("Acceleration", (getEncoderRate() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
+		SmartDashboard.putNumber("Angular acceleration", (getGyroRate() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
 
-		putNumber("Angle", gyro.getAngle());
-		putNumber("Turn Speed", gyro.getRate());
+		SmartDashboard.putNumber("Angle", gyro.getAngle());
+		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
+		
+		SmartDashboard.putNumber("Left DT Signal", leftMotor.get());
+		SmartDashboard.putNumber("Right DT Signal", rightMotor.get());
+		
+		SmartDashboard.putNumber("PDP_Left_Drive", pdp.getCurrent(13));
+		SmartDashboard.putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 
 		putBoolean("High Gear", false);
 
@@ -394,7 +400,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Shifts gears to whatever state they are not in
 	 */
 	public void shiftGears() {
-		if (!shiftPiston.get().toString().equals("k")) {
+		if (!shiftPiston.get().toString().equals("kReverse")) {
 			// shift to high gear
 			shiftPiston.set(DoubleSolenoid.Value.kReverse);
 		} else {

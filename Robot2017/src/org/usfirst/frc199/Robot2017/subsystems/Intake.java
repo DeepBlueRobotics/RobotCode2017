@@ -19,6 +19,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
 	private final DoubleSolenoid flipperFlapper = RobotMap.flipperFlapper;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
+	
 	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
@@ -57,6 +58,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 			pivotPiston.set(DoubleSolenoid.Value.kReverse);
 		}
 	}
+	
 
 	/**
 	 * This method stops the DoubleSolenoid responsible for intaking

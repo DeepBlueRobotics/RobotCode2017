@@ -50,16 +50,21 @@ public class Robot extends IterativeRobot {
 		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null
 		// pointers. Bad news. Don't move it.
-		oi = new OI();
+		
 		subsystems.add(drivetrain);
 		subsystems.add(intake);
 		subsystems.add(shooter);
 		subsystems.add(climber);
 		subsystems.add(vision);
+		oi = new OI();
+		for(DashboardInterface s: Robot.subsystems) {
+    		if(!s.getKey("").substring(0, 4).equals("PID/")) {
+    			s.putString("~TYPE~", "SubSystem");
+    		}
+    	}
 
 		// instantiate the command used for the autonomous period
 		autonomousCommand = new MainAutoMode();
-		new DisplayDashboardData().start();
 
 	}
 

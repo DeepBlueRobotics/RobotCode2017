@@ -24,7 +24,9 @@ upperHSV = np.array([83, 20, 255])
 
 # Exposure script
 
-
+# Gear Tape values
+gearFrameCounter = -1
+leftGearTapeX, leftGearTapeY, rightGearTapeX, rightGearTapeY = 0
 
 
 while(True):
@@ -34,10 +36,37 @@ while(True):
         boiler_identify.findTape(shooterFrame, lowerHSV, upperHSV)
         
         print ":D"  # Placeholder line that will be changed later
-        
-    if 1 == 1:  # Condition should be based on whether a certain boolean value in NetworkTables says the gear command is running
+    
+   
+    """gear tape identification code from here"""
+
+    gearFrameCounter = 0 if nt.get("AutoAlignGear", "running") == True
+    
+    if gearFrameCounter != -1:
         ret, gearFrame = gearCap.read()
         # Run gear mark identification
-        lift_marks_identify.findTape(gearFrame, lowerHSV, upperHSV)
+        lx, ly, rx, ry = lift_marks_identify.findTape(gearFrame, lowerHSV, upperHSV)
         
-        print "D:"  # Another placeholder
+        leftGearTapeX += lx
+        leftGearTapeY += ly
+        rightGearTapeX += rx
+        rightGearTapeY += ry
+
+        gearFrameCounter += 1
+        print "gear tape identified {} times".format(gearFrameCounter)   
+
+        if gearFrameCounter == 3:
+            leftGearTapeX /= 3
+            leftGearTapeY /= 3
+            rightGearTapeX /= 3
+            rightGearTapeY /= 3
+
+            nt.write("AutoAlignGear", "leftCenterX", leftGearTapeX)
+            nt.write("AutoAlignGear", "leftCenterY", leftGearTapeY)
+            nt.write("AutoAlignGear", "rightCenterX", rightGearTapeX)
+            nt.write("AutoAlignGear", "rightCenterY", rightGearTapeY)
+
+            gearFrameCounter = -1
+            print "gear tape identified {} time".format(gearFrameCounter)        
+
+    
