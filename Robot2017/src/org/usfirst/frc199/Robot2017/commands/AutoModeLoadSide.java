@@ -69,7 +69,7 @@ public class AutoModeLoadSide extends CommandGroup {
      	*/
      	
      	//Waits to allow gear to be lifted
-     	addSequential(new AutoDelay(5, Robot.intake));
+     	addSequential(new AutoDelay(0, Robot.intake));
     	
      	
      	//METHOD 1:

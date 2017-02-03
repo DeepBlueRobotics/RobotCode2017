@@ -35,7 +35,7 @@ public class AutoModeCenter extends CommandGroup {
     	
     	//Aims and shoots
     	addParallel(new VisionAssistedShoot(0,0));
-    	addSequential(new AutoDelay(5, Robot.intake));
+    	addSequential(new AutoDelay(0, Robot.intake));
     	
     	
     	//Backs out of dividers, giving 6 inches of extra space for the pivot
