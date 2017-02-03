@@ -18,8 +18,9 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
  *
  */
 public class TeleopDrive extends Command {
-
-	public TeleopDrive() {
+	DrivetrainInterface driver;
+	public TeleopDrive(DrivetrainInterface drive) {
+		this.driver = drive;
 		requires(Robot.drivetrain);
 	}
 
@@ -30,9 +31,9 @@ public class TeleopDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		Robot.drivetrain.drive();
-		if (Robot.drivetrain.currentControl()) {
-			Robot.drivetrain.shiftGears();
+		driver.drive();
+		if (driver.currentControl()) {
+			driver.shiftGears();
 		}
 
 	}

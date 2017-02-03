@@ -1,28 +1,25 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class DeployGear extends CommandGroup {
-
-    public DeployGear() {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
+	
+    public DeployGear(double targetDist) {
+        
+    	SmartDashboard.putBoolean("Gear has been lifted", false);
+    	
+    	addSequential(new AutoAlignGear());
+    	addSequential(new AutoDrive(targetDist, 0, Robot.drivetrain));
+    	
+    	//don't be fooled, this makes the robot wait until gearLifted()
+    	addSequential(new AutoDelay(0, Robot.intake));
+    	
+    	SmartDashboard.putBoolean("Gear has been lifted", true);
     }
 }

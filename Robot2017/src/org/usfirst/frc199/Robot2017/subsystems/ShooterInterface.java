@@ -92,7 +92,9 @@ public interface ShooterInterface extends DashboardInterface {
 	 */
 	public double currentSpeed();
 
-	public double convertDistanceToTargetSpeed(double distance);
+	public double convertDistanceToTargetVelocity(double distance);
+	
+	public double convertDistanceToTargetAngle(double distance);
 
 	public void runTurretMotor(double speed);
 
@@ -103,6 +105,4 @@ public interface ShooterInterface extends DashboardInterface {
 	public double getHoodPIDOutput();
 
 	public void runHoodMotor(double speed);
-
-	public double convertAngleToTargetSpeed(double targetAngle);
 }

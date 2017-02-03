@@ -5,7 +5,7 @@ import org.usfirst.frc199.Robot2017.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public interface PIDInterface {
-	
+
 	/**
 	 * Sets the target value of the loop
 	 * 
@@ -13,7 +13,7 @@ public interface PIDInterface {
 	 *            - The target value in real units
 	 */
 	public void setTarget(double value);
-	
+
 	/**
 	 * Updates state based on a new input value
 	 * 
