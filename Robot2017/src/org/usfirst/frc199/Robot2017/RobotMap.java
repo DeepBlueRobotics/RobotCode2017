@@ -85,7 +85,7 @@ public class RobotMap {
 
 		intakePivotPiston = new DoubleSolenoid(0, 4, 5);
 		LiveWindow.addActuator("Intake", "PivotPiston", intakePivotPiston);
-
+		
 		intakeIntakeMotor = new Talon(2);
 		LiveWindow.addActuator("Intake", "IntakeMotor", (Talon) intakeIntakeMotor);
 
