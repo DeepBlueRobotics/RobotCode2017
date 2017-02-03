@@ -99,16 +99,26 @@ public class RobotMap {
 		LiveWindow.addSensor("Shooter", "ShootEncoder", shooterShootEncoder);
 		shooterShootEncoder.setDistancePerPulse(1.0);
 		shooterShootEncoder.setPIDSourceType(PIDSourceType.kRate);
+		hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
+		LiveWindow.addSensor("Shooter", "HoodAngleEncoder", hoodAngleEncoder);
+		hoodAngleEncoder.setDistancePerPulse(1.0);
+		hoodAngleEncoder.setPIDSourceType(PIDSourceType.kRate);
 		turretTurnMotor = new Talon(6);
-		LiveWindow.addActuator("Turret", "TurnMotor", (Talon) turretTurnMotor);
+		LiveWindow.addActuator("Shooter", "TurnMotor", (Talon) turretTurnMotor);
 
 		turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
-		LiveWindow.addSensor("Turret", "TurretEncoder", turretTurretEncoder);
+		LiveWindow.addSensor("Shooter", "TurretEncoder", turretTurretEncoder);
 		turretTurretEncoder.setDistancePerPulse(1.0);
 		turretTurretEncoder.setPIDSourceType(PIDSourceType.kRate);
+		
+		winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
+		LiveWindow.addSensor("Climber", "WinchEncoder", winchEncoder);
+		winchEncoder.setDistancePerPulse(1.0);
+		winchEncoder.setPIDSourceType(PIDSourceType.kRate);
 		climberWinchMotor = new Talon(8);
 		LiveWindow.addActuator("Climber", "WinchMotor", (Talon) climberWinchMotor);
-
+		
+		
 		gearLiftedLimitSwitch = new DigitalInput(10);
 		LiveWindow.addSensor("Drivetrain", "GearLimit", gearLiftedLimitSwitch);
 		
@@ -121,10 +131,10 @@ public class RobotMap {
 		flipperFlapper = new DoubleSolenoid(3,4,5);
 		LiveWindow.addActuator("Intake", "FlipperFlapper", flipperFlapper);
 		
-		drivetrainLeftUSsensor = new AnalogInput(2);
+		drivetrainLeftUSsensor = new AnalogInput(3);
 		LiveWindow.addSensor("Drivetrain", "LeftUltrasonic", drivetrainLeftUSsensor);
 		
-		drivetrainRightUSsensor = new AnalogInput(3);
+		drivetrainRightUSsensor = new AnalogInput(4);
 		LiveWindow.addSensor("Drivetrain", "RightUltrasonic", drivetrainRightUSsensor);
 		
 		// Alternatives: SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB

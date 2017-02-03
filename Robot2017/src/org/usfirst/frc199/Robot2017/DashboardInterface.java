@@ -21,7 +21,9 @@ public interface DashboardInterface {
 	/**
 	 * Puts all desired data on SmartDashboard
 	 */
-	public void displayData();
+	public default void displayData() {
+		
+	}
 
 	/*
 	 * Methods for displaying values with modified keys

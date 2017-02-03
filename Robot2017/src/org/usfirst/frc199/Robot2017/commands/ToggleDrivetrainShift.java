@@ -16,6 +16,7 @@ public class ToggleDrivetrainShift extends Command {
 	
 	public ToggleDrivetrainShift(DrivetrainInterface drivetrain) {
 		this.drivetrain = drivetrain;
+		
 	}
 	
 	Timer tim = new Timer();
@@ -24,14 +25,15 @@ public class ToggleDrivetrainShift extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		tim.start();
+		firstTime = true;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(firstTime) {
+//		if(firstTime) {
 			this.drivetrain.shiftGears();
-			firstTime = false;
-		}
+//			firstTime = false;
+//		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
