@@ -32,7 +32,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final Encoder leftEncoder = RobotMap.drivetrainLeftEncoder;
 	private final Encoder rightEncoder = RobotMap.drivetrainRightEncoder;
 	// private final AnalogGyro gyro = RobotMap.drivetrainGyro;
-	private final DigitalInput gearLiftedSwitch = RobotMap.gearLiftedLimitSwitch;
 
 	private final Compressor compressor = RobotMap.drivetrainCompressor;
 	private final DoubleSolenoid shiftPiston = RobotMap.drivetrainShiftPiston;
@@ -206,14 +205,14 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *         reset
 	 */
 	public double getDistance() {
-		return (leftEncoder.get() + rightEncoder.get()) / 2;
+		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
 	}
 	
 	/**
 	 * @return the angle that the robot turned relative to the gyro's last reset
 	 */
 	public double getAngle() {
-		return gyro.getAngle();
+		return gyro.getAngle()- gyroDriftRate * gyroDriftTimer.get();
 	}
 
 	/**
@@ -300,7 +299,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target distance being set to PID
 	 */
 	public void setDistanceTarget(double targetDistance) {
-		distancePID.update((leftEncoder.get() + rightEncoder.get()) / 2);
+		distancePID.update(getDistance());
 		distancePID.setRelativeLocation(0);
 		distancePID.setTarget(targetDistance);
 	}
@@ -356,32 +355,39 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
-		SmartDashboard.putNumber("Left Speed", leftEncoder.getRate());
-		SmartDashboard.putNumber("Right Speed", rightEncoder.getRate());
-		SmartDashboard.putNumber("Average Speed", getSpeed());
+		putNumber("Left Speed", leftEncoder.getRate());
+		putNumber("Right Speed", rightEncoder.getRate());
+		putNumber("Average Speed", getSpeed());
 
-		SmartDashboard.putNumber("Left Distance", leftEncoder.get());
-		SmartDashboard.putNumber("Right Distance", rightEncoder.get());
-		SmartDashboard.putNumber("Average Distance", getDistance());
+		putNumber("Left Distance", leftEncoder.getDistance());
+		putNumber("Right Distance", rightEncoder.getDistance());
+		putNumber("Average Distance", getDistance());
 		
-		SmartDashboard.putNumber("Acceleration", (getEncoderRate() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
-		SmartDashboard.putNumber("Angular acceleration", (getGyroRate() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
+		putNumber("Acceleration", (getSpeed() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
+		putNumber("Angular acceleration", (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
 
-		SmartDashboard.putNumber("Angle", gyro.getAngle());
-		SmartDashboard.putNumber("Turn Speed", gyro.getRate());
+		putNumber("Angle", gyro.getAngle());
+		putNumber("Turn Speed", gyro.getRate());
 		
-		SmartDashboard.putNumber("Left DT Signal", leftMotor.get());
-		SmartDashboard.putNumber("Right DT Signal", rightMotor.get());
+		putNumber("Left DT Signal", leftMotor.get());
+		putNumber("Right DT Signal", rightMotor.get());
 		
-		SmartDashboard.putNumber("PDP_Left_Drive", pdp.getCurrent(13));
-		SmartDashboard.putNumber("PDP_Right_Drive", pdp.getCurrent(15));
+		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
+		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 
-		putBoolean("High Gear", false);
+		putString("Shift piston status", shiftPiston.get().toString());
 
-		putBoolean("Gear has been lifted", false);
-		prevEncoderRate = getEncoderRate();
-		prevGyroRate = getGyroRate();
+		prevEncoderRate = getSpeed();
+		prevGyroRate = getAngularVelocity();
 		prevTime = Timer.getFPGATimestamp();
+	}
+	
+	public double getAngularAcceleration() {
+
+		prevGyroRate = getAngularVelocity();
+		prevTime = Timer.getFPGATimestamp();
+		return (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime);
+
 	}
 
 	/**
@@ -431,8 +437,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void followTrajectory(double v, double w, double a, double alpha) {
 		velocityPID.setTarget(v);
 		angularVelocityPID.setTarget(w);
-		velocityPID.update(getEncoderRate());
-		angularVelocityPID.update(getGyroRate());
+		velocityPID.update(getSpeed());
+		angularVelocityPID.update(getAngularVelocity());
 
 		double kV = 1.0 / Robot.getPref("DriveMaxV", .01);
 		double kW = 1.0 / Robot.getPref("DriveMaxW", .01);
@@ -446,34 +452,19 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 		arcadeDrive(outputV, outputW);
 
-		SmartDashboard.putNumber("MotionProfile/L", getEncoderDistance());
-		SmartDashboard.putNumber("MotionProfile/V", getEncoderRate());
+		SmartDashboard.putNumber("MotionProfile/L", getDistance());
+		SmartDashboard.putNumber("MotionProfile/V", getSpeed());
 		SmartDashboard.putNumber("MotionProfile/A",
-				(getEncoderRate() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
-		SmartDashboard.putNumber("MotionProfile/Theta", getGyroAngle());
-		SmartDashboard.putNumber("MotionProfile/W", getGyroRate());
+				(getSpeed() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
+		SmartDashboard.putNumber("MotionProfile/Theta", getAngle());
+		SmartDashboard.putNumber("MotionProfile/W", getAngularVelocity());
 		SmartDashboard.putNumber("MotionProfile/Alpha",
-				(getGyroRate() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
-		prevEncoderRate = getEncoderRate();
-		prevGyroRate = getGyroRate();
+				(getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
+		prevEncoderRate = getSpeed();
+		prevGyroRate = getAngularVelocity();
 		prevTime = Timer.getFPGATimestamp();
 	}
 
-	private double getGyroAngle() {
-		return gyro.getAngle() - gyroDriftRate * gyroDriftTimer.get();
 
-	}
-
-	public double getEncoderDistance() {
-		return (-leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
-	}
-
-	private double getGyroRate() {
-		return gyro.getRate() - gyroDriftRate;
-	}
-
-	private double getEncoderRate() {
-		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
-	}
 
 }
