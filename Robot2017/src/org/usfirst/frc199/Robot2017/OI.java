@@ -34,7 +34,7 @@ public class OI {
 		feedInButton = new JoystickButton(manipulator, 6);
 		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 2);
-		winchButton.whileHeld(new Climb());
+		winchButton.whileHeld(new Climb(Robot.climber));
 		shootOutButton = new JoystickButton(manipulator, 4);
 		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter));
 		outputButton = new JoystickButton(manipulator, 5);
@@ -63,7 +63,7 @@ public class OI {
 		leftJoy = new Joystick(0);
 
 		switchDriveButton = new JoystickButton(leftJoy, 4);
-		switchDriveButton.whenPressed(new ToggleDriveType());
+		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
 		// TODO: (Ana T.) Insert accurate AutoAlignGear arguments to be executed
 		// when autoShootRoutineButton is held
@@ -78,14 +78,14 @@ public class OI {
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive(Robot.drivetrain));
 		SmartDashboard.putData("GradualDrive", new GradualDrive(Robot.drivetrain));
-		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType());
+		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType(Robot.drivetrain));
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift(Robot.drivetrain));
 		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("IntakeIn", new RunIntake(0, Robot.intake));
 		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
 		SmartDashboard.putData("TurnTurret", new TurnTurret());
 		SmartDashboard.putData("ToggleIntake", new ToggleIntake(Robot.intake));
-		SmartDashboard.putData("Climb", new Climb());
+		SmartDashboard.putData("Climb", new Climb(Robot.climber));
 
 		// For use by Manual Control Widget
 		SmartDashboard.putData("ManualControl/Command",

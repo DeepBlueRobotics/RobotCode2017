@@ -2,44 +2,46 @@ package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.subsystems.ClimberInterface;
 
 public class Climb extends Command {
 
 	boolean isStopped = false;
+	ClimberInterface climber;
 
-	public Climb() {
-
+	public Climb(ClimberInterface climber) {
+		this.climber = climber;
 		requires(Robot.climber);
 	}
 
 	// Called just before this Command runs the first time
-	protected void initialize() {
-		Robot.climber.encoderReset();
+	public void initialize() {
+		climber.encoderReset();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-		if (Robot.climber.getEncoder() >= 48 && Robot.climber.AIEnabled == false) {
-			Robot.climber.AIEnabled = !Robot.climber.AIEnabled;
+	public void execute() {
+		if (climber.getEncoder() >= 48 && climber.getAIEnabled() == false) {
+			climber.setAIEnabled(!climber.getAIEnabled());
 		}
-		if (!Robot.climber.returnPlate()) {
+		if (!climber.returnPlate()) {
 			isStopped = false;
-			if (!Robot.climber.checkMotorDraw()) {
-				Robot.climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
-			} else if (Robot.climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
-				Robot.climber.runClimber(Robot.climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
+			if (!climber.checkMotorDraw()) {
+				climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
+			} else if (climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
+				climber.runClimber(climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
 			} else {
-				Robot.climber.stopWinch();
+				climber.stopWinch();
 			}
 		} else if (!isStopped) {
 			isStopped = true;
-			Robot.climber.stopWinch();
+			climber.stopWinch();
 		}
 
-		// if(Robot.climber.returnPlate()) {
-		// Robot.climber.stopWinch();
+		// if(climber.returnPlate()) {
+		// climber.stopWinch();
 		// } else {
-		// Robot.climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
+		// climber.runClimber(getPref("defaultClimberSpeed", 1));
 		// }
 
 	}
@@ -50,8 +52,8 @@ public class Climb extends Command {
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
-		Robot.climber.stopWinch();
+	public void end() {
+		climber.stopWinch();
 	}
 
 	// Called when another command which requires one or more of the same

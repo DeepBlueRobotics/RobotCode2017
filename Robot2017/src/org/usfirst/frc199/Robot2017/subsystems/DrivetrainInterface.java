@@ -58,4 +58,8 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public void setVelocityTarget(double linVelTarget, double angVelTarget);
 	
 	public void updateVelocity();
+	
+	public boolean getArcadeDrive();
+	
+	public void toggleArcadeDrive();
 }
