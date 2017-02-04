@@ -8,11 +8,11 @@ public class Trajectory {
 	// The path used to generate the trajectory
 	private final Path path;
 	// The constraints on the trajectory
-	private final double vmax, amax, wmax, alphamax, jerkmax;
+	private final double vmax, amax, wmax, alphamax;
+	// The number of points
+	private final int points;
 	// The set of calculated target velocity values
 	private final double[] velocities;
-	// The set of calculated acceleration values
-	private final double[] acceleration;
 
 	/**
 	 * Generates a trajectory that follows a given path under the given
@@ -36,24 +36,25 @@ public class Trajectory {
 	 *            - the number of points to sample along the trajectory
 	 */
 	public Trajectory(Path path, double v0, double v1, double vmax, double amax, double wmax, double alphamax,
-			double jerkmax, int points) {
+			int points) {
 		this.path = path;
 		this.vmax = vmax;
 		this.amax = amax;
 		this.wmax = wmax;
 		this.alphamax = alphamax;
-		this.jerkmax = jerkmax;
-		
+		this.points = points;
+
 		velocities = new double[points];
 		velocities[0] = v0;
+		velocities[1] = v0;
+		velocities[points - 2] = v1;
 		velocities[points - 1] = v1;
-		
-		acceleration = new double[points];
-		acceleration[0] = 0;
-		acceleration[points - 1] = 0;
 		
 		computeForwardTrajectory();
 		computeReverseTrajectory();
+		for (int i = 0; i < points; i++) {
+			System.out.println(velocities[i]);
+		}
 	}
 
 	/**
@@ -61,17 +62,20 @@ public class Trajectory {
 	 * trajectory
 	 */
 	private void computeForwardTrajectory() {
-		for (int i = 1; i < velocities.length - 1; i++) {
+		for (int i = 1; i < points - 1; i++) {
 			double vprev = velocities[i - 1];
-			double aprev = acceleration[i - 1];
 			double vmax = getVmax(i);
 			double amax = getAmax(i, i + 1, vprev);
-			if (vprev + amax < vmax) {
-				velocities[i] = vprev + amax;
-			} else {
-				velocities[i] = vmax;
-			}
-			//acceleration[i] = Math.min(amax, aprev);
+			double s1 = 1.0 * (i - 1) / points;
+			double s2 = 1.0 * i / points;
+			double deltaT = 1.0 * (path.getV(s1)*(s2-s1)) / velocities[i - 1];
+			//System.out.println(deltaT);
+			 if (vprev + amax * deltaT < vmax) {
+				 velocities[i] = vprev + amax * deltaT;
+			 } else {
+				 velocities[i] = vmax;
+			 }
+			//velocities[i] = Math.min(vmax, vprev + amax * deltaT);
 		}
 	}
 
@@ -81,15 +85,19 @@ public class Trajectory {
 	 * were computed by the forward trajectory
 	 */
 	private void computeReverseTrajectory() {
-		for (int i = velocities.length - 2; i > 0; i--) {
+		for (int i = points - 2; i > 0; i--) {
 			double vprev = velocities[i + 1];
 			double vmax = getVmax(i);
-			double amax = getAmax(i, i - 1, vprev);
-			if (vprev + amax < vmax) {
-				velocities[i] = Math.min(velocities[i], vprev + amax);
+			double amax = getAmax(i, i + 1, vprev);
+			double s1 = 1.0 * (i + 1) / points;
+			double s2 = 1.0 * i / points;
+			double deltaT = (path.getV(s1)*(s1-s2)) / velocities[i + 1];
+			if (vprev + amax * deltaT< vmax) {
+				velocities[i] = Math.min(velocities[i], vprev + amax * deltaT);
 			} else {
 				velocities[i] = Math.min(velocities[i], vmax);
 			}
+
 		}
 	}
 
@@ -102,7 +110,7 @@ public class Trajectory {
 	 */
 	private double getVmax(int i) {
 		// point on the spline function
-		double s = 1.0 * i / velocities.length;
+		double s = 1.0 * i / points;
 		// dtheta/dL (not with respect to t)
 		double w = Math.abs(path.getW(s));
 		// d^2theta/dL^2 (not with respect to t)
@@ -133,18 +141,23 @@ public class Trajectory {
 		// new point on the spline function
 		double s1 = 1.0 * (i2) / velocities.length;
 		// change in arc length between the two points
-		double l = Math.abs(s1 - s0) * v;
-		// initial dw/dL
+		//double l = Math.abs(path.getL(s1) - path.getL(s0));
+		double l = path.getV(s0)*(s1-s0);
+		// initial dtheta/dL
 		double w0 = Math.abs(path.getW(s0));
-		// final dw/dL
+		// final dtheta/dL
 		double w1 = Math.abs(path.getW(s1));
 		// acceleration limit due to tradeoff between linear and angular
 		// acceleration
 		double a = amax / 2;
+
 		for (int j = 2; j <= Math.log(1000) / Math.log(2) + 1; j++) {
-			double sqrt = Math.sqrt(v * v + 2 * a * l);
-			double alpha = Math.abs((w1 * a * sqrt - w0 * a * v) / (-v + sqrt));
-			if (a < amax - amax * alpha / alphamax) {
+			double sqrt = Math.sqrt(v * v + 2 * a * l); // final velocity
+			double alpha = (w1 * a * sqrt - w0 * a * v) / (-v + sqrt); // curvature
+																		// *
+																		// acceleration
+			if (a < amax - amax * Math.abs(alpha) / alphamax) { // Linear
+																// Tradeoff
 				a += amax / Math.pow(2, j);
 			} else {
 				a -= amax / Math.pow(2, j);

@@ -1,5 +1,7 @@
 package org.usfirst.frc199.Robot2017.motion;
 
+import org.usfirst.frc199.Robot2017.Robot;
+
 /**
  * Generates velocity values for a set of points along a path.
  */
@@ -47,12 +49,39 @@ public class Trajectory {
 		velocities = new double[points];
 		velocities[0] = v0;
 		velocities[points - 1] = v1;
-		
+
 		computeForwardTrajectory();
 		computeReverseTrajectory();
 		for (int i = 0; i < points; i++) {
 			System.out.println(velocities[i]);
 		}
+	}
+
+	/**
+	 * Generates a trajectory that follows a given path under default
+	 * constraints
+	 * 
+	 * @param path
+	 *            - the path to follow
+	 * @param v0
+	 *            - the initial velocity
+	 * @param v1
+	 *            - the final velocity
+	 * @param points
+	 *            - the number of points to sample along the trajectory
+	 */
+	public Trajectory(Path path, double v0, double v1, int points) {
+		this.path = path;
+		this.vmax = Robot.getPref("DriveMaxV", .01);
+		this.amax = Robot.getPref("DriveMaxA", .01);
+		this.wmax = Robot.getPref("DriveMaxW", .01);
+		this.alphamax = Robot.getPref("DriveMaxAlpha", .01);
+		this.points = points;
+		velocities = new double[points];
+		velocities[0] = v0;
+		velocities[points - 1] = v1;
+		computeForwardTrajectory();
+		computeReverseTrajectory();
 	}
 
 	/**
@@ -66,14 +95,14 @@ public class Trajectory {
 			double amax = getAmax(i, i + 1, vprev);
 			double s1 = 1.0 * (i - 1) / points;
 			double s2 = 1.0 * i / points;
-			double deltaT = 1.0 * (path.getV(s1)*(s2-s1)) / velocities[i - 1];
-			//System.out.println(deltaT);
-			 if (vprev + amax * deltaT < vmax) {
-				 velocities[i] = vprev + amax * deltaT;
-			 } else {
-				 velocities[i] = vmax;
-			 }
-			//velocities[i] = Math.min(vmax, vprev + amax * deltaT);
+			double deltaT = 1.0 * (path.getV(s1) * (s2 - s1)) / velocities[i - 1];
+			// System.out.println(deltaT);
+			if (vprev + amax * deltaT < vmax) {
+				velocities[i] = vprev + amax * deltaT;
+			} else {
+				velocities[i] = vmax;
+			}
+			// velocities[i] = Math.min(vmax, vprev + amax * deltaT);
 		}
 	}
 
@@ -89,8 +118,8 @@ public class Trajectory {
 			double amax = getAmax(i, i + 1, vprev);
 			double s1 = 1.0 * (i + 1) / points;
 			double s2 = 1.0 * i / points;
-			double deltaT = (path.getV(s1)*(s1-s2)) / velocities[i + 1];
-			if (vprev + amax * deltaT< vmax) {
+			double deltaT = (path.getV(s1) * (s1 - s2)) / velocities[i + 1];
+			if (vprev + amax * deltaT < vmax) {
 				velocities[i] = Math.min(velocities[i], vprev + amax * deltaT);
 			} else {
 				velocities[i] = Math.min(velocities[i], vmax);
@@ -139,8 +168,8 @@ public class Trajectory {
 		// new point on the spline function
 		double s1 = 1.0 * (i2) / velocities.length;
 		// change in arc length between the two points
-		//double l = Math.abs(path.getL(s1) - path.getL(s0));
-		double l = path.getV(s0)*(s1-s0);
+		// double l = Math.abs(path.getL(s1) - path.getL(s0));
+		double l = path.getV(s0) * (s1 - s0);
 		// initial dtheta/dL
 		double w0 = Math.abs(path.getW(s0));
 		// final dtheta/dL
@@ -196,5 +225,10 @@ public class Trajectory {
 	 */
 	public int getCurrentIndex(double distance) {
 		return (int) (path.getS(distance) * velocities.length);
+	}
+
+	public int getDisplacement(int i) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 
@@ -49,12 +50,18 @@ public class Robot extends IterativeRobot {
 		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null
 		// pointers. Bad news. Don't move it.
-		oi = new OI();
+		
 		subsystems.add(drivetrain);
 		subsystems.add(intake);
 		subsystems.add(shooter);
 		subsystems.add(climber);
 		subsystems.add(vision);
+		oi = new OI();
+		for(DashboardInterface s: Robot.subsystems) {
+    		if(!s.getKey("").substring(0, 4).equals("PID/")) {
+    			s.putString("~TYPE~", "SubSystem");
+    		}
+    	}
 
 		// instantiate the command used for the autonomous period
 		autonomousCommand = new MainAutoMode();
@@ -77,6 +84,7 @@ public class Robot extends IterativeRobot {
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
 			autonomousCommand.start();
+		new DisplayDashboardData().start();
 	}
 
 	/**
@@ -93,6 +101,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		new DisplayDashboardData().start();
 	}
 
 	/**
@@ -100,6 +109,8 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("gyro reading", RobotMap.ahrs.getAngle());
+		SmartDashboard.putString("shift piston", RobotMap.drivetrainShiftPiston.get().toString());
 	}
 
 	/**

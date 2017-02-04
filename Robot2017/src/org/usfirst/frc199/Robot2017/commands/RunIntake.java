@@ -32,7 +32,11 @@ public class RunIntake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		intake.runIntake(speed);
+		if (!intake.intakeCurrentOverflow()) {
+			intake.runIntake(speed);
+		} else if(intake.getIntake() > Robot.getPref("minIntakePercent", 0.7) * speed) {
+			intake.runIntake(intake.getIntake() - 0.02);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

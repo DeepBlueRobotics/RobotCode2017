@@ -10,6 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public interface DrivetrainInterface extends DashboardInterface {
 	public void initDefaultCommand();
+	
+	public double convertVoltsToInches(double volts);
+	
+	public double getUSVoltage(boolean side);
+	
+	public double getUSDistToDrive();
+	
+	public double calcUSTargetAngle();
 
 	public PID getDrivePID();
 	
@@ -49,7 +57,9 @@ public interface DrivetrainInterface extends DashboardInterface {
 	
 	public void setVelocityTarget(double linVelTarget, double angVelTarget);
 	
-	public boolean gearLifted();
-	
 	public void updateVelocity();
+	
+	public boolean getArcadeDrive();
+	
+	public void toggleArcadeDrive();
 }
