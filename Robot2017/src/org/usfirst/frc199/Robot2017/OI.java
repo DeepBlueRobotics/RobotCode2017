@@ -90,6 +90,15 @@ public class OI {
 		// For use by Manual Control Widget
 		SmartDashboard.putData("ManualControl/Command",
 				new ManualControlMechs(Robot.intake, Robot.shooter, Robot.climber));
+		
+		//TestPID Commands
+		SmartDashboard.putData("PID/DriveDistance/TestDriveDistancePID", new TestPID(TestPID.System.DRIVEDISTANCE, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/DriveDistance/TestDriveAnglePID", new TestPID(TestPID.System.DRIVEANGLE, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/Shooter/TestShooterPID", new TestPID(TestPID.System.SHOOTER, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/DriveVelocity/TestDriveVelocityPID", new TestPID(TestPID.System.DRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/DriveAngularVelocity/TestDriveAngularVelocityPID", new TestPID(TestPID.System.DRIVEANGULARVELOCITY, Robot.shooter, Robot.drivetrain));
+
+		
 
 	}
 

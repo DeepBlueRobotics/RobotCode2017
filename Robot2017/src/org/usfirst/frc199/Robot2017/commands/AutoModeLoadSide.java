@@ -35,18 +35,16 @@ public class AutoModeLoadSide extends CommandGroup {
     	final double DIST_TO_LIFT = Robot.getPref("Wall To Lift", 114.3); //in. from alliance wall to lift (approx.)
     	final double ROBOT_CENTER_TO_PEG = Robot.getPref("Robot center to peg (Horizontal)", 30.739); //in horizontally from front of lift to the peg
     	final double LIFT_TO_PEG = Robot.getPref("Lift Corner to Peg (Vertical) LoadSide", 17.647); //in vertically from front of lift to the peg
+    	final double ROBOT_LENGTH = Robot.getPref("Robot Length", 0);
     	
     	//METHOD 1
     	//Drives to hexagon
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
     	//Turns toward lift
-    	if(alliance)
-    	{
+    	if(alliance) {
     		addSequential(new AutoDrive(0,RIGHT*60, Robot.drivetrain));
-    	}
-    	else
-    	{
+    	} else {
     		addSequential(new AutoDrive(0,LEFT*60, Robot.drivetrain));
     	}
     	
@@ -54,35 +52,29 @@ public class AutoModeLoadSide extends CommandGroup {
     	addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
      	addSequential(new AutoAlignGear());
      	
-     	/*
-     	//METHOD 2:
      	
-     	if(alliance)
-    	{
+     	//METHOD 2:
+     	/*
+     	if(alliance) {
     		addSequential(new FollowTrajectory(RIGHT*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, RIGHT*60));
-    	}
-    	else
-    	{
+    	} else {
     		addSequential(new FollowTrajectory(LEFT*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, LEFT*60));
-    	}
+    	} 
      	addSequential(new AutoAlignGear());
-     	*/
+     	
      	
      	//Waits to allow gear to be lifted
      	addSequential(new AutoDelay(0, Robot.intake));
-    	
+    	*/
      	
      	//METHOD 1:
      	//backs up
      	addSequential(new AutoDrive(0-LENGTH_2, 0, Robot.drivetrain));
      	
      	//Turns away from lift
-    	if(alliance)
-    	{
+    	if(alliance) {
     		addSequential(new AutoDrive(0,LEFT*60, Robot.drivetrain));
-    	}
-    	else
-    	{
+    	} else {
     		addSequential(new AutoDrive(0,RIGHT*60, Robot.drivetrain));
     	}
     	
@@ -91,23 +83,17 @@ public class AutoModeLoadSide extends CommandGroup {
     	
     	/*
     	// Method 2
-    	if(alliance)
-    	{
+    	if(alliance) {
     		addSequential(new FollowTrajectory(LEFT*ROBOT_CENTER_TO_PEG, LEFT * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), LEFT* 60));
-    	}
-    	else
-    	{
+    	} else {
     		addSequential(new FollowTrajectory(RIGHT*ROBOT_CENTER_TO_PEG, RIGHT * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), RIGHT* 60)
     	}
     	*/
     	
     	//turns away from boiler and drives backward
-    	if(alliance)
-    	{
+    	if(alliance) {
     		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
-    	}
-    	else
-    	{
+    	} else {
     		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
     	}
     	addSequential(new AutoDrive(-120, 0, Robot.drivetrain));
