@@ -12,7 +12,7 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public void initDefaultCommand();
 	
 	public enum DriveTypes {
-		ARCADE, TANK
+		ARCADE, TANK, DRIFT_TANK
 	}
 	public double convertVoltsToInches(double volts);
 	
@@ -47,6 +47,8 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public void setAngleTarget(double targetAngle);
 
 	public void gradualDrive();
+	
+	public void unevenTankDrive();
 
 	public void drive();
 

@@ -63,10 +63,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final double distFromUSToRobotFront = 15.65;
 	private final double targetUSDist = 3;
 
-	DriveTypes currentDrive = DriveTypes.ARCADE;
+	private DriveTypes currentDrive = DriveTypes.ARCADE;
 
-	public PID distancePID = new PID("DriveDistance");
-	public PID anglePID = new PID("DriveAngle");
+	private PID distancePID = new PID("DriveDistance");
+	private PID anglePID = new PID("DriveAngle");
+	private PID leftDriveSpeedPID = new PID("LeftDriveSpeed");
 
 	/**
 	 * This method initializes the command used in teleop
@@ -88,6 +89,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			return rightUSsensor.getVoltage();
 		}
 	}
+	
 	/**
 	 * changes the drive type
 	 */
@@ -96,13 +98,16 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 		if (currentDrive == DriveTypes.ARCADE){
 			currentDrive = DriveTypes.TANK;
+		} else if(currentDrive == DriveTypes.TANK){
+			currentDrive = DriveTypes.DRIFT_TANK;
 		} else {
 			currentDrive = DriveTypes.ARCADE;
 		}
 	}
+	
 	/**
 	 * 
-	 * @return either DriveTypes.ARCADE (aka 0) or DriveTypes.TANK (aka 1)
+	 * @return either DriveTypes.ARCADE, DriveTypes.TANK or DriveTypes.DRIFT_TANK
 	 */
 	public DriveTypes getDriveType() {
 		return currentDrive;
@@ -141,6 +146,18 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
+	 * Accounts for drift towards right when in tank drive and essentially
+	 * 	calibrates the left joystick/motor.
+	 * */
+	public void unevenTankDrive(){
+		double lJoyVal = Robot.oi.leftJoy.getY();
+		double rJoyVal = Robot.oi.rightJoy.getY();
+		leftDriveSpeedPID.setTarget(rightEncoder.getRate()*lJoyVal/rJoyVal);
+		leftDriveSpeedPID.update(leftEncoder.getRate());
+		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), -rJoyVal);
+	}
+	
+	/**
 	 * Allows toggling between arcade and tank teleop driving
 	 */
 	public void drive() {
@@ -148,8 +165,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			currentSpeed = -Robot.oi.rightJoy.getY();
 			currentTurn = -Robot.oi.leftJoy.getX();
 			arcadeDrive(currentTurn, currentSpeed);
-		} else {
+		} else if(currentDrive == DriveTypes.TANK){
 			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
+		} else {
+			unevenTankDrive();
 		}
 	}
 
