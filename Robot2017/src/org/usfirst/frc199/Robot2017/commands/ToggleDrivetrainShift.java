@@ -2,7 +2,6 @@ package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 
@@ -30,10 +29,10 @@ public class ToggleDrivetrainShift extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-//		if(firstTime) {
+		if(firstTime) {
 			this.drivetrain.shiftGears();
-//			firstTime = false;
-//		}
+			firstTime = false;
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -19,7 +19,7 @@ import javax.swing.*;
  * Widget that helps with PID tuning.
  */
 
-public class PID extends StaticWidget {
+public class PIDWidget extends StaticWidget {
 
     public static final String NAME = "PID Tuner";
 
@@ -54,7 +54,8 @@ public class PID extends StaticWidget {
             for(int i=0; i<boxes.length; i++){
                 final MyTextBox box = new MyTextBox("PID/"+name+"/");
                 boxes[i] = box;
-                    addWidget(box, boxNames[i], p1, DataType.NUMBER);
+                addWidget(box, boxNames[i], p1, DataType.NUMBER);
+                
                 if(sd.containsKey(boxNames[i])){
                     box.setValue(sd.getValue(boxNames[i], 0));
                 } else {
