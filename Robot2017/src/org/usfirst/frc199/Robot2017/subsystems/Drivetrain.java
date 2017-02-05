@@ -77,20 +77,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Gets the voltage from one of two ultrasonic sensors.
-	 * @param side tells which ultrasonic sensor to pull data from (left or right)
-	 * 	if side true, gets left voltage
-	 * 	if side false, gets right voltage
-	 * */
-	public double getUSVoltage(boolean side){
-		if(side){
-			return leftUSsensor.getVoltage();
-		} else{
-			return rightUSsensor.getVoltage();
-		}
-	}
-	
-	/**
 	 * changes the drive type
 	 */
 	public void toggleDriveType() {
@@ -112,50 +98,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public DriveTypes getDriveType() {
 		return currentDrive;
 	}
-	/**
-	 * Calculates the distance the robot needs to drive to reach target distance from wall
-	 * 	based on the average of the current US sensor readings.
-	 * Uses the average of the readings because this is measured before the robot auto truns
-	 * 	but is used to execute auto drive after the robot auto turns. The average distance from
-	 * 	the wall will not change in and ideal scenario because the distance from the robot center
-	 * 	will not change. Henceforth, average is used.
-	 * @return the distance to be antered into a drive PID 
-	 * */
-	public double getUSDistToDrive(){
-		double leftDist = convertVoltsToInches(getUSVoltage(true));
-		double rightDist = convertVoltsToInches(getUSVoltage(false));
-		return ((leftDist+rightDist)/2 - distFromUSToRobotFront) - targetUSDist;
-	}
-	
-	/**
-	 * Converts volts from ultrasonic sensors into inches based on equation derived from testing.
-	 * @return distance in inches
-	 * */
-	public double convertVoltsToInches(double volts){
-		return (volts + 4.38e-3)/0.012;
-	}
-	
-	/**
-	 * Calculates the angle needed to turn to to approach the wall head on.
-	 * @return the angle to turn to
-	 * */
-	public double calcUSTargetAngle(){
-		double leftDist = convertVoltsToInches(getUSVoltage(true));
-		double rightDist = convertVoltsToInches(getUSVoltage(false));
-		return Math.toDegrees(Math.atan((leftDist-rightDist)/(distBtwnUSsensors)));
-	}
-	
-	/**
-	 * Accounts for drift towards right when in tank drive and essentially
-	 * 	calibrates the left joystick/motor.
-	 * */
-	public void unevenTankDrive(){
-		double lJoyVal = Robot.oi.leftJoy.getY();
-		double rJoyVal = Robot.oi.rightJoy.getY();
-		leftDriveSpeedPID.setTarget(rightEncoder.getRate()*lJoyVal/rJoyVal);
-		leftDriveSpeedPID.update(leftEncoder.getRate());
-		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), -rJoyVal);
-	}
 	
 	/**
 	 * Allows toggling between arcade and tank teleop driving
@@ -175,6 +117,18 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void arcadeDrive(double speed, double turn) {
 		robotDrive.arcadeDrive(speed, turn);
 	}
+	
+	/**
+	 * Accounts for drift towards right when in tank drive and essentially
+	 * 	calibrates the left joystick/motor.
+	 * */
+	public void unevenTankDrive(){
+		double lJoyVal = Robot.oi.leftJoy.getY();
+		double rJoyVal = Robot.oi.rightJoy.getY();
+		leftDriveSpeedPID.setTarget(rightEncoder.getRate()*lJoyVal/rJoyVal);
+		leftDriveSpeedPID.update(leftEncoder.getRate());
+		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), -rJoyVal);
+	}
 
 	/**
 	 * Forces the robot's turn and move speed to change at a max of 5% each
@@ -189,189 +143,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			robotDrive.tankDrive(leftMotor.get() + Math.signum(Robot.oi.leftJoy.getY() - leftMotor.get()) * 0.05,
 					rightMotor.get() + Math.signum(Robot.oi.rightJoy.getY() - rightMotor.get()) * 0.05);
 		}
-	}
-
-	/**
-	 * Gets the distancePID object
-	 * 
-	 * @return the drivePID object
-	 */
-	public PID getDrivePID() {
-		return distancePID;
-	}
-
-	/**
-	 * Gets the anglePID object
-	 * 
-	 * @return the turnPID object
-	 */
-	public PID getTurnPID() {
-		return anglePID;
-	}
-	
-	/**
-	 * Gets the velocityPID object
-	 * 
-	 * @return the velocityPID object
-	 */
-	public PID getVelocityPID() {
-		return velocityPID;
-	}
-	
-	/**
-	 * Gets the angularVelocityPID object
-	 * 
-	 * @return the angularVelocityPID object
-	 */
-	public PID getAngularVelocityPID() {
-		return angularVelocityPID;
-	}
-
-	/**
-	 * Resets the encoders to return zero at that point
-	 */
-	public void resetEncoder() {
-		leftEncoder.reset();
-		rightEncoder.reset();
-	}
-
-	/**
-	 * Resets the gyro to return zero at that point
-	 */
-	public void resetGyro() {
-		gyro.reset();
-	}
-
-	/**
-	 * @return the distance that the robot moved relative to the encoders' last
-	 *         reset
-	 */
-	public double getDistance() {
-		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
-	}
-	
-	/**
-	 * @return the angle that the robot turned relative to the gyro's last reset
-	 */
-	public double getAngle() {
-		return gyro.getAngle()- gyroDriftRate * gyroDriftTimer.get();
-	}
-
-	/**
-	 * @return the average speed of the two sides of the robot at the current
-	 *         time
-	 */
-	public double getSpeed() {
-		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
-	}
-
-	/**
-	 * @return the angular velocity
-	 */
-	public double getAngularVelocity() {
-		return gyro.getRate();
-	}
-
-	/**
-	 * Checks to see if the distance PID has reached the target
-	 * 
-	 * @return Whether distance target has been reached
-	 */
-	public boolean distanceReachedTarget() {
-		return distancePID.reachedTarget();
-	}
-
-	/**
-	 * Checks to see if the angle PID has reached the target
-	 * 
-	 * @return Whether angle target has been reached
-	 */
-	public boolean angleReachedTarget() {
-		return anglePID.reachedTarget();
-	}
-	
-	/**
-	 * Checks to see if the speed PID has reached the target
-	 * 
-	 * @return Whether speed target has been reached
-	 */
-	public boolean speedReachedTarget() {
-		return velocityPID.reachedTarget();
-	}
-	
-	/**
-	 * Checks to see if the angular velocity PID has reached the target
-	 *  
-	 * @return Whether angular velocity PID has reached the target
-	 */
-	public boolean angularVelocityReachedTarget() {
-		return angularVelocityPID.reachedTarget();
-	}
-
-	/** 
-	 * Updates and tests distancePID
-	 */
-	public void updateDistance() {
-		distancePID.update(getDistance());
-		robotDrive.arcadeDrive(distancePID.getOutput(), 0);
-	}
-	
-	/**
-	 * Updates and tests anglePID
-	 */
-	public void updateAngle() {
-		anglePID.update(getAngle());
-		robotDrive.arcadeDrive(0, anglePID.getOutput());
-	}
-	
-	/**
-	 * Updates linear and angular velocity PIDs for motion profiling
-	 */
-	public void updateVelocity() {
-		// TODO (Ana T.) See todo of setVelocityTarget method
-		velocityPID.update(getDistance());
-		angularVelocityPID.update(getAngle());
-		robotDrive.arcadeDrive(velocityPID.getOutput(), angularVelocityPID.getOutput());
-	}
-	
-	/**
-	 * Sets the distance for PID target
-	 * 
-	 * @param targetDistance
-	 *            - the target distance being set to PID
-	 */
-	public void setDistanceTarget(double targetDistance) {
-		distancePID.update(getDistance());
-		distancePID.setRelativeLocation(0);
-		distancePID.setTarget(targetDistance);
-	}
-
-	/**
-	 * Sets the angle for PID target
-	 * 
-	 * @param targetAngle
-	 *            - the target angle in being set to PID
-	 */
-	public void setAngleTarget(double targetAngle) {
-		anglePID.update(getAngle());
-		anglePID.setRelativeLocation(0);
-		anglePID.setTarget(targetAngle);
-	}
-	
-	/**
-	 * Sets targets for tracking velocity of robot for motion profiling
-	 * 
-	 * @param linVelTarget
-	 * @param angVelTarget
-	 */
-	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
-		velocityPID.update(getSpeed());
-		velocityPID.setRelativeLocation(0);
-		velocityPID.setTarget(linVelTarget);
-
-		angularVelocityPID.update(getAngularVelocity());
-		angularVelocityPID.setRelativeLocation(0);
-		angularVelocityPID.setTarget(angVelTarget);
 	}
 
 	/**
@@ -395,33 +166,147 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		arcadeDrive(0, 0);
 	}
 
-	@Override
-	public void displayData() {
-		putNumber("Left Speed", leftEncoder.getRate());
-		putNumber("Right Speed", rightEncoder.getRate());
-		putNumber("Average Speed", getSpeed());
+	/**
+	 * @return the distance that the robot moved relative to the encoders' last
+	 *         reset
+	 */
+	public double getDistance() {
+		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
+	}
 
-		putNumber("Left Distance", leftEncoder.getDistance());
-		putNumber("Right Distance", rightEncoder.getDistance());
-		putNumber("Average Distance", getDistance());
-		
-		putNumber("Acceleration", (getSpeed() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
-		putNumber("Angular acceleration", (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
+	/**
+	 * Gets the distancePID object
+	 * 
+	 * @return the drivePID object
+	 */
+	public PID getDistancePID() {
+		return distancePID;
+	}
+	
+	/**
+	 * Sets the distance for PID target
+	 * 
+	 * @param targetDistance
+	 *            - the target distance being set to PID
+	 */
+	public void setDistanceTarget(double targetDistance) {
+		distancePID.update(getDistance());
+		distancePID.setRelativeLocation(0);
+		distancePID.setTarget(targetDistance);
+	}
 
-		putNumber("Angle", gyro.getAngle());
-		putNumber("Turn Speed", gyro.getRate());
-		
-		putNumber("Left DT Signal", leftMotor.get());
-		putNumber("Right DT Signal", rightMotor.get());
-		
-		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
-		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
+	/** 
+	 * Updates and tests distancePID
+	 */
+	public void updateDistancePID() {
+		distancePID.update(getDistance());
+		robotDrive.arcadeDrive(distancePID.getOutput(), 0);
+	}
 
-		putString("Shift piston status", shiftPiston.get().toString());
+	/**
+	 * Checks to see if the distance PID has reached the target
+	 * 
+	 * @return Whether distance target has been reached
+	 */
+	public boolean distanceReachedTarget() {
+		return distancePID.reachedTarget();
+	}
+	
+	/**
+	 * @return the angle that the robot turned relative to the gyro's last reset
+	 */
+	public double getAngle() {
+		return gyro.getAngle()- gyroDriftRate * gyroDriftTimer.get();
+	}
 
-		prevEncoderRate = getSpeed();
-		prevGyroRate = getAngularVelocity();
-		prevTime = Timer.getFPGATimestamp();
+	/**
+	 * Gets the anglePID object
+	 * 
+	 * @return the turnPID object
+	 */
+	public PID getAnglePID() {
+		return anglePID;
+	}
+
+	/**
+	 * Sets the angle for PID target
+	 * 
+	 * @param targetAngle
+	 *            - the target angle in being set to PID
+	 */
+	public void setAngleTarget(double targetAngle) {
+		anglePID.update(getAngle());
+		anglePID.setRelativeLocation(0);
+		anglePID.setTarget(targetAngle);
+	}
+	
+	/**
+	 * Updates and tests anglePID
+	 */
+	public void updateAnglePID() {
+		anglePID.update(getAngle());
+		robotDrive.arcadeDrive(0, anglePID.getOutput());
+	}
+
+	/**
+	 * Checks to see if the angle PID has reached the target
+	 * 
+	 * @return Whether angle target has been reached
+	 */
+	public boolean angleReachedTarget() {
+		return anglePID.reachedTarget();
+	}
+
+	/**
+	 * @return the average speed of the two sides of the robot at the current
+	 *         time
+	 */
+	public double getVelocity() {
+		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
+	}
+	
+	/**
+	 * Gets the velocityPID object
+	 * 
+	 * @return the velocityPID object
+	 */
+	public PID getVelocityPID() {
+		return velocityPID;
+	}
+	
+	/**
+	 * Sets targets for tracking velocity of robot for motion profiling
+	 * 
+	 * @param linVelTarget
+	 * @param angVelTarget
+	 */
+	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
+		velocityPID.update(getVelocity());
+		velocityPID.setRelativeLocation(0);
+		velocityPID.setTarget(linVelTarget);
+
+		angularVelocityPID.update(getAngularVelocity());
+		angularVelocityPID.setRelativeLocation(0);
+		angularVelocityPID.setTarget(angVelTarget);
+	}
+	
+	/**
+	 * Updates linear and angular velocity PIDs for motion profiling
+	 */
+	public void updateVelocityPID() {
+		// TODO (Ana T.) See todo of setVelocityTarget method
+		velocityPID.update(getDistance());
+		angularVelocityPID.update(getAngle());
+		robotDrive.arcadeDrive(velocityPID.getOutput(), angularVelocityPID.getOutput());
+	}
+	
+	/**
+	 * Checks to see if the speed PID has reached the target
+	 * 
+	 * @return Whether speed target has been reached
+	 */
+	public boolean velocityReachedTarget() {
+		return velocityPID.reachedTarget();
 	}
 	
 	public double getAngularAcceleration() {
@@ -430,6 +315,121 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		prevTime = Timer.getFPGATimestamp();
 		return (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime);
 
+	}
+
+	/**
+	 * @return the angular velocity
+	 */
+	public double getAngularVelocity() {
+		return gyro.getRate();
+	}
+	
+	/**
+	 * Gets the angularVelocityPID object
+	 * 
+	 * @return the angularVelocityPID object
+	 */
+	public PID getAngularVelocityPID() {
+		return angularVelocityPID;
+	}
+	
+	/**
+	 * Checks to see if the angular velocity PID has reached the target
+	 *  
+	 * @return Whether angular velocity PID has reached the target
+	 */
+	public boolean angularVelocityReachedTarget() {
+		return angularVelocityPID.reachedTarget();
+	}
+	
+	/**
+	 * Uses PID to reach target velocity
+	 * 
+	 * @param v
+	 *            - linear velocity in inches/second
+	 * @param w
+	 *            - angular velocity in degrees/second
+	 * @param a
+	 *            - acceleration in inches/second/second
+	 * @param alpha
+	 *            - angular acceleration in degrees/second/second
+	 */
+	public void followTrajectory(double v, double w, double a, double alpha) {
+		velocityPID.setTarget(v);
+		angularVelocityPID.setTarget(w);
+		velocityPID.update(getVelocity());
+		angularVelocityPID.update(getAngularVelocity());
+
+		double kV = 1.0 / Robot.getPref("DriveMaxV", .01);
+		double kW = 1.0 / Robot.getPref("DriveMaxW", .01);
+		double kA = SmartDashboard.getNumber("MotionProfile/kA", Robot.getPref("DrivekA", 0.0));
+		double kAlpha = SmartDashboard.getNumber("MotionProfile/kAlpha", Robot.getPref("DrivekAlpha", 0.0));
+
+		// Computes output velocity using PID
+		double outputV = velocityPID.getOutput() + kV * v + kA * a;
+		// Computes output angular velocity using PID
+		double outputW = angularVelocityPID.getOutput() + kW * w + kAlpha * alpha;
+
+		arcadeDrive(outputV, outputW);
+
+		SmartDashboard.putNumber("MotionProfile/L", getDistance());
+		SmartDashboard.putNumber("MotionProfile/V", getVelocity());
+		SmartDashboard.putNumber("MotionProfile/A",
+				(getVelocity() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
+		SmartDashboard.putNumber("MotionProfile/Theta", getAngle());
+		SmartDashboard.putNumber("MotionProfile/W", getAngularVelocity());
+		SmartDashboard.putNumber("MotionProfile/Alpha",
+				(getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
+		prevEncoderRate = getVelocity();
+		prevGyroRate = getAngularVelocity();
+		prevTime = Timer.getFPGATimestamp();
+	}
+	
+	/**
+	 * Converts volts from ultrasonic sensors into inches based on equation derived from testing.
+	 * @return distance in inches
+	 * */
+	public double convertVoltsToInches(double volts){
+		return (volts + 4.38e-3)/0.012;
+	}
+	
+	/**
+	 * Gets the voltage from one of two ultrasonic sensors.
+	 * @param side tells which ultrasonic sensor to pull data from (left or right)
+	 * 	if side true, gets left voltage
+	 * 	if side false, gets right voltage
+	 * */
+	public double getUSVoltage(boolean side){
+		if(side){
+			return leftUSsensor.getVoltage();
+		} else{
+			return rightUSsensor.getVoltage();
+		}
+	}
+	
+	/**
+	 * Calculates the distance the robot needs to drive to reach target distance from wall
+	 * 	based on the average of the current US sensor readings.
+	 * Uses the average of the readings because this is measured before the robot auto truns
+	 * 	but is used to execute auto drive after the robot auto turns. The average distance from
+	 * 	the wall will not change in and ideal scenario because the distance from the robot center
+	 * 	will not change. Henceforth, average is used.
+	 * @return the distance to be antered into a drive PID 
+	 * */
+	public double getUSDistToDrive(){
+		double leftDist = convertVoltsToInches(getUSVoltage(true));
+		double rightDist = convertVoltsToInches(getUSVoltage(false));
+		return ((leftDist+rightDist)/2 - distFromUSToRobotFront) - targetUSDist;
+	}
+	
+	/**
+	 * Calculates the angle needed to turn to to approach the wall head on.
+	 * @return the angle to turn to
+	 * */
+	public double getUSTargetAngle(){
+		double leftDist = convertVoltsToInches(getUSVoltage(true));
+		double rightDist = convertVoltsToInches(getUSVoltage(false));
+		return Math.toDegrees(Math.atan((leftDist-rightDist)/(distBtwnUSsensors)));
 	}
 
 	/**
@@ -461,54 +461,51 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * returns whether or not the AnalogInput detects an object blocking the
-	 * light
+	 * Resets the encoders to return zero at that point
 	 */
-
+	public void resetEncoder() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
 
 	/**
-	 * Uses PID to reach target velocity
-	 * 
-	 * @param v
-	 *            - linear velocity in inches/second
-	 * @param w
-	 *            - angular velocity in degrees/second
-	 * @param a
-	 *            - acceleration in inches/second/second
-	 * @param alpha
-	 *            - angular acceleration in degrees/second/second
+	 * Resets the gyro to return zero at that point
 	 */
-	public void followTrajectory(double v, double w, double a, double alpha) {
-		velocityPID.setTarget(v);
-		angularVelocityPID.setTarget(w);
-		velocityPID.update(getSpeed());
-		angularVelocityPID.update(getAngularVelocity());
+	public void resetGyro() {
+		gyro.reset();
+	}
 
-		double kV = 1.0 / Robot.getPref("DriveMaxV", .01);
-		double kW = 1.0 / Robot.getPref("DriveMaxW", .01);
-		double kA = SmartDashboard.getNumber("MotionProfile/kA", Robot.getPref("DrivekA", 0.0));
-		double kAlpha = SmartDashboard.getNumber("MotionProfile/kAlpha", Robot.getPref("DrivekAlpha", 0.0));
+	@Override
+	public void displayData() {
+		putNumber("Left Speed", leftEncoder.getRate());
+		putNumber("Right Speed", rightEncoder.getRate());
+		putNumber("Average Speed", getVelocity());
 
-		// Computes output velocity using PID
-		double outputV = velocityPID.getOutput() + kV * v + kA * a;
-		// Computes output angular velocity using PID
-		double outputW = angularVelocityPID.getOutput() + kW * w + kAlpha * alpha;
+		putNumber("Left Distance", leftEncoder.getDistance());
+		putNumber("Right Distance", rightEncoder.getDistance());
+		putNumber("Average Distance", getDistance());
+		
+		putNumber("Acceleration", (getVelocity() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
+		putNumber("Angular acceleration", (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
 
-		arcadeDrive(outputV, outputW);
+		putNumber("Angle", gyro.getAngle());
+		putNumber("Turn Speed", gyro.getRate());
+		
+		putNumber("Left DT Signal", leftMotor.get());
+		putNumber("Right DT Signal", rightMotor.get());
+		
+		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
+		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 
-		SmartDashboard.putNumber("MotionProfile/L", getDistance());
-		SmartDashboard.putNumber("MotionProfile/V", getSpeed());
-		SmartDashboard.putNumber("MotionProfile/A",
-				(getSpeed() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
-		SmartDashboard.putNumber("MotionProfile/Theta", getAngle());
-		SmartDashboard.putNumber("MotionProfile/W", getAngularVelocity());
-		SmartDashboard.putNumber("MotionProfile/Alpha",
-				(getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
-		prevEncoderRate = getSpeed();
+		putString("Shift piston status", shiftPiston.get().toString());
+
+		prevEncoderRate = getVelocity();
 		prevGyroRate = getAngularVelocity();
 		prevTime = Timer.getFPGATimestamp();
 	}
 
-
-
+	/**
+	 * returns whether or not the AnalogInput detects an object blocking the
+	 * light
+	 */
 }
