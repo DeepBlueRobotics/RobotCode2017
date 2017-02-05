@@ -29,7 +29,7 @@ public class ToggleDriveType extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		drivetrain.toggleArcadeDrive();
+		drivetrain.toggleDriveType();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

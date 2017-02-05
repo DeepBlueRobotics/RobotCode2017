@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public interface DrivetrainInterface extends DashboardInterface {
 	public void initDefaultCommand();
 	
+	public enum DriveTypes {
+		ARCADE, TANK
+	}
 	public double convertVoltsToInches(double volts);
 	
 	public double getUSVoltage(boolean side);
@@ -59,7 +62,7 @@ public interface DrivetrainInterface extends DashboardInterface {
 	
 	public void updateVelocity();
 	
-	public boolean getArcadeDrive();
+	public DriveTypes getDriveType();
 	
-	public void toggleArcadeDrive();
+	public void toggleDriveType();
 }
