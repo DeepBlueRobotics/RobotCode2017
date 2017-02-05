@@ -63,8 +63,9 @@ public class PID extends StaticWidget {
                 }
                 final String prefKey = (boxNames[i]);
                 if (i>3) {
-                    box.editable.setValue(false);
-                } else if(i<=3){
+                    box.editable.setValue(true);
+                } else 
+                	if(i<=3){
 //                    if(prefs.containsKey(prefKey)){
 //                        boxes[i].setValue(prefs.getValue(prefKey, ""));
 //                    }
@@ -138,10 +139,7 @@ public class PID extends StaticWidget {
         j = new JLabel(name+"PID");
         j.setForeground(Color.WHITE);
         j.setFont(new Font(j.getFont().getFontName(), Font.BOLD, 30));
-        add(j);
-        add(p1);
-        add(p2);
-        propertyChanged(loopName);
+
         // Listen for new SD data
         sd.addTableListener(new ITableListener(){
             @Override
@@ -157,8 +155,10 @@ public class PID extends StaticWidget {
                 } else if(key.equals("Output")){
                     outputPlot.setValue(value);
                 }
+                p1.repaint();
+                p2.repaint();
             }
-        });
+        }, true);
         //Listen for external preference modification
         prefs.addTableListener(new ITableListener() {
             @Override
@@ -171,6 +171,12 @@ public class PID extends StaticWidget {
                 }
             }
         });
+
+        add(j);
+        add(p1);
+        add(p2);
+        propertyChanged(loopName);
+        setVisible(true);
     }
 
     @Override
