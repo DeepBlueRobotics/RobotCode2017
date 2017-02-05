@@ -59,7 +59,7 @@ public interface DrivetrainInterface extends DashboardInterface {
 	
 	public void updateVelocity();
 	
-	public boolean getArcadeDrive();
+	public boolean getDriveType();
 	
-	public void toggleArcadeDrive();
+	public void toggleDriveType();
 }

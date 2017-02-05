@@ -52,7 +52,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private double gyroCalibrationInitalValue = 0, gyroDriftRate = 0;
 	private Timer gyroDriftTimer = new Timer();
 
-	public boolean isInArcadeDrive = true;
+	/** 
+	 * isInArcadeDrive is deprecated. Use the enum currentDrive instead 
+	 */
+	// public boolean isInArcadeDrive = true;
 	private double currentSpeed = 0; // only used and changed in Arcade Drive
 	private double currentTurn = 0;
 	
@@ -60,6 +63,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final double distBtwnUSsensors = 25;
 	private final double distFromUSToRobotFront = 15.65;
 	private final double targetUSDist = 3;
+
+	private enum DriveTypes {
+		ARCADE(0), TANK(1)
+	}
+
+	DriveTypes currentDrive = DriveTypes.ARCADE;
 
 	public PID distancePID = new PID("DriveDistance");
 	public PID anglePID = new PID("DriveAngle");
@@ -85,17 +94,23 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		}
 	}
 	/**
-	 * changes the value of isInArcadeDrive
+	 * changes the drive type
 	 */
-	public void toggleArcadeDrive() {
-		isInArcadeDrive = !isInArcadeDrive;
+	public void toggleDriveType() {
+		// isInArcadeDrive = !isInArcadeDrive;
+
+		if (currentDrive == DriveTypes.ARCADE){
+			currentDrive = DriveTypes.TANK;
+		} else {
+			currentDrive = DriveTypes.ARCADE;
+		}
 	}
 	/**
 	 * 
-	 * @return the value of isInArcadeDrive
+	 * @return either DriveTypes.ARCADE (aka 0) or DriveTypes.TANK (aka 1)
 	 */
-	public boolean getArcadeDrive() {
-		return isInArcadeDrive;
+	public boolean getDriveType() {
+		return currentDrive;
 	}
 	/**
 	 * Calculates the distance the robot needs to drive to reach target distance from wall
@@ -134,7 +149,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Allows toggling between arcade and tank teleop driving
 	 */
 	public void drive() {
-		if (isInArcadeDrive) {
+		if (currentDrive = DriveTypes.ARCADE) {
 			currentSpeed = -Robot.oi.rightJoy.getY();
 			currentTurn = -Robot.oi.leftJoy.getX();
 			arcadeDrive(currentTurn, currentSpeed);
@@ -152,7 +167,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * iteration
 	 */
 	public void gradualDrive() {
-		if (isInArcadeDrive) {
+		if (currentDrive = DriveTypes.ARCADE) {
 			currentSpeed += Math.signum(Robot.oi.rightJoy.getY() - currentSpeed) * 0.05;
 			currentTurn += Math.signum(Robot.oi.leftJoy.getX() - currentTurn) * 0.05;
 			robotDrive.arcadeDrive(currentTurn, currentSpeed);
