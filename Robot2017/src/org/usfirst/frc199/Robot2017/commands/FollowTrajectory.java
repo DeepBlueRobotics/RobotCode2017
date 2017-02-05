@@ -82,7 +82,7 @@ public class FollowTrajectory extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		int i = t.getCurrentIndex(Robot.drivetrain.getEncoderDistance());
+		int i = t.getCurrentIndex(Robot.drivetrain.getDistance());
 		double v = t.getV(i);
 		double v1 = t.getV(i + 1);
 		double w = t.getW(i);

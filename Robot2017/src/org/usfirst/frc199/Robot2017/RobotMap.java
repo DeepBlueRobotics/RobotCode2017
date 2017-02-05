@@ -30,7 +30,6 @@ public class RobotMap {
 	public static AnalogGyro drivetrainGyro;
 	public static Compressor drivetrainCompressor;
 	public static DoubleSolenoid drivetrainShiftPiston;
-	public static DigitalInput gearLiftedLimitSwitch;
 	public static DoubleSolenoid intakePivotPiston;
 	public static SpeedController intakeIntakeMotor;
 	public static SpeedController shooterShootMotor;
@@ -67,11 +66,11 @@ public class RobotMap {
 
 		drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
 		LiveWindow.addSensor("Drivetrain", "LeftEncoder", drivetrainLeftEncoder);
-		drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", 1));
+		drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0531));
 		drivetrainLeftEncoder.setPIDSourceType(PIDSourceType.kRate);
-		drivetrainRightEncoder = new Encoder(2, 3, false, EncodingType.k4X);
+		drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 		LiveWindow.addSensor("Drivetrain", "RightEncoder", drivetrainRightEncoder);
-		drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", 1));
+		drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0521));
 		drivetrainRightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		
@@ -118,9 +117,6 @@ public class RobotMap {
 		climberWinchMotor = new Talon(8);
 		LiveWindow.addActuator("Climber", "WinchMotor", (Talon) climberWinchMotor);
 		
-		
-		gearLiftedLimitSwitch = new DigitalInput(10);
-		LiveWindow.addSensor("Drivetrain", "GearLimit", gearLiftedLimitSwitch);
 		
 		climberPlateIRSensor = new AnalogInput(1);
 		LiveWindow.addSensor("Climber", "ClimberInfrared", climberPlateIRSensor);
