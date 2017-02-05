@@ -134,8 +134,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void drive() {
 		if (isInArcadeDrive) {
-			currentSpeed = -Robot.oi.rightJoy.getY();
-			currentTurn = -Robot.oi.leftJoy.getX();
+			currentSpeed = Robot.oi.rightJoy.getY();
+			currentTurn = Robot.oi.leftJoy.getX();
 			arcadeDrive(currentTurn, currentSpeed);
 		} else {
 			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
@@ -421,9 +421,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return whether the robot should shift to low gear
 	 */
 	public boolean currentControl() {
-		int channel = (int) (Robot.getPref("drivetrain channel", 0));
-		double current = pdp.getCurrent(channel);
-		if (current >= Robot.getPref("drivetrainMaxCurrent", 110))
+		int rightChannel = (int) (Robot.getPref("Drivetrain PDP Channel Right", 13));
+		int leftChannel = (int) (Robot.getPref("Drivetrain PDP Channel Left", 15));
+		double rightCurrent = pdp.getCurrent(rightChannel);
+		double leftCurrent = pdp.getCurrent(leftChannel);
+		if (rightCurrent >= Robot.getPref("drivetrainMaxCurrentRight", 110) || leftCurrent >= Robot.getPref("drivetrainMaxCurrentLeft", 110))
 			return true;
 		return false;
 	}

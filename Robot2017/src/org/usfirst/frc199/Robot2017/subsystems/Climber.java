@@ -69,9 +69,9 @@ public class Climber extends Subsystem implements ClimberInterface {
 	}
 
 	public boolean checkMotorDraw() {
-		int channel = (int) (Robot.getPref("climber channel", 1));
+		int channel = (int) (Robot.getPref("Climber Channel", 2));
 		double current = pdp.getCurrent(channel);
-		if (current >= (int) Robot.getPref("maxClimberCurrent", 50)) {
+		if (current >= (int) Robot.getPref("MaxClimberCurrent", 50)) {
 			return true;
 		}
 		return false;
