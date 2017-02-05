@@ -64,13 +64,12 @@ public class Shooter extends Subsystem implements ShooterInterface {
 				&& (shootEncoder.get() - prevShooterEncoder) <= Robot.getPref("encoderOffset", 5)
 				&& Robot.getPref("shooterEncoderWorks", 0) == 1) {
 			shootMotor.set(0);
-			System.out.println("Shooter Motor stalled, stopping motor.");
-			prevShooterEncoder = shootEncoder.get();
+//			System.out.println("Shooter Motor stalled, stopping motor.");
 			shooterMotorStalled = true;
 		} else {
-			prevShooterEncoder = shootEncoder.get();
 			shooterMotorStalled = false;
 		}
+		prevShooterEncoder = shootEncoder.get();
 		return shooterMotorStalled;
 	}
 
