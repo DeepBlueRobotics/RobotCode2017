@@ -47,28 +47,16 @@ public interface DashboardInterface {
 	/*
 	 * Methods for reading numbers, without specifying the modified key
 	 */
-	default double getNumber(String key) {
-		return SmartDashboard.getNumber(key);
-	}
-
 	default double getNumber(String key, double defaultValue) {
-		return SmartDashboard.getNumber(key, defaultValue);
-	}
-
-	default boolean getBoolean(String key) {
-		return SmartDashboard.getBoolean(key);
+		return SmartDashboard.getNumber(getKey(key), defaultValue);
 	}
 
 	default boolean getBoolean(String key, boolean defaultValue) {
-		return SmartDashboard.getBoolean(key, defaultValue);
-	}
-
-	default String getString(String key) {
-		return SmartDashboard.getString(key);
+		return SmartDashboard.getBoolean(getKey(key), defaultValue);
 	}
 
 	default String getString(String key, String defaultValue) {
-		return SmartDashboard.getString(key, defaultValue);
+		return SmartDashboard.getString(getKey(key), defaultValue);
 	}
 
 	/**

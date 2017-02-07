@@ -67,9 +67,9 @@ public class PID implements DashboardInterface {
 	 *            - new input value in real units
 	 */
 	public void update(double newValue) {
-		kP = getNumber("kP");
-		kI = getNumber("kI");
-		kD = getNumber("kD");
+		kP = getNumber("kP", 0);
+		kI = getNumber("kI", 0);
+		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;
 		interval = intervalTimer.get();
@@ -85,8 +85,6 @@ public class PID implements DashboardInterface {
 			rate = 0;
 		}
 		lastError = error;
-		SmartDashboard.putNumber(name + "Error", error);
-		SmartDashboard.putNumber(name + "Output", output);
 	}
 
 	/**

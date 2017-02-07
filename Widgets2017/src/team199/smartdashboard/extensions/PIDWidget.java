@@ -31,6 +31,7 @@ public class PIDWidget extends StaticWidget {
     private LinePlot outputPlot = new LinePlot();
     private final MyTextBox[] boxes = new MyTextBox[12];
     private final String[] boxNames = {"kP", "kI", "kD", "TestTarget", "SensorValue", "Input", "Error", "Target", "Output", "Interval", "Rate", "TotalError"};
+    private final String[] ipList = {"172.22.11.2", "10.1.99.2", "10.1.99.0", "roboRIO-199-FRC.local"};
     private JLabel j;
     
     private final JPanel p1 = new JPanel();
@@ -38,7 +39,7 @@ public class PIDWidget extends StaticWidget {
     
     private String name = "Default";
     public final StringProperty loopName = new StringProperty(this, "LoopName", "Default");
-    private NetworkTable sd = NetworkTable.getTable("SmartDashboard/PID/Default");
+    private NetworkTable sd;
     private ITable prefs;
     
     private final Color deepblue = new Color(0, 1, 99);
@@ -47,17 +48,22 @@ public class PIDWidget extends StaticWidget {
     public void propertyChanged(Property prop) {
         if (prop == loopName) {
             name = loopName.getValue();
-            sd = NetworkTable.getTable("SmartDashboard/PID/" + name);
+            try {
+            	sd = NetworkTable.getTable("SmartDashboard/PID/" + name);
+            } catch(Exception e) {
+            	System.out.println("Failed to access NetworkTables");
+            }
             j.setText(name+"PID");
             p1.removeAll();
             
             for(int i=0; i<boxes.length; i++){
-                final MyTextBox box = new MyTextBox("PID/"+name+"/");
+                MyTextBox box = new MyTextBox("SmartDashboard/PID/"+name+"/");
                 boxes[i] = box;
                 addWidget(box, boxNames[i], p1, DataType.NUMBER);
                 
                 if(sd.containsKey(boxNames[i])){
                     box.setValue(sd.getValue(boxNames[i], 0));
+                    System.out.println("Changed: " + boxNames[i]);
                 } else {
                     sd.putNumber(boxNames[i], 0);
                     box.setValue(sd.getNumber(boxNames[i], 0));
@@ -98,6 +104,9 @@ public class PIDWidget extends StaticWidget {
         } catch(Exception e) {
             System.out.println("Preferences not found");
         }
+        
+//        propertyChanged(loopName);
+        
         setPreferredSize(new Dimension(825, 444));
         setLayout(new FlowLayout());
         GridLayout g = new GridLayout(3,5);
@@ -107,6 +116,7 @@ public class PIDWidget extends StaticWidget {
         p1.setBackground(deepblue);
         p2.setLayout(new GridLayout(1,2));
         p2.setBackground(deepblue);
+        
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -142,7 +152,16 @@ public class PIDWidget extends StaticWidget {
         add(j);
         add(p1);
         add(p2);
+        
+        //Initialize the NetworkTable server to allow access
+        NetworkTable.setClientMode();
+        NetworkTable.setTeam(199);
+        NetworkTable.setIPAddress(ipList);
+        NetworkTable.initialize();
+        
+        //Change values of boxes based on the current PID name
         propertyChanged(loopName);
+        
         // Listen for new SD data
         sd.addTableListener(new ITableListener(){
             @Override
@@ -158,8 +177,10 @@ public class PIDWidget extends StaticWidget {
                 } else if(key.equals("Output")){
                     outputPlot.setValue(value);
                 }
+                repaint();
             }
-        });
+        }, true);
+        
         //Listen for external preference modification
         prefs.addTableListener(new ITableListener() {
             @Override
@@ -198,5 +219,6 @@ public class PIDWidget extends StaticWidget {
         addWidget(errorPlot, "Error", p2, DataType.NUMBER);
         addWidget(outputPlot, "Output", p2, DataType.NUMBER);
         revalidate();
+        repaint();
     }
 }
