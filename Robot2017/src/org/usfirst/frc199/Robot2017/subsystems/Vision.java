@@ -23,10 +23,7 @@ public class Vision extends Subsystem implements DashboardInterface {
         //setDefaultCommand(new MySpecialCommand());
     }
 
-    //TODO: make getAngleToGear() and getDistanceToGear()
-    //to get stuff, use:
-    //getNumber("Vision/key", 0);
-    //example: getNumber("Vision/leftGearCenterX", 0); 
+    //TODO: make getAngleToGear not rely on getDistanceToGear, same for boiler
     
     public double getDistanceToGear()
     {
