@@ -23,11 +23,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoModeLoadSide extends CommandGroup {
 	
 	/***
-	 * Commands for autonomous starting at left
-	 * @param alliance true for red, false for blue 
+	 * Commands for autonomous starting at load side
 	 */
-    public AutoModeLoadSide(boolean alliance) {
+    public AutoModeLoadSide() {
         
+    	final boolean alliance = Robot.getPref("Alliance (true - red, false - blue)", true); //true for red, false for blue
     	final double LEFT = -1;
     	final double RIGHT = 1;
     	final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 101.908); //in. from front end of robot to point on field

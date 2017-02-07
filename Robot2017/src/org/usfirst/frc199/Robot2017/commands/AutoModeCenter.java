@@ -17,10 +17,10 @@ public class AutoModeCenter extends CommandGroup {
 	
 	/***
 	 * Commands for autonomous starting at center
-	 * @param alliance true for red, false for blue 
 	 */
-    public AutoModeCenter(boolean alliance) {
+    public AutoModeCenter() {
         
+    	final boolean alliance = Robot.getPref("Alliance (true - red, false - blue)", true); //true for red, false for blue
     	final double ROBOT_LENGTH = 36.875; //in.
     	final double ROBOT_WIDTH = 34.75; //in
     	final double DIST_TO_LIFT = Robot.getPref("WallToLift", 114.3); //in. from alliance wall to lift (approx.)

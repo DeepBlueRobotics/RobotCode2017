@@ -135,4 +135,10 @@ public class Robot extends IterativeRobot {
 		}
 		return Preferences.getInstance().getDouble(key, defaultValue);
 	}
+	public static boolean getPref(String key, boolean defaultValue) {
+		if (!Preferences.getInstance().containsKey(key)) {
+			Preferences.getInstance().putBoolean(key, defaultValue);
+		}
+		return Preferences.getInstance().getBoolean(key, defaultValue);
+	}
 }

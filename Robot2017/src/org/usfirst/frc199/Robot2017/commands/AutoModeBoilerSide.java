@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoModeBoilerSide extends CommandGroup {
 
 	/***
-	 * Commands for autonomous starting at left
-	 * @param alliance true for red, false for blue 
+	 * Commands for autonomous starting at boiler side
 	 */
-    public AutoModeBoilerSide(boolean alliance) {
+    public AutoModeBoilerSide() {
         
+    	final boolean alliance = Robot.getPref("Alliance (true - red, false - blue)", true); //true for red, false for blue
     	final double ROBOT_LENGTH = 36.875; //in.
     	final double ROBOT_WIDTH = 34.75; //in
     	final double LEFT = -1;
