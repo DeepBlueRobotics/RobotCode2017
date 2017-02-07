@@ -37,6 +37,8 @@ public class AutoModeLoadSide extends CommandGroup {
     	final double LIFT_TO_PEG = Robot.getPref("Lift Corner to Peg (Vertical) LoadSide", 17.647); //in vertically from front of lift to the peg
     	final double ROBOT_LENGTH = Robot.getPref("Robot Length", 0);
     	
+    	//TODO: Implement vision: keep length_1 for now, but replace length_2 with dist to lift, and replace the 60 degree turn with angle to lift
+    	
     	//METHOD 1
     	//Drives to hexagon
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
