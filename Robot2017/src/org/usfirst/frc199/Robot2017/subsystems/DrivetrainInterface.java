@@ -59,7 +59,11 @@ public interface DrivetrainInterface extends DashboardInterface {
 	
 	public void updateVelocity();
 	
-	public boolean getDriveType();
+	public DriveTypes getDriveType();
 	
 	public void toggleDriveType();
+	
+	public enum DriveTypes {
+		ARCADE, TANK, DRIFT_TANK
+	}
 }

@@ -68,6 +68,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID distancePID = new PID("DriveDistance");
 	private PID anglePID = new PID("DriveAngle");
 	private PID leftDriveSpeedPID = new PID("LeftDriveSpeed");
+	
 
 	/**
 	 * This method initializes the command used in teleop
@@ -76,25 +77,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
 	
-	/**
-<<<<<<< HEAD
-	 * Gets the voltage from one of two ultrasonic sensors.
-	 * @param side tells which ultrasonic sensor to pull data from (left or right)
-	 * 	if side true, gets left voltage
-	 * 	if side false, gets right voltage
-	 * */
-	public double getUSVoltage(boolean side){
-		if(side){
-			return leftUSsensor.getVoltage();
-		} else{
-			return rightUSsensor.getVoltage();
-		}
-	}
+	
 	/**
 	 * Changes the drive type
-=======
 	 * changes the drive type
->>>>>>> origin/master
 	 */
 	public void toggleDriveType() {
 
