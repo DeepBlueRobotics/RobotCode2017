@@ -7,7 +7,21 @@ import numpy as np
 import cv2
 import operator
 
+cap = cv2.VideoCapture(1)
 
+subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell = True)
+subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell = True)
+
+lower = np.array([40, 0, 250])
+upper = np.array([83, 20, 255])
+
+while True:
+    ret, frame = cap.read()
+
+    findTape(frame, lower, upper)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 
 def findTape(cap, lowerHSV, upperHSV):
@@ -64,6 +78,6 @@ def findTape(cap, lowerHSV, upperHSV):
             #     else:
             #         retrn cnts2[i][1], cnts2[i][2], cnts2[j][1], cnts2[j][2], True
 
-            # TODO: correctly identify the right contours based on their vertices matching on a line
+            
 
-    # return -1, -1, -1, -1, False
+    return -1, -1, -1, -1, False

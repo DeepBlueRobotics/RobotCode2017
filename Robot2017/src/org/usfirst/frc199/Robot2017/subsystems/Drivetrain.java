@@ -93,10 +93,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		}
 	}
 	/**
-	 * changes the drive type
+	 * Changes the drive type
 	 */
 	public void toggleDriveType() {
-		// isInArcadeDrive = !isInArcadeDrive;
 
 		if (currentDrive == DriveTypes.ARCADE){
 			currentDrive = DriveTypes.TANK;

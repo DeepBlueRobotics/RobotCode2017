@@ -39,6 +39,8 @@ subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell = Tru
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell = True)
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell = True)
 
+#remember to set resolution
+
 
 """ Main Loop """
 while(True):
@@ -67,7 +69,7 @@ while(True):
 
             else:
                 nt.write("AutoAlignGear", "leftCenterX", lx)
-                nt.write("AutoAlignGear", "leftCenterY", lyY)
+                nt.write("AutoAlignGear", "leftCenterY", ly)
                 nt.write("AutoAlignGear", "rightCenterX", rx)
                 nt.write("AutoAlignGear", "rightCenterY", ry)
                 # nt.write("AutoAlignGear", "pegX", (lx + rx) / 2)
