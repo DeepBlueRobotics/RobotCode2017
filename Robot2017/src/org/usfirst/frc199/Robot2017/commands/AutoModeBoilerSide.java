@@ -33,6 +33,8 @@ public class AutoModeBoilerSide extends CommandGroup {
     	final double ROBOT_CENTER_TO_PEG = Robot.getPref("Robot center to peg (Horizontal)", 41.42); //in horizontally from front of lift to the peg
     	final double LIFT_TO_PEG = Robot.getPref("Lift Corner to Peg (vertical) BoilerSide", 17.647); //in vertically from front of lift to the peg
     	
+    	//TODO: Implement vision: keep length_1 for now, but replace length_2 with dist to lift, and replace the 60 degree turn with angle to lift
+    	
     	
     	//METHOD 1:
     	//Drives to airlift

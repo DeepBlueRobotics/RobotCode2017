@@ -29,6 +29,9 @@ public class AutoModeCenter extends CommandGroup {
     	final double LEFT = -1;
     	final double RIGHT = 1;
     
+    	//TODO: Implement vision: use dist to lift
+    	
+    	
 		//Drives to lift and aligns
     	addSequential(new AutoDrive(DIST_TO_LIFT - ROBOT_LENGTH, 0, Robot.drivetrain));
     	addSequential(new AutoAlignGear());
