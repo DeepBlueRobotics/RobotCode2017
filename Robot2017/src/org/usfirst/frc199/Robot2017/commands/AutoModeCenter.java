@@ -33,7 +33,7 @@ public class AutoModeCenter extends CommandGroup {
     	
     	
 		//Drives to lift and aligns
-    	addSequential(new AutoDrive(DIST_TO_LIFT - ROBOT_LENGTH, 0, Robot.drivetrain));
+    	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
     	addSequential(new AutoAlignGear());
     	
     	//Aims and shoots

@@ -36,7 +36,7 @@ public class Vision extends Subsystem implements DashboardInterface {
     public double getAngleToGear()
     {	
     	double pegX = (getNumber("Vision/leftGearCenterX", 0) + getNumber("Vision/rightGearCenterX", 0))/2;
-    	double pixelDisplacement = Math.abs(SCREEN_CENTER - pegX);
+    	double pixelDisplacement = SCREEN_CENTER - pegX;
     	double abstractDepth = (RESOLUTION_WIDTH/2)/Math.tan(THETA);
     	
     	double angle = (Math.atan(pixelDisplacement/abstractDepth) * 180) / Math.PI;
@@ -57,7 +57,7 @@ public class Vision extends Subsystem implements DashboardInterface {
     public double getAngleToBoiler()
     {	
     	double tapeCenterX = getNumber("Vision/topBoilerCenterX", 0);
-    	double pixelDisplacement = Math.abs(SCREEN_CENTER - tapeCenterX);
+    	double pixelDisplacement = SCREEN_CENTER - tapeCenterX;
     	double abstractDepth = (RESOLUTION_WIDTH/2)/Math.tan(THETA);
     	
     	double angle = (Math.atan(pixelDisplacement/abstractDepth) * 180) / Math.PI;
