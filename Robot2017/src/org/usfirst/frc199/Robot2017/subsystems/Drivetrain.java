@@ -80,10 +80,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	
 	/**
 	 * Changes the drive type
-	 * changes the drive type
 	 */
 	public void toggleDriveType() {
-
 		if (currentDrive == DriveTypes.ARCADE){
 			currentDrive = DriveTypes.TANK;
 		} else if(currentDrive == DriveTypes.TANK){
@@ -312,7 +310,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	public double getAngularAcceleration() {
-
 		prevGyroRate = getAngularVelocity();
 		prevTime = Timer.getFPGATimestamp();
 		return (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime);
