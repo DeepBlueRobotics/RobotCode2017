@@ -21,16 +21,10 @@ public class AutoModeCenter extends CommandGroup {
 	 */
     public AutoModeCenter(boolean alliance) {
         
-    	final double ROBOT_LENGTH = 36.875; //in.
-    	final double ROBOT_WIDTH = 34.75; //in
-    	final double DIST_TO_LIFT = Robot.getPref("WallToLift", 114.3); //in. from alliance wall to lift (approx.)
     	final double DIVIDER_DEPTH = Robot.getPref("DividerDepth", 21.5); //in. dividers protrude from the airship toward alliance wall (approx.)
     	final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07); //in. from corner to corner of airship;
     	final double LEFT = -1;
     	final double RIGHT = 1;
-    
-    	//TODO: Implement vision: use dist to lift
-    	
     	
 		//Drives to lift and aligns
     	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
