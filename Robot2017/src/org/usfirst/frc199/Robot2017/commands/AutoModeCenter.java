@@ -67,8 +67,17 @@ public class AutoModeCenter extends CommandGroup {
 	
     	/*
     	//METHOD 2:
-    	addSequential(new FollowTrajectory(0-((AIRSHIP_DIAGONAL / 2) + 36)), (AIRSHIP_DIAGONAL / 2) + 36), 90));
+    	
+    	if(alliance)
+    	{
+    		addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2) + 36, (AIRSHIP_DIAGONAL / 2) + 36, RIGHT*90));
+    	}
+    	else
+    	{
+    		addSequential(new FollowTrajectory(0-((AIRSHIP_DIAGONAL / 2) + 36), (AIRSHIP_DIAGONAL / 2) + 36, LEFT*90));
+    	}
     	*/
+    	
     }
     	
     
