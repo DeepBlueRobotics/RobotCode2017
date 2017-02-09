@@ -61,10 +61,10 @@ public class AutoModeBoilerSide extends CommandGroup {
      	
      	
      	//Aims and shoots
-    	addParallel(new VisionAssistedShoot(0,0));
+     	addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));
     	addSequential(new AutoDelay(0, Robot.intake));
     	
-    	//TODO: Dispense boiler
+    
     	
     }
 }

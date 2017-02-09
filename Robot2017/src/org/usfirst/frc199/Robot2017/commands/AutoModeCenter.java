@@ -31,7 +31,7 @@ public class AutoModeCenter extends CommandGroup {
     	addSequential(new AutoAlignGear());
     	
     	//Aims and shoots
-    	addParallel(new VisionAssistedShoot(0,0));
+    	addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));
     	addSequential(new AutoDelay(0, Robot.intake));
     	
     	

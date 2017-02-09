@@ -104,7 +104,7 @@ public class AutoModeLoadSide extends CommandGroup {
     	
     	
     	//Aims and shoots
-    	addParallel(new VisionAssistedShoot(0,0));
+    	addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));
    
     	
     }
