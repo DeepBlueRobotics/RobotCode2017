@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.tables.ITable;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,12 +63,14 @@ public class ManualControl extends StaticWidget {
             }
         });
         
-        setPreferredSize(new Dimension(215, 105));
+        setPreferredSize(new Dimension(230, 105));
         dropBox.setPreferredSize(new Dimension(200, 25));
         runButton.setPreferredSize(new Dimension(90, 25));
+        p.setPreferredSize(new Dimension(230, 105));
         
         GridLayout g = new GridLayout(3,1, 5, 5);
-        p.setLayout(g);
+        title.setFont(new Font(title.getFont().getFontName(), Font.BOLD, 20));
+        p.setLayout(new FlowLayout());
         p.setBackground(deepblue);
         p.add(title);
         p.add(dropBox);

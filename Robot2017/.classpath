@@ -22,5 +22,7 @@
 	<classpathentry kind="var" path="mockito"/>
 	<classpathentry kind="var" path="navx_frc"/>
 	<classpathentry kind="var" path="junit"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/junit.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/mockito-all-1.10.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

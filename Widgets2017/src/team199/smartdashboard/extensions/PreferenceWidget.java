@@ -22,7 +22,7 @@ public class PreferenceWidget extends StaticWidget {
     public static final String NAME = "Preference Widget";
     private final JComboBox keyBox = new JComboBox();
     private final JTextField valueField = new JTextField();
-    private ITable prefs = null;//NetworkTable.getTable("Preferences");
+    private ITable prefs = null;
     private final JButton saveButton = new JButton("Save");
     private final JButton removeButton = new JButton("Remove");
 
@@ -31,7 +31,6 @@ public class PreferenceWidget extends StaticWidget {
         try {
             prefs = Robot.getPreferences();
         } catch(Exception e) {
-//            prefs = NetworkTable.getTable("Preferences");
             System.out.println("Preferences not found");
             return;
         }
@@ -46,6 +45,7 @@ public class PreferenceWidget extends StaticWidget {
         add(saveButton);
         add(removeButton);
         update();
+        
         keyBox.addActionListener((ActionEvent e) -> {
             readValueOfCurrentKey();
         });
@@ -55,18 +55,22 @@ public class PreferenceWidget extends StaticWidget {
                 update();
             }
         });
+        
         valueField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 writeValueOfCurrentKey();
             }
         });
+        
         prefs.addTableListener((ITable itable, String key, Object value, boolean isNew) -> {
             readValueOfCurrentKey();
         }, true);
+        
         saveButton.addActionListener((ActionEvent e) -> {
-            Robot.getPreferences().putBoolean(Robot.PREF_SAVE_FIELD, true);
+            prefs.putBoolean(Robot.PREF_SAVE_FIELD, true);
         });
+        
         removeButton.addActionListener((ActionEvent e) -> {
             String key = keyBox.getSelectedItem() + "";
             prefs.delete(key);

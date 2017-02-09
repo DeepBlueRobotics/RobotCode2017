@@ -71,7 +71,7 @@ public class OI {
 		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear());
 
 		// SmartDashboard Buttons
-		SmartDashboard.putData("MainAutoMode", new MainAutoMode());
+		SmartDashboard.putData("MainAutoMode", new AutoModeBasic());
 		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0, Robot.drivetrain));
 		SmartDashboard.putData("AutoDelay", new AutoDelay(0, Robot.intake));
 		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(Robot.shooter));
