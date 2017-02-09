@@ -21,12 +21,18 @@ public class AutoModeCenter extends CommandGroup {
 	 */
     public AutoModeCenter(boolean alliance) {
         
+    	double direction;
+    	if(alliance)
+    	{
+    		direction = -1;
+    	}
+    	else
+    	{
+    		direction = 1;
+    	}
     	final double DIVIDER_DEPTH = Robot.getPref("DividerDepth", 21.5); //in. dividers protrude from the airship toward alliance wall (approx.)
     	final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07); //in. from corner to corner of airship;
-    	final double LEFT = -1;
-    	final double RIGHT = 1;
     	
-   
 		//Drives to lift and aligns
     	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
     	addSequential(new AutoAlignGear());
@@ -40,28 +46,18 @@ public class AutoModeCenter extends CommandGroup {
     	addSequential(new AutoDrive(0-(DIVIDER_DEPTH + 6),0, Robot.drivetrain));
     	
     	//Turns away from boiler
-    	if(alliance)
-    	{
-    		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
-    	}
-    	else
-    	{
-    		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
-    	}
+    	
+    	addSequential(new AutoDrive(0,(0-direction)*90, Robot.drivetrain));
+    	
+    	
     	
     	//METHOD 1:
     	//Drives past airship
     	addSequential(new AutoDrive((AIRSHIP_DIAGONAL / 2) + 36, 0, Robot.drivetrain));
     	
     	//Turns toward center of field
-    	if(alliance)
-    	{
-    		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
-    	}
-    	else
-    	{
-    		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
-    	}
+ 
+    		addSequential(new AutoDrive(0,direction*90, Robot.drivetrain));
     	
     	//Passes baseline
     	addSequential(new AutoDrive(DIVIDER_DEPTH + 24,0, Robot.drivetrain));
@@ -69,15 +65,9 @@ public class AutoModeCenter extends CommandGroup {
     	/*
     	//METHOD 2:
     	
-    	if(alliance)
-    	{
-    		addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2) + 36, (AIRSHIP_DIAGONAL / 2) + 36, RIGHT*90));
-    	}
-    	else
-    	{
-    		addSequential(new FollowTrajectory(0-((AIRSHIP_DIAGONAL / 2) + 36), (AIRSHIP_DIAGONAL / 2) + 36, LEFT*90));
-    	}
+    	addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2) + 36, (AIRSHIP_DIAGONAL / 2) + 36, direction*90));
     	*/
+    	
     	
     }
     	
