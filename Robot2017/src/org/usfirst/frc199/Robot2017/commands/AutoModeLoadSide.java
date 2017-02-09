@@ -46,11 +46,15 @@ public class AutoModeLoadSide extends CommandGroup {
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
     	//Turns toward lift
-    	addSequential(new AutoDrive(0,Robot.vision.getAngleToGear(), Robot.drivetrain));
     	
+    	if(alliance) {
+    		addSequential(new AutoDrive(0,RIGHT*60, Robot.drivetrain));
+    	} else {
+    		addSequential(new AutoDrive(0,LEFT*60, Robot.drivetrain));
+    	} 
     	
     	//drives up to lift and aligns
-    	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
+    	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
      	addSequential(new AutoAlignGear());
      	
      	
@@ -66,7 +70,7 @@ public class AutoModeLoadSide extends CommandGroup {
     	*/
      	
      	//Waits to allow gear to be lifted
-     	addSequential(new AutoDelay(0, Robot.intake));
+     	//addSequential(new AutoDelay(0, Robot.intake));
      	
      	//METHOD 1:
      	//backs up

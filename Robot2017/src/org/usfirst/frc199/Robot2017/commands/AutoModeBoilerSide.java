@@ -24,10 +24,10 @@ public class AutoModeBoilerSide extends CommandGroup {
     public AutoModeBoilerSide(boolean alliance) {
         
     	final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 95.742);; //in. from front end of robot to point on field
-    	/*
-    	// METHOD 2 INSTANCE VARIABLES:
     	final double LEFT = -1;
     	final double RIGHT = 1;
+    	/*
+    	// METHOD 2 INSTANCE VARIABLES:
     	final double ROBOT_LENGTH = 36.875; //in.
     	final double DIST_TO_LIFT = Robot.getPref("Wall To Lift", 114.3); //in. from alliance wall to lift (approx.)
     	final double ROBOT_CENTER_TO_PEG = Robot.getPref("Robot center to peg (Horizontal)", 41.42); //in horizontally from front of lift to the peg
@@ -39,10 +39,13 @@ public class AutoModeBoilerSide extends CommandGroup {
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
     	//Turns toward lift
-    	addSequential(new AutoDrive(0,Robot.vision.getAngleToGear(), Robot.drivetrain));
-    	
+    	if(alliance) {
+    		addSequential(new AutoDrive(0,LEFT*60, Robot.drivetrain));
+    	} else {
+    		addSequential(new AutoDrive(0,RIGHT*60, Robot.drivetrain));
+    	} 
     	//drives up to lift and aligns
-    	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
+    	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
      	addSequential(new AutoAlignGear());
      	
      	/*

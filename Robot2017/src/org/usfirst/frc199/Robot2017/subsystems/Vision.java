@@ -23,25 +23,38 @@ public class Vision extends Subsystem implements DashboardInterface {
 
     }
 
-    public double getDistanceToGear()
-    {
-    	double leftGearCenterX =  getNumber("Vision/leftGearCenterX", 0);
-    	double rightGearCenterX = getNumber("Vision/rightGearCenterX", 0);
-    	double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
-    	double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
-    	double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
-    	return distanceToGear;
+    public double getDistanceToGear() {
+    	if (getBoolean("Vision/OH-YEAH",true))
+    	{
+    		double leftGearCenterX =  getNumber("Vision/leftGearCenterX", 0);
+        	double rightGearCenterX = getNumber("Vision/rightGearCenterX", 0);
+        	double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
+        	double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
+        	double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
+        	return distanceToGear;
+    	}
+    	else
+    	{
+    		return 0;
+    	}
     }
     
     public double getAngleToGear()
     {	
-    	double pegX = (getNumber("Vision/leftGearCenterX", 0) + getNumber("Vision/rightGearCenterX", 0))/2;
-    	double pixelDisplacement = SCREEN_CENTER - pegX;
-    	double abstractDepth = (RESOLUTION_WIDTH/2)/Math.tan(THETA);
-    	
-    	double angle = (Math.atan(pixelDisplacement/abstractDepth) * 180) / Math.PI;
-    	
-    	return angle;
+    	if (getBoolean("Vision/OH-YEAH",true))
+    	{
+	    	double pegX = (getNumber("Vision/leftGearCenterX", 0) + getNumber("Vision/rightGearCenterX", 0))/2;
+	    	double pixelDisplacement = SCREEN_CENTER - pegX;
+	    	double abstractDepth = (RESOLUTION_WIDTH/2)/Math.tan(THETA);
+	    	
+	    	double angle = (Math.atan(pixelDisplacement/abstractDepth) * 180) / Math.PI;
+	    	
+	    	return angle;
+    	}
+    	else
+    	{
+    		return 0;
+    	}
     }
     
     public double getDistanceToBoiler()

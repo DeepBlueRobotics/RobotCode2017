@@ -26,13 +26,14 @@ public class AutoModeCenter extends CommandGroup {
     	final double LEFT = -1;
     	final double RIGHT = 1;
     	
+   
 		//Drives to lift and aligns
-    	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
+    	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
     	addSequential(new AutoAlignGear());
     	
     	//Aims and shoots
     	addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));
-    	addSequential(new AutoDelay(0, Robot.intake));
+    	//addSequential(new AutoDelay(0, Robot.intake));
     	
     	
     	//Backs out of dividers, giving 6 inches of extra space for the pivot
