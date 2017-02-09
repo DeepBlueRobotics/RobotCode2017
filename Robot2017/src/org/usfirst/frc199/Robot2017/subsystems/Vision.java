@@ -25,7 +25,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 
     public double getDistanceToGear()
     {
-    	double leftGearCenterX=  getNumber("Vision/leftGearCenterX", 0);
+    	double leftGearCenterX =  getNumber("Vision/leftGearCenterX", 0);
     	double rightGearCenterX = getNumber("Vision/rightGearCenterX", 0);
     	double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
     	double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
