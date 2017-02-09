@@ -91,13 +91,16 @@ public class AutoModeLoadSide extends CommandGroup {
     	}
     	*/
     	
-    	//turns away from boiler and drives backward
+    	//turns away from boiler, aligns and drives backward towards it
     	if(alliance) {
     		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
     	} else {
     		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
     	}
-    	addSequential(new AutoDrive(-120, 0, Robot.drivetrain));
+    	
+    	addSequential(new AutoDrive(0,Robot.vision.getAngleToBoiler(), Robot.drivetrain));
+
+    	addSequential(new AutoDrive(3-Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
     	
     	
     	//Aims and shoots
