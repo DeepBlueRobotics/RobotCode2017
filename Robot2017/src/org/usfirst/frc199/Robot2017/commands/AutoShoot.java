@@ -37,6 +37,7 @@ public class AutoShoot extends Command {
 
 	// Called just before this Command runs the first time
 	public void initialize() {
+		requires(Robot.shooter);
 		tim.start();
 		shooter.setShooterPIDTarget(target);
 		shooter.setHoodPIDTarget(angle);
