@@ -43,11 +43,15 @@ def findTape(cap, lowerHSV, upperHSV):
 
             # tup = (len(centerX) - 1, area)
             # cntAreas.append(area)
+            c.sort(key=operator.itemgetter(1))
 
-            cnts2.append((area, centerX, centerY))
+            cnts2.append(area, centerX, centerY, c)
 
     # sorts contours by largest to smallest area
     cnts2.sort(key=operator.itemgetter(0)).reverse()
+
+    for c in cnts2:
+
 
     for i in range(0, len(cnts2) - 1):
         for j in range(i + 1, len(cnts2) - 1):
