@@ -5,6 +5,7 @@ import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -34,15 +35,27 @@ public class AutoDelay extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(time != 0.0){
-    		if((tim.get() >= time))
-    		{
+    	if(time == -1) {
+    		return SmartDashboard.getBoolean("Vision/gearVisionRunning", false);
+    	} else if (time == 0) {
+    		return intake.gearLifted();
+    	} else {
+    		if(tim.get() >= time) {
     			return true;
+    		} else {
+    			return false;
     		}
-    	} else if(intake.gearLifted()){
-    		return true;
     	}
-        return false;
+//    	if(time != 0.0){
+//    		if((tim.get() >= time))
+//    		{
+//    			return true;
+//    		}
+//    	} else if(intake.gearLifted()){
+//    		return true;
+//    	} else {
+//    	}
+//        return false;
     }
 
     // Called once after isFinished returns true
