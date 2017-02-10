@@ -202,6 +202,59 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
+	 * Tells the turret motor's PID the target speed to reach.
+	 * 
+	 * @param targetRate
+	 *            - target speed for turret motor PID
+	 */
+	public void setTurretPIDTarget(double target) {
+		TurretPID.setTarget(target);
+	}
+
+	/**
+	 * Updates the turret motor PID with the current speed from the encoder.
+	 * 
+	 * @param updateValue
+	 *            current turret motor encoder speed
+	 */
+	public void updateTurretPID(double updateValue) {
+		TurretPID.update(updateValue);
+	}
+
+	/**
+	 * Gets the speed for the turret motor from the turret PID.
+	 * 
+	 * @return speed for motor
+	 */
+	public double getTurretPIDOutput() {
+		return TurretPID.getOutput();
+	}
+
+	/**
+	 * Gets the turret encoder value
+	 * 
+	 * @return the turret encoder value
+	 */
+	public double getTurretEncoder() {
+		return turretEncoder.get();
+	}
+	
+	/**
+	 * Gets if turret PID target reached or not.
+	 * @return turret PID target is reached or not
+	 * */
+	public boolean turretPIDTargetReached(){
+		return TurretPID.reachedTarget();
+	}
+
+	/**
+	 * Stops the turret motor
+	 */
+	public void stopTurretMotor() {
+		runTurretMotor(0);
+	}
+	
+	/**
 	 * Tells the hood motor's PID the target speed to reach.
 	 * 
 	 * @param targetRate
@@ -247,6 +300,14 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 */
 	public double getHoodEncoder() {
 		return hoodEncoder.get();
+	}
+	
+	/**
+	 * Gets if hood PID target reached or not.
+	 * @return hood PID target is reached or not
+	 * */
+	public boolean hoodPIDTargetReached(){
+		return HoodPID.reachedTarget();
 	}
 
 	/**

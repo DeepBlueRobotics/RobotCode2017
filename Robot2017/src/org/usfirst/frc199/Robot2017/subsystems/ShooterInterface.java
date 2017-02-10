@@ -6,6 +6,47 @@ import org.usfirst.frc199.Robot2017.Robot;
 public interface ShooterInterface extends DashboardInterface {
 	public void initDefaultCommand();
 
+
+	/**
+	 * Tells the turret motor's PID the target speed to reach.
+	 * 
+	 * @param targetRate
+	 *            - target speed for turret motor PID
+	 */
+	public void setTurretPIDTarget(double target);
+	/**
+	 * Updates the turret motor PID with the current speed from the encoder.
+	 * 
+	 * @param updateValue
+	 *            current turret motor encoder speed
+	 */
+	public void updateTurretPID(double updateValue);
+
+	/**
+	 * Gets the speed for the turret motor from the turret PID.
+	 * 
+	 * @return speed for motor
+	 */
+	public double getTurretPIDOutput();
+
+	/**
+	 * Gets the turret encoder value
+	 * 
+	 * @return the turret encoder value
+	 */
+	public double getTurretEncoder();
+	
+	/**
+	 * Gets if turret PID target reached or not.
+	 * @return turret PID target is reached or not
+	 * */
+	public boolean turretPIDTargetReached();
+
+	/**
+	 * Stops the turret motor
+	 */
+	public void stopTurretMotor();
+	
 	/**
 	 * This method checks if 1)shootMotor is set to a high value 2)encoder is
 	 * saying the shooter isn't moving 3)getPref is saying the shooterEncoder
@@ -79,6 +120,12 @@ public interface ShooterInterface extends DashboardInterface {
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target);
+	
+	/**
+	 * Gets if hood PID target reached or not.
+	 * @return hood PID target is reached or not
+	 * */
+	public boolean hoodPIDTargetReached();
 	
 	/**
 	 * Stops the hood motor
