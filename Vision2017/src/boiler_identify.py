@@ -1,6 +1,7 @@
 '''
 Must contain code to identify boiler marks after our initial basic contour-finding process
 Must contain a function to return the centers of both strips of tape
+Returns (bool is the tape there, upper x, upper y, lower x, lower y)
 '''
 from access_nt import NTClient
 import cv2
@@ -9,36 +10,46 @@ import numpy as np
 nt = NTClient()
 
 # Example for writing to networkTables
-nt.changeSubTable("vision") # should do this once at the beginning of the program to safeguard against the table being something else
-nt.write("left_center_x", 0) # consult with writer of vision display widget to know what to name the keys
+nt.changeSubTable("vision")  # should do this once at the beginning of the program to safeguard against the table being something else
+nt.write("left_center_x", 0)  # consult with writer of vision display widget to know what to name the keys
 
 # lower and upper makes the HSV range for the tape. a probably-good range is
-# lower = np.array([40, 0, 250])
 # upper = np.array([83, 20, 255])
 def findCenters(frame, lower, upper):
 	mask = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), lower, upper)
-	
-	cnts = cv2.findContours(mask.copy(), cv2.RETR_LIST,
+
+	# cnts: just the contours alone
+	cnts = cv2.findContours(threshBinary.copy(), cv2.RETR_LIST,
 		cv2.CHAIN_APPROX_SIMPLE)[1]
-	
+	# values: contours with big enough areas [contour, dropping kernel, x of bounding box, y of bounding box]
+	values = []
 	# loop over the contours
 	for c in cnts:
 		if cv2.contourArea(c) > 10:
-			M = cv2.moments(c)
-			cX = int(M["m10"] / M["m00"])
-			cY = int(M["m01"] / M["m00"])
-			centers.append([cX, cY])
+			box = cv2.boundingRect(c)
+			x = box[0] + box[2] / 2
+			height = 5
+			while(threshBinary[box[1] + height][x]):
+				height += 1
+			values.append([c, height, box[0], box[1]])
 			
-	centers = sorted(centers, key=lambda x: x[0])
+	values = sorted(values, key=lambda x: x[3])
 	
-	# the record for closest-in-x points - their distance and the index of the first point in centers[]
-	closest = 1000
-	index = -1;
-	
-	for i in range (0, len(centers) - 1):
-		dist = abs(centers[i][0] - centers[i + 1][0])
-		if (dist < closest):
-			closest = dist
-			index = i
-	
-	return (centers[index], centers[index + 1])
+	bestTargetScore = 1000;
+	bestTargetIndices = (-1, -1)
+	for a in range (0, len(values) - 1):
+		for b in range (a + 1, len(values)):
+			# make sure they're kinda close in x
+			if (abs(values[a][2] - values[b][2]) < 30):
+				droppingKernels = abs(values[a][1] / values[b][1] - 2)
+				yDifference = abs((values[b][3] - values[a][3]) / values[a][1] - 2)
+				score = droppingKernels + yDifference
+				if (score > bestTargetScore):
+					bestTargetScore = score
+					bestTargetIndices = (a, b)
+	if (bestTargetScore > 2):
+		return (false, -1, -1, -1, -1)
+	else:
+		MU = cv2.moments(values[bestTargetIndices[0]][0])
+		ML = cv2.moments(values[bestTargetIndices[1]][0])
+		return ((MU['m10'] / MU['m00'], MU['m01'] / MU['m00'], ML['m10'] / ML['m00'], ML['m01'] / ML['m00']))
