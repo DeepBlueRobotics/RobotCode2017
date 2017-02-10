@@ -70,4 +70,4 @@ def findTape(cap, lowerHSV, upperHSV):
 
             # TODO: correctly identify the right contours based on their vertices matching on a line
 
-    # return -1, -1, -1, -1, False
+    return -1, -1, -1, -1, False

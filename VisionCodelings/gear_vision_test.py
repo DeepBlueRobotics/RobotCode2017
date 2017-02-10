@@ -13,7 +13,7 @@ cap = cv2.VideoCapture(0)
 # subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell = True)
 # subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell = True)
 
-black = np.zeros((640, 480, 3), np.uint8)
+black = np.zeros((480, 640, 3), np.uint8)
 
 
 def nothing(x):
@@ -39,12 +39,12 @@ def calcLine(p1, p2):
 
 def closeToLine(m, b, p):
     y = m * p[0] + b
-    return True if (p[1] >= y - 15) and (p[1] <= y + 15) else return False
+    return (p[1] >= y - 15) and (p[1] <= y + 15)
 
 
 def findTape(frame, lowerHSV, upperHSV):
 
-    img = np.zeros((640, 480, 3), np.uint8)
+    img = np.zeros((480, 640, 3), np.uint8)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lowerHSV, upperHSV)
@@ -96,8 +96,9 @@ def findTape(frame, lowerHSV, upperHSV):
         cnts2.sort(key=operator.itemgetter(0), reverse=True)
 
     for i in range(0, len(cnts2) - 1):
-        m1, b1 = calcLine(cnts2[i][0], cnts2[i][1])
-        m2, b2 = calcLine(cnts2[i][2], cnts2[i][3])
+        
+        m1, b1 = calcLine(cnts2[i][1][0], cnts2[i][1][1])
+        m2, b2 = calcLine(cnts2[i][1][2], cnts2[i][1][3])
 
         for j in range(i + 1, len(cnts2) - 1):
 
@@ -106,8 +107,6 @@ def findTape(frame, lowerHSV, upperHSV):
             if cnts2[i][0] * 2 / 3 < cnts2[j][0]:
                 break
 
-            m1, b1 = calcLine(cnts2[i][1][0], cnts2[i][1][1])
-            m2. b2 = calcLine(cnts2[i][1][3], cnts2[i][1][4])
 
             if (closeToLine(m1, b1, cnts2[j][1][0]) and closeToLine(m1, b1, cnts2[j][1][1])) and (closeToLine(m2, b2, cnts2[j][1][3]) and closeToLine(m2, b2, cnts2[j][1][4])):
 
@@ -119,7 +118,17 @@ def findTape(frame, lowerHSV, upperHSV):
                 centerXj = int(Mj["m10"] / Mj["m00"])
                 centerYj = int(Mj["m01"] / Mj["m00"])
 
-                return centerXi, centerYi, centerXj, centerYj, True if centerXi < centerXj else return centerXj, centerYj, centerXi, centerYi, True
+                cv2.line(img, cnts2[i][1][0], cnts2[i][1][1], (255, 0, 0), 3)
+                cv2.line(img, cnts2[i][1][2], cnts2[i][1][3], (255, 0, 0), 3)
+                
+                cv2.circle(img, [centerXi, centerYi], 5, (0, 255, 0), 5)
+                cv2.circle(img, [centerXj, centerYj], 5, (0, 255, 0), 5)
+                
+                cv2.imshow("img", img)
+
+                return
+
+                # return centerXi, centerYi, centerXj, centerYj, True if centerXi < centerXj else return centerXj, centerYj, centerXi, centerYi, True
             """ Following commented out code does not work because of varying camera perspectives. """
             # # if they line up, it fills the final requirement and yey. Returns the centers.
             # else if (cnts2[i][2] - 15 <= cnts2[j][2]) and (cnts2[i][2] + 15 >= cnts2[j][2]):
@@ -128,7 +137,10 @@ def findTape(frame, lowerHSV, upperHSV):
             #     else:
             # return cnts2[i][1], cnts2[i][2], cnts2[j][1], cnts2[j][2], True
 
-    return -1, -1, -1, -1, False
+    # return -1, -1, -1, -1, False
+
+    cv2.imshow("img", img)
+    return
 
 while True:
     ret, frame = cap.read()
@@ -138,9 +150,10 @@ while True:
     upper = np.array([cv2.getTrackbarPos('UH', 'sliders'), cv2.getTrackbarPos(
         'US', 'sliders'), cv2.getTrackbarPos('UV', 'sliders')])
 
-    lx, ly, rx, ry, success = findTape(frame, lower, upper)
+    findTape(frame, lower, upper)
 
     cv2.imshow('sliders', black)
+    cv2.imshow("original", frame)
 
     if cv2.waitKey(5) & 0xFF == ord('q'):
         break
