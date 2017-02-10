@@ -32,7 +32,6 @@ public class AutoModeCenter extends CommandGroup {
     	final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07); //in. from corner to corner of airship;
     	
 		//Drives to lift and aligns
-    	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
     	addSequential(new AutoAlignGear(true));
     	
     	//Backs out of dividers, giving 6 inches of extra space for the pivot

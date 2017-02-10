@@ -63,9 +63,6 @@ public class AutoModeLoadSide extends CommandGroup {
      	addSequential(new AutoAlignGear(false));
     	*/
      	
-     	//Waits to allow gear to be lifted
-     	//addSequential(new AutoDelay(0, Robot.intake));
-     	
      	//METHOD 1:
      	//backs up
      	addSequential(new AutoDrive(0-LENGTH_2, 0, Robot.drivetrain));
@@ -83,12 +80,8 @@ public class AutoModeLoadSide extends CommandGroup {
     	*/
     	
     	//turns away from boiler, aligns and drives backward towards it
-    	
     	addSequential(new AutoDrive(0,(0-direction)*90, Robot.drivetrain));
-    	
-    	
     	addSequential(new AutoDrive(0,Robot.vision.getAngleToBoiler(), Robot.drivetrain));
-
     	addSequential(new AutoDrive(3-Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
     	
     	//Aims and shoots
