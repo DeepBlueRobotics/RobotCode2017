@@ -29,12 +29,10 @@ public class AutoModeLoadSide extends CommandGroup {
     public AutoModeLoadSide(boolean alliance) {
         
     	double direction;
-    	if(alliance)
-    	{
+    	if(alliance) {
     		direction = -1;
     	}
-    	else
-    	{
+    	else {
     		direction = 1;
     	}
     	final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 101.908); //in. from front end of robot to point on field
@@ -63,11 +61,8 @@ public class AutoModeLoadSide extends CommandGroup {
      	
      	//METHOD 2:
      	/*
-     	if(alliance) {
-    		addSequential(new FollowTrajectory(RIGHT*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, RIGHT*60));
-    	} else {
-    		addSequential(new FollowTrajectory(LEFT*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, LEFT*60));
-    	} 
+    
+    	addSequential(new FollowTrajectory(direction*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, RIGHT*60));
      	addSequential(new AutoAlignGear());
      	
     	*/

@@ -24,8 +24,7 @@ public class Vision extends Subsystem implements DashboardInterface {
     }
 
     public double getDistanceToGear() {
-    	if (getBoolean("Vision/OH-YEAH",true))
-    	{
+    	if (getBoolean("Vision/OH-YEAH",true)) {
     		double leftGearCenterX =  getNumber("Vision/leftGearCenterX", 0);
         	double rightGearCenterX = getNumber("Vision/rightGearCenterX", 0);
         	double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
@@ -33,16 +32,14 @@ public class Vision extends Subsystem implements DashboardInterface {
         	double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
         	return distanceToGear;
     	}
-    	else
-    	{
+    	else {
     		return 0;
     	}
     }
     
     public double getAngleToGear()
     {	
-    	if (getBoolean("Vision/OH-YEAH",true))
-    	{
+    	if (getBoolean("Vision/OH-YEAH",true)) {
 	    	double pegX = (getNumber("Vision/leftGearCenterX", 0) + getNumber("Vision/rightGearCenterX", 0))/2;
 	    	double pixelDisplacement = SCREEN_CENTER - pegX;
 	    	double abstractDepth = (RESOLUTION_WIDTH/2)/Math.tan(THETA);
@@ -51,14 +48,12 @@ public class Vision extends Subsystem implements DashboardInterface {
 	    	
 	    	return angle;
     	}
-    	else
-    	{
+    	else {
     		return 0;
     	}
     }
     
-    public double getDistanceToBoiler()
-    {
+    public double getDistanceToBoiler() {
     	double topBoilerCenterY =  getNumber("Vision/topBoilerCenterY", 0);
     	double bottomBoilerCenterY = getNumber("Vision/bottomBoilerCenterY", 0);
     	double pixelDist = Math.abs(topBoilerCenterY - bottomBoilerCenterY);
@@ -67,8 +62,7 @@ public class Vision extends Subsystem implements DashboardInterface {
     	return distanceToBoiler;
     }
     
-    public double getAngleToBoiler()
-    {	
+    public double getAngleToBoiler() {	
     	double tapeCenterX = getNumber("Vision/topBoilerCenterX", 0);
     	double pixelDisplacement = SCREEN_CENTER - tapeCenterX;
     	double abstractDepth = (RESOLUTION_WIDTH/2)/Math.tan(THETA);

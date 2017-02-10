@@ -22,12 +22,10 @@ public class AutoModeCenter extends CommandGroup {
     public AutoModeCenter(boolean alliance) {
         
     	double direction;
-    	if(alliance)
-    	{
+    	if(alliance) {
     		direction = -1;
     	}
-    	else
-    	{
+    	else {
     		direction = 1;
     	}
     	final double DIVIDER_DEPTH = Robot.getPref("DividerDepth", 21.5); //in. dividers protrude from the airship toward alliance wall (approx.)
@@ -57,7 +55,7 @@ public class AutoModeCenter extends CommandGroup {
     	
     	//Turns toward center of field
  
-    		addSequential(new AutoDrive(0,direction*90, Robot.drivetrain));
+    	addSequential(new AutoDrive(0,direction*90, Robot.drivetrain));
     	
     	//Passes baseline
     	addSequential(new AutoDrive(DIVIDER_DEPTH + 24,0, Robot.drivetrain));
