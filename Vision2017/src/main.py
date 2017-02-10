@@ -34,12 +34,12 @@ gearFailCounter = 0
 # shooter camera
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
-    "uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
+	"uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # gear camera
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
-    "uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
+	"uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # remember to set resolution
 
@@ -47,48 +47,48 @@ subprocess.call(
 """ Main Loop """
 while(True):
 
-    """ boiler tape identification code """
-    if 0 == 0:  # Condition should be based on whether a certain boolean value in NetworkTables says the shooter command is running
-        ret, shooterFrame = shooterCap.read()
-        # Run boiler identification script
-        boiler_identify.findTape(shooterFrame, lowerHSV, upperHSV)
+	""" boiler tape identification code """
+	if 0 == 0:  # Condition should be based on whether a certain boolean value in NetworkTables says the shooter command is running
+		ret, shooterFrame = shooterCap.read()
+		# Run boiler identification script
+		centers = boiler_identify.findTape(shooterFrame, lowerHSV, upperHSV)
+		
+		nt.write("Vision", "boilerFound", centers[0] == -1)
+		nt.write("Vision", "upperTapeCenterX", centers[0])
+		nt.write("Vision", "upperTapeCenterY", centers[1])
+		nt.write("Vision", "lowerTapeCenterX", centers[2])
+		nt.write("Vision", "lowerTapeCenterY", centers[3])
+		print ":D"  # Placeholder line that will be changed later
 
-        print ":D"  # Placeholder line that will be changed later
+	""" gear tape identification code """
+	if nt.get("AutoAlignGear", "running"):
+		if gearFailCounter < 5:
+			nt.write("Vision", "gearVisionRunning", True)
 
-    """ gear tape identification code """
+			ret, gearFrame = gearCap.read()
+			# Run gear mark identification
+			lx, ly, rx, ry, success = lift_marks_identify.findTape(
+				gearFrame, lowerHSV, upperHSV)
 
-    doFindGearTape = True if nt.get("AutoAlignGear", "running") == True
+			if success:
+				nt.write("Vision", "leftGearCenterX", lx)
+				nt.write("Vision", "leftGearCenterY", ly)
+				nt.write("Vision", "rightGearCenterX", rx)
+				nt.write("Vision", "rightGearCenterY", ry)
+				# nt.write("Vision", "pegX", (lx + rx) / 2)
+				# nt.write("Vision", "pegY", (ly + ry) / 2)
 
-    if doFindGearTape:
-        if gearFailCounter < 5:
-            nt.write("Vision", "gearVisionRunning", True)
+				nt.write("Vision", "OH-YEAH", True)
 
-            ret, gearFrame = gearCap.read()
-            # Run gear mark identification
-            lx, ly, rx, ry, success = lift_marks_identify.findTape(
-                gearFrame, lowerHSV, upperHSV)
+				nt.write("Vision", "gearVisionRunning", False)
 
-            if not success:
-                gearFailCounter += 1
+				gearFailCounter = 0
+				doFindGearTape = False
+			 else:
+				 gearFailCounter += 1
+		else:
+			nt.write("Vision", "gearVisionRunning", False)
+			nt.write("Vision", "OH-YEAH", False)
 
-            else:
-                nt.write("Vision", "leftGearCenterX", lx)
-                nt.write("Vision", "leftGearCenterY", ly)
-                nt.write("Vision", "rightGearCenterX", rx)
-                nt.write("Vision", "rightGearCenterY", ry)
-                # nt.write("Vision", "pegX", (lx + rx) / 2)
-                # nt.write("Vision", "pegY", (ly + ry) / 2)
-
-                nt.write("Vision", "OH-YEAH", True)
-
-                nt.write("Vision", "gearVisionRunning", False)
-                print "Gear tape identification success."
-
-                gearFailCounter = 0
-                doFindGearTape = False
-        else:
-            nt.write("Vision", "gearVisionRunning", False)
-            nt.write("Vision", "OH-YEAH", False)
-
-            gearFailCounter = 0
-            doFindGearTape = False
+			gearFailCounter = 0
+			doFindGearTape = False

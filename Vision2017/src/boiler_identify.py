@@ -1,7 +1,7 @@
 '''
 Must contain code to identify boiler marks after our initial basic contour-finding process
 Must contain a function to return the centers of both strips of tape
-Returns (bool is the tape there, upper x, upper y, lower x, lower y)
+Returns (upper x, upper y, lower x, lower y) with all -1 if no tape found
 '''
 from access_nt import NTClient
 import cv2
@@ -48,7 +48,7 @@ def findCenters(frame, lower, upper):
 					bestTargetScore = score
 					bestTargetIndices = (a, b)
 	if (bestTargetScore > 2):
-		return (false, -1, -1, -1, -1)
+		return (-1, -1, -1, -1)
 	else:
 		MU = cv2.moments(values[bestTargetIndices[0]][0])
 		ML = cv2.moments(values[bestTargetIndices[1]][0])
