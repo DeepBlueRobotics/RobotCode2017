@@ -27,7 +27,7 @@ public class AutoModeLoadSide extends CommandGroup {
 	 * @param alliance true for blue, false for red 
 	 */
     public AutoModeLoadSide(boolean alliance) {
-        
+    	
     	double direction;
     	if(alliance) {
     		direction = -1;
