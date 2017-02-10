@@ -68,10 +68,10 @@ public class OI {
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
 		// TODO: (Ana T.) Insert accurate AutoAlignGear arguments to be executed
 		// when autoShootRoutineButton is held
-		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear());
+		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
 
 		// SmartDashboard Buttons
-		SmartDashboard.putData("MainAutoMode", new AutoModeBasic());
+		SmartDashboard.putData("MainAutoMode", new AutoModeBasic(0));
 		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0, Robot.drivetrain));
 		SmartDashboard.putData("AutoDelay", new AutoDelay(0, Robot.intake));
 		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(Robot.shooter));
