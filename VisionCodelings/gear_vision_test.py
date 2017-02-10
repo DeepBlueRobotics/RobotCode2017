@@ -13,6 +13,8 @@ cap = cv2.VideoCapture(0)
 # subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell = True)
 # subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell = True)
 
+black = np.zeros((640, 480, 3), np.uint8)
+
 
 def nothing(x):
     pass
@@ -104,6 +106,20 @@ def findTape(frame, lowerHSV, upperHSV):
             if cnts2[i][0] * 2 / 3 < cnts2[j][0]:
                 break
 
+            m1, b1 = calcLine(cnts2[i][1][0], cnts2[i][1][1])
+            m2. b2 = calcLine(cnts2[i][1][3], cnts2[i][1][4])
+
+            if (closeToLine(m1, b1, cnts2[j][1][0]) and closeToLine(m1, b1, cnts2[j][1][1])) and (closeToLine(m2, b2, cnts2[j][1][3]) and closeToLine(m2, b2, cnts2[j][1][4])):
+
+                Mi = cv2.moments(cnts[i][1])
+                centerXi = int(Mi["m10"] / Mi["m00"])
+                centerYi = int(Mi["m01"] / Mi["m00"])
+
+                Mj = cv2.moments(cnts[j][1])
+                centerXj = int(Mj["m10"] / Mj["m00"])
+                centerYj = int(Mj["m01"] / Mj["m00"])
+
+                return centerXi, centerYi, centerXj, centerYj, True if centerXi < centerXj else return centerXj, centerYj, centerXi, centerYi, True
             """ Following commented out code does not work because of varying camera perspectives. """
             # # if they line up, it fills the final requirement and yey. Returns the centers.
             # else if (cnts2[i][2] - 15 <= cnts2[j][2]) and (cnts2[i][2] + 15 >= cnts2[j][2]):
@@ -112,6 +128,8 @@ def findTape(frame, lowerHSV, upperHSV):
             #     else:
             # return cnts2[i][1], cnts2[i][2], cnts2[j][1], cnts2[j][2], True
 
+    return -1, -1, -1, -1, False
+
 while True:
     ret, frame = cap.read()
 
@@ -119,7 +137,10 @@ while True:
         'LS', 'sliders'), cv2.getTrackbarPos('LV', 'sliders')])
     upper = np.array([cv2.getTrackbarPos('UH', 'sliders'), cv2.getTrackbarPos(
         'US', 'sliders'), cv2.getTrackbarPos('UV', 'sliders')])
-    findTape(frame, lower, upper)
+
+    lx, ly, rx, ry, success = findTape(frame, lower, upper)
+
+    cv2.imshow('sliders', black)
 
     if cv2.waitKey(5) & 0xFF == ord('q'):
         break
