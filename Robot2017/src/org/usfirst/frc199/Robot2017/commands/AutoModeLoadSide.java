@@ -24,12 +24,17 @@ public class AutoModeLoadSide extends CommandGroup {
 	
 	/***
 	 * Commands for autonomous starting at left
-	 * @param alliance true for red, false for blue 
+	 * @param alliance true for blue, false for red 
 	 */
     public AutoModeLoadSide(boolean alliance) {
-        
-    	final double LEFT = -1;
-    	final double RIGHT = 1;
+    	
+    	double direction;
+    	if(alliance) {
+    		direction = -1;
+    	}
+    	else {
+    		direction = 1;
+    	}
     	final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 101.908); //in. from front end of robot to point on field
     	
     	final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 11); //in. from front of robot to lift (after pivot)
@@ -46,57 +51,45 @@ public class AutoModeLoadSide extends CommandGroup {
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
     	//Turns toward lift
-    	addSequential(new AutoDrive(0,Robot.vision.getAngleToGear(), Robot.drivetrain));
     	
+    	addSequential(new AutoDrive(0,direction*60, Robot.drivetrain));
     	
     	//drives up to lift and aligns
-    	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
+    	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
      	addSequential(new AutoAlignGear());
      	
      	
      	//METHOD 2:
      	/*
-     	if(alliance) {
-    		addSequential(new FollowTrajectory(RIGHT*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, RIGHT*60));
-    	} else {
-    		addSequential(new FollowTrajectory(LEFT*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, LEFT*60));
-    	} 
+    
+    	addSequential(new FollowTrajectory(direction*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, RIGHT*60));
      	addSequential(new AutoAlignGear());
      	
     	*/
      	
      	//Waits to allow gear to be lifted
-     	addSequential(new AutoDelay(0, Robot.intake));
+     	//addSequential(new AutoDelay(0, Robot.intake));
      	
      	//METHOD 1:
      	//backs up
      	addSequential(new AutoDrive(0-LENGTH_2, 0, Robot.drivetrain));
      	
      	//Turns away from lift
-    	if(alliance) {
-    		addSequential(new AutoDrive(0,LEFT*60, Robot.drivetrain));
-    	} else {
-    		addSequential(new AutoDrive(0,RIGHT*60, Robot.drivetrain));
-    	}
+    	addSequential(new AutoDrive(0,(0-direction)*60, Robot.drivetrain));
+    	
     	
     	//backs up
     	addSequential(new AutoDrive(6-LENGTH_1, 0, Robot.drivetrain));
     	
     	/*
     	// Method 2
-    	if(alliance) {
-    		addSequential(new FollowTrajectory(LEFT*ROBOT_CENTER_TO_PEG, LEFT * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), LEFT* 60));
-    	} else {
-    		addSequential(new FollowTrajectory(RIGHT*ROBOT_CENTER_TO_PEG, RIGHT * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), RIGHT* 60)
-    	}
+    	addSequential(new FollowTrajectory((0-direction)*ROBOT_CENTER_TO_PEG, LEFT * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), LEFT* 60));
     	*/
     	
     	//turns away from boiler, aligns and drives backward towards it
-    	if(alliance) {
-    		addSequential(new AutoDrive(0,LEFT*90, Robot.drivetrain));
-    	} else {
-    		addSequential(new AutoDrive(0,RIGHT*90, Robot.drivetrain));
-    	}
+    	
+    	addSequential(new AutoDrive(0,(0-direction)*90, Robot.drivetrain));
+    	
     	
     	addSequential(new AutoDrive(0,Robot.vision.getAngleToBoiler(), Robot.drivetrain));
 

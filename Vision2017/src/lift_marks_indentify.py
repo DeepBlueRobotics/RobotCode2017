@@ -39,15 +39,19 @@ def findTape(cap, lowerHSV, upperHSV):
             # Past self: "WTF are moments?!" Later past self: "Chill, don't worry about it, just assume it works."
             M = cv2.moments(c)
             centerX = int(M["m10"] / M["m00"])
-            centerY = (int(M["m01"] / M["m00"])
+            centerY = int(M["m01"] / M["m00"])
 
             # tup = (len(centerX) - 1, area)
             # cntAreas.append(area)
+            c.sort(key=operator.itemgetter(1))
 
-            cnts2.append((area, centerX, centerY))
+            cnts2.append(area, centerX, centerY, c)
 
     # sorts contours by largest to smallest area
     cnts2.sort(key=operator.itemgetter(0)).reverse()
+
+    for c in cnts2:
+
 
     for i in range(0, len(cnts2) - 1):
         for j in range(i + 1, len(cnts2) - 1):
