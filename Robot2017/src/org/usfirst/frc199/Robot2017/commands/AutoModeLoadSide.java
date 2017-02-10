@@ -55,16 +55,12 @@ public class AutoModeLoadSide extends CommandGroup {
     	addSequential(new AutoDrive(0,direction*60, Robot.drivetrain));
     	
     	//drives up to lift and aligns
-    	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
-     	addSequential(new AutoAlignGear());
-     	
+     	addSequential(new AutoAlignGear(false));
      	
      	//METHOD 2:
      	/*
-    
     	addSequential(new FollowTrajectory(direction*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, RIGHT*60));
-     	addSequential(new AutoAlignGear());
-     	
+     	addSequential(new AutoAlignGear(false));
     	*/
      	
      	//Waits to allow gear to be lifted
@@ -94,7 +90,6 @@ public class AutoModeLoadSide extends CommandGroup {
     	addSequential(new AutoDrive(0,Robot.vision.getAngleToBoiler(), Robot.drivetrain));
 
     	addSequential(new AutoDrive(3-Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
-    	
     	
     	//Aims and shoots
     	addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));

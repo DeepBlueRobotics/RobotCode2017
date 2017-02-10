@@ -45,23 +45,17 @@ public class AutoModeBoilerSide extends CommandGroup {
     	addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
     	
     	//Turns toward lift
-    	
     	addSequential(new AutoDrive(0,(0-direction)*60, Robot.drivetrain));
     	
-    	//drives up to lift and aligns
-    	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
-     	addSequential(new AutoAlignGear());
+    	//drives up to lift and aligns, shoots
+     	addSequential(new AutoAlignGear(true));
      	
      	/*
      	//METHOD 2:
     	addSequential(new FollowTrajectory((0-direction)*ROBOT_CENTER_TO_PEG, DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, LEFT*60));
-     	addSequential(new AutoAlignGear());
+     	addSequential(new AutoAlignGear(true));
      	*/
      	
-     	
-     	//Aims and shoots
-     	addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));
-    	addSequential(new AutoDelay(0, Robot.intake));
     	
     
     	

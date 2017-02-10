@@ -33,21 +33,13 @@ public class AutoModeCenter extends CommandGroup {
     	
 		//Drives to lift and aligns
     	//addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
-    	addSequential(new AutoAlignGear());
-    	
-    	//Aims and shoots
-    	addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));
-    	//addSequential(new AutoDelay(0, Robot.intake));
-    	
+    	addSequential(new AutoAlignGear(true));
     	
     	//Backs out of dividers, giving 6 inches of extra space for the pivot
     	addSequential(new AutoDrive(0-(DIVIDER_DEPTH + 6),0, Robot.drivetrain));
     	
     	//Turns away from boiler
-    	
     	addSequential(new AutoDrive(0,(0-direction)*90, Robot.drivetrain));
-    	
-    	
     	
     	//METHOD 1:
     	//Drives past airship
@@ -62,7 +54,6 @@ public class AutoModeCenter extends CommandGroup {
 	
     	/*
     	//METHOD 2:
-    	
     	addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2) + 36, (AIRSHIP_DIAGONAL / 2) + 36, direction*90));
     	*/
     	
