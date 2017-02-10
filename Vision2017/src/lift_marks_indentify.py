@@ -39,7 +39,7 @@ def findTape(cap, lowerHSV, upperHSV):
             # Past self: "WTF are moments?!" Later past self: "Chill, don't worry about it, just assume it works."
             M = cv2.moments(c)
             centerX = int(M["m10"] / M["m00"])
-            centerY = (int(M["m01"] / M["m00"])
+            centerY = int(M["m01"] / M["m00"])
 
             # tup = (len(centerX) - 1, area)
             # cntAreas.append(area)
