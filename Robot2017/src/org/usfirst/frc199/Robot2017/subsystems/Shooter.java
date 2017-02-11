@@ -44,10 +44,27 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private double prevTurretEncoder = 0;
 	private double prevHoodEncoder = 0;
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-
 	public void initDefaultCommand() {
+	}
+	
+	/**
+	 * Sets the feeder motor's speed (from -1.0 to 1.0).
+	 * 
+	 * @param rate
+	 *            - speed to give the feeder motor
+	 */
+	public void runFeederMotor(double speed) {
+		feedMotor.set(speed);
+	}
+	
+	/**
+	 * Sets the shooter motor's speed (from -1.0 to 1.0).
+	 * 
+	 * @param rate
+	 *            - speed to give the shooter motor
+	 */
+	public void runShootMotor(double speed) {
+		shootMotor.set(speed);
 	}
 
 	/**
@@ -75,39 +92,12 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Gets the shooter encoder rate
+	 * Returns the current speed of the shooter wheel.
 	 * 
-	 * @return the shooter encoder rate
+	 * @return shooter speed in inches per second
 	 */
-	public double getShootEncoderRate() {
+	public double getShooterSpeed() {
 		return shootEncoder.getRate();
-	}
-
-	/**
-	 * Sets the shooter motor's speed (from -1.0 to 1.0).
-	 * 
-	 * @param rate
-	 *            - speed to give the shooter motor
-	 */
-	public void runShootMotor(double speed) {
-		shootMotor.set(speed);
-	}
-
-	/**
-	 * Stops the shooter motor
-	 */
-	public void stopShootMotor() {
-		runShootMotor(0);
-	}
-
-	/**
-	 * Sets the feeder motor's speed (from -1.0 to 1.0).
-	 * 
-	 * @param rate
-	 *            - speed to give the feeder motor
-	 */
-	public void runFeederMotor(double speed) {
-		feedMotor.set(speed);
 	}
 
 	/**
@@ -121,6 +111,15 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
+	 * Gets the speed for the shooter motor from the shooter PID.
+	 * 
+	 * @return speed for motor
+	 */
+	public double getShooterPIDOutput() {
+		return ShooterPID.getOutput();
+	}
+
+	/**
 	 * Updates the shooter motor PID with the current speed from the encoder.
 	 * 
 	 * @param updateValue
@@ -131,33 +130,22 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Gets the speed for the shooter motor from the shooter PID.
-	 * 
-	 * @return speed for motor
+	 * Stops the shooter motor
 	 */
-	public double getShooterPIDOutput() {
-		return ShooterPID.getOutput();
+	public void stopShootMotor() {
+		runShootMotor(0);
 	}
 
 	/**
-	 * 
+	 * Used only in TestPID
 	 * @param target
 	 *            - the target value for PID
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target) {
 		ShooterPID.setTarget(target);
-		ShooterPID.update(currentSpeed());
+		ShooterPID.update(getShooterSpeed());
 		return ShooterPID.getOutput();
-	}
-
-	/**
-	 * Returns the current speed of the shooter wheel.
-	 * 
-	 * @return shooter speed in inches per second
-	 */
-	public double currentSpeed() {
-		return shootEncoder.getRate();
 	}
 
 	/**
@@ -190,7 +178,16 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	// shooter
 	// turret should use vision
 	// hood should convert real angles to encoder values (test to find a ratio)
-
+	
+	/**
+	 * Gets the turret encoder value
+	 * 
+	 * @return the turret encoder value
+	 */
+	public double getTurretEncoder() {
+		return turretEncoder.get();
+	}
+	
 	/**
 	 * Sets the turret motor's speed (from -1.0 to 1.0).
 	 * 
@@ -212,16 +209,6 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Updates the turret motor PID with the current speed from the encoder.
-	 * 
-	 * @param updateValue
-	 *            current turret motor encoder speed
-	 */
-	public void updateTurretPID(double updateValue) {
-		TurretPID.update(updateValue);
-	}
-
-	/**
 	 * Gets the speed for the turret motor from the turret PID.
 	 * 
 	 * @return speed for motor
@@ -231,12 +218,13 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Gets the turret encoder value
+	 * Updates the turret motor PID with the current speed from the encoder.
 	 * 
-	 * @return the turret encoder value
+	 * @param updateValue
+	 *            current turret motor encoder speed
 	 */
-	public double getTurretEncoder() {
-		return turretEncoder.get();
+	public void updateTurretPID(double updateValue) {
+		TurretPID.update(updateValue);
 	}
 	
 	/**
@@ -253,6 +241,25 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public void stopTurretMotor() {
 		runTurretMotor(0);
 	}
+
+	/**
+	 * Gets the hood encoder value
+	 * 
+	 * @return the hood encoder value
+	 */
+	public double getHoodEncoder() {
+		return hoodEncoder.get();
+	}
+
+	/**
+	 * Sets the hood motor's speed (from -1.0 to 1.0).
+	 * 
+	 * @param rate
+	 *            - speed to give the hood motor
+	 */
+	public void runHoodMotor(double speed) {
+		hoodMotor.set(speed);
+	}
 	
 	/**
 	 * Tells the hood motor's PID the target speed to reach.
@@ -265,16 +272,6 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Updates the hood motor PID with the current speed from the encoder.
-	 * 
-	 * @param updateValue
-	 *            current hood motor encoder speed
-	 */
-	public void updateHoodPID(double updateValue) {
-		HoodPID.update(updateValue);
-	}
-
-	/**
 	 * Gets the speed for the hood motor from the hood PID.
 	 * 
 	 * @return speed for motor
@@ -284,22 +281,13 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Sets the hood motor's speed (from -1.0 to 1.0).
+	 * Updates the hood motor PID with the current speed from the encoder.
 	 * 
-	 * @param rate
-	 *            - speed to give the hood motor
+	 * @param updateValue
+	 *            current hood motor encoder speed
 	 */
-	public void runHoodMotor(double speed) {
-		hoodMotor.set(speed);
-	}
-
-	/**
-	 * Gets the hood encoder value
-	 * 
-	 * @return the hood encoder value
-	 */
-	public double getHoodEncoder() {
-		return hoodEncoder.get();
+	public void updateHoodPID(double updateValue) {
+		HoodPID.update(updateValue);
 	}
 	
 	/**

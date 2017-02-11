@@ -19,7 +19,7 @@ public class TestPIDTest {
 		testShooter.initialize();
 
 		verify(mockShoot).setShooterPIDTarget(0);
-		verify(mockShoot).updateShooterPID(mockShoot.currentSpeed());
+		verify(mockShoot).updateShooterPID(mockShoot.getShooterSpeed());
 
 		testShooter.execute();
 
@@ -54,7 +54,7 @@ public class TestPIDTest {
 		verify(mockDrive, times(2)).setAngleTarget(0);
 
 		testDriveAng.execute();
-		verify(mockDrive).updateAngle();
+		verify(mockDrive).updateAnglePID();
 
 		testDriveAng.isFinished();
 		verify(mockDrive).angleReachedTarget();
@@ -66,7 +66,7 @@ public class TestPIDTest {
 
 		testDriveVel.execute();
 
-		verify(mockDrive).updateVelocity();
+		verify(mockDrive).updateVelocityPID();
 
 		TestPID testDriveAngVel = new TestPID(TestPID.System.DRIVEANGULARVELOCITY, mockShoot, mockDrive);
 		testDriveAngVel.initialize();
@@ -75,7 +75,7 @@ public class TestPIDTest {
 
 		testDriveAngVel.execute();
 
-		verify(mockDrive, times(2)).updateVelocity();
+		verify(mockDrive, times(2)).updateAngularVelocityPID();
 	}
 
 }

@@ -66,13 +66,6 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 *         reset
 	 */
 	public double getDistance();
-
-	/**
-	 * Gets the distancePID object
-	 * 
-	 * @return the drivePID object
-	 */
-	public PID getDistancePID();
 	
 	/**
 	 * Sets the distance for PID target
@@ -100,13 +93,6 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public double getAngle();
 
 	/**
-	 * Gets the anglePID object
-	 * 
-	 * @return the turnPID object
-	 */
-	public PID getAnglePID();
-
-	/**
 	 * Sets the angle for PID target
 	 * 
 	 * @param targetAngle
@@ -127,17 +113,9 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public boolean angleReachedTarget();
 
 	/**
-	 * @return the average speed of the two sides of the robot at the current
-	 *         time
+	 * @return the average speed of the two sides of the robot at the current time
 	 */
 	public double getVelocity();
-	
-	/**
-	 * Gets the velocityPID object
-	 * 
-	 * @return the velocityPID object
-	 */
-	public PID getVelocityPID();
 	
 	/**
 	 * Sets targets for tracking velocity of robot for motion profiling
@@ -159,19 +137,16 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 */
 	public boolean velocityReachedTarget();
 	
+	/**
+	 * Gets the angular acceleration
+	 * @return the angular acceleration
+	 * */
 	public double getAngularAcceleration();
 
 	/**
 	 * @return the angular velocity
 	 */
 	public double getAngularVelocity();
-	
-	/**
-	 * Gets the angularVelocityPID object
-	 * 
-	 * @return the angularVelocityPID object
-	 */
-	public PID getAngularVelocityPID();
 	
 	/**
 	 * Checks to see if the angular velocity PID has reached the target

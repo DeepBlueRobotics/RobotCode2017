@@ -173,15 +173,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public double getDistance() {
 		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
 	}
-
-	/**
-	 * Gets the distancePID object
-	 * 
-	 * @return the drivePID object
-	 */
-	public PID getDistancePID() {
-		return distancePID;
-	}
 	
 	/**
 	 * Sets the distance for PID target
@@ -217,15 +208,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public double getAngle() {
 		return gyro.getAngle()- gyroDriftRate * gyroDriftTimer.get();
-	}
-
-	/**
-	 * Gets the anglePID object
-	 * 
-	 * @return the turnPID object
-	 */
-	public PID getAnglePID() {
-		return anglePID;
 	}
 
 	/**
@@ -266,15 +248,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Gets the velocityPID object
-	 * 
-	 * @return the velocityPID object
-	 */
-	public PID getVelocityPID() {
-		return velocityPID;
-	}
-	
-	/**
 	 * Sets targets for tracking velocity of robot for motion profiling
 	 * 
 	 * @param linVelTarget
@@ -309,11 +282,14 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return velocityPID.reachedTarget();
 	}
 	
+	/**
+	 * Gets the angular acceleration
+	 * @return the angular acceleration
+	 * */
 	public double getAngularAcceleration() {
 		prevGyroRate = getAngularVelocity();
 		prevTime = Timer.getFPGATimestamp();
 		return (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime);
-
 	}
 
 	/**
@@ -321,15 +297,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public double getAngularVelocity() {
 		return gyro.getRate();
-	}
-	
-	/**
-	 * Gets the angularVelocityPID object
-	 * 
-	 * @return the angularVelocityPID object
-	 */
-	public PID getAngularVelocityPID() {
-		return angularVelocityPID;
 	}
 	
 	/**

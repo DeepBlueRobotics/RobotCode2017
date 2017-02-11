@@ -23,8 +23,8 @@ public class AutoDrive extends Command {
 	public void initialize() {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
-		drivetrain.getDistancePID().setTarget(targetDist);
-		drivetrain.getAnglePID().setTarget(targetAngle);
+		drivetrain.setDistanceTarget(targetDist);
+		drivetrain.setAngleTarget(targetAngle);
 
 	}
 
@@ -38,7 +38,7 @@ public class AutoDrive extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-		return drivetrain.getDistancePID().reachedTarget() || drivetrain.getAnglePID().reachedTarget();
+		return drivetrain.distanceReachedTarget() || drivetrain.angleReachedTarget();
 		
 	}
 

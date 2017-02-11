@@ -45,11 +45,11 @@ public class AutoShoot extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		shooter.updateShooterPID(shooter.getShootEncoderRate());
+		shooter.updateShooterPID(shooter.getShooterSpeed());
 		if (!shooter.shooterMotorStalled()) {
 			shooter.runShootMotor(shooter.getShooterPIDOutput());
 		}
-		if (Math.abs(shooter.getShootEncoderRate() - target) <= Robot.getPref("speedErrorConstant", .05)
+		if (Math.abs(shooter.getShooterSpeed() - target) <= Robot.getPref("speedErrorConstant", .05)
 				* target) {
 			shooter.runFeederMotor(1);
 		}

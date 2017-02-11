@@ -19,11 +19,11 @@ public class AutoShootTest {
 		
 		testCommand.execute();
 		verify(mockShooter).updateShooterPID(0);
-		verify(mockShooter).getShootEncoderRate();
+		verify(mockShooter).getShooterSpeed();
 		verify(mockShooter).shooterMotorStalled();
 		verify(mockShooter).runShootMotor(0);
 		verify(mockShooter).getShooterPIDOutput();
-		verify(mockShooter).getShootEncoderRate();
+		verify(mockShooter).getShooterSpeed();
 		verify(mockShooter).runFeederMotor(1);
 		
 		testCommand.end();
