@@ -12,7 +12,7 @@ public class VisionAssistedShoot extends CommandGroup {
     public VisionAssistedShoot(double shooterTargetDist, double shooterRunTime) {
         
     	addParallel(new AutoAdjustHood(Robot.shooter));
-    	addParallel(new AutoAdjustTurret());
+    	addParallel(new AutoAdjustTurret(Robot.shooter));
     	addSequential(new AutoShoot(shooterTargetDist, shooterRunTime, Robot.shooter));
     }
 }

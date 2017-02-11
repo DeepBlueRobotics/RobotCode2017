@@ -64,7 +64,7 @@ public class DisplayBoilerVision extends StaticWidget{
 		        				CALIB_PT_W, CALIB_PT_H);
 		        
 		        //draws a new line, the middle of which will be the new calibrated center point
-		        g.setColor(Color.BLACK);
+		        g.setColor(Color.GRAY);
 		        g.drawLine(WID/2, 0, WID/2, HIGHT);
 		        g.drawLine(0, HIGHT/2, WID, HIGHT/2);
 		        
@@ -73,19 +73,22 @@ public class DisplayBoilerVision extends StaticWidget{
 				int tempy1 = OFF_Y - y1;
 				int tempx2 = x2 + OFF_X;
 				int tempy2 = OFF_Y - y2;
+				g.setColor(Color.BLACK);
 				g.drawLine(tempx1, tempy1, tempx2, tempy2);
 			}
 		};
 		
-		//When Calibrate button pressed, will update variables (updatePosition()),
-			//repaint the red point (moveCalibCenter),
-			//and send the new calibrated center point to the table (sendCenterPt()).
+		/**
+		 * When Calibrate button pressed, will update variables (updatePosition()),
+		 * 	repaint the red point (moveCalibCenter),
+		 * 	and send the new calibrated center point to the table (sendCenterPt()).
+		 * */
 		calibrate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updatePosition();
                 moveCalibCenter((x1+x2)/2, (y1+y2)/2);
-                sendCenterPt();
+                //sendCenterPt();
             }
         });
 		
@@ -114,20 +117,20 @@ public class DisplayBoilerVision extends StaticWidget{
 	 * Converts from camera pixels to computer pixels (for drawing/displaying)
 	 * */
 	public void updatePosition(){
-		x1 = (int) (table.getNumber("boilerX1", -OFF_X) * CAMERA_COMPUTER_PIXEL_RATIO);
-		y1 = (int) (table.getNumber("boilerY1", OFF_Y) * CAMERA_COMPUTER_PIXEL_RATIO);
-		x2 = (int) (table.getNumber("boilerX2", OFF_X) * CAMERA_COMPUTER_PIXEL_RATIO);
-		y2 = (int) (table.getNumber("boilerY2", -OFF_Y) * CAMERA_COMPUTER_PIXEL_RATIO);
+		x1 = (int) (table.getNumber("topBoilerCenterX", -OFF_X) * CAMERA_COMPUTER_PIXEL_RATIO);
+		y1 = (int) (table.getNumber("topBoilerCenterY", OFF_Y) * CAMERA_COMPUTER_PIXEL_RATIO);
+		x2 = (int) (table.getNumber("bottomBoilerCenterX", OFF_X) * CAMERA_COMPUTER_PIXEL_RATIO);
+		y2 = (int) (table.getNumber("bottomBoilerCenterY", -OFF_Y) * CAMERA_COMPUTER_PIXEL_RATIO);
 	}
 	
 	/**
 	 * Updates center point coordinates in table, putting in the center x and y
 	 * Converts from computer pixels to camera pixels (for robot adjustment)
-	 * */
+	 * 
 	public void sendCenterPt(){
 		table.putNumber("boilerCenterX", centerX/CAMERA_COMPUTER_PIXEL_RATIO);
 		table.putNumber("boilerCenterY", centerY/CAMERA_COMPUTER_PIXEL_RATIO);
-	}
+	}*/
 	
 	/**
 	 * Repaints the calibrated center point
