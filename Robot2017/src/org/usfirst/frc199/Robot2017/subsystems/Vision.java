@@ -62,25 +62,37 @@ public class Vision extends Subsystem implements DashboardInterface {
 
 	//TODO: deal with not being able to see boiler
 	public double getDistanceToBoiler() {
-		double topBoilerCenterY = getNumber("Vision/topBoilerCenterY", 0);
-		double bottomBoilerCenterY = getNumber("Vision/bottomBoilerCenterY", 0);
-		double pixelDist = Math.abs(topBoilerCenterY - bottomBoilerCenterY);
-		double fieldOfView = (REFLECTOR_DIST_BOILER * RESOLUTION_WIDTH)
-				/ pixelDist;
-		double distanceToBoiler = (fieldOfView / 2) / (Math.tan(THETA));
-		return distanceToBoiler;
+		if (getBoolean("Vision/boilerFound", true)) {
+			double topBoilerCenterY = getNumber("Vision/topBoilerCenterY", 0);
+			double bottomBoilerCenterY = getNumber("Vision/bottomBoilerCenterY", 0);
+			double pixelDist = Math.abs(topBoilerCenterY - bottomBoilerCenterY);
+			double fieldOfView = (REFLECTOR_DIST_BOILER * RESOLUTION_WIDTH)
+					/ pixelDist;
+			double distanceToBoiler = (fieldOfView / 2) / (Math.tan(THETA));
+			return distanceToBoiler;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	//TODO: deal with not being able to see boiler
 	public double getAngleToBoiler() {
-		double tapeCenterX = getNumber("Vision/topBoilerCenterX", 0);
-		double pixelDisplacement = SCREEN_CENTER - tapeCenterX;
-		double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
-
-		double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180)
-				/ Math.PI;
-
-		return angle;
+		if (getBoolean("Vision/boilerFound", true)) {
+			double tapeCenterX = getNumber("Vision/topBoilerCenterX", 0);
+			double pixelDisplacement = SCREEN_CENTER - tapeCenterX;
+			double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
+	
+			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180)
+					/ Math.PI;
+	
+			return angle;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	@Override

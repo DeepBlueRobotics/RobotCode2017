@@ -77,15 +77,16 @@ public class AutoModeLoadSide extends CommandGroup {
     	addSequential(new FollowTrajectory((0-direction)*ROBOT_CENTER_TO_PEG, LEFT * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), LEFT* 60));
     	*/
     	
-    	//TODO:deal with not being able to see boiler
+    	
     	//turns away from boiler, aligns and drives backward towards it
     	addSequential(new AutoDrive(0,(0-direction)*90, Robot.drivetrain));
+    	
     	addSequential(new AutoDrive(0,Robot.vision.getAngleToBoiler(), Robot.drivetrain));
     	addSequential(new AutoDrive(3-Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
     	
     	//Aims and shoots
     	addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(),10, Robot.shooter));
    
-    	
+
     }
 }
