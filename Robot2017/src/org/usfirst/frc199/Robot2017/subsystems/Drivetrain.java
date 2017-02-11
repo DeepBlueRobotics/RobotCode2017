@@ -69,14 +69,17 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID anglePID = new PID("DriveAngle");
 	private PID leftDriveSpeedPID = new PID("LeftDriveSpeed");
 	
-
+	public Drivetrain(){
+		super();
+		putString("~TYPE~", "Drivetrain");
+	}
+	
 	/**
 	 * This method initializes the command used in teleop
 	 */
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
-	
 	
 	/**
 	 * Changes the drive type

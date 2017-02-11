@@ -25,8 +25,11 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	private boolean isPistonUp = false;
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
+	public Intake(){
+		super();
+		putString("~TYPE~", "Intake");
+	}
+	
 	public void initDefaultCommand() {
 	}
 

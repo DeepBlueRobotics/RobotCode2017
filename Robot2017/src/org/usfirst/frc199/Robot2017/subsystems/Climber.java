@@ -22,13 +22,13 @@ public class Climber extends Subsystem implements ClimberInterface {
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	public boolean AIEnabled = false;
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-
+	public Climber(){
+		super();
+		putString("~TYPE~", "Climber");
+	}
+	
 	public void initDefaultCommand() {
-
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
+		
 	}
 	/**
 	 * 

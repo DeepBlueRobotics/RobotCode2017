@@ -44,6 +44,11 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private double prevTurretEncoder = 0;
 	private double prevHoodEncoder = 0;
 
+	public Shooter(){
+		super();
+		putString("~TYPE~", "Shooter");
+	}
+	
 	public void initDefaultCommand() {
 	}
 	
