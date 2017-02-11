@@ -60,6 +60,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		}
 	}
 
+	//TODO: deal with not being able to see boiler
 	public double getDistanceToBoiler() {
 		double topBoilerCenterY = getNumber("Vision/topBoilerCenterY", 0);
 		double bottomBoilerCenterY = getNumber("Vision/bottomBoilerCenterY", 0);
@@ -70,6 +71,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		return distanceToBoiler;
 	}
 
+	//TODO: deal with not being able to see boiler
 	public double getAngleToBoiler() {
 		double tapeCenterX = getNumber("Vision/topBoilerCenterX", 0);
 		double pixelDisplacement = SCREEN_CENTER - tapeCenterX;
