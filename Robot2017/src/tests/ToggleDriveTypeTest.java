@@ -15,7 +15,7 @@ public class ToggleDriveTypeTest {
 		ToggleDriveType myCommand = new ToggleDriveType(drive);
 		
 		myCommand.execute();
-		verify(drive).toggleArcadeDrive();
+		verify(drive).toggleDriveType();
 	}
 
 }

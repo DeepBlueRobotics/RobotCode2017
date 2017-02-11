@@ -284,8 +284,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Updates linear and angular velocity PIDs for motion profiling
 	 */
-	public void updateVelocityPID() {
-		// TODO (Ana T.) See todo of setVelocityTarget method
+	public void updateVelocityPIDs() {
 		velocityPID.update(getDistance());
 		angularVelocityPID.update(getAngle());
 		robotDrive.arcadeDrive(velocityPID.getOutput(), angularVelocityPID.getOutput());
@@ -322,7 +321,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *  
 	 * @return Whether angular velocity PID has reached the target
 	 */
-	public boolean angularVelocityReachedTarget() {
+	public boolean angularVelocityPIDReachedTarget() {
 		return angularVelocityPID.reachedTarget();
 	}
 	

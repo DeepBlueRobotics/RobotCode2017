@@ -94,8 +94,13 @@ public class Robot extends IterativeRobot {
 			break;
 		case "Center":
 			autonomousCommand = new AutoModeCenter(blueAlliance);
+			break;
 		case "Dead reckoning":
 			autonomousCommand = new AutoModeBasic(Robot.getPref("Dead Reckoning Duration", 2.5));
+			break;
+		default:
+			autonomousCommand = null;
+			break;
 		}
 
 		// Start the specified autonomous command

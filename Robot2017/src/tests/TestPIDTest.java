@@ -66,7 +66,7 @@ public class TestPIDTest {
 
 		testDriveVel.execute();
 
-		verify(mockDrive).updateVelocityPID();
+		verify(mockDrive).updateVelocityPIDs();
 
 		TestPID testDriveAngVel = new TestPID(TestPID.System.DRIVEANGULARVELOCITY, mockShoot, mockDrive);
 		testDriveAngVel.initialize();
@@ -75,7 +75,7 @@ public class TestPIDTest {
 
 		testDriveAngVel.execute();
 
-		verify(mockDrive, times(2)).updateAngularVelocityPID();
+		verify(mockDrive, times(2)).updateVelocityPIDs();
 	}
 
 }

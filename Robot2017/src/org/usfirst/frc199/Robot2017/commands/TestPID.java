@@ -68,8 +68,8 @@ public class TestPID extends Command {
 			case SHOOTER: shooter.runShootMotor(shooter.updateSpeed(target)); break;
 			case DRIVEDISTANCE: drivetrain.autoDrive(); break;
 			case DRIVEANGLE: drivetrain.updateAnglePID(); break;
-			case DRIVEVELOCITY: drivetrain.updateVelocityPID(); break;
-			case DRIVEANGULARVELOCITY: drivetrain.updateAngularVelocityPID(); break;
+			case DRIVEVELOCITY: drivetrain.updateVelocityPIDs(); break;
+			case DRIVEANGULARVELOCITY: drivetrain.updateVelocityPIDs(); break;
 		}
 	}
 

@@ -142,7 +142,7 @@ public interface DrivetrainInterface extends DashboardInterface {
 	/**
 	 * Updates linear and angular velocity PIDs for motion profiling
 	 */
-	public void updateVelocityPID();
+	public void updateVelocityPIDs();
 	
 	/**
 	 * Checks to see if the speed PID has reached the target
@@ -167,7 +167,7 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 *  
 	 * @return Whether angular velocity PID has reached the target
 	 */
-	public boolean angularVelocityReachedTarget();
+	public boolean angularVelocityPIDReachedTarget();
 	
 	/**
 	 * Uses PID to reach target velocity
