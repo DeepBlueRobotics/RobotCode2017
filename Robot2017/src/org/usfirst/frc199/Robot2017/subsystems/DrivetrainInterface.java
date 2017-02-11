@@ -68,6 +68,13 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public double getDistance();
 	
 	/**
+	 * Gets the distancePID
+	 * Only used in tests
+	 * @return the distancePID
+	 * */
+	public PID getDistancePID();
+	
+	/**
 	 * Sets the distance for PID target
 	 * 
 	 * @param targetDistance
@@ -91,6 +98,12 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 * @return the angle that the robot turned relative to the gyro's last reset
 	 */
 	public double getAngle();
+	
+	/**
+	 * Only used in tests
+	 * @return the anglePID
+	 * */
+	public PID getAnglePID();
 
 	/**
 	 * Sets the angle for PID target

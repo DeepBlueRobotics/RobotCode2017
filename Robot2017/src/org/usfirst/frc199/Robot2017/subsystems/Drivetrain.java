@@ -175,6 +175,15 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
+	 * Gets the distancePID
+	 * Only used in tests
+	 * @return the distancePID
+	 * */
+	public PID getDistancePID(){
+		return distancePID;
+	}
+	
+	/**
 	 * Sets the distance for PID target
 	 * 
 	 * @param targetDistance
@@ -208,6 +217,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public double getAngle() {
 		return gyro.getAngle()- gyroDriftRate * gyroDriftTimer.get();
+	}
+	
+	/**
+	 * Only used in tests
+	 * */
+	public PID getAnglePID(){
+		return anglePID;
 	}
 
 	/**

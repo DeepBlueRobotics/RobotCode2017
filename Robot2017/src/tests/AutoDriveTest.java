@@ -17,14 +17,14 @@ public class AutoDriveTest {
 		PIDInterface mockPID2 = mock(PIDInterface.class);
 		
 		AutoDrive testCommand = new AutoDrive(0, 1, mockDrivetrain);
-		when(mockDrivetrain.getDrivePID()).thenReturn((PID)mockPID);
-		when(mockDrivetrain.getTurnPID()).thenReturn((PID)mockPID2);
+		when(mockDrivetrain.getDistancePID()).thenReturn((PID)mockPID);
+		when(mockDrivetrain.getAnglePID()).thenReturn((PID)mockPID2);
 		
 		testCommand.initialize();
 		verify(mockDrivetrain).resetEncoder();
 		verify(mockDrivetrain).resetGyro();
-		verify(mockDrivetrain).getDrivePID();
-		verify(mockDrivetrain).getTurnPID();
+		verify(mockDrivetrain).getDistancePID();
+		verify(mockDrivetrain).getAnglePID();
 		((PID) verify(mockPID)).setTarget(0);
 		((PID) verify(mockPID2)).setTarget(1);
 		
@@ -34,8 +34,8 @@ public class AutoDriveTest {
 		verify(mockDrivetrain).shiftGears();
 		
 		testCommand.isFinished();
-		verify(mockDrivetrain).getDrivePID();
-		verify(mockDrivetrain).getTurnPID();
+		verify(mockDrivetrain).getDistancePID();
+		verify(mockDrivetrain).getAnglePID();
 		((PID) verify(mockPID)).reachedTarget();
 		((PID) verify(mockPID2)).reachedTarget();
 		
