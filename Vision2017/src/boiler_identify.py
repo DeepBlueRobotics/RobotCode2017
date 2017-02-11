@@ -1,7 +1,6 @@
 '''
-Must contain code to identify boiler marks after our initial basic contour-finding process
-Must contain a function to return the centers of both strips of tape
-Returns (upper x, upper y, lower x, lower y) with all -1 if no tape found
+Finds the centers of the lower and upper pieces of tape on the boiler.
+Returns (upper x, upper y, lower x, lower y) with all -1 if no tape found.
 '''
 from access_nt import NTClient
 import cv2
