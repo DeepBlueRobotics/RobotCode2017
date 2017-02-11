@@ -220,7 +220,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
+	 * Gets the anglePID
 	 * Only used in tests
+	 * @return the anglePID
 	 * */
 	public PID getAnglePID(){
 		return anglePID;
