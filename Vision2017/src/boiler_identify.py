@@ -19,7 +19,7 @@ def findCenters(frame, lower, upper):
 	mask = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), lower, upper)
 
 	# cnts: just the contours alone
-	cnts = cv2.findContours(threshBinary.copy(), cv2.RETR_LIST,
+	cnts = cv2.findContours(mask.copy(), cv2.RETR_LIST,
 		cv2.CHAIN_APPROX_SIMPLE)[1]
 	# values: contours with big enough areas [contour, dropping kernel, x of bounding box, y of bounding box]
 	values = []
@@ -29,7 +29,7 @@ def findCenters(frame, lower, upper):
 			box = cv2.boundingRect(c)
 			x = box[0] + box[2] / 2
 			height = 5
-			while(threshBinary[box[1] + height][x]):
+			while(mask[box[1] + height][x]):
 				height += 1
 			values.append([c, height, box[0], box[1]])
 			
@@ -52,4 +52,4 @@ def findCenters(frame, lower, upper):
 	else:
 		MU = cv2.moments(values[bestTargetIndices[0]][0])
 		ML = cv2.moments(values[bestTargetIndices[1]][0])
-		return ((MU['m10'] / MU['m00'], MU['m01'] / MU['m00'], ML['m10'] / ML['m00'], ML['m01'] / ML['m00']))
+		return (MU['m10'] / MU['m00'], MU['m01'] / MU['m00'], ML['m10'] / ML['m00'], ML['m01'] / ML['m00'])
