@@ -21,6 +21,7 @@ public class AutoAlignGear extends CommandGroup {
         if (SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
         	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear(), Robot.drivetrain));
         	if(shoot) {
+        		//TODO: deal with not being able to see boiler
         		addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(), 7, Robot.shooter));
         	}
         	addSequential(new AutoDelay(0, Robot.intake));
