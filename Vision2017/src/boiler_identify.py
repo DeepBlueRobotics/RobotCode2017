@@ -2,18 +2,9 @@
 Finds the centers of the lower and upper pieces of tape on the boiler.
 Returns (upper x, upper y, lower x, lower y) with all -1 if no tape found.
 '''
-from access_nt import NTClient
 import cv2
 import numpy as np
 
-nt = NTClient()
-
-# Example for writing to networkTables
-nt.changeSubTable("vision")  # should do this once at the beginning of the program to safeguard against the table being something else
-nt.write("left_center_x", 0)  # consult with writer of vision display widget to know what to name the keys
-
-# lower and upper makes the HSV range for the tape. a probably-good range is
-# upper = np.array([83, 20, 255])
 def findCenters(frame, lower, upper):
 	mask = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), lower, upper)
 
