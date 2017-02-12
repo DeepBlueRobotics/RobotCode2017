@@ -76,9 +76,8 @@ def findTape(frame):
 
     cv2.imshow("mask", cv2.bitwise_and(frame,frame, mask= mask))
 
-    cnts = cv2.findContours(mask.copy(), cv2.RETR_LIST,
-                            cv2.CHAIN_APPROX_SIMPLE)[1]
-
+    cnts, hierarchy = cv2.findContours(mask.copy(), cv2.RETR_LIST,
+                            cv2.CHAIN_APPROX_SIMPLE)
     
 
     # cntAreas = []
