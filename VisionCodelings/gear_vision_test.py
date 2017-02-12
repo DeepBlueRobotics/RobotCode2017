@@ -68,6 +68,7 @@ def findTape(frame, lowerHSV, upperHSV):
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lowerHSV, upperHSV)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
     cv2.imshow("mask", cv2.bitwise_and(frame,frame, mask= mask))
 
@@ -85,19 +86,19 @@ def findTape(frame, lowerHSV, upperHSV):
     cnts2 = []
 
     for c in cnts:
-        epsilon = 0.05 * cv2.arcLength(c, True)
-        c = cv2.approxPolyDP(c, epsilon, True)
+        # epsilon = 0.05 * cv2.arcLength(c, True)
+        # c = cv2.approxPolyDP(c, epsilon, True)
         cv2.drawContours(img, [c], 0, (255, 255, 255), 3)
 
         area = cv2.contourArea(c)
 
-        minRect = cv2.boundingRect(c)
-        # print minRect
-        minRectArea = 200  # cv2.contourArea(minRect)
+        # minRect = cv2.boundingRect(c)
+        # # print minRect
+        # minRectArea = 200  # cv2.contourArea(minRect)
 
         # checks if the thing is a rectangle, then records area and centers if
         # true
-        if (len(c) == 4): # and ((minRectArea * 0.9) < area):
+        if (len(c) == 4 && area > 200): # and ((minRectArea * 0.9) < area):
 
             cv2.drawContours(img, [c], -1, (0, 0, 255), 3)
 
@@ -120,17 +121,18 @@ def findTape(frame, lowerHSV, upperHSV):
 
     for i in range(0, len(cnts2) - 1):
         print "cnt = {} \n".format(cnts2[i][1][0])
-        m1, b1 = calcLine(cnts2[i][1][0][0], cnts2[i][1][1][0])
-        m2, b2 = calcLine(cnts2[i][1][2][0], cnts2[i][1][3][0])
+        # m1, b1 = calcLine(cnts2[i][1][0][0], cnts2[i][1][1][0])
+        # m2, b2 = calcLine(cnts2[i][1][2][0], cnts2[i][1][3][0])
 
         for j in range(i + 1, len(cnts2) - 1):
 
             # if this contour's area is too small, there's no use in looking
             # through the rest because they're sorted by area
-            if cnts2[i][0] * 2 / 3 < cnts2[j][0]:
-                break
+            if (cnts2[i][0] * 2 / 3 < cnts2[j][0]) and (cnts2[i][0] * 3 / 2 > cnts2[j][0]):
+                
 
-            if (closeToLine(m1, b1, cnts2[j][1][0][0]) and closeToLine(m1, b1, cnts2[j][1][1][0])) and (closeToLine(m2, b2, cnts2[j][1][2][0]) and closeToLine(m2, b2, cnts2[j][1][3][0])):
+            # if (closeToLine(m1, b1, cnts2[j][1][0][0]) and closeToLine(m1, b1, cnts2[j][1][1][0])) and (closeToLine(m2, b2, cnts2[j][1][2][0]) and closeToLine(m2, b2, cnts2[j][1][3][0])):
+
 
                 Mi = cv2.moments(np.array(cnts2[i][1]))
                 if Mi["m00"] != 0:
