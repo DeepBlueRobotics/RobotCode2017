@@ -15,20 +15,24 @@ cap = cv2.VideoCapture(0)
 
 black = np.zeros((480, 640, 3), np.uint8)
 
+lower = np.array([58, 118, 0])
+upper = np.array([78, 255, 151])
+
+kernel = np.ones((5,5),np.uint8)
 
 def nothing(x):
     pass
 
-cv2.namedWindow('sliders', cv2.WINDOW_NORMAL)
+# cv2.namedWindow('sliders', cv2.WINDOW_NORMAL)
 
-cv2.createTrackbar('LH', 'sliders', 0, 179, nothing)
-cv2.createTrackbar('UH', 'sliders', 179, 179, nothing)
+# cv2.createTrackbar('LH', 'sliders', 0, 179, nothing)
+# cv2.createTrackbar('UH', 'sliders', 179, 179, nothing)
 
-cv2.createTrackbar('LS', 'sliders', 0, 255, nothing)
-cv2.createTrackbar('US', 'sliders', 255, 255, nothing)
+# cv2.createTrackbar('LS', 'sliders', 0, 255, nothing)
+# cv2.createTrackbar('US', 'sliders', 255, 255, nothing)
 
-cv2.createTrackbar('LV', 'sliders', 0, 255, nothing)
-cv2.createTrackbar('UV', 'sliders', 255, 255, nothing)
+# cv2.createTrackbar('LV', 'sliders', 0, 255, nothing)
+# cv2.createTrackbar('UV', 'sliders', 255, 255, nothing)
 
 def sortCnt(cnt):
     less = []
@@ -62,13 +66,13 @@ def closeToLine(m, b, p):
     return (p[1] >= y - 15) and (p[1] <= y + 15)
 
 
-def findTape(frame, lowerHSV, upperHSV):
+def findTape(frame):
 
     img = np.zeros((480, 640, 3), np.uint8)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lowerHSV, upperHSV)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask = cv2.inRange(hsv, lower, upper)
+    # mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
     cv2.imshow("mask", cv2.bitwise_and(frame,frame, mask= mask))
 
@@ -86,8 +90,8 @@ def findTape(frame, lowerHSV, upperHSV):
     cnts2 = []
 
     for c in cnts:
-        # epsilon = 0.05 * cv2.arcLength(c, True)
-        # c = cv2.approxPolyDP(c, epsilon, True)
+        epsilon = 0.05 * cv2.arcLength(c, True)
+        c = cv2.approxPolyDP(c, epsilon, True)
         cv2.drawContours(img, [c], 0, (255, 255, 255), 3)
 
         area = cv2.contourArea(c)
@@ -98,7 +102,7 @@ def findTape(frame, lowerHSV, upperHSV):
 
         # checks if the thing is a rectangle, then records area and centers if
         # true
-        if (len(c) == 4 && area > 200): # and ((minRectArea * 0.9) < area):
+        if (len(c) == 4 and area > 1000): # and ((minRectArea * 0.9) < area):
 
             cv2.drawContours(img, [c], -1, (0, 0, 255), 3)
 
@@ -180,12 +184,7 @@ def findTape(frame, lowerHSV, upperHSV):
 while True:
     ret, frame = cap.read()
 
-    lower = np.array([cv2.getTrackbarPos('LH', 'sliders'), cv2.getTrackbarPos(
-        'LS', 'sliders'), cv2.getTrackbarPos('LV', 'sliders')])
-    upper = np.array([cv2.getTrackbarPos('UH', 'sliders'), cv2.getTrackbarPos(
-        'US', 'sliders'), cv2.getTrackbarPos('UV', 'sliders')])
-
-    findTape(frame, lower, upper)
+    findTape(frame)
 
     cv2.imshow('sliders', black)
 
