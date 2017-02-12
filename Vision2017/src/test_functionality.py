@@ -1,12 +1,11 @@
 '''
 This program itself is thus far untested.
-This tests the functionality of the vision (shooter or gear) 
-on the raspberry pi. It doesn't check processing frame rate.
-It includes HSV range sliders and the exposure script. To run
-gear camera script instead of shooter script, replace all
-boiler_identify with lift_marks_identify and findCenters with
-findTape. Use hsv_mask_sliders vision codeling to find range
-first and change lower[] and upper[].
+This tests the functionality of the shooter vision on the Raspberry Pi
+and draws the returned point on to the frame. It doesn't check the 
+processing frame rate. It includes the exposure script. If you want to 
+use it for the gear vision, some things will need to be changed. Figure 
+it out. Use hsv_mask_sliders vision codeling to find rangefirst and 
+change lower[] and upper[].
 '''
 
 import numpy as np
@@ -22,21 +21,22 @@ subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
 	"uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
 
-lower = np.array([0, 0, 0])
-upper = np.array([179, 255, 255])
+lower = np.array([58, 118, 0])
+upper = np.array([78, 255, 151])
 
 while(True):
-    # Capture frame-by-frame
+    # capture frame-by-frame
     ret, frame = cap.read()
     
-    centers = boiler_identify.findCenters(frame, lower, upper)
+    # get point [x, y]
+    point = boiler_identify.findCenters(frame, lower, upper)
     
-    cv2.circle(frame, centers[0], 2, (255,0,255))
-    cv2.circle(frame, centers[1], 2, (255,0,255))
-    cv2.putText(frame, centrs, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 13, cv2.LINE_AA)
+    # draw stuff
+    cv2.circle(frame, (point[0], point[1]), 2, (255,0,255))
+    cv2.putText(frame, point, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 13, cv2.LINE_AA)
 
     cv2.imshow('frame',frame)
-    if cv2.waitKey(1) == ord('q'):
+    if cv2.waitKey(1) == 27:
         break
 
 # When everything done, release the capture

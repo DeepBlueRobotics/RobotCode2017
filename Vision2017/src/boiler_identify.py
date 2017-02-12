@@ -33,12 +33,20 @@ def findCenters(frame, lower, upper):
 		for b in range (a + 1, len(values)):
 			# make sure they're kinda close in x
 			if (abs(values[a][1] - values[b][1]) < 30):
+				# how close the dropping kernels to the top one 
+				# being twice the bottom one
 				droppingKernels = abs(values[a][0] / values[b][0] - 2)
+				# how close the y diff is to being twice the upper
+				# tape's dropping kernel
 				yDifference = abs((values[b][2] - values[a][2]) / values[a][0] - 2)
+				
+				# lower score is better (golf-style)
 				score = droppingKernels + yDifference
 				if (score > bestTargetScore):
 					bestTargetScore = score
 					bestTargetIndices = (a, b)
+	# if all of the contour pairs have shitty scores, or none with 
+	# close x vals, were found, then say no tape found
 	if (bestTargetScore > 2):
 		return (-1, -1)
 	else:
