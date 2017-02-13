@@ -1,15 +1,15 @@
 package org.usfirst.frc199.Robot2017.commands;
 
-import org.usfirst.frc199.Robot2017.Robot;
-import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.RobotMap;
+import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 /**
- *
+ * 
  */
-public class AutoShoot extends Command {
+public class AutoShoot2 extends Command {
 	double target;
 	double angle;
 	Timer tim = new Timer();
@@ -28,9 +28,9 @@ public class AutoShoot extends Command {
 	 *            - duration to run the shooter motor
 	 */
 
-	public AutoShoot(double targetDistance, double runTime, ShooterInterface shooter) {
+	public AutoShoot2(double targetDistance, double runTime, ShooterInterface shooter) {
 		this.shooter = shooter;
-		target = this.shooter.convertDistanceToTargetVelocity(targetDistance)*1500;
+		target = this.shooter.convertDistanceToTargetVelocity(targetDistance);
 		angle = this.shooter.convertDistanceToTargetAngle(targetDistance);
 		duration = runTime;
 	}
@@ -39,15 +39,17 @@ public class AutoShoot extends Command {
 	public void initialize() {
 		requires(Robot.shooter);
 		tim.start();
+		shooter.setShooterPIDTarget(target);
 		shooter.setHoodPIDTarget(angle);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if (!shooter.shooterMotorStalled()) {
-			shooter.runShootMotor(target);
+		shooter.updateShooterPID(shooter.getShooterSpeed2());
+		if (!shooter.shooterMotorStalled2()) {
+			shooter.runShootMotor2(shooter.getShooterPIDOutput());
 		}
-		if (Math.abs(shooter.getShooterSpeed() - target) <= Robot.getPref("speedErrorConstant", .05)
+		if (Math.abs(shooter.getShooterSpeed2() - target) <= Robot.getPref("speedErrorConstant", .05)
 				* target) {
 			shooter.runFeederMotor(1);
 		}
@@ -65,8 +67,8 @@ public class AutoShoot extends Command {
 		shooter.stopShootMotor();
 	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

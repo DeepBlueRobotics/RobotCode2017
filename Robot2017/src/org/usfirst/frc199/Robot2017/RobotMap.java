@@ -35,6 +35,9 @@ public class RobotMap {
 	public static SpeedController shooterShootMotor;
 	public static SpeedController shooterFeedMotor;
 	public static Encoder shooterShootEncoder;
+	public static CANTalon shooterShootMotorAndEncoder;
+	private static final int CANTalonIDNum = 0;
+	private final double shootFGain = 0.374;
 	public static SpeedController turretTurnMotor;
 	public static Encoder turretTurretEncoder;
 	public static SpeedController hoodAngleMotor;
@@ -98,13 +101,23 @@ public class RobotMap {
 		LiveWindow.addSensor("Shooter", "ShootEncoder", shooterShootEncoder);
 		shooterShootEncoder.setDistancePerPulse(1.0);
 		shooterShootEncoder.setPIDSourceType(PIDSourceType.kRate);
+		
+		shooterShootMotorAndEncoder = new CANTalon(CANTalonIDNum);
+		LiveWindow.addSensor("Shooter", "ShootMotorAndEncoder", shooterShootMotorAndEncoder);
+		shooterShootMotorAndEncoder.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		shooterShootMotorAndEncoder.reverseSensor(false);
+		shooterShootMotorAndEncoder.setF(shootFGain);
+		shooterShootMotorAndEncoder.configNominalOutputVoltage(+0.0f, -0.0f);
+		shooterShootMotorAndEncoder.configPeakOutputVoltage(+12.0f, -12.0f);
+		shooterShootMotorAndEncoder.changeControlMode(TalonControlMode.Speed);
+		
 		hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
 		LiveWindow.addSensor("Shooter", "HoodAngleEncoder", hoodAngleEncoder);
 		hoodAngleEncoder.setDistancePerPulse(1.0);
 		hoodAngleEncoder.setPIDSourceType(PIDSourceType.kRate);
+		
 		turretTurnMotor = new Talon(6);
 		LiveWindow.addActuator("Shooter", "TurnMotor", (Talon) turretTurnMotor);
-
 		turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
 		LiveWindow.addSensor("Shooter", "TurretEncoder", turretTurretEncoder);
 		turretTurretEncoder.setDistancePerPulse(1.0);
