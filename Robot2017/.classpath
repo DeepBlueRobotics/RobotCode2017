@@ -17,12 +17,6 @@
 	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>
 	<classpathentry kind="var" path="cscore" sourcepath="cscore.sources"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
 	<classpathentry kind="lib" path="libs/jars/mockito-all-1.10.19.jar"/>
-	<classpathentry kind="var" path="mockito"/>
-	<classpathentry kind="var" path="navx_frc"/>
-	<classpathentry kind="var" path="junit"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/junit.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/mockito-all-1.10.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

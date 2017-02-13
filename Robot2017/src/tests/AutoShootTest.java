@@ -1,7 +1,7 @@
 package tests;
 
 import org.junit.Test;
-import org.usfirst.frc199.Robot2017.commands.AutoShoot;
+import org.usfirst.frc199.Robot2017.commands.AutoShoot2;
 import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 import static org.mockito.Mockito.*;
@@ -12,7 +12,7 @@ public class AutoShootTest {
 	public void test(){
 		ShooterInterface mockShooter = mock(ShooterInterface.class);
 		
-		AutoShoot testCommand = new AutoShoot(0, 0, mockShooter);
+		AutoShoot2 testCommand = new AutoShoot2(0, 0, mockShooter);
 		
 		testCommand.initialize();
 		verify(mockShooter).setShooterPIDTarget(0);

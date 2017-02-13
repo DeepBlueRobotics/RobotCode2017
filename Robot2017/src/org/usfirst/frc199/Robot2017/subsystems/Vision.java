@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Vision extends Subsystem implements DashboardInterface {
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
 	private final double REFLECTOR_DIST_GEAR = 5; // inches between the centers
 													// of both reflectors
 													// (horizontal)
@@ -26,6 +24,11 @@ public class Vision extends Subsystem implements DashboardInterface {
 	private final double RESOLUTION_WIDTH = 1280; // pixel width of image
 	private final double SCREEN_CENTER = RESOLUTION_WIDTH / 2;
 
+	public Vision(){
+		super();
+		putString("~TYPE~", "Vision");
+	}
+	
 	public void initDefaultCommand() {
 
 	}

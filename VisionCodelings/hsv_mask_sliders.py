@@ -25,13 +25,13 @@ cv2.createTrackbar('LV','sliders',dlower[2],255,nothing)
 cv2.createTrackbar('UV','sliders',dupper[2],255,nothing)
 
 cap = cv2.VideoCapture(0)
-ret = cap.set(3,1280)
-ret = cap.set(4,720)
+ret = cap.set(3,320)
+ret = cap.set(4,180)
 
 
 while(1):
     ret, frame = cap.read()
-    k = cv2.waitKey(1) & 0xFF
+    k = cv2.waitKey(1)
     if k == 27:
         break
 

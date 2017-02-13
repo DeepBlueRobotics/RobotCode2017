@@ -15,20 +15,24 @@ cap = cv2.VideoCapture(0)
 
 black = np.zeros((480, 640, 3), np.uint8)
 
+lower = np.array([58, 118, 0])
+upper = np.array([78, 255, 151])
+
+kernel = np.ones((5,5),np.uint8)
 
 def nothing(x):
     pass
 
-cv2.namedWindow('sliders', cv2.WINDOW_NORMAL)
+# cv2.namedWindow('sliders', cv2.WINDOW_NORMAL)
 
-cv2.createTrackbar('LH', 'sliders', 0, 179, nothing)
-cv2.createTrackbar('UH', 'sliders', 179, 179, nothing)
+# cv2.createTrackbar('LH', 'sliders', 0, 179, nothing)
+# cv2.createTrackbar('UH', 'sliders', 179, 179, nothing)
 
-cv2.createTrackbar('LS', 'sliders', 0, 255, nothing)
-cv2.createTrackbar('US', 'sliders', 255, 255, nothing)
+# cv2.createTrackbar('LS', 'sliders', 0, 255, nothing)
+# cv2.createTrackbar('US', 'sliders', 255, 255, nothing)
 
-cv2.createTrackbar('LV', 'sliders', 0, 255, nothing)
-cv2.createTrackbar('UV', 'sliders', 255, 255, nothing)
+# cv2.createTrackbar('LV', 'sliders', 0, 255, nothing)
+# cv2.createTrackbar('UV', 'sliders', 255, 255, nothing)
 
 def sortCnt(cnt):
     less = []
@@ -62,18 +66,18 @@ def closeToLine(m, b, p):
     return (p[1] >= y - 15) and (p[1] <= y + 15)
 
 
-def findTape(frame, lowerHSV, upperHSV):
+def findTape(frame):
 
     img = np.zeros((480, 640, 3), np.uint8)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lowerHSV, upperHSV)
+    mask = cv2.inRange(hsv, lower, upper)
+    # mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
     cv2.imshow("mask", cv2.bitwise_and(frame,frame, mask= mask))
 
-    cnts = cv2.findContours(mask.copy(), cv2.RETR_LIST,
-                            cv2.CHAIN_APPROX_SIMPLE)[1]
-
+    cnts, hierarchy = cv2.findContours(mask.copy(), cv2.RETR_LIST,
+                            cv2.CHAIN_APPROX_SIMPLE)
     
 
     # cntAreas = []
@@ -91,13 +95,13 @@ def findTape(frame, lowerHSV, upperHSV):
 
         area = cv2.contourArea(c)
 
-        minRect = cv2.boundingRect(c)
-        # print minRect
-        minRectArea = 200  # cv2.contourArea(minRect)
+        # minRect = cv2.boundingRect(c)
+        # # print minRect
+        # minRectArea = 200  # cv2.contourArea(minRect)
 
         # checks if the thing is a rectangle, then records area and centers if
         # true
-        if (len(c) == 4): # and ((minRectArea * 0.9) < area):
+        if (len(c) == 4 and area > 1000): # and ((minRectArea * 0.9) < area):
 
             cv2.drawContours(img, [c], -1, (0, 0, 255), 3)
 
@@ -120,17 +124,18 @@ def findTape(frame, lowerHSV, upperHSV):
 
     for i in range(0, len(cnts2) - 1):
         print "cnt = {} \n".format(cnts2[i][1][0])
-        m1, b1 = calcLine(cnts2[i][1][0][0], cnts2[i][1][1][0])
-        m2, b2 = calcLine(cnts2[i][1][2][0], cnts2[i][1][3][0])
+        # m1, b1 = calcLine(cnts2[i][1][0][0], cnts2[i][1][1][0])
+        # m2, b2 = calcLine(cnts2[i][1][2][0], cnts2[i][1][3][0])
 
         for j in range(i + 1, len(cnts2) - 1):
 
             # if this contour's area is too small, there's no use in looking
             # through the rest because they're sorted by area
-            if cnts2[i][0] * 2 / 3 < cnts2[j][0]:
-                break
+            if (cnts2[i][0] * 2 / 3 < cnts2[j][0]) and (cnts2[i][0] * 3 / 2 > cnts2[j][0]):
+                
 
-            if (closeToLine(m1, b1, cnts2[j][1][0][0]) and closeToLine(m1, b1, cnts2[j][1][1][0])) and (closeToLine(m2, b2, cnts2[j][1][2][0]) and closeToLine(m2, b2, cnts2[j][1][3][0])):
+            # if (closeToLine(m1, b1, cnts2[j][1][0][0]) and closeToLine(m1, b1, cnts2[j][1][1][0])) and (closeToLine(m2, b2, cnts2[j][1][2][0]) and closeToLine(m2, b2, cnts2[j][1][3][0])):
+
 
                 Mi = cv2.moments(np.array(cnts2[i][1]))
                 if Mi["m00"] != 0:
@@ -178,12 +183,7 @@ def findTape(frame, lowerHSV, upperHSV):
 while True:
     ret, frame = cap.read()
 
-    lower = np.array([cv2.getTrackbarPos('LH', 'sliders'), cv2.getTrackbarPos(
-        'LS', 'sliders'), cv2.getTrackbarPos('LV', 'sliders')])
-    upper = np.array([cv2.getTrackbarPos('UH', 'sliders'), cv2.getTrackbarPos(
-        'US', 'sliders'), cv2.getTrackbarPos('UV', 'sliders')])
-
-    findTape(frame, lower, upper)
+    findTape(frame)
 
     cv2.imshow('sliders', black)
 

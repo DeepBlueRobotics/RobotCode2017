@@ -31,6 +31,7 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Climber climber;
 	public static Vision vision;
+	private DisplayDashboardData display;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -43,6 +44,7 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		climber = new Climber();
 		vision = new Vision();
+		display = new DisplayDashboardData();
 
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
@@ -55,11 +57,6 @@ public class Robot extends IterativeRobot {
 		subsystems.add(climber);
 		subsystems.add(vision);
 		oi = new OI();
-		for (DashboardInterface s : Robot.subsystems) {
-			if (!s.getKey("").substring(0, 4).equals("PID/")) {
-				s.putString("~TYPE~", "SubSystem");
-			}
-		}
 	}
 
 	/**
@@ -108,7 +105,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.start();
 
 		// Update all subsystem SmartDashboard values during autonomous
-		new DisplayDashboardData().start();
+		display.start();
 	}
 
 	public void autonomousPeriodic() {
@@ -124,7 +121,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 
 		// Update all subsystem SmartDashboard values during teleop
-		new DisplayDashboardData().start();
+		display.start();
 	}
 
 	public void teleopPeriodic() {

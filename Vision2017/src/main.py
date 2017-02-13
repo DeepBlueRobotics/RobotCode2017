@@ -13,7 +13,7 @@ import cv2
 import subprocess
 import numpy as np
 import boiler_identify
-import lift_marks_indentify
+import lift_marks_identify
 
 nt = NTClient()
 
@@ -51,14 +51,11 @@ while(True):
 	if 0 == 0:  # Condition should be based on whether a certain boolean value in NetworkTables says the shooter command is running
 		ret, shooterFrame = shooterCap.read()
 		# Run boiler identification script
-		centers = boiler_identify.findTape(shooterFrame, lowerHSV, upperHSV)
+		centers = boiler_identify.findBoiler(shooterFrame, lowerHSV, upperHSV)
 		
 		nt.write("Vision", "boilerFound", centers[0] == -1)
-		nt.write("Vision", "upperTapeCenterX", centers[0])
-		nt.write("Vision", "upperTapeCenterY", centers[1])
-		nt.write("Vision", "lowerTapeCenterX", centers[2])
-		nt.write("Vision", "lowerTapeCenterY", centers[3])
-		print ":D"  # Placeholder line that will be changed later
+		nt.write("Vision", "boilerX", centers[0])
+		nt.write("Vision", "boilerY", centers[1])
 
 	""" gear tape identification code """
 	if nt.get("AutoAlignGear", "running"):
@@ -84,8 +81,8 @@ while(True):
 
 				gearFailCounter = 0
 				doFindGearTape = False
-			 else:
-				 gearFailCounter += 1
+			else:
+				gearFailCounter += 1
 		else:
 			nt.write("Vision", "gearVisionRunning", False)
 			nt.write("Vision", "OH-YEAH", False)
