@@ -129,6 +129,9 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		SmartDashboard.putBoolean("button 5 (forward)", oi.outputButton.get());
+		SmartDashboard.putBoolean("button 7 (backward)", oi.intakeButton.get());
 	}
 
 	public void testPeriodic() {

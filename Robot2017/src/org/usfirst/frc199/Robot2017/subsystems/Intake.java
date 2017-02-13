@@ -114,5 +114,6 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void displayData() {
 		putBoolean("isPistonUp", isPistonUp);
 		putNumber("intakeCurrent", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
+		putNumber("Sending to intake", getIntake());
 	}
 }
