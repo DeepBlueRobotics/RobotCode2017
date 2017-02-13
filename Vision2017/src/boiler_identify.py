@@ -6,7 +6,7 @@ tape, but (-1, -1) if no tape found.
 import cv2
 import numpy as np
 
-def findCenters(frame, lower, upper):
+def findBoiler(frame, lower, upper):
 	mask = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), lower, upper)
 
 	# cnts: just the contours alone
