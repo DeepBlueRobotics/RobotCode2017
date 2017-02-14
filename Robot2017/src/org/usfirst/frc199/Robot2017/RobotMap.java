@@ -1,5 +1,8 @@
 package org.usfirst.frc199.Robot2017;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -37,7 +40,7 @@ public class RobotMap {
 	public static Encoder shooterShootEncoder;
 	public static CANTalon shooterShootMotorAndEncoder;
 	private static final int CANTalonIDNum = 0;
-	private final double shootFGain = 0.374;
+	private final static double shootFGain = 0.374;
 	public static SpeedController turretTurnMotor;
 	public static Encoder turretTurretEncoder;
 	public static SpeedController hoodAngleMotor;
