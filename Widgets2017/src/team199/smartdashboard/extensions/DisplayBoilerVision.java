@@ -88,7 +88,7 @@ public class DisplayBoilerVision extends StaticWidget{
             public void actionPerformed(ActionEvent e) {
                 updatePosition();
                 moveCalibCenter((x1+x2)/2, (y1+y2)/2);
-                //sendCenterPt();
+                sendCenterPt();
             }
         });
 		
@@ -126,11 +126,11 @@ public class DisplayBoilerVision extends StaticWidget{
 	/**
 	 * Updates center point coordinates in table, putting in the center x and y
 	 * Converts from computer pixels to camera pixels (for robot adjustment)
-	 * 
+	 */
 	public void sendCenterPt(){
 		table.putNumber("boilerCenterX", centerX/CAMERA_COMPUTER_PIXEL_RATIO);
 		table.putNumber("boilerCenterY", centerY/CAMERA_COMPUTER_PIXEL_RATIO);
-	}*/
+	}
 	
 	/**
 	 * Repaints the calibrated center point
