@@ -34,36 +34,36 @@ def nothing(x):
 # cv2.createTrackbar('LV', 'sliders', 0, 255, nothing)
 # cv2.createTrackbar('UV', 'sliders', 255, 255, nothing)
 
-def sortCnt(cnt):
-    less = []
-    equal = []
-    greater = []
+# def sortCnt(cnt):
+#     less = []
+#     equal = []
+#     greater = []
 
-    if len(cnt) > 1:
-        pivot = cnt[0][0][1]
-        for point in cnt:
-            x = point[0][1]
-            if x < pivot:
-                less.append(point)
-            if x == pivot:
-                equal.append(point)
-            if x > pivot:
-                greater.append(point)
-        # Don't forget to return something!
-        return sortCnt(less)+equal+sortCnt(greater)  # Just use the + operator to join lists
-    # Note that you want equal ^^^^^ not pivot
-    else:  # You need to hande the part at the end of the recursion - when you only have one element in your cnt, just return the cnt.
-        return cnt
+#     if len(cnt) > 1:
+#         pivot = cnt[0][0][1]
+#         for point in cnt:
+#             x = point[0][1]
+#             if x < pivot:
+#                 less.append(point)
+#             if x == pivot:
+#                 equal.append(point)
+#             if x > pivot:
+#                 greater.append(point)
+#         # Don't forget to return something!
+#         return sortCnt(less)+equal+sortCnt(greater)  # Just use the + operator to join lists
+#     # Note that you want equal ^^^^^ not pivot
+#     else:  # You need to hande the part at the end of the recursion - when you only have one element in your cnt, just return the cnt.
+#         return cnt
 
-def calcLine(p1, p2):
-    m = (p1[1] - p2[1]) / (p1[0] - p2[0])
-    b = p1[1] - m * p1[0]
-    return m, b
+# def calcLine(p1, p2):
+#     m = (p1[1] - p2[1]) / (p1[0] - p2[0])
+#     b = p1[1] - m * p1[0]
+#     return m, b
 
 
-def closeToLine(m, b, p):
-    y = m * p[0] + b
-    return (p[1] >= y - 15) and (p[1] <= y + 15)
+# def closeToLine(m, b, p):
+#     y = m * p[0] + b
+#     return (p[1] >= y - 15) and (p[1] <= y + 15)
 
 
 def findTape(frame):
