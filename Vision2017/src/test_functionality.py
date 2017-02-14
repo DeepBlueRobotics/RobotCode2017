@@ -29,11 +29,11 @@ while(True):
     ret, frame = cap.read()
     
     # get point [x, y]
-    point = boiler_identify.findCenters(frame, lower, upper)
+    point = boiler_identify.findBoiler(frame, lower, upper)
     
     # draw stuff
     cv2.circle(frame, (point[0], point[1]), 2, (255,0,255))
-    cv2.putText(frame, point, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 13, cv2.LINE_AA)
+    # cv2.putText(frame, point, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 13, cv2.LINE_AA)
 
     cv2.imshow('frame',frame)
     if cv2.waitKey(1) == 27:

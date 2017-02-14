@@ -16,15 +16,16 @@ def findBoiler(frame, lower, upper):
 	# [dropping kernel, center x of bounding box, y of top of bounding box]
 	values = []
 	# loop over the contours
-	for c in cnts:
-		if cv2.contourArea(c) > 10:
-			box = cv2.boundingRect(c)
-			x = box[0] + box[2] / 2
-			height = 5
-			while(mask[box[1] + height][x]):
-				height += 1
-			values.append([height, x, box[1]])
-			
+	if (cnts != None):
+		for c in cnts:
+			if cv2.contourArea(c) > 10:
+				box = cv2.boundingRect(c)
+				x = box[0] + box[2] / 2
+				height = 5
+				while(mask[box[1] + height][x]):
+					height += 1
+				values.append([height, x, box[1]])
+								
 	values = sorted(values, key=lambda x: x[3])
 	
 	bestTargetScore = 1000;
