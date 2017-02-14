@@ -114,7 +114,7 @@ def findTape(frame):
             # tup = (len(centerX) - 1, area)
             # cntAreas.append(area)
 
-            c = sortCnt(c)
+            # c = sortCnt(c)
 
             cnts2.append((area, c))
 
@@ -136,6 +136,7 @@ def findTape(frame):
 
             # if (closeToLine(m1, b1, cnts2[j][1][0][0]) and closeToLine(m1, b1, cnts2[j][1][1][0])) and (closeToLine(m2, b2, cnts2[j][1][2][0]) and closeToLine(m2, b2, cnts2[j][1][3][0])):
 
+                cv2.drawContours(img, [cnts2[i][1], cnts2[j][2]], -1, (255, 0, 0), 3)
 
                 Mi = cv2.moments(np.array(cnts2[i][1]))
                 if Mi["m00"] != 0:
@@ -152,10 +153,6 @@ def findTape(frame):
                 else:
                     centerXj = 0
                     centerYj = 0
-
-                # did some random shit here from line 152 to 157. should probably check
-                cv2.line(img, tuple(cnts2[i][1][0][0]), tuple(cnts2[i][1][1][0]), (255, 0, 0), 3)
-                cv2.line(img, tuple(cnts2[i][1][2][0]), tuple(cnts2[i][1][3][0]), (255, 0, 0), 3)
 
                 cv2.circle(img, (centerXi, centerYi), 5, (0, 255, 0), 5)
                 cv2.circle(img, (centerXj, centerYj), 5, (0, 255, 0), 5)
@@ -187,5 +184,5 @@ while True:
 
     cv2.imshow('sliders', black)
 
-    if cv2.waitKey(5) & 0xFF == ord('q'):
+    if cv2.waitKey(5) == ord('q'):
         break
