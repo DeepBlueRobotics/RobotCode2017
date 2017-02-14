@@ -62,6 +62,12 @@ public class Intake extends Subsystem implements IntakeInterface {
 		}
 	}
 	
+	/**
+	 * @return if the intake is up or not
+	 * */
+	public boolean intakeIsUp(){
+		return isPistonUp;
+	}
 
 	/**
 	 * This method stops the DoubleSolenoid responsible for intaking
@@ -80,6 +86,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 			return true;
 		return false;
 	}
+	
 	public boolean gearLifted() {
 		// return if gear lifted or not
 		if (AI.getVoltage() > 0.19) {
@@ -88,6 +95,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 			return false;
 		}
 	}
+	
 	/**
 	 * This method sets flipperFlapper to forward unless it already is, then sets to backwards
 	 */
@@ -98,18 +106,21 @@ public class Intake extends Subsystem implements IntakeInterface {
 			flipperFlapper.set(DoubleSolenoid.Value.kReverse);
 		}
 	}
+	
 	/**
 	 * This method stops the flipperFlapper
 	 */
 	public void stopFlipperFlapper() {
 		flipperFlapper.set(DoubleSolenoid.Value.kOff);
 	}
+	
 	/**
 	 * This method returns the current value of the intakeMotor
 	 */
 	public double getIntake() {
 		return intakeMotor.get();
 	}
+	
 	@Override
 	/**
 	 * This method displays data to SmartDashboard
