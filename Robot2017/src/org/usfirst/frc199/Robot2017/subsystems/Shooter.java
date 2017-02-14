@@ -6,6 +6,8 @@ import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
 import org.usfirst.frc199.Robot2017.motion.PID;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
