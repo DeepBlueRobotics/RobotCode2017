@@ -14,14 +14,19 @@ public class Vision extends Subsystem implements DashboardInterface {
 	private final double REFLECTOR_DIST_GEAR = 5; // inches between the centers
 													// of both reflectors
 													// (horizontal)
-	private final double REFLECTOR_DIST_BOILER = 7; // inches between the
-													// centers of both
-													// reflectors (vertical)
-	private final double THETA = 37.5 * (Math.PI / 180); // radians from north
+	private final double CAM_HEIGHT = Robot.getPref("Camera Height", 0); //in off the ground
+	private final double BOILER_HEIGHT = 88 - CAM_HEIGHT; //in from camera bottom to top of boiler tape
+	private final double THETA = 34.25 * (Math.PI / 180); // radians from north
 															// that you can see
 															// in both
 															// directions
-	private final double RESOLUTION_WIDTH = 1280; // pixel width of image
+	private final double CAM_ANGLE = 41.91 * (Math.PI / 180); // radians of the
+																// camera's
+																// vertical
+																// field of view
+	private final double RESOLUTION_WIDTH = 320; // pixel width of image
+	private final double RESOLUTION_HEIGHT = 180; //pixel height of image
+	private double SCREEN_DEPTH = RESOLUTION_HEIGHT/Math.tan(CAM_ANGLE);
 	private final double SCREEN_CENTER = RESOLUTION_WIDTH / 2;
 
 	public Vision(){
@@ -51,7 +56,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		if (getBoolean("Vision/OH-YEAH", true)) {
 			double pegX = (getNumber("Vision/leftGearCenterX", 0) + getNumber(
 					"Vision/rightGearCenterX", 0)) / 2;
-			double pixelDisplacement = SCREEN_CENTER - pegX;
+			double pixelDisplacement = pegX - SCREEN_CENTER;
 			double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
 
 			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180)
@@ -65,33 +70,25 @@ public class Vision extends Subsystem implements DashboardInterface {
 
 	public double getDistanceToBoiler() {
 		if (getBoolean("Vision/boilerFound", true)) {
-			double topBoilerCenterY = getNumber("Vision/topBoilerCenterY", 0);
-			double bottomBoilerCenterY = getNumber("Vision/bottomBoilerCenterY", 0);
-			double pixelDist = Math.abs(topBoilerCenterY - bottomBoilerCenterY);
-			double fieldOfView = (REFLECTOR_DIST_BOILER * RESOLUTION_WIDTH)
-					/ pixelDist;
-			double distanceToBoiler = (fieldOfView / 2) / (Math.tan(THETA));
+			double pixelHeight = getNumber("Vision/boilerY", 0);
+			double distanceToBoiler = (SCREEN_DEPTH * BOILER_HEIGHT) / pixelHeight;
 			return distanceToBoiler;
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
 
 	public double getAngleToBoiler() {
 		if (getBoolean("Vision/boilerFound", true)) {
-			double tapeCenterX = getNumber("Vision/topBoilerCenterX", 0);
-			double pixelDisplacement = SCREEN_CENTER - tapeCenterX;
+			double tapeCenterX = getNumber("Vision/boilerX", 0);
+			double pixelDisplacement = tapeCenterX - SCREEN_CENTER;
 			double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
-	
+
 			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180)
 					/ Math.PI;
-	
+
 			return angle;
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
