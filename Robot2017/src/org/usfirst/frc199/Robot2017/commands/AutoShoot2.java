@@ -31,6 +31,9 @@ public class AutoShoot2 extends Command {
 	public AutoShoot2(double targetDistance, double runTime, ShooterInterface shooter) {
 		this.shooter = shooter;
 		target = this.shooter.convertDistanceToTargetVelocity(targetDistance);
+		//converts in/s to rpm
+		target = target*60*Robot.getPref("shooterWheelRadius", 4.5)*2*Math.PI;
+		
 		angle = this.shooter.convertDistanceToTargetAngle(targetDistance);
 		duration = runTime;
 	}
