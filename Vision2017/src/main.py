@@ -22,8 +22,10 @@ shooterCap = cv2.VideoCapture(0)
 gearCap = cv2.VideoCapture(1)
 
 # HSV range
-lowerHSV = np.array([40, 0, 250])
-upperHSV = np.array([83, 20, 255])
+# lowerHSV = np.array([40, 0, 250])
+# upperHSV = np.array([83, 20, 255])
+lowerHSV = np.array([75, 175, 100])
+upperHSV = np.array([100, 255, 200])
 
 # Gear Tape values
 doFindGearTape = False

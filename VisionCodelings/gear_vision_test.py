@@ -10,13 +10,13 @@ import subprocess
 
 cap = cv2.VideoCapture(0)
 
-# subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell = True)
-# subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell = True)
+subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell = True)
+subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell = True)
 
 black = np.zeros((480, 640, 3), np.uint8)
 
-lower = np.array([58, 118, 0])
-upper = np.array([78, 255, 151])
+lower = np.array([75, 175, 100])
+upper = np.array([100, 255, 200])
 
 kernel = np.ones((5,5),np.uint8)
 
@@ -34,36 +34,36 @@ def nothing(x):
 # cv2.createTrackbar('LV', 'sliders', 0, 255, nothing)
 # cv2.createTrackbar('UV', 'sliders', 255, 255, nothing)
 
-def sortCnt(cnt):
-    less = []
-    equal = []
-    greater = []
+# def sortCnt(cnt):
+#     less = []
+#     equal = []
+#     greater = []
 
-    if len(cnt) > 1:
-        pivot = cnt[0][0][1]
-        for point in cnt:
-            x = point[0][1]
-            if x < pivot:
-                less.append(point)
-            if x == pivot:
-                equal.append(point)
-            if x > pivot:
-                greater.append(point)
-        # Don't forget to return something!
-        return sortCnt(less)+equal+sortCnt(greater)  # Just use the + operator to join lists
-    # Note that you want equal ^^^^^ not pivot
-    else:  # You need to hande the part at the end of the recursion - when you only have one element in your cnt, just return the cnt.
-        return cnt
+#     if len(cnt) > 1:
+#         pivot = cnt[0][0][1]
+#         for point in cnt:
+#             x = point[0][1]
+#             if x < pivot:
+#                 less.append(point)
+#             if x == pivot:
+#                 equal.append(point)
+#             if x > pivot:
+#                 greater.append(point)
+#         # Don't forget to return something!
+#         return sortCnt(less)+equal+sortCnt(greater)  # Just use the + operator to join lists
+#     # Note that you want equal ^^^^^ not pivot
+#     else:  # You need to hande the part at the end of the recursion - when you only have one element in your cnt, just return the cnt.
+#         return cnt
 
-def calcLine(p1, p2):
-    m = (p1[1] - p2[1]) / (p1[0] - p2[0])
-    b = p1[1] - m * p1[0]
-    return m, b
+# def calcLine(p1, p2):
+#     m = (p1[1] - p2[1]) / (p1[0] - p2[0])
+#     b = p1[1] - m * p1[0]
+#     return m, b
 
 
-def closeToLine(m, b, p):
-    y = m * p[0] + b
-    return (p[1] >= y - 15) and (p[1] <= y + 15)
+# def closeToLine(m, b, p):
+#     y = m * p[0] + b
+#     return (p[1] >= y - 15) and (p[1] <= y + 15)
 
 
 def findTape(frame):
@@ -119,24 +119,31 @@ def findTape(frame):
             cnts2.append((area, c))
 
     # sorts contours by largest to smallest area
-    if cnts2 is not None:
-        cnts2.sort(key=operator.itemgetter(0), reverse=True)
+    if cnts2 == None:
+        return
+    cnts2.sort(key=operator.itemgetter(0), reverse=True)
+
+    print "Areas:",
+
+    for c in cnts2:
+        print " {}".format(c[0]),
+
+    print
 
     for i in range(0, len(cnts2) - 1):
-        print "cnt = {} \n".format(cnts2[i][1][0])
+        # print "cnt = {} \n".format(cnts2[i][1][0])
         # m1, b1 = calcLine(cnts2[i][1][0][0], cnts2[i][1][1][0])
         # m2, b2 = calcLine(cnts2[i][1][2][0], cnts2[i][1][3][0])
 
-        for j in range(i + 1, len(cnts2) - 1):
+        for j in range(i + 1, len(cnts2)):
+            if (cnts2[i][0] / 2) < cnts2[j][0]:
 
-            # if this contour's area is too small, there's no use in looking
-            # through the rest because they're sorted by area
-            if (cnts2[i][0] * 2 / 3 < cnts2[j][0]) and (cnts2[i][0] * 3 / 2 > cnts2[j][0]):
+                print "Found stuff!!!"
                 
 
             # if (closeToLine(m1, b1, cnts2[j][1][0][0]) and closeToLine(m1, b1, cnts2[j][1][1][0])) and (closeToLine(m2, b2, cnts2[j][1][2][0]) and closeToLine(m2, b2, cnts2[j][1][3][0])):
 
-                cv2.drawContours(img, [cnts2[i][1], cnts2[j][2]], -1, (255, 0, 0), 3)
+                cv2.drawContours(img, [cnts2[i][1], cnts2[j][1]], -1, (255, 0, 0), 3)
 
                 Mi = cv2.moments(np.array(cnts2[i][1]))
                 if Mi["m00"] != 0:
@@ -181,8 +188,6 @@ while True:
     ret, frame = cap.read()
 
     findTape(frame)
-
-    cv2.imshow('sliders', black)
 
     if cv2.waitKey(5) == ord('q'):
         break

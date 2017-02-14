@@ -11,7 +11,7 @@ def findBoiler(frame, lower, upper):
 
 	# cnts: just the contours alone
 	cnts = cv2.findContours(mask.copy(), cv2.RETR_LIST,
-		cv2.CHAIN_APPROX_SIMPLE)[1]
+		cv2.CHAIN_APPROX_SIMPLE)[0]
 	# values: contours with big enough areas 
 	# [dropping kernel, center x of bounding box, y of top of bounding box]
 	values = []
