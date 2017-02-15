@@ -54,13 +54,65 @@ public class RobotMap {
 	public static DoubleSolenoid flipperFlapper;
 	public static AnalogInput drivetrainLeftUSsensor;
 	public static AnalogInput drivetrainRightUSsensor;
-
+	public static final boolean practice = Robot.getPref("Is practice robot?", false);
+	
 	public static void init() {
-		drivetrainLeftMotor = new Talon(0);
+		
+		if(practice)
+		{
+			drivetrainLeftMotor = new Talon(0);
+			drivetrainRightMotor = new Talon(1);
+			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
+			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
+			drivetrainGyro = new AnalogGyro(0);
+			drivetrainCompressor = new Compressor(0);
+			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
+			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
+			intakeIntakeMotor = new Talon(2);
+			shooterShootMotor = new Talon(3);
+			shooterFeedMotor = new Talon(4);
+			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+			hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
+			turretTurnMotor = new Talon(6);
+			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
+			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
+			climberWinchMotor = new Talon(8);
+			climberPlateIRSensor = new AnalogInput(1);
+			driverAI = new AnalogInput(2);
+			flipperFlapper = new DoubleSolenoid(3,4,5);
+			drivetrainLeftUSsensor = new AnalogInput(3);
+			drivetrainRightUSsensor = new AnalogInput(4);
+		}
+		else
+		{
+			drivetrainLeftMotor = new Talon(0);
+			drivetrainRightMotor = new Talon(1);
+			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
+			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
+			drivetrainGyro = new AnalogGyro(0);
+			drivetrainCompressor = new Compressor(0);
+			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
+			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
+			intakeIntakeMotor = new Talon(2);
+			shooterShootMotor = new Talon(3);
+			shooterFeedMotor = new Talon(4);
+			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+			hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
+			turretTurnMotor = new Talon(6);
+			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
+			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
+			climberWinchMotor = new Talon(8);
+			climberPlateIRSensor = new AnalogInput(1);
+			driverAI = new AnalogInput(2);
+			flipperFlapper = new DoubleSolenoid(3,4,5);
+			drivetrainLeftUSsensor = new AnalogInput(3);
+			drivetrainRightUSsensor = new AnalogInput(4);
+		}
+		
 		LiveWindow.addActuator("Drivetrain", "LeftMotor", (Talon) drivetrainLeftMotor);
 		drivetrainLeftMotor.setInverted(true);
 		
-		drivetrainRightMotor = new Talon(1);
+		
 		LiveWindow.addActuator("Drivetrain", "RightMotor", (Talon) drivetrainRightMotor);
 
 		drivetrainRobotDrive = new RobotDrive(drivetrainLeftMotor, drivetrainRightMotor);
@@ -70,37 +122,37 @@ public class RobotMap {
 		drivetrainRobotDrive.setSensitivity(0.7);
 		drivetrainRobotDrive.setMaxOutput(1.0);
 
-		drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
+		
 		LiveWindow.addSensor("Drivetrain", "LeftEncoder", drivetrainLeftEncoder);
 		drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0531));
 		drivetrainLeftEncoder.setPIDSourceType(PIDSourceType.kRate);
-		drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
+		
 		LiveWindow.addSensor("Drivetrain", "RightEncoder", drivetrainRightEncoder);
 		drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0521));
 		drivetrainRightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		
-		drivetrainGyro = new AnalogGyro(0);
+		
 		LiveWindow.addSensor("Drivetrain", "Gyro", drivetrainGyro);
 		drivetrainGyro.setSensitivity(0.007);
-		drivetrainCompressor = new Compressor(0);
+		
 
-		drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
+		
 		LiveWindow.addActuator("Drivetrain", "ShiftPiston", drivetrainShiftPiston);
 
-		intakePivotPiston = new DoubleSolenoid(0, 2, 3);
+		
 		LiveWindow.addActuator("Intake", "PivotPiston", intakePivotPiston);
 		
-		intakeIntakeMotor = new Talon(2);
+	
 		LiveWindow.addActuator("Intake", "IntakeMotor", (Talon) intakeIntakeMotor);
 
-		shooterShootMotor = new Talon(3);
+		
 		LiveWindow.addActuator("Shooter", "ShootMotor", (Talon) shooterShootMotor);
 
-		shooterFeedMotor = new Talon(4);
+		
 		LiveWindow.addActuator("Shooter", "FeedMotor", (Talon) shooterFeedMotor);
 
-		shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+		
 		LiveWindow.addSensor("Shooter", "ShootEncoder", shooterShootEncoder);
 		shooterShootEncoder.setDistancePerPulse(1.0);
 		shooterShootEncoder.setPIDSourceType(PIDSourceType.kRate);
@@ -114,39 +166,39 @@ public class RobotMap {
 		shooterShootMotorAndEncoder.configPeakOutputVoltage(+12.0f, -12.0f);
 		shooterShootMotorAndEncoder.changeControlMode(TalonControlMode.Speed);
 		
-		hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
+	
 		LiveWindow.addSensor("Shooter", "HoodAngleEncoder", hoodAngleEncoder);
 		hoodAngleEncoder.setDistancePerPulse(1.0);
 		hoodAngleEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
-		turretTurnMotor = new Talon(6);
+	
 		LiveWindow.addActuator("Shooter", "TurnMotor", (Talon) turretTurnMotor);
-		turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
+		
 		LiveWindow.addSensor("Shooter", "TurretEncoder", turretTurretEncoder);
 		turretTurretEncoder.setDistancePerPulse(1.0);
 		turretTurretEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
-		winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
+		
 		LiveWindow.addSensor("Climber", "WinchEncoder", winchEncoder);
 		winchEncoder.setDistancePerPulse(1.0);
 		winchEncoder.setPIDSourceType(PIDSourceType.kRate);
-		climberWinchMotor = new Talon(8);
+	
 		LiveWindow.addActuator("Climber", "WinchMotor", (Talon) climberWinchMotor);
 		
 		
-		climberPlateIRSensor = new AnalogInput(1);
+		
 		LiveWindow.addSensor("Climber", "ClimberInfrared", climberPlateIRSensor);
 		
-		driverAI = new AnalogInput(2);
+		
 		LiveWindow.addSensor("Drivetrain", "ClimberInfrared", driverAI);
 
-		flipperFlapper = new DoubleSolenoid(3,4,5);
+		
 		LiveWindow.addActuator("Intake", "FlipperFlapper", flipperFlapper);
 		
-		drivetrainLeftUSsensor = new AnalogInput(3);
+		
 		LiveWindow.addSensor("Drivetrain", "LeftUltrasonic", drivetrainLeftUSsensor);
 		
-		drivetrainRightUSsensor = new AnalogInput(4);
+	
 		LiveWindow.addSensor("Drivetrain", "RightUltrasonic", drivetrainRightUSsensor);
 		
 		// Alternatives: SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB
