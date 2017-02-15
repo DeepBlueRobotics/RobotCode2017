@@ -2,11 +2,14 @@
 # Status: Demo and tool. Works.
 # Tool to find HSV ranges for whatever target.
 
-import cv2
+import cv2, subprocess
 import numpy as np
 
 def nothing(x):
     pass
+
+subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell = True)
+subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell = True)
 
 black = np.zeros((1,1,3), np.uint8)
 
@@ -25,8 +28,8 @@ cv2.createTrackbar('LV','sliders',dlower[2],255,nothing)
 cv2.createTrackbar('UV','sliders',dupper[2],255,nothing)
 
 cap = cv2.VideoCapture(0)
-ret = cap.set(3,320)
-ret = cap.set(4,180)
+# ret = cap.set(3,320)
+# ret = cap.set(4,180)
 
 
 while(1):

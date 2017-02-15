@@ -12,6 +12,7 @@ public class RunIntake extends Command {
 	IntakeInterface intake;
 
 	public RunIntake(double speed, IntakeInterface intake) {
+		requires(Robot.intake);
 		this.speed = speed;
 		this.intake = intake;
 	}
@@ -22,18 +23,20 @@ public class RunIntake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if (!intake.intakeCurrentOverflow()) {
-			intake.runIntake(speed);
-		} 
-//		else if(intake.getIntake() > Robot.getPref("minIntakePercent", 0.7) * speed) {
-//			intake.runIntake(intake.getIntake() - 0.02);
-//		}
+		if(!intake.intakeIsUp()){
+			if (!intake.intakeCurrentOverflow()) {
+				intake.runIntake(speed);
+			} 
+//			else if(intake.getIntake() > Robot.getPref("minIntakePercent", 0.7) * speed) {
+//				intake.runIntake(intake.getIntake() - 0.02);
+//			}
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		//return (!Robot.oi.intakeButton.get() && !Robot.oi.outputButton.get());
-		return false;
+		return (!Robot.oi.intakeButton.get() && !Robot.oi.outputButton.get());
+//		return false;
 	}
 
 	// Called once after isFinished returns true
@@ -44,5 +47,6 @@ public class RunIntake extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		intake.runIntake(0);
 	}
 }
