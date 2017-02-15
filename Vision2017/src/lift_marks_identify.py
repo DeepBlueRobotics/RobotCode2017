@@ -6,13 +6,8 @@ Must return the centers of both strips of tape
 import numpy as np
 import cv2
 import operator
-import subprocess
-
-kernel = np.ones((5,5),np.uint8)
-img = np.zeros((480, 640, 3), np.uint8)
 
 def findTape(frame, lower, upper):
-    img = np.zeros((480, 640, 3), np.uint8)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower, upper)
@@ -25,14 +20,10 @@ def findTape(frame, lower, upper):
     for c in cnts:
         epsilon = 0.05 * cv2.arcLength(c, True)
         c = cv2.approxPolyDP(c, epsilon, True)
-        cv2.drawContours(img, [c], 0, (255, 255, 255), 3)
 
         area = cv2.contourArea(c)
 
         if (len(c) == 4 and area > 400 and cv2.isContourConvex(c)): 
-
-            cv2.drawContours(img, [c], -1, (0, 0, 255), 3)
-
             cnts2.append((area, c))
 
     # sorts contours by largest to smallest area
@@ -43,8 +34,6 @@ def findTape(frame, lower, upper):
         for j in range(i + 1, len(cnts2)):
             if (cnts2[i][0] / 2) < cnts2[j][0]:
                 
-                cv2.drawContours(img, [cnts2[i][1], cnts2[j][1]], -1, (255, 0, 0), 3)
-
                 Mi = cv2.moments(np.array(cnts2[i][1]))
                 if Mi["m00"] != 0:
                     centerXi = int(Mi["m10"] / Mi["m00"])

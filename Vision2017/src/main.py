@@ -50,18 +50,19 @@ subprocess.call(
 while(True):
 
 	""" boiler tape identification code """
-	if 0 == 0:  # Condition should be based on whether a certain boolean value in NetworkTables says the shooter command is running
+	if 1 == 0:  # Condition should be based on whether a certain boolean value in NetworkTables says the shooter command is running
 		ret, shooterFrame = shooterCap.read()
 		# Run boiler identification script
 		centers = boiler_identify.findBoiler(shooterFrame, lowerHSV, upperHSV)
 		
-		nt.write("Vision", "boilerFound", centers[0] == -1)
+		nt.write("Vision", "boilerFound", centers[0] != -1)
 		nt.write("Vision", "boilerX", centers[0])
 		nt.write("Vision", "boilerY", centers[1])
 
 	""" gear tape identification code """
-	if nt.get("AutoAlignGear", "running"):
-		if gearFailCounter < 5:
+	#if nt.get("AutoAlignGear", "running", False):
+	if True:
+		if gearFailCounter < 10:
 			nt.write("Vision", "gearVisionRunning", True)
 
 			ret, gearFrame = gearCap.read()
