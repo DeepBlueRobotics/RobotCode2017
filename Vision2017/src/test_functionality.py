@@ -18,11 +18,10 @@ ret = cap.set(3,320)
 ret = cap.set(4,180)
 
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-	"uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
 
-lower = np.array([58, 118, 0])
-upper = np.array([78, 255, 151])
+lower = np.array([69, 99, 52])
+upper = np.array([85, 255, 133])
 
 while(True):
     # capture frame-by-frame
@@ -33,8 +32,7 @@ while(True):
     
     # draw stuff
     cv2.circle(frame, (point[0], point[1]), 2, (255,0,255))
-    # cv2.putText(frame, point, (10,500), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 13, cv2.LINE_AA)
-
+    print point
     cv2.imshow('frame',frame)
     if cv2.waitKey(1) == 27:
         break

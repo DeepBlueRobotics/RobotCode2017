@@ -7,8 +7,7 @@ import cv2
 import numpy as np
 
 def findBoiler(frame, lower, upper):
-	mask = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), lower, upper)
-
+        mask = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), lower, upper)
 	# cnts: just the contours alone
 	cnts = cv2.findContours(mask.copy(), cv2.RETR_LIST,
 		cv2.CHAIN_APPROX_SIMPLE)[0]
@@ -17,16 +16,19 @@ def findBoiler(frame, lower, upper):
 	values = []
 	# loop over the contours
 	if (cnts != None):
+                print "cnts not None"
 		for c in cnts:
-			if cv2.contourArea(c) > 10:
+			if cv2.contourArea(c) > 16:
 				box = cv2.boundingRect(c)
 				x = box[0] + box[2] / 2
 				height = 5
-				while(mask[box[1] + height][x]):
+				while(height <= box[3]):
+                                        if (not mask[box[1] + height][x]):
+                                                break
 					height += 1
 				values.append([height, x, box[1]])
 								
-	values = sorted(values, key=lambda x: x[3])
+	values = sorted(values, key=lambda x: x[2])
 	
 	bestTargetScore = 1000;
 	bestTargetIndices = (-1, -1)
@@ -48,6 +50,7 @@ def findBoiler(frame, lower, upper):
 					bestTargetIndices = (a, b)
 	# if all of the contour pairs have shitty scores, or none with 
 	# close x vals, were found, then say no tape found
+	cv2.imshow('mask',mask)
 	if (bestTargetScore > 2):
 		return (-1, -1)
 	else:

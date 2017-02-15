@@ -8,18 +8,14 @@ import cv2
 import operator
 import subprocess
 
-subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell = True)
-subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell = True)
-
 kernel = np.ones((5,5),np.uint8)
+img = np.zeros((480, 640, 3), np.uint8)
 
-def findTape(cap, lower, upper):
+def findTape(frame, lower, upper):
     img = np.zeros((480, 640, 3), np.uint8)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower, upper)
-
-    cv2.imshow("mask", cv2.bitwise_and(frame,frame, mask= mask))
 
     cnts, hierarchy = cv2.findContours(mask.copy(), cv2.RETR_LIST,
                             cv2.CHAIN_APPROX_SIMPLE)
@@ -33,7 +29,7 @@ def findTape(cap, lower, upper):
 
         area = cv2.contourArea(c)
 
-        if (len(c) == 4 and area > 1000 and cv2.isContourConvex(c)): 
+        if (len(c) == 4 and area > 400 and cv2.isContourConvex(c)): 
 
             cv2.drawContours(img, [c], -1, (0, 0, 255), 3)
 
