@@ -40,22 +40,8 @@ public class AutoDelay extends Command {
     	} else if (time == 0) {
     		return intake.gearLifted();
     	} else {
-    		if(tim.get() >= time) {
-    			return true;
-    		} else {
-    			return false;
-    		}
+    		return tim.get() >= time;
     	}
-//    	if(time != 0.0){
-//    		if((tim.get() >= time))
-//    		{
-//    			return true;
-//    		}
-//    	} else if(intake.gearLifted()){
-//    		return true;
-//    	} else {
-//    	}
-//        return false;
     }
 
     // Called once after isFinished returns true
