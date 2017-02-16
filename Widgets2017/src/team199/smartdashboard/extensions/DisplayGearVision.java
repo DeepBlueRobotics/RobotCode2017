@@ -24,8 +24,8 @@ public class DisplayGearVision extends StaticWidget{
     private final int BUTTON_HIGHT = 25;
     private final int OFF_X = WID/2;
     private final int OFF_Y = HIGHT/2;
-    private final int CALIB_PT_W = 6;
-    private final int CALIB_PT_H = 6;
+    private final int DOT_W = 6;
+    private final int DOT_H = 6;
     
     private final double CAMERA_COMPUTER_PIXEL_RATIO = 1/20; //1 cam pixel = 20 comp pixels
     
@@ -60,8 +60,8 @@ public class DisplayGearVision extends StaticWidget{
 				
 				//displays the previous calibrated center point
 				g.setColor(Color.RED);
-		        g.fillRect(centerX + OFF_X - CALIB_PT_W/2, OFF_Y - centerY - CALIB_PT_H/2,
-		        				CALIB_PT_W, CALIB_PT_H);
+		        g.fillRect(centerX + OFF_X - DOT_W/2, OFF_Y - centerY - DOT_H/2,
+		        				DOT_W, DOT_H);
 		        
 		        //draws a new line, the middle of which will be the new calibrated center point
 		        g.setColor(Color.GRAY);
@@ -138,12 +138,12 @@ public class DisplayGearVision extends StaticWidget{
 	private void moveCalibCenter(int x, int y) {
         int OFFSET = 1;
         if ((centerX!=x) || (centerY!=y)) {
-            grid.repaint(centerX + OFF_X - CALIB_PT_W/2, OFF_Y - centerY - CALIB_PT_H/2, CALIB_PT_W +
-            				OFFSET, CALIB_PT_H + OFFSET);
+            grid.repaint(centerX + OFF_X - DOT_W/2, OFF_Y - centerY - DOT_H/2, DOT_W +
+            				OFFSET, DOT_H + OFFSET);
             centerX = x;
             centerY = y;
-            grid.repaint(centerX + OFF_X - CALIB_PT_W/2, OFF_Y - centerY - CALIB_PT_H/2, CALIB_PT_W +
-            				OFFSET, CALIB_PT_H + OFFSET);
+            grid.repaint(centerX + OFF_X - DOT_W/2, OFF_Y - centerY - DOT_H/2, DOT_W +
+            				OFFSET, DOT_H + OFFSET);
         } 
     }
 	
