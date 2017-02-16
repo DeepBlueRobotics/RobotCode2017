@@ -54,7 +54,7 @@ public class RobotMap {
 	public static DoubleSolenoid flipperFlapper;
 	public static AnalogInput drivetrainLeftUSsensor;
 	public static AnalogInput drivetrainRightUSsensor;
-	public static final boolean practice = Robot.getPref("Is practice robot?", false);
+	public static boolean practice = Robot.getPref("Is practice robot?", false);
 	
 	public static void init() {
 		
