@@ -85,11 +85,17 @@ public class AutoChooser extends StaticWidget {
         });
         
         blueBox.addActionListener((ActionEvent e) -> {
-            blue = true;
+        	if(blue == false)
+        		redBox.setSelected(false);
+        	blue = true;
+        	updateTable();
         });
         
         redBox.addActionListener((ActionEvent e) -> {
-           blue = false; 
+        	if(blue == true)
+        		blueBox.setSelected(false);
+        	blue = false; 
+        	updateTable();
         });
         
         saveBtn.addActionListener((ActionEvent e) -> {

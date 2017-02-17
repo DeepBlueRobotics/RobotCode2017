@@ -23,7 +23,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
-	private boolean isPistonUp = false;
+	private boolean isPistonUp = getBoolean("isIntakePistonUp", true);
 
 	public Intake(){
 		super();
@@ -55,7 +55,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 */
 	public void toggleIntake() {
 		isPistonUp = !isPistonUp;
-		if (isPistonUp) {
+		if (!pivotPiston.get().toString().equals("kForward")) {
 			pivotPiston.set(DoubleSolenoid.Value.kForward);
 		} else {
 			pivotPiston.set(DoubleSolenoid.Value.kReverse);
@@ -66,7 +66,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * @return if the intake is up or not
 	 * */
 	public boolean intakeIsUp(){
-		return isPistonUp;
+		return pivotPiston.get().toString().equals("kReverse");
 	}
 
 	/**
@@ -129,5 +129,6 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putBoolean("isPistonUp", isPistonUp);
 		putNumber("intakeCurrent", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
 		putNumber("Sending to intake", getIntake());
+		putString("Intake piston status", pivotPiston.get().toString());
 	}
 }

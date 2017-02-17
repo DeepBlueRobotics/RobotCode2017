@@ -71,7 +71,7 @@ public class PIDWidget extends StaticWidget {
 				}
 				final String prefKey = (boxNames[i]);
 				if (i > 3) {
-					box.editable.setValue(true);
+					box.editable.setValue(false);
 				} else if (i <= 3) {
 					box.addSpecialListener(new FocusAdapter() {
 						@Override
