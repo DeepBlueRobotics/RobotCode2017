@@ -12,7 +12,7 @@ public class RunShooterTest {
 	public void test(){
 		ShooterInterface mockShooter = mock(ShooterInterface.class);
 		
-		RunShooter testCommand = new RunShooter(0.2, mockShooter);
+		RunShooter testCommand = new RunShooter(0.2, mockShooter, 0);
 		
 		testCommand.execute();
 		verify(mockShooter).shooterMotorStalled();
