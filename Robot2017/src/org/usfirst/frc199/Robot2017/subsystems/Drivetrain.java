@@ -60,8 +60,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	
 	//for ultrasonic sensors
 	private final double distBtwnUSsensors = 25;
-	private final double distFromUSToRobotFront = 15.65;
-	private final double targetUSDist = 3;
+	private final double distFromUSToRobotFront = 6.19;
+	private final double targetUSDist = 3.5;
 
 	private DriveTypes currentDrive = DriveTypes.ARCADE;
 
