@@ -23,7 +23,7 @@ public class ManualControl extends StaticWidget {
 
     private static final JComboBox dropBox = new JComboBox();
     private NetworkTable sd = NetworkTable.getTable("SmartDashboard/ManualControl");
-    private  final String[] options = {"Intake", "Feeder", "Climber", "Shooter", "Turret", "Hood"};
+    private  final String[] options = {"Choose system", "Intake", "Feeder", "Climber", "Shooter", "Turret", "Hood"};
     private static final JButton runButton = new JButton("Start");
     private JPanel p = new JPanel();
     private JLabel title = new JLabel("<html><font color='white'>Mech Manual Control</font></html>", SwingConstants.CENTER);

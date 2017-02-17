@@ -37,7 +37,7 @@ public class OI {
 		winchButton = new JoystickButton(manipulator, 2);
 		winchButton.whileHeld(new Climb(Robot.climber));
 		shootOutButton = new JoystickButton(manipulator, 4);
-		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter));
+		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter, 0));
 		outputButton = new JoystickButton(manipulator, 5);
 		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), Robot.intake));
 		intakeButton = new JoystickButton(manipulator, 7);
@@ -75,7 +75,7 @@ public class OI {
 		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0, Robot.drivetrain));
 		SmartDashboard.putData("AutoDelay", new AutoDelay(-2, Robot.intake));
 		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(Robot.shooter));
-		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret(Robot.shooter));
+		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret(0, Robot.shooter));
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive(Robot.drivetrain));
 		SmartDashboard.putData("GradualDrive", new GradualDrive(Robot.drivetrain));

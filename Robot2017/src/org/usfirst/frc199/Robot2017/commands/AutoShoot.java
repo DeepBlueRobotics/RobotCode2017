@@ -5,6 +5,7 @@ import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -47,15 +48,18 @@ public class AutoShoot extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if (!shooter.shooterMotorStalled()) {
-			shooter.runShootMotor(target);
+		if(duration != 6.9 || SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
+			if (!shooter.shooterMotorStalled()) {
+				shooter.runShootMotor(target);
+			}
+			if (Math.abs(shooter.getShooterSpeed() - target) <= Robot.getPref("speedErrorConstant", .05)
+					* target) {
+				shooter.runFeederMotor(1);
+			}
+			shooter.updateHoodPID(shooter.getHoodEncoder());
+			shooter.runHoodMotor(shooter.getHoodPIDOutput());
 		}
-		if (Math.abs(shooter.getShooterSpeed() - target) <= Robot.getPref("speedErrorConstant", .05)
-				* target) {
-			shooter.runFeederMotor(1);
-		}
-		shooter.updateHoodPID(shooter.getHoodEncoder());
-		shooter.runHoodMotor(shooter.getHoodPIDOutput());
+		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
