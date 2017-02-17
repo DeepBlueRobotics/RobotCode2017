@@ -1,3 +1,5 @@
+
+
 '''
 Must:
 Run script to set camera exposure
@@ -24,7 +26,7 @@ gearCap = cv2.VideoCapture(1)
 # HSV range
 # lowerHSV = np.array([40, 0, 250])
 # upperHSV = np.array([83, 20, 255])
-lowerHSV = np.array([75, 175, 100])
+lowerHSV = np.array([65, 175, 70])
 upperHSV = np.array([100, 255, 200])
 
 # Gear Tape values
@@ -32,16 +34,29 @@ doFindGearTape = False
 gearFailCounter = 0
 
 
-""" Exposure script """
+""" Exposure script """ 
+##try:
+##        # shooter camera
+##
+##        subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell=True)
+##        subprocess.call(
+##                "uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
+##
+##        # gear camera
+##        subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
+##        subprocess.call(
+##                "uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
+##except KeyError:
 # shooter camera
+
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
-	"uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
+        "uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # gear camera
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
-	"uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
+        "uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # remember to set resolution
 
@@ -89,6 +104,7 @@ while(True):
 		else:
 			nt.write("Vision", "gearVisionRunning", False)
 			nt.write("Vision", "OH-YEAH", False)
+
 
 			gearFailCounter = 0
 			doFindGearTape = False

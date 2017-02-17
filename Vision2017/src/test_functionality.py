@@ -10,15 +10,15 @@ change lower[] and upper[].
 
 import numpy as np
 import cv2
-import boiler_identify
+import lift_marks_identify
 import subprocess
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 ret = cap.set(3,320)
 ret = cap.set(4,180)
 
-subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
+subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
 
 lower = np.array([69, 99, 52])
 upper = np.array([85, 255, 133])
@@ -28,10 +28,11 @@ while(True):
     ret, frame = cap.read()
     
     # get point [x, y]
-    point = boiler_identify.findBoiler(frame, lower, upper)
+    point = boiler_identify.findTape(frame, lower, upper)
     
     # draw stuff
     cv2.circle(frame, (point[0], point[1]), 2, (255,0,255))
+    cv2.circle(frame, (point[2], point[3]), 2, (255,0,255))
     print point
     cv2.imshow('frame',frame)
     if cv2.waitKey(1) == 27:
