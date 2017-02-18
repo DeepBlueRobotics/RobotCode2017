@@ -144,13 +144,13 @@ public class RobotMap {
 		LiveWindow.addActuator("Intake", "PivotPiston", intakePivotPiston);
 		
 	
-		LiveWindow.addActuator("Intake", "IntakeMotor", (Talon) intakeIntakeMotor);
+		LiveWindow.addActuator("Intake", "IntakeMotor", (VictorSP) intakeIntakeMotor);
 
 		
 		LiveWindow.addActuator("Shooter", "ShootMotor", (Talon) shooterShootMotor);
 
 		
-		LiveWindow.addActuator("Shooter", "FeedMotor", (Talon) shooterFeedMotor);
+		LiveWindow.addActuator("Shooter", "FeedMotor", (VictorSP) shooterFeedMotor);
 
 		
 		LiveWindow.addSensor("Shooter", "ShootEncoder", shooterShootEncoder);
@@ -172,7 +172,7 @@ public class RobotMap {
 		hoodAngleEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 	
-		LiveWindow.addActuator("Shooter", "TurnMotor", (Talon) turretTurnMotor);
+		LiveWindow.addActuator("Shooter", "TurnMotor", (VictorSP) turretTurnMotor);
 		
 		LiveWindow.addSensor("Shooter", "TurretEncoder", turretTurretEncoder);
 		turretTurretEncoder.setDistancePerPulse(1.0);
@@ -183,7 +183,7 @@ public class RobotMap {
 		winchEncoder.setDistancePerPulse(1.0);
 		winchEncoder.setPIDSourceType(PIDSourceType.kRate);
 	
-		LiveWindow.addActuator("Climber", "WinchMotor", (Talon) climberWinchMotor);
+		LiveWindow.addActuator("Climber", "WinchMotor", (VictorSP) climberWinchMotor);
 		
 		
 		
