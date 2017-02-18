@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -60,14 +61,15 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	
 	//for ultrasonic sensors
 	private final double distBtwnUSsensors = 25;
-	private final double distFromUSToRobotFront = 15.65;
-	private final double targetUSDist = 3;
+	private final double distFromUSToRobotFront = 6.19;
+	private final double targetUSDist = 3.5;
 
 	private DriveTypes currentDrive = DriveTypes.ARCADE;
 
 	private PID distancePID = new PID("DriveDistance");
 	private PID anglePID = new PID("DriveAngle");
 	private PID leftDriveSpeedPID = new PID("LeftDriveSpeed");
+	private PID rightDriveSpeedPID = new PID("RightDriveSpeed");
 	
 	public Drivetrain(){
 		super();
@@ -89,7 +91,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			currentDrive = DriveTypes.TANK;
 		} else if(currentDrive == DriveTypes.TANK){
 			currentDrive = DriveTypes.DRIFT_TANK;
-		} else {
+		} else if(currentDrive == DriveTypes.DRIFT_TANK){
+			currentDrive = DriveTypes.DRIFT_ARCADE;
+		} if(currentDrive == DriveTypes.DRIFT_ARCADE) {
 			currentDrive = DriveTypes.ARCADE;
 		}
 	}
@@ -109,11 +113,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		if (currentDrive == DriveTypes.ARCADE) {
 			currentSpeed = -Robot.oi.rightJoy.getY();
 			currentTurn = -Robot.oi.leftJoy.getX();
-			arcadeDrive(currentTurn, currentSpeed);
+			arcadeDrive(currentSpeed, currentTurn);
 		} else if(currentDrive == DriveTypes.TANK){
 			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
-		} else {
+		} else if(currentDrive == DriveTypes.DRIFT_TANK){
 			unevenTankDrive();
+		} else if(currentDrive == DriveTypes.DRIFT_ARCADE) {
+			unevenArcadeDrive();
 		}
 	}
 
@@ -122,15 +128,34 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Accounts for drift towards right when in tank drive and essentially
-	 * 	calibrates the left joystick/motor.
+	 * Accounts for drift when in arcade drive
+	 * Sets each motor's respective target speed based on speed to joystick ratios
+	 * */
+	public void unevenArcadeDrive(){
+		double turnJoy = Robot.oi.leftJoy.getX();
+		double speedJoy = Robot.oi.rightJoy.getY();
+		//not sure if the way I calculated each target works properly...
+		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*(speedJoy - turnJoy));
+		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*(speedJoy + turnJoy));
+		rightDriveSpeedPID.update(rightEncoder.getRate());
+		leftDriveSpeedPID.update(leftEncoder.getRate());
+		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
+		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), rightMotor.get() + rightDriveSpeedPID.getOutput());
+	}
+	
+	/**
+	 * Accounts for drift when in tank drive
+	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
 	public void unevenTankDrive(){
 		double lJoyVal = Robot.oi.leftJoy.getY();
 		double rJoyVal = Robot.oi.rightJoy.getY();
-		leftDriveSpeedPID.setTarget(rightEncoder.getRate()*lJoyVal/rJoyVal);
+		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*lJoyVal);
+		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*rJoyVal);
+		rightDriveSpeedPID.update(rightEncoder.getRate());
 		leftDriveSpeedPID.update(leftEncoder.getRate());
-		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), -rJoyVal);
+		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
+		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), rightMotor.get() + rightDriveSpeedPID.getOutput());
 	}
 
 	/**
@@ -199,7 +224,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/** 
-	 * Updates and tests distancePID
+	 * Updates and tests/runs distancePID
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
@@ -244,7 +269,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Updates and tests anglePID
+	 * Updates and tests/runs anglePID
 	 */
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
@@ -259,6 +284,102 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean angleReachedTarget() {
 		return anglePID.reachedTarget();
 	}
+	
+//	NEW PIDS START HERE!!!
+	
+	/**
+	 * @return the speed of the left side of the robot at the current time
+	 */
+	public double getLeftSpeed() {
+		return leftEncoder.getRate();
+	}
+	
+	/**
+	 * Gets the leftSpeedPID
+	 * Only used in tests
+	 * @return the leftSpeedPID
+	 * */
+	public PID getLeftSpeedPID(){
+		return leftDriveSpeedPID;
+	}
+	
+	/**
+	 * Sets the left speed for PID target
+	 * 
+	 * @param targetSpeed
+	 *            - the target left speed being set to PID
+	 */
+	public void setLeftSpeedTarget(double targetSpeed) {
+		leftDriveSpeedPID.update(getLeftSpeed());
+		leftDriveSpeedPID.setRelativeLocation(0);
+		leftDriveSpeedPID.setTarget(targetSpeed);
+	}
+
+	/** 
+	 * Updates and tests/runs leftDriveSpeedPID
+	 */
+	public void updateLeftSpeedPID() {
+		leftDriveSpeedPID.update(getLeftSpeed());
+		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), 0);
+	}
+
+	/**
+	 * Checks to see if the left speed PID has reached the target
+	 * 
+	 * @return Whether left speed target has been reached
+	 */
+	public boolean leftSpeedReachedTarget() {
+		return leftDriveSpeedPID.reachedTarget();
+	}
+	
+//	STARTS RIGHT HALF
+	
+	/**
+	 * @return the speed of the right side of the robot at the current time
+	 */
+	public double getRightSpeed() {
+		return rightEncoder.getRate();
+	}
+	
+	/**
+	 * Gets the rightSpeedPID
+	 * Only used in tests
+	 * @return the rightSpeedPID
+	 * */
+	public PID getRightSpeedPID(){
+		return rightDriveSpeedPID;
+	}
+	
+	/**
+	 * Sets the right speed for PID target
+	 * 
+	 * @param targetSpeed
+	 *            - the target right speed being set to PID
+	 */
+	public void setRightSpeedTarget(double targetSpeed) {
+		rightDriveSpeedPID.update(getLeftSpeed());
+		rightDriveSpeedPID.setRelativeLocation(0);
+		rightDriveSpeedPID.setTarget(targetSpeed);
+	}
+
+	/** 
+	 * Updates and tests/runs rightDriveSpeedPID
+	 */
+	public void updateRightSpeedPID() {
+		rightDriveSpeedPID.update(getRightSpeed());
+		robotDrive.tankDrive(0, rightMotor.get()+rightDriveSpeedPID.getOutput());
+	}
+
+	/**
+	 * Checks to see if the right speed PID has reached the target
+	 * 
+	 * @return Whether right speed target has been reached
+	 */
+	public boolean rightSpeedReachedTarget() {
+		return rightDriveSpeedPID.reachedTarget();
+	}
+	
+//	NEW PIDS END HERE!
 
 	/**
 	 * @return the average speed of the two sides of the robot at the current
@@ -285,7 +406,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Updates linear and angular velocity PIDs for motion profiling
+	 * Updates and tests/runs linear and angular velocity PIDs for motion profiling
 	 */
 	public void updateVelocityPIDs() {
 		velocityPID.update(getDistance());
@@ -482,6 +603,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		
 		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
+		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
+		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
+		SmartDashboard.putNumber("Sending to left motor", leftMotor.get());
+		SmartDashboard.putNumber("Sending to right motor", rightMotor.get());
+		SmartDashboard.putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
+		SmartDashboard.putString("Current drive", currentDrive.toString());
 
 		putString("Shift piston status", shiftPiston.get().toString());
 

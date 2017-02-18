@@ -23,11 +23,6 @@ nt = NTClient()
 shooterCap = cv2.VideoCapture(0)
 gearCap = cv2.VideoCapture(1)
 
-# HSV range
-# lowerHSV = np.array([40, 0, 250])
-# upperHSV = np.array([83, 20, 255])
-lowerHSV = np.array([65, 175, 70])
-upperHSV = np.array([100, 255, 200])
 
 # Gear Tape values
 doFindGearTape = False
@@ -35,20 +30,7 @@ gearFailCounter = 0
 
 
 """ Exposure script """ 
-##try:
-##        # shooter camera
-##
-##        subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell=True)
-##        subprocess.call(
-##                "uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
-##
-##        # gear camera
-##        subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
-##        subprocess.call(
-##                "uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
-##except KeyError:
 # shooter camera
-
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
         "uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
@@ -58,6 +40,16 @@ subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
         "uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
 
+# alt shooter camera
+subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell=True)
+subprocess.call(
+	"uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
+
+# alt gear camera
+subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
+subprocess.call(
+	"uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
+
 # remember to set resolution
 
 
@@ -65,25 +57,27 @@ subprocess.call(
 while(True):
 
 	""" boiler tape identification code """
-	if 1 == 0:  # Condition should be based on whether a certain boolean value in NetworkTables says the shooter command is running
+	if nt.get("Vision", "shooterRunning", False):
+# 	if False:
 		ret, shooterFrame = shooterCap.read()
 		# Run boiler identification script
-		centers = boiler_identify.findBoiler(shooterFrame, lowerHSV, upperHSV)
+		centers = boiler_identify.findBoiler(shooterFrame, np.array([48, 175, 100]), np.array([100, 255, 200]))
 		
 		nt.write("Vision", "boilerFound", centers[0] != -1)
 		nt.write("Vision", "boilerX", centers[0])
 		nt.write("Vision", "boilerY", centers[1])
 
 	""" gear tape identification code """
-	if nt.get("AutoAlignGear", "running", False):
-	# if True:
+
+	if nt.get("Vision", "gearRunning", False):
+# 	if True:
 		if gearFailCounter < 10:
 			nt.write("Vision", "gearVisionRunning", True)
 
 			ret, gearFrame = gearCap.read()
 			# Run gear mark identification
 			lx, ly, rx, ry, success = lift_marks_identify.findTape(
-				gearFrame, lowerHSV, upperHSV)
+				gearFrame, np.array([75, 175, 100]), np.array([100, 255, 200]))
 
 			if success:
 				nt.write("Vision", "leftGearCenterX", lx)

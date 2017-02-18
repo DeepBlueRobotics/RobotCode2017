@@ -21,16 +21,16 @@ public class ToggleIntake extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		firstTime = true;
 		tim.start();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		//if(firstTime) {
+		if(firstTime) {
 			intakeInterface.toggleIntake();	
-		//} else {
-		//	firstTime = false;
-		//}
+			firstTime = false;
+		} 
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -41,7 +41,6 @@ public class ToggleIntake extends Command {
 
 	// Called once after isFinished returns true
 	public void end() {
-		intakeInterface.stopIntakeDoubleSolenoid();
 	}
 
 	// Called when another command which requires one or more of the same
