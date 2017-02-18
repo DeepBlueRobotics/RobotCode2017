@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
-
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -60,23 +60,23 @@ public class RobotMap {
 		
 		if(practice)
 		{
-			drivetrainLeftMotor = new Talon(0);
-			drivetrainRightMotor = new Talon(1);
+			drivetrainLeftMotor = new VictorSP(0);
+			drivetrainRightMotor = new VictorSP(1);
 			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
 			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
-			intakeIntakeMotor = new Talon(2);
+			intakeIntakeMotor = new VictorSP(2);
 			shooterShootMotor = new Talon(3);
-			shooterFeedMotor = new Talon(4);
+			shooterFeedMotor = new VictorSP(4);
 			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
 			hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
-			turretTurnMotor = new Talon(6);
+			turretTurnMotor = new VictorSP(6);
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
 			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
-			climberWinchMotor = new Talon(8);
+			climberWinchMotor = new VictorSP(8);
 			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
 			flipperFlapper = new DoubleSolenoid(3,4,5);
@@ -85,23 +85,23 @@ public class RobotMap {
 		}
 		else
 		{
-			drivetrainLeftMotor = new Talon(0);
-			drivetrainRightMotor = new Talon(1);
+			drivetrainLeftMotor = new VictorSP(0);
+			drivetrainRightMotor = new VictorSP(1);
 			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
 			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
-			intakeIntakeMotor = new Talon(2);
+			intakeIntakeMotor = new VictorSP(2);
 			shooterShootMotor = new Talon(3);
-			shooterFeedMotor = new Talon(4);
+			shooterFeedMotor = new VictorSP(4);
 			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
 			hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
-			turretTurnMotor = new Talon(6);
+			turretTurnMotor = new VictorSP(6);
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
 			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
-			climberWinchMotor = new Talon(8);
+			climberWinchMotor = new VictorSP(8);
 			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
 			flipperFlapper = new DoubleSolenoid(3,4,5);
@@ -109,11 +109,11 @@ public class RobotMap {
 			drivetrainRightUSsensor = new AnalogInput(4);
 		}
 		
-		LiveWindow.addActuator("Drivetrain", "LeftMotor", (Talon) drivetrainLeftMotor);
-		drivetrainLeftMotor.setInverted(true);
+		LiveWindow.addActuator("Drivetrain", "LeftMotor", (VictorSP) drivetrainLeftMotor);
+//		drivetrainLeftMotor.setInverted(true);
 		
 		
-		LiveWindow.addActuator("Drivetrain", "RightMotor", (Talon) drivetrainRightMotor);
+		LiveWindow.addActuator("Drivetrain", "RightMotor", (VictorSP) drivetrainRightMotor);
 
 		drivetrainRobotDrive = new RobotDrive(drivetrainLeftMotor, drivetrainRightMotor);
 
