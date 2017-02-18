@@ -21,7 +21,7 @@ public class TestPID extends Command {
 
 	// The various PID loops of the robot
 	public enum System {
-		DRIVEDISTANCE, DRIVEANGLE, SHOOTER, DRIVEVELOCITY, DRIVEANGULARVELOCITY, DRIVETRAINLEFT, DRIVETRAINRIGHT;
+		DRIVEDISTANCE, DRIVEANGLE, SHOOTER, DRIVEVELOCITY, DRIVEANGULARVELOCITY, LEFTDRIVESPEED, RIGHTDRIVESPEED;
 	}
 
 	/**
@@ -59,11 +59,11 @@ public class TestPID extends Command {
 				target = SmartDashboard.getNumber("PID/DriveAngularVelocity/TestTarget", 0);
 				drivetrain.setVelocityTarget(0, target);
 				break;
-			case DRIVETRAINLEFT:
-				target = SmartDashboard.getNumber("PID/DriveTrainLeft/TestTarget", 0);
+			case LEFTDRIVESPEED:
+				target = SmartDashboard.getNumber("PID/LeftDriveSpeed/TestTarget", 0);
 				drivetrain.setLeftSpeedTarget(target);
-			case DRIVETRAINRIGHT:
-				target = SmartDashboard.getNumber("PID/DriveTrainRight/TestTarget", 0);
+			case RIGHTDRIVESPEED:
+				target = SmartDashboard.getNumber("PID/RightDriveSpeed/TestTarget", 0);
 				drivetrain.setRightSpeedTarget(target);
 		}
 	}
@@ -76,8 +76,8 @@ public class TestPID extends Command {
 			case DRIVEANGLE: drivetrain.updateAnglePID(); break;
 			case DRIVEVELOCITY: drivetrain.updateVelocityPIDs(); break;
 			case DRIVEANGULARVELOCITY: drivetrain.updateVelocityPIDs(); break;
-			case DRIVETRAINLEFT: drivetrain.updateLeftSpeedPID(); break;
-			case DRIVETRAINRIGHT: drivetrain.updateRightSpeedPID(); break;
+			case LEFTDRIVESPEED: drivetrain.updateLeftSpeedPID(); break;
+			case RIGHTDRIVESPEED: drivetrain.updateRightSpeedPID(); break;
 		}
 	}
 
@@ -90,8 +90,8 @@ public class TestPID extends Command {
 			case DRIVEANGLE: return drivetrain.angleReachedTarget();
 			case DRIVEVELOCITY: return false;
 			case DRIVEANGULARVELOCITY: return false;
-			case DRIVETRAINLEFT: return drivetrain.leftSpeedReachedTarget();
-			case DRIVETRAINRIGHT: return drivetrain.rightSpeedReachedTarget();
+			case LEFTDRIVESPEED: return drivetrain.leftSpeedReachedTarget();
+			case RIGHTDRIVESPEED: return drivetrain.rightSpeedReachedTarget();
 			default: return false;
 		}
 	}

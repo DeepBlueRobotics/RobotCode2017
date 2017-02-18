@@ -98,7 +98,8 @@ public class OI {
 		SmartDashboard.putData("PID/Shooter/TestShooterPID", new TestPID(TestPID.System.SHOOTER, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("PID/DriveVelocity/TestDriveVelocityPID", new TestPID(TestPID.System.DRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("PID/DriveAngularVelocity/TestDriveAngularVelocityPID", new TestPID(TestPID.System.DRIVEANGULARVELOCITY, Robot.shooter, Robot.drivetrain));
-
+		SmartDashboard.putData("PID/LeftDriveSpeed/TestLeftDriveSpeedPID", new TestPID(TestPID.System.LEFTDRIVESPEED, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/RightDriveSpeed/TestRightDriveSpeedPID", new TestPID(TestPID.System.RIGHTDRIVESPEED, Robot.shooter, Robot.drivetrain));
 		
 
 	}

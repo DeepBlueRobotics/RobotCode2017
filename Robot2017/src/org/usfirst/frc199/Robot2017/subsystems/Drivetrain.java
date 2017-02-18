@@ -91,7 +91,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			currentDrive = DriveTypes.TANK;
 		} else if(currentDrive == DriveTypes.TANK){
 			currentDrive = DriveTypes.DRIFT_TANK;
-		} else {
+		} else if(currentDrive == DriveTypes.DRIFT_TANK){
+			currentDrive = DriveTypes.DRIFT_ARCADE;
+		} if(currentDrive == DriveTypes.DRIFT_ARCADE) {
 			currentDrive = DriveTypes.ARCADE;
 		}
 	}
@@ -114,8 +116,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			arcadeDrive(currentSpeed, currentTurn);
 		} else if(currentDrive == DriveTypes.TANK){
 			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
-		} else {
+		} else if(currentDrive == DriveTypes.DRIFT_TANK){
 			unevenTankDrive();
+		} else if(currentDrive == DriveTypes.DRIFT_ARCADE) {
+			unevenArcadeDrive();
 		}
 	}
 

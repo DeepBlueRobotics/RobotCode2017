@@ -17,7 +17,7 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public void initDefaultCommand();
 	
 	public enum DriveTypes {
-		ARCADE, TANK, DRIFT_TANK
+		ARCADE, TANK, DRIFT_TANK, DRIFT_ARCADE
 	}
 	
 	/**
