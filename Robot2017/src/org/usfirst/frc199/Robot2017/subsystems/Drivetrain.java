@@ -136,7 +136,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		rightDriveSpeedPID.update(rightEncoder.getRate());
 		leftDriveSpeedPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
-		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), rightDriveSpeedPID.getOutput());
+		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), rightMotor.get() + rightDriveSpeedPID.getOutput());
 	}
 	
 	/**
@@ -151,7 +151,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		rightDriveSpeedPID.update(rightEncoder.getRate());
 		leftDriveSpeedPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
-		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), rightDriveSpeedPID.getOutput());
+		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), rightMotor.get() + rightDriveSpeedPID.getOutput());
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateLeftSpeedPID() {
 		leftDriveSpeedPID.update(getLeftSpeed());
-		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), 0);
+		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), 0);
 	}
 
 	/**
@@ -353,9 +353,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target right speed being set to PID
 	 */
 	public void setRightSpeedTarget(double targetSpeed) {
-		leftDriveSpeedPID.update(getLeftSpeed());
-		leftDriveSpeedPID.setRelativeLocation(0);
-		leftDriveSpeedPID.setTarget(targetSpeed);
+		rightDriveSpeedPID.update(getLeftSpeed());
+		rightDriveSpeedPID.setRelativeLocation(0);
+		rightDriveSpeedPID.setTarget(targetSpeed);
 	}
 
 	/** 
@@ -363,7 +363,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateRightSpeedPID() {
 		rightDriveSpeedPID.update(getRightSpeed());
-		robotDrive.tankDrive(0, rightDriveSpeedPID.getOutput());
+		robotDrive.tankDrive(0, rightMotor.get()+rightDriveSpeedPID.getOutput());
 	}
 
 	/**
