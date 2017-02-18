@@ -68,6 +68,7 @@ while(True):
 		nt.write("Vision", "boilerY", centers[1])
 
 	""" gear tape identification code """
+
 	if nt.get("Vision", "gearRunning", False):
 # 	if True:
 		if gearFailCounter < 10:
