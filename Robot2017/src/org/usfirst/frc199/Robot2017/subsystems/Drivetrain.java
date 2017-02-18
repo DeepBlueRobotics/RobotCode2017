@@ -117,9 +117,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		} else if(currentDrive == DriveTypes.TANK){
 			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
 		} else if(currentDrive == DriveTypes.DRIFT_TANK){
-			unevenTankDrive();
+			unevenTankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
 		} else if(currentDrive == DriveTypes.DRIFT_ARCADE) {
-			unevenArcadeDrive();
+			unevenArcadeDrive(currentSpeed, currentTurn);
 		}
 	}
 
@@ -131,9 +131,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Accounts for drift when in arcade drive
 	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
-	public void unevenArcadeDrive(){
-		double turnJoy = Robot.oi.leftJoy.getX();
-		double speedJoy = Robot.oi.rightJoy.getY();
+	public void unevenArcadeDrive(double speedJoy, double turnJoy){
 		//not sure if the way I calculated each target works properly...
 		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*(speedJoy - turnJoy));
 		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*(speedJoy + turnJoy));
@@ -147,11 +145,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Accounts for drift when in tank drive
 	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
-	public void unevenTankDrive(){
-		double lJoyVal = Robot.oi.leftJoy.getY();
-		double rJoyVal = Robot.oi.rightJoy.getY();
-		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*lJoyVal);
-		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*rJoyVal);
+	public void unevenTankDrive(double leftJoy, double rightJoy){
+		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*leftJoy);
+		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*rightJoy);
 		rightDriveSpeedPID.update(rightEncoder.getRate());
 		leftDriveSpeedPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
@@ -179,10 +175,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void autoDrive() {
 		distancePID.update(getDistance());
 		anglePID.update(getAngle());
-		if (!anglePID.reachedTarget()) {
-			arcadeDrive(0, anglePID.getOutput());
+		if (!angleReachedTarget()) {
+			unevenArcadeDrive(0, anglePID.getOutput());
 		} else {
-			arcadeDrive(distancePID.getOutput(), 0);
+			unevenArcadeDrive(distancePID.getOutput(), 0);
 		}
 	}
 

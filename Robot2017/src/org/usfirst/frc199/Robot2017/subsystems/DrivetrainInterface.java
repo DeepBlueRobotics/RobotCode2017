@@ -42,13 +42,13 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 * Accounts for drift when in arcade drive
 	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
-	public void unevenArcadeDrive();
+	public void unevenArcadeDrive(double speedJoy, double turnJoy);
 	
 	/**
 	 * Accounts for drift when in tank drive
 	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
-	public void unevenTankDrive();
+	public void unevenTankDrive(double leftJoy, double rightJoy);
 
 	/**
 	 * Forces the robot's turn and move speed to change at a max of 5% each
