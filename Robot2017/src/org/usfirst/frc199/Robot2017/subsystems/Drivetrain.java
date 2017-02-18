@@ -69,6 +69,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID distancePID = new PID("DriveDistance");
 	private PID anglePID = new PID("DriveAngle");
 	private PID leftDriveSpeedPID = new PID("LeftDriveSpeed");
+	private PID rightDriveSpeedPID = new PID("RightDriveSpeed");
 	
 	public Drivetrain(){
 		super();
@@ -123,15 +124,34 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Accounts for drift towards right when in tank drive and essentially
-	 * 	calibrates the left joystick/motor.
+	 * Accounts for drift when in arcade drive
+	 * Sets each motor's respective target speed based on speed to joystick ratios
+	 * */
+	public void unevenArcadeDrive(){
+		double turnJoy = Robot.oi.leftJoy.getX();
+		double speedJoy = Robot.oi.rightJoy.getY();
+		//not sure if the way I calculated each target works properly...
+		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*(speedJoy - turnJoy));
+		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*(speedJoy + turnJoy));
+		rightDriveSpeedPID.update(rightEncoder.getRate());
+		leftDriveSpeedPID.update(leftEncoder.getRate());
+		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
+		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), rightDriveSpeedPID.getOutput());
+	}
+	
+	/**
+	 * Accounts for drift when in tank drive
+	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
 	public void unevenTankDrive(){
 		double lJoyVal = Robot.oi.leftJoy.getY();
 		double rJoyVal = Robot.oi.rightJoy.getY();
-		leftDriveSpeedPID.setTarget(rightEncoder.getRate()*lJoyVal/rJoyVal);
+		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*lJoyVal);
+		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*rJoyVal);
+		rightDriveSpeedPID.update(rightEncoder.getRate());
 		leftDriveSpeedPID.update(leftEncoder.getRate());
-		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), -rJoyVal);
+		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
+		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), rightDriveSpeedPID.getOutput());
 	}
 
 	/**
@@ -200,7 +220,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/** 
-	 * Updates and tests distancePID
+	 * Updates and tests/runs distancePID
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
@@ -245,7 +265,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Updates and tests anglePID
+	 * Updates and tests/runs anglePID
 	 */
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
@@ -260,6 +280,102 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean angleReachedTarget() {
 		return anglePID.reachedTarget();
 	}
+	
+//	NEW PIDS START HERE!!!
+	
+	/**
+	 * @return the speed of the left side of the robot at the current time
+	 */
+	public double getLeftSpeed() {
+		return leftEncoder.getRate();
+	}
+	
+	/**
+	 * Gets the leftSpeedPID
+	 * Only used in tests
+	 * @return the leftSpeedPID
+	 * */
+	public PID getLeftSpeedPID(){
+		return leftDriveSpeedPID;
+	}
+	
+	/**
+	 * Sets the left speed for PID target
+	 * 
+	 * @param targetSpeed
+	 *            - the target left speed being set to PID
+	 */
+	public void setLeftSpeedTarget(double targetSpeed) {
+		leftDriveSpeedPID.update(getLeftSpeed());
+		leftDriveSpeedPID.setRelativeLocation(0);
+		leftDriveSpeedPID.setTarget(targetSpeed);
+	}
+
+	/** 
+	 * Updates and tests/runs leftDriveSpeedPID
+	 */
+	public void updateLeftSpeedPID() {
+		leftDriveSpeedPID.update(getLeftSpeed());
+		robotDrive.tankDrive(leftDriveSpeedPID.getOutput(), 0);
+	}
+
+	/**
+	 * Checks to see if the left speed PID has reached the target
+	 * 
+	 * @return Whether left speed target has been reached
+	 */
+	public boolean leftSpeedReachedTarget() {
+		return leftDriveSpeedPID.reachedTarget();
+	}
+	
+//	STARTS RIGHT HALF
+	
+	/**
+	 * @return the speed of the right side of the robot at the current time
+	 */
+	public double getRightSpeed() {
+		return rightEncoder.getRate();
+	}
+	
+	/**
+	 * Gets the rightSpeedPID
+	 * Only used in tests
+	 * @return the rightSpeedPID
+	 * */
+	public PID getRightSpeedPID(){
+		return rightDriveSpeedPID;
+	}
+	
+	/**
+	 * Sets the right speed for PID target
+	 * 
+	 * @param targetSpeed
+	 *            - the target right speed being set to PID
+	 */
+	public void setRightSpeedTarget(double targetSpeed) {
+		leftDriveSpeedPID.update(getLeftSpeed());
+		leftDriveSpeedPID.setRelativeLocation(0);
+		leftDriveSpeedPID.setTarget(targetSpeed);
+	}
+
+	/** 
+	 * Updates and tests/runs rightDriveSpeedPID
+	 */
+	public void updateRightSpeedPID() {
+		rightDriveSpeedPID.update(getRightSpeed());
+		robotDrive.tankDrive(0, rightDriveSpeedPID.getOutput());
+	}
+
+	/**
+	 * Checks to see if the right speed PID has reached the target
+	 * 
+	 * @return Whether right speed target has been reached
+	 */
+	public boolean rightSpeedReachedTarget() {
+		return rightDriveSpeedPID.reachedTarget();
+	}
+	
+//	NEW PIDS END HERE!
 
 	/**
 	 * @return the average speed of the two sides of the robot at the current
@@ -286,7 +402,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Updates linear and angular velocity PIDs for motion profiling
+	 * Updates and tests/runs linear and angular velocity PIDs for motion profiling
 	 */
 	public void updateVelocityPIDs() {
 		velocityPID.update(getDistance());
