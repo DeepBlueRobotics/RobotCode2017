@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
-
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -60,8 +60,8 @@ public class RobotMap {
 		
 		if(practice)
 		{
-			drivetrainLeftMotor = new Talon(0);
-			drivetrainRightMotor = new Talon(1);
+			drivetrainLeftMotor = new VictorSP(0);
+			drivetrainRightMotor = new VictorSP(1);
 			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
 			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 			drivetrainGyro = new AnalogGyro(0);
@@ -85,8 +85,8 @@ public class RobotMap {
 		}
 		else
 		{
-			drivetrainLeftMotor = new Talon(0);
-			drivetrainRightMotor = new Talon(1);
+			drivetrainLeftMotor = new VictorSP(0);
+			drivetrainRightMotor = new VictorSP(1);
 			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
 			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 			drivetrainGyro = new AnalogGyro(0);
@@ -109,11 +109,11 @@ public class RobotMap {
 			drivetrainRightUSsensor = new AnalogInput(4);
 		}
 		
-		LiveWindow.addActuator("Drivetrain", "LeftMotor", (Talon) drivetrainLeftMotor);
-		drivetrainLeftMotor.setInverted(true);
+		LiveWindow.addActuator("Drivetrain", "LeftMotor", (VictorSP) drivetrainLeftMotor);
+//		drivetrainLeftMotor.setInverted(true);
 		
 		
-		LiveWindow.addActuator("Drivetrain", "RightMotor", (Talon) drivetrainRightMotor);
+		LiveWindow.addActuator("Drivetrain", "RightMotor", (VictorSP) drivetrainRightMotor);
 
 		drivetrainRobotDrive = new RobotDrive(drivetrainLeftMotor, drivetrainRightMotor);
 

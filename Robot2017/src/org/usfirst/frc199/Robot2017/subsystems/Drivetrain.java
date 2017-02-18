@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -109,7 +110,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		if (currentDrive == DriveTypes.ARCADE) {
 			currentSpeed = -Robot.oi.rightJoy.getY();
 			currentTurn = -Robot.oi.leftJoy.getX();
-			arcadeDrive(currentTurn, currentSpeed);
+			arcadeDrive(currentSpeed, currentTurn);
 		} else if(currentDrive == DriveTypes.TANK){
 			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
 		} else {
@@ -482,6 +483,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		
 		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
+		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
+		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
+		SmartDashboard.putNumber("Sending to left motor", leftMotor.get());
+		SmartDashboard.putNumber("Sending to right motor", rightMotor.get());
+		SmartDashboard.putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
+		SmartDashboard.putString("Current drive", currentDrive.toString());
 
 		putString("Shift piston status", shiftPiston.get().toString());
 
