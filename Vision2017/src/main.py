@@ -75,8 +75,8 @@ while(True):
 		nt.write("Vision", "boilerY", centers[1])
 
 	""" gear tape identification code """
-	#if nt.get("AutoAlignGear", "running", False):
-	if True:
+	if nt.get("AutoAlignGear", "running", False):
+	# if True:
 		if gearFailCounter < 10:
 			nt.write("Vision", "gearVisionRunning", True)
 
