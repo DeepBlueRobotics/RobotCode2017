@@ -357,7 +357,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target right speed being set to PID
 	 */
 	public void setRightSpeedTarget(double targetSpeed) {
-		rightDriveSpeedPID.update(getLeftSpeed());
+		rightDriveSpeedPID.update(getRightSpeed());
 		rightDriveSpeedPID.setRelativeLocation(0);
 		rightDriveSpeedPID.setTarget(targetSpeed);
 	}
