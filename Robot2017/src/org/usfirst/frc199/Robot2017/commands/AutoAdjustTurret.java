@@ -23,7 +23,6 @@ public class AutoAdjustTurret extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	//IS WRONG! NEEDS TO CHANGE!
     	//target = Robot.shooter.convertAngleToTargetSpeed(targetAngle);
     	shooter.setTurretPIDTarget(target);
     }
