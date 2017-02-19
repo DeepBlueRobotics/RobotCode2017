@@ -42,7 +42,7 @@ public class PID implements DashboardInterface {
 		this.name = name;
 		Robot.subsystems.add(this);
 		intervalTimer.start();
-		putNumber("kP", getPref("kP"));
+		//putNumber("kP", getPref("kP"));
 		putNumber("kI", getPref("kI"));
 		putNumber("kD", getPref("kD"));
 		putNumber("TestTarget", 0);
@@ -58,6 +58,7 @@ public class PID implements DashboardInterface {
 		target = value;
 		reset = true;
 		output = 0.0;
+		kP = 1/target;
 	}
 
 	/**
@@ -67,7 +68,7 @@ public class PID implements DashboardInterface {
 	 *            - new input value in real units
 	 */
 	public void update(double newValue) {
-		kP = getNumber("kP", 0);
+		//kP = getNumber("kP", 0);
 		kI = getNumber("kI", 0);
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
