@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -56,15 +57,19 @@ public class RobotMap {
 	public static AnalogInput drivetrainRightUSsensor;
 	public static boolean practice = Robot.getPref("Is practice robot?", false);
 	
+//	public static PWM port0 = new PWM(0);
+//	public static PWM port1 = new PWM(1);
+	
 	public static void init() {
 		
-		if(practice)
+		if(!practice)
 		{
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
-//			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
-			drivetrainLeftEncoder = new Encoder(4, 5, false, EncodingType.k4X);
-			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
+			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
+			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
+			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
+			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
@@ -88,9 +93,10 @@ public class RobotMap {
 		{
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
-//			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
-			drivetrainLeftEncoder = new Encoder(4, 5, false, EncodingType.k4X);
-			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
+			drivetrainLeftEncoder = new Encoder(1,0, false, EncodingType.k4X);
+			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
+			drivetrainRightEncoder = new Encoder(2,3, false, EncodingType.k4X);
+			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
@@ -126,11 +132,9 @@ public class RobotMap {
 
 		
 		LiveWindow.addSensor("Drivetrain", "LeftEncoder", drivetrainLeftEncoder);
-		drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
 		drivetrainLeftEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		LiveWindow.addSensor("Drivetrain", "RightEncoder", drivetrainRightEncoder);
-		drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
 		drivetrainRightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		

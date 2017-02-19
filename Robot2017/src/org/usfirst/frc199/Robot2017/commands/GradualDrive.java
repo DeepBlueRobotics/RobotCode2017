@@ -12,6 +12,7 @@ public class GradualDrive extends Command {
 	
 	public GradualDrive(DrivetrainInterface drivetrain) {
 		this.drivetrain = drivetrain;
+		requires(Robot.drivetrain);
 	}
 
 	// Called just before this Command runs the first time
