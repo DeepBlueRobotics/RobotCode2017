@@ -17,18 +17,21 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
-	private final SpeedController leftMotor = RobotMap.drivetrainLeftMotor;
-	private final SpeedController rightMotor = RobotMap.drivetrainRightMotor;
+	private final VictorSP leftMotor = (VictorSP) RobotMap.drivetrainLeftMotor;
+	private final VictorSP rightMotor = (VictorSP) RobotMap.drivetrainRightMotor;
+//	private final PWM leftPWM = RobotMap.port0;
+//	private final PWM rightPWM = RobotMap.port1;
 	private final RobotDrive robotDrive = RobotMap.drivetrainRobotDrive;
 	private final Encoder leftEncoder = RobotMap.drivetrainLeftEncoder;
 	private final Encoder rightEncoder = RobotMap.drivetrainRightEncoder;
@@ -324,6 +327,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateLeftSpeedPID() {
 		leftDriveSpeedPID.update(getLeftSpeed());
+		SmartDashboard.putNumber("Sending to left motor", leftMotor.getRaw());
 		leftMotor.set(leftMotor.get() + leftDriveSpeedPID.getOutput());
 	}
 
@@ -343,7 +347,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public double getRightSpeed() {
 		prevTime = Timer.getFPGATimestamp();
-		double vel = (rightEncoder.getDistance() - prevLeftEnc) / (Timer.getFPGATimestamp() - prevTime);
+		double vel = (rightEncoder.getDistance() - prevRightEnc) / (Timer.getFPGATimestamp() - prevTime);
 		prevRightEnc = rightEncoder.getDistance();
 		return vel;
 		
@@ -375,6 +379,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateRightSpeedPID() {
 		rightDriveSpeedPID.update(getRightSpeed());
+		SmartDashboard.putNumber("Sending to right motor", rightMotor.getRaw());
 		rightMotor.set(rightMotor.get()+rightDriveSpeedPID.getOutput());
 	}
 
@@ -614,8 +619,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
 		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
-		SmartDashboard.putNumber("Sending to left motor", leftMotor.get());
-		SmartDashboard.putNumber("Sending to right motor", rightMotor.get());
+		SmartDashboard.putNumber("Sending to left motor", leftMotor.getRaw());
+		SmartDashboard.putNumber("Sending to right motor", rightMotor.getRaw());
 		SmartDashboard.putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
 		SmartDashboard.putString("Current drive", currentDrive.toString());
 		SmartDashboard.putNumber("Left PID out: ", leftDriveSpeedPID.getOutput());

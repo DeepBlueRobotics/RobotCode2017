@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -55,6 +56,9 @@ public class RobotMap {
 	public static AnalogInput drivetrainLeftUSsensor;
 	public static AnalogInput drivetrainRightUSsensor;
 	public static boolean practice = Robot.getPref("Is practice robot?", false);
+	
+//	public static PWM port0 = new PWM(0);
+//	public static PWM port1 = new PWM(1);
 	
 	public static void init() {
 		
