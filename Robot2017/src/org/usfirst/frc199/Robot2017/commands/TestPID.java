@@ -106,8 +106,6 @@ public class TestPID extends Command {
 	public void end() {
 		switch(system) {
 			case SHOOTER: shooter.runShootMotor(0); break;
-			case LEFTDRIVESPEED: drivetrain.stopDrive(); break;
-			case RIGHTDRIVESPEED: drivetrain.stopDrive(); break;
 			default: drivetrain.stopDrive();
 		}
 	}

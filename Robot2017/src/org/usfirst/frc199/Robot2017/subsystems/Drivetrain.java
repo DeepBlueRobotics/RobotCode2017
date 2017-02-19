@@ -83,7 +83,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * This method initializes the command used in teleop
 	 */
 	public void initDefaultCommand() {
-		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
+//		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
 	
 	/**
@@ -319,16 +319,16 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void setLeftSpeedTarget(double targetSpeed) {
 		leftDriveSpeedPID.setTarget(targetSpeed);
 		leftDriveSpeedPID.setRelativeLocation(0);
-		leftDriveSpeedPID.update(getLeftSpeed());
+		leftDriveSpeedPID.update(leftEncoder.getRate());
 	}
 
 	/** 
 	 * Updates and tests/runs leftDriveSpeedPID
 	 */
 	public void updateLeftSpeedPID() {
-		leftDriveSpeedPID.update(getLeftSpeed());
-		SmartDashboard.putNumber("Sending to left motor", leftMotor.getRaw());
-		leftMotor.set(leftMotor.get() + leftDriveSpeedPID.getOutput());
+		leftDriveSpeedPID.update(leftEncoder.getRate());
+		SmartDashboard.putNumber("Sending to left motor", leftMotor.get());
+		leftMotor.set(leftDriveSpeedPID.getOutput());
 	}
 
 	/**
@@ -371,16 +371,16 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void setRightSpeedTarget(double targetSpeed) {
 		rightDriveSpeedPID.setTarget(targetSpeed);
 		rightDriveSpeedPID.setRelativeLocation(0);
-		rightDriveSpeedPID.update(getRightSpeed());
+		rightDriveSpeedPID.update(rightEncoder.getRate());
 	}
 
 	/** 
 	 * Updates and tests/runs rightDriveSpeedPID
 	 */
 	public void updateRightSpeedPID() {
-		rightDriveSpeedPID.update(getRightSpeed());
+		rightDriveSpeedPID.update(rightEncoder.getRate());
 		SmartDashboard.putNumber("Sending to right motor", rightMotor.getRaw());
-		rightMotor.set(rightMotor.get()+rightDriveSpeedPID.getOutput());
+		rightMotor.set(rightDriveSpeedPID.getOutput());
 	}
 
 	/**
@@ -598,8 +598,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
-		SmartDashboard.putNumber("Left Speed", leftEncoder.getRate());
-		SmartDashboard.putNumber("Right Speed", rightEncoder.getRate());
+		SmartDashboard.putNumber("Left Speed", getLeftSpeed());
+		SmartDashboard.putNumber("Right Speed", getRightSpeed());
 		putNumber("Average Speed", getVelocity());
 
 		putNumber("Left Distance", leftEncoder.getDistance());
