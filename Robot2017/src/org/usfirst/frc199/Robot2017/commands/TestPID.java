@@ -31,6 +31,10 @@ public class TestPID extends Command {
 		this.system = system;
 		this.drivetrain = driver;
 		this.shooter = shooter;
+		switch(system) {
+			case SHOOTER: requires(Robot.shooter); break;
+			default: requires(Robot.drivetrain);
+		}
 	}
 
 	// Called just before this Command runs the first time
