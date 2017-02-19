@@ -48,7 +48,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID angularVelocityPID = new PID("DriveAngularVelocity");
 
 	// Variables for motion profiling and acceleration control
-	private double prevEncoderRate = 0, prevGyroRate = 0, prevTime = 0, driveLimit = 0, turnLimit = 0;
+	private double prevEncoderRate= 0, prevGyroRate= 0, prevTime= 0, driveLimit= 0, turnLimit= 0, prevLeftEnc= 0, prevRightEnc = 0;
 	private double gyroCalibrationInitalValue = 0, gyroDriftRate = 0;
 	private Timer gyroDriftTimer = new Timer();
 
@@ -291,7 +291,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return the speed of the left side of the robot at the current time
 	 */
 	public double getLeftSpeed() {
-		return leftEncoder.getRate();
+		prevTime = Timer.getFPGATimestamp();
+		double vel = (leftEncoder.getDistance() - prevLeftEnc) / (Timer.getFPGATimestamp() - prevTime);
+		prevLeftEnc = leftEncoder.getDistance();
+		return vel;
+		
 	}
 	
 	/**
@@ -310,9 +314,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target left speed being set to PID
 	 */
 	public void setLeftSpeedTarget(double targetSpeed) {
-		leftDriveSpeedPID.update(getLeftSpeed());
-		leftDriveSpeedPID.setRelativeLocation(0);
 		leftDriveSpeedPID.setTarget(targetSpeed);
+		leftDriveSpeedPID.setRelativeLocation(0);
+		leftDriveSpeedPID.update(getLeftSpeed());
 	}
 
 	/** 
@@ -320,7 +324,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateLeftSpeedPID() {
 		leftDriveSpeedPID.update(getLeftSpeed());
-		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), 0);
+		leftMotor.set(leftMotor.get() + leftDriveSpeedPID.getOutput());
 	}
 
 	/**
@@ -338,7 +342,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return the speed of the right side of the robot at the current time
 	 */
 	public double getRightSpeed() {
-		return rightEncoder.getRate();
+		prevTime = Timer.getFPGATimestamp();
+		double vel = (rightEncoder.getDistance() - prevLeftEnc) / (Timer.getFPGATimestamp() - prevTime);
+		prevRightEnc = rightEncoder.getDistance();
+		return vel;
+		
 	}
 	
 	/**
@@ -357,9 +365,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target right speed being set to PID
 	 */
 	public void setRightSpeedTarget(double targetSpeed) {
-		rightDriveSpeedPID.update(getRightSpeed());
-		rightDriveSpeedPID.setRelativeLocation(0);
 		rightDriveSpeedPID.setTarget(targetSpeed);
+		rightDriveSpeedPID.setRelativeLocation(0);
+		rightDriveSpeedPID.update(getRightSpeed());
 	}
 
 	/** 
@@ -367,7 +375,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateRightSpeedPID() {
 		rightDriveSpeedPID.update(getRightSpeed());
-		robotDrive.tankDrive(0, rightMotor.get()+rightDriveSpeedPID.getOutput());
+		rightMotor.set(rightMotor.get()+rightDriveSpeedPID.getOutput());
 	}
 
 	/**
@@ -386,8 +394,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *         time
 	 */
 	public double getVelocity() {
-		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
+		return (getLeftSpeed() + getRightSpeed()) / 2;
 	}
+	
 	
 	/**
 	 * Sets targets for tracking velocity of robot for motion profiling
@@ -584,8 +593,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
-		putNumber("Left Speed", leftEncoder.getRate());
-		putNumber("Right Speed", rightEncoder.getRate());
+		SmartDashboard.putNumber("Left Speed", leftEncoder.getRate());
+		SmartDashboard.putNumber("Right Speed", rightEncoder.getRate());
 		putNumber("Average Speed", getVelocity());
 
 		putNumber("Left Distance", leftEncoder.getDistance());
@@ -598,8 +607,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Angle", gyro.getAngle());
 		putNumber("Turn Speed", gyro.getRate());
 		
-		putNumber("Left DT Signal", leftMotor.get());
-		putNumber("Right DT Signal", rightMotor.get());
+		SmartDashboard.putNumber("Left DT Signal", leftMotor.get());
+		SmartDashboard.putNumber("Right DT Signal", rightMotor.get());
 		
 		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
@@ -609,6 +618,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		SmartDashboard.putNumber("Sending to right motor", rightMotor.get());
 		SmartDashboard.putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
 		SmartDashboard.putString("Current drive", currentDrive.toString());
+		SmartDashboard.putNumber("Left PID out: ", leftDriveSpeedPID.getOutput());
+		SmartDashboard.putNumber("Right PID out: ", rightDriveSpeedPID.getOutput());
 
 		putString("Shift piston status", shiftPiston.get().toString());
 

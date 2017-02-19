@@ -90,8 +90,8 @@ public class TestPID extends Command {
 			case DRIVEANGLE: return drivetrain.angleReachedTarget();
 			case DRIVEVELOCITY: return false;
 			case DRIVEANGULARVELOCITY: return false;
-			case LEFTDRIVESPEED: return drivetrain.leftSpeedReachedTarget();
-			case RIGHTDRIVESPEED: return drivetrain.rightSpeedReachedTarget();
+			case LEFTDRIVESPEED: return false;
+			case RIGHTDRIVESPEED: return false;
 			default: return false;
 		}
 	}
@@ -100,6 +100,8 @@ public class TestPID extends Command {
 	public void end() {
 		switch(system) {
 			case SHOOTER: shooter.runShootMotor(0); break;
+			case LEFTDRIVESPEED: drivetrain.stopDrive(); break;
+			case RIGHTDRIVESPEED: drivetrain.stopDrive(); break;
 			default: drivetrain.stopDrive();
 		}
 	}
