@@ -30,6 +30,10 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putString("~TYPE~", "Intake");
 	}
 	
+	public void controlledIntake(double speed) {
+		intakeMotor.set(0.67 * (Robot.drivetrain.getRightSpeed() + Robot.drivetrain.getLeftSpeed())/2 + 0.33 * speed);
+	}
+	
 	public void initDefaultCommand() {
 	}
 

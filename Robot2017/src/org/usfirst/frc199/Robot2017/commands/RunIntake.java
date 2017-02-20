@@ -25,7 +25,7 @@ public class RunIntake extends Command {
 	public void execute() {
 		if(intake.intakeIsUp()){
 			if (!intake.intakeCurrentOverflow()) {
-				intake.runIntake(speed);
+				intake.controlledIntake(speed);
 			} 
 //			else if(intake.getIntake() > Robot.getPref("minIntakePercent", 0.7) * speed) {
 //				intake.runIntake(intake.getIntake() - 0.02);
