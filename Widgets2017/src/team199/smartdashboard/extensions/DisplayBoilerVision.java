@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.first.smartdashboard.gui.StaticWidget;
@@ -38,6 +39,7 @@ public class DisplayBoilerVision extends StaticWidget{
     
     private JPanel grid;
     private JButton calibrate = new JButton();
+    private JLabel title = new JLabel();
 	
 	@Override
 	public void init(){
@@ -51,6 +53,8 @@ public class DisplayBoilerVision extends StaticWidget{
             System.out.println("Vision not found");
             return;
         }
+		
+		title.setText("Boiler Vision");
 		
 		//method called when grid.repaint() is called
 		grid = new JPanel(){
@@ -91,11 +95,13 @@ public class DisplayBoilerVision extends StaticWidget{
             }
         });
         
-		setPreferredSize(new Dimension(WID, HIGHT + BUTTON_HIGHT + 5));
+		setPreferredSize(new Dimension(WID, HIGHT + 2 * BUTTON_HIGHT + 10));
+		title.setPreferredSize(new Dimension(WID, BUTTON_HIGHT));
 		grid.setPreferredSize(new Dimension(WID, HIGHT));
 		grid.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		calibrate.setPreferredSize(new Dimension(WID, BUTTON_HIGHT));
 		calibrate.setText("Calibrate");
+		add(title);
 		add(grid);
 		add(calibrate);
         
