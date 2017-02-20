@@ -35,13 +35,14 @@ public class AutoShoot extends Command {
 		//converts in/s to rpm
 		target = target*60*Robot.getPref("shooterWheelRadius", 4.5)*2*Math.PI;
 		
+		requires(Robot.shooter);
+
 		angle = this.shooter.convertDistanceToTargetAngle(targetDistance);
 		duration = runTime;
 	}
 
 	// Called just before this Command runs the first time
 	public void initialize() {
-		requires(Robot.shooter);
 		tim.start();
 		shooter.setHoodPIDTarget(angle);
 	}
