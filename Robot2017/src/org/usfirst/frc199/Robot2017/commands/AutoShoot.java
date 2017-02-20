@@ -15,6 +15,7 @@ public class AutoShoot extends Command {
 	double angle;
 	Timer tim = new Timer();
 	double duration;
+	
 	ShooterInterface shooter;
 
 	/**
@@ -31,11 +32,11 @@ public class AutoShoot extends Command {
 
 	public AutoShoot(double targetDistance, double runTime, ShooterInterface shooter) {
 		this.shooter = shooter;
-		target = this.shooter.convertDistanceToTargetVelocity(targetDistance)*1500;
-		//converts in/s to rpm
+		double[] targetandangle = this.shooter.convertDistanceToTargetVelocityAndAngle(targetDistance / 12 * 0.3048);
+		target = targetandangle[0] * 12 / 0.3048;
+		angle = targetandangle[1];
+		//converts m/s to rpm
 		target = target*60*Robot.getPref("shooterWheelRadius", 4.5)*2*Math.PI;
-		
-		angle = this.shooter.convertDistanceToTargetAngle(targetDistance);
 		duration = runTime;
 	}
 

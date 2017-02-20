@@ -110,20 +110,10 @@ public interface ShooterInterface extends DashboardInterface {
 	 * compute the speed at which we should be shooting.
 	 * 
 	 * @param distance
-	 *            - in inches of the front of the robot from the boiler
-	 * @return the ideal exit speed of the ball in inches/second
+	 *            - in meters of the front of the robot from the boiler
+	 * @return the ideal exit speed of the ball in meters per second and the ideal angle in degrees in an array
 	 */
-	public double convertDistanceToTargetVelocity(double distance);
-
-	/**
-	 * Passes the distance of the robot from the boiler through an equation to
-	 * compute the speed at which we should be shooting.
-	 * 
-	 * @param distance
-	 *            - in inches of the front of the robot from the boiler
-	 * @return the ideal exit angle of the ball in radians
-	 */
-	public double convertDistanceToTargetAngle(double distance);
+	public double[] convertDistanceToTargetVelocityAndAngle(double distance);
 
 	/**
 	 * Gets the turret encoder value
