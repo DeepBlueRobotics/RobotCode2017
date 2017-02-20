@@ -23,9 +23,9 @@ nt = NTClient()
 shooterCap = cv2.VideoCapture(0)
 gearCap = cv2.VideoCapture(1)
 
+log = open("/tmp/vision.log", 'w')
 
 # Gear Tape values
-doFindGearTape = False
 gearFailCounter = 0
 
 
@@ -43,62 +43,72 @@ subprocess.call(
 # alt shooter camera
 subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
-	"uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
+        "uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # alt gear camera
 subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
-	"uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
+        "uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # remember to set resolution
-
+log.write("log works.\n")
+nt.write("Vision", "OH-YEAH", False)
+nt.write("Vision", "gearRunning", False)
+nt.write("Vision", "shooterRunning", False)
 
 """ Main Loop """
 while(True):
 
-	""" boiler tape identification code """
-	if nt.get("Vision", "shooterRunning", False):
-# 	if False:
-		ret, shooterFrame = shooterCap.read()
-		# Run boiler identification script
-		centers = boiler_identify.findBoiler(shooterFrame, np.array([48, 175, 100]), np.array([100, 255, 200]))
-		
-		nt.write("Vision", "boilerFound", centers[0] != -1)
-		nt.write("Vision", "boilerX", centers[0])
-		nt.write("Vision", "boilerY", centers[1])
+        """ boiler tape identification code """
+        if nt.getShooter():
+                log.write("shooter running\n")
+                shooterCap.open(0)
+                ret, shooterFrame = shooterCap.read()
+                # Run boiler identification script
+                centers = boiler_identify.findBoiler(shooterFrame, np.array([48, 175, 100]), np.array([100, 255, 200]))
+                
+                nt.write("Vision", "boilerFound", centers[0] != -1)
+                nt.write("Vision", "boilerX", centers[0])
+                nt.write("Vision", "boilerY", centers[1])
+        else:
+                shooterCap.release()
 
-	""" gear tape identification code """
+        """ gear tape identification code """
+        # print "Gear supposed to be running = {}".format(nt.getGear())
+#        if nt.get("Vision/", "gearRunning", False):
+        if nt.getGear():
+                log.write("gear running\n")
+                gearCap.open(1)
+                if gearFailCounter < 10:
+                        nt.write("Vision", "gearVisionRunning", True)
+                        nt.write("Vision", "OH-YEAH", False)
 
-	if nt.get("Vision", "gearRunning", False):
-# 	if True:
-		if gearFailCounter < 10:
-			nt.write("Vision", "gearVisionRunning", True)
+                        ret, gearFrame = gearCap.read()
+                        # Run gear mark identification
+                        lx, ly, rx, ry, success = lift_marks_identify.findTape(
+                                gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
 
-			ret, gearFrame = gearCap.read()
-			# Run gear mark identification
-			lx, ly, rx, ry, success = lift_marks_identify.findTape(
-				gearFrame, np.array([75, 175, 100]), np.array([100, 255, 200]))
+                        if success:
+                                nt.write("Vision", "leftGearCenterX", lx)
+                                nt.write("Vision", "leftGearCenterY", ly)
+                                nt.write("Vision", "rightGearCenterX", rx)
+                                nt.write("Vision", "rightGearCenterY", ry)
+                                # nt.write("Vision", "pegX", (lx + rx) / 2)
+                                # nt.write("Vision", "pegY", (ly + ry) / 2)
 
-			if success:
-				nt.write("Vision", "leftGearCenterX", lx)
-				nt.write("Vision", "leftGearCenterY", ly)
-				nt.write("Vision", "rightGearCenterX", rx)
-				nt.write("Vision", "rightGearCenterY", ry)
-				# nt.write("Vision", "pegX", (lx + rx) / 2)
-				# nt.write("Vision", "pegY", (ly + ry) / 2)
+                                nt.write("Vision", "OH-YEAH", True)
 
-				nt.write("Vision", "OH-YEAH", True)
+                                nt.write("Vision", "gearVisionRunning", False)
 
-				nt.write("Vision", "gearVisionRunning", False)
-
-				gearFailCounter = 0
-				doFindGearTape = False
-			else:
-				gearFailCounter += 1
-		else:
-			nt.write("Vision", "gearVisionRunning", False)
-			nt.write("Vision", "OH-YEAH", False)
+                                gearFailCounter = 10
+                        else:
+                                gearFailCounter += 1
+                                nt.write("Vision", "OH-YEAH", False)
+                elif not nt.get("Vision", "OH-YEAH", False):
+                        nt.write("Vision", "gearVisionRunning", False)
 
 
-			gearFailCounter = 0
-			doFindGearTape = False
+                        gearFailCounter = 0
+        else:
+                nt.write("Vision", "gearVisionRunning", False)
+                gearCap.release()

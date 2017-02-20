@@ -8,10 +8,8 @@ import cv2
 import operator
 
 def findTape(frame, lower, upper):
-
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower, upper)
-
     cnts, hierarchy = cv2.findContours(mask.copy(), cv2.RETR_LIST,
                             cv2.CHAIN_APPROX_SIMPLE)
     
