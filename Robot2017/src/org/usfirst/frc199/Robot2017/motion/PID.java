@@ -67,11 +67,11 @@ public class PID implements DashboardInterface {
 	 *            - new input value in real units
 	 */
 	public void update(double newValue) {
-		if(name.toLowerCase().contains("speed")) {
+		if(name.toLowerCase().contains("speed") || name.toLowerCase().contains("velocity")) {
 			kP = getNumber("kP", 0);
 			kI = 1/target;
 		} else {
-			//this happen if is a distance or angle
+			//this happens if is a distance or angle PID
 			kP = 1/target;
 			kI = getNumber("kI", 0);
 		}
