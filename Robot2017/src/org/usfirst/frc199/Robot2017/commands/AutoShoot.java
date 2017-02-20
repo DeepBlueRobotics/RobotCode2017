@@ -30,9 +30,10 @@ public class AutoShoot extends Command {
 	 */
 
 	public AutoShoot(double targetDistance, double runTime, ShooterInterface shooter) {
+		requires(Robot.shooter);
 		this.shooter = shooter;
 		target = this.shooter.convertDistanceToTargetVelocity(targetDistance)*1500;
-		//converts in/s to rpm
+		//converts in/s to rpm: in/s * s/min * circumference
 		target = target*60*Robot.getPref("shooterWheelRadius", 4.5)*2*Math.PI;
 		
 		angle = this.shooter.convertDistanceToTargetAngle(targetDistance);
@@ -41,7 +42,6 @@ public class AutoShoot extends Command {
 
 	// Called just before this Command runs the first time
 	public void initialize() {
-		requires(Robot.shooter);
 		tim.start();
 		shooter.setHoodServo(angle);
 	}
