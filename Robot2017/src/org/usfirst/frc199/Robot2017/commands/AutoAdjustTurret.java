@@ -1,5 +1,6 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,6 +20,7 @@ public class AutoAdjustTurret extends Command {
         // eg. requires(chassis);
     	this.shooter = shooter;
     	this.target = target;
+    	requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
