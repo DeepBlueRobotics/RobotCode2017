@@ -23,6 +23,9 @@ public class AutoAdjustHoodTest {
 		verify(mockShooter).getHoodPIDOutput();
 		verify(mockShooter).runHoodMotor(0);
 		
+		testCommand.isFinished();
+		verify(mockShooter).hoodPIDTargetReached();
+		
 		testCommand.end();
 		verify(mockShooter).stopHoodMotor();
 	}
