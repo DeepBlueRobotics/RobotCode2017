@@ -28,7 +28,9 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	double encoderAngleRatio = Robot.getPref("encoderAngleRatio", 0);
 
 	private final double gravity = 9.81;
-
+	
+	private final double turretDiam = 7.71;
+	
 	private final SpeedController shootMotor = RobotMap.shooterShootMotor;
 	private final SpeedController feedMotor = RobotMap.shooterFeedMotor;
 	private final Encoder shootEncoder = RobotMap.shooterShootEncoder;
@@ -222,14 +224,32 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	// come up with PID methods (for turret) similar to those of
 	// shooter
 	// turret should use vision
-
+	
+	/**
+	 * Used for turret only
+	 * @param angle - in degrees
+	 * @return the target distance in inches
+	 * */
+	public double convertAngleToTargetDistance(double angle){
+		//return (turretDiam / 2) * angle * Math.PI / 180;
+		return angle * 18 / 3 * 256;
+	}
+	
+	/**
+	 * Resets turret encoder
+	 * Sets distPerPulse for turret encoder???
+	 * */
+	public void resetTurretEncoder(){
+		turretEncoder.reset();
+	}
+	
 	/**
 	 * Gets the turret encoder value
 	 * 
 	 * @return the turret encoder value
 	 */
 	public double getTurretEncoder() {
-		return turretEncoder.get();
+		return turretEncoder.getDistance();
 	}
 
 	/**

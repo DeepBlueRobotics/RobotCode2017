@@ -114,7 +114,20 @@ public interface ShooterInterface extends DashboardInterface {
 	 * @return the ideal exit angle of the ball in radians
 	 */
 	public double convertDistanceToTargetAngle(double distance);
-
+	
+	/**
+	 * Used for turret only
+	 * @param angle - in degrees
+	 * @return the target distance in ??? (in/s???)
+	 * */
+	public double convertAngleToTargetDistance(double angle);
+	
+	/**
+	 * Resets turret encoder
+	 * Sets distPerPulse for turret encoder???
+	 * */
+	public void resetTurretEncoder();
+	
 	/**
 	 * Gets the turret encoder value
 	 * 
