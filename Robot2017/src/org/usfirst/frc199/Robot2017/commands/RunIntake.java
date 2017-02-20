@@ -12,7 +12,7 @@ public class RunIntake extends Command {
 	IntakeInterface intake;
 
 	public RunIntake(double speed, IntakeInterface intake) {
-		requires(Robot.intake);
+//		requires(Robot.intake);
 		this.speed = speed;
 		this.intake = intake;
 	}
@@ -26,7 +26,7 @@ public class RunIntake extends Command {
 		if(intake.intakeIsUp()){
 			if (!intake.intakeCurrentOverflow()) {
 				intake.controlledIntake(speed);
-			} 
+			}
 //			else if(intake.getIntake() > Robot.getPref("minIntakePercent", 0.7) * speed) {
 //				intake.runIntake(intake.getIntake() - 0.02);
 //			}
