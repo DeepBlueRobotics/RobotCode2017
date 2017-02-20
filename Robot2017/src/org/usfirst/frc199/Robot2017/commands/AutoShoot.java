@@ -43,7 +43,7 @@ public class AutoShoot extends Command {
 	public void initialize() {
 		requires(Robot.shooter);
 		tim.start();
-		shooter.setHoodPIDTarget(angle);
+		shooter.setHoodServo(angle);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -56,8 +56,6 @@ public class AutoShoot extends Command {
 					* target) {
 				shooter.runFeederMotor(1);
 			}
-			shooter.updateHoodPID(shooter.getHoodEncoder());
-			shooter.runHoodMotor(shooter.getHoodPIDOutput());
 		}
 		
 	}
