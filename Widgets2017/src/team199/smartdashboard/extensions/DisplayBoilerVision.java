@@ -2,6 +2,7 @@ package team199.smartdashboard.extensions;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import edu.wpi.first.smartdashboard.gui.StaticWidget;
 import edu.wpi.first.smartdashboard.properties.Property;
@@ -39,7 +41,7 @@ public class DisplayBoilerVision extends StaticWidget{
     
     private JPanel grid;
     private JButton calibrate = new JButton();
-    private JLabel title = new JLabel();
+    private JLabel title = new JLabel("<html><font color='black'>Shooter Vision</font></html>", SwingConstants.CENTER);
 	
 	@Override
 	public void init(){
@@ -53,8 +55,6 @@ public class DisplayBoilerVision extends StaticWidget{
             System.out.println("Vision not found");
             return;
         }
-		
-		title.setText("Boiler Vision");
 		
 		//method called when grid.repaint() is called
 		grid = new JPanel(){
@@ -97,6 +97,7 @@ public class DisplayBoilerVision extends StaticWidget{
         
 		setPreferredSize(new Dimension(WID, HIGHT + 2 * BUTTON_HIGHT + 10));
 		title.setPreferredSize(new Dimension(WID, BUTTON_HIGHT));
+		title.setFont(new Font(title.getFont().getFontName(), Font.BOLD, 20));
 		grid.setPreferredSize(new Dimension(WID, HIGHT));
 		grid.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		calibrate.setPreferredSize(new Dimension(WID, BUTTON_HIGHT));
