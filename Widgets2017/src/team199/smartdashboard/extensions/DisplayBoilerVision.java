@@ -37,7 +37,6 @@ public class DisplayBoilerVision extends StaticWidget{
     private int centerY = -DOT_H;
     
     private JPanel grid;
-    private JComponent pic;
     private JButton calibrate = new JButton();
 	
 	@Override
@@ -60,13 +59,11 @@ public class DisplayBoilerVision extends StaticWidget{
 				
 				//displays the previous calibrated center point
 				g.setColor(Color.RED);
-		        g.fillRect(centerX - DOT_W/2, centerY - DOT_H/2,
-		        				DOT_W, DOT_H);
+		        g.fillRect(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W, DOT_H);
 		        
 		        //displays the current center point (from table)
 		        g.setColor(Color.BLACK);
-		        g.fillRect(x - DOT_W/2, y - DOT_H/2,
-        				DOT_W, DOT_H);
+		        g.fillRect(x - DOT_W/2, y - DOT_H/2, DOT_W, DOT_H);
 			}
 		};
 		
@@ -119,12 +116,10 @@ public class DisplayBoilerVision extends StaticWidget{
 	private void moveCalibCenter(int x, int y) {
         int OFFSET = 1;
         if ((centerX!=x) || (centerY!=y)) {
-            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
             centerX = x;
             centerY = y;
-            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
         } 
     }
 	

@@ -28,22 +28,14 @@ public class DisplayGearVision extends StaticWidget{
     private final int DOT_W = 6;
     private final int DOT_H = 6;
     
-    private final double CAMERA_COMPUTER_PIXEL_RATIO = 1/20; //1 cam pixel = 20 comp pixels
-    
-    //NOTE: -160 <= x <= 160
-    //		-90 <= y <= 90
-    //these coords are in terms of normal coord plane ((0,0) in middle)
-    //also in comp pixels, not cam pixels, so must convert value from table (when GETting) to comp pixels
-    //must convert value back to cam pixels when PUTting value in table
     private int x1;
     private int y1;
     private int x2;
     private int y2;
-    private int centerX;
-    private int centerY;
+    private int centerX = -DOT_W;
+    private int centerY = -DOT_H;
     
     private JPanel grid;
-    private JComponent pic;
     private JButton calibrate = new JButton();
 	
 	@Override
@@ -65,21 +57,12 @@ public class DisplayGearVision extends StaticWidget{
 				
 				//displays the previous calibrated center point
 				g.setColor(Color.RED);
-		        g.fillRect(centerX + OFF_X - DOT_W/2, OFF_Y - centerY - DOT_H/2,
-		        				DOT_W, DOT_H);
+		        g.fillRect(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W, DOT_H);
 		        
-		        //draws a new line, the middle of which will be the new calibrated center point
-		        g.setColor(Color.GRAY);
-		        g.drawLine(WID/2, 0, WID/2, HIGHT);
-		        g.drawLine(0, HIGHT/2, WID, HIGHT/2);
-		        
-		        //these temp coords are in terms of the computer's coord plane (top left = (0,0))
-		        int tempx1 = x1 + OFF_X;
-				int tempy1 = OFF_Y - y1;
-				int tempx2 = x2 + OFF_X;
-				int tempy2 = OFF_Y - y2;
-				g.setColor(Color.BLACK);
-				g.drawLine(tempx1, tempy1, tempx2, tempy2);
+		        //draws a line from center of left tape to center of right tape
+		        g.setColor(Color.BLACK);
+				g.drawLine(x1, y1, x2, y2);
+				
 			}
 		};
 		
@@ -122,10 +105,10 @@ public class DisplayGearVision extends StaticWidget{
 	 * Converts from camera pixels to computer pixels (for drawing/displaying)
 	 * */
 	public void updatePosition(){
-		x1 = (int) (table.getNumber("leftGearCenterX", -OFF_X) * CAMERA_COMPUTER_PIXEL_RATIO);
-		y1 = (int) (table.getNumber("leftGearCenterY", OFF_Y) * CAMERA_COMPUTER_PIXEL_RATIO);
-		x2 = (int) (table.getNumber("rightGearCenterX", OFF_X) * CAMERA_COMPUTER_PIXEL_RATIO);
-		y2 = (int) (table.getNumber("rightGearCenterY", -OFF_Y) * CAMERA_COMPUTER_PIXEL_RATIO);
+		x1 = (int) (table.getNumber("leftGearCenterX", -OFF_X));
+		y1 = (int) (table.getNumber("leftGearCenterY", OFF_Y));
+		x2 = (int) (table.getNumber("rightGearCenterX", OFF_X));
+		y2 = (int) (table.getNumber("rightGearCenterY", -OFF_Y));
 	}
 	
 	/**
@@ -133,8 +116,8 @@ public class DisplayGearVision extends StaticWidget{
 	 * Converts from computer pixels to camera pixels (for robot adjustment)
 	 */
 	public void sendCenterPt(){
-		table.putNumber("gearCenterX", centerX/CAMERA_COMPUTER_PIXEL_RATIO);
-		table.putNumber("gearCenterY", centerY/CAMERA_COMPUTER_PIXEL_RATIO);
+		table.putNumber("gearCenterX", centerX);
+		table.putNumber("gearCenterY", centerY);
 	}
 	
 	/**
@@ -143,12 +126,10 @@ public class DisplayGearVision extends StaticWidget{
 	private void moveCalibCenter(int x, int y) {
         int OFFSET = 1;
         if ((centerX!=x) || (centerY!=y)) {
-            grid.repaint(centerX + OFF_X - DOT_W/2, OFF_Y - centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
             centerX = x;
             centerY = y;
-            grid.repaint(centerX + OFF_X - DOT_W/2, OFF_Y - centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
         } 
     }
 	
