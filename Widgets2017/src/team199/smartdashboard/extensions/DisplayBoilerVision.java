@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class DisplayBoilerVision extends StaticWidget{
 	private static ITable table = NetworkTable.getTable("SmartDashboard/Vision");
+	private final String[] ipList = { "172.22.11.2", "10.1.99.2", "10.1.99.0", "roboRIO-199-FRC.local" };
     private final int WID = 320;
     private final int HIGHT = 180;
     private final int BUTTON_HIGHT = 25;
@@ -41,8 +42,12 @@ public class DisplayBoilerVision extends StaticWidget{
 	
 	@Override
 	public void init(){
+		NetworkTable.setClientMode();
+		NetworkTable.setTeam(199);
+		NetworkTable.setIPAddress(ipList);
+		NetworkTable.initialize();
 		try {
-            table = NetworkTable.getTable("Vision");
+            table = NetworkTable.getTable("SmartDashboard/Vision");
         } catch(Exception e) {
             System.out.println("Vision not found");
             return;
