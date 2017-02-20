@@ -15,8 +15,7 @@ public class ManualControlMechs extends Command {
 	private ClimberInterface climber;
 	private ShooterInterface shooter;
 	private IntakeInterface intake;
-	
-	
+
 	public ManualControlMechs(IntakeInterface intake, ShooterInterface shooter, ClimberInterface climber) {
 		this.shooter = shooter;
 		this.climber = climber;
@@ -27,30 +26,35 @@ public class ManualControlMechs extends Command {
 	protected void initialize() {
 	}
 
-	
-	
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	String system = SmartDashboard.getString("Manual Control Mech");
-    	manualSwitch(system, Robot.oi.manipulator.getThrottle());
-    }
-    
-    public void manualSwitch(String system, double speed) {
-    	switch (system.toLowerCase()){
-	    	case "intake": this.intake.runIntake(speed);
-	    		break;
-	    	case "feeder": this.shooter.runFeederMotor(speed);
-	    		break;
-	    	case "climber": this.climber.runClimber(speed);
-	    		break;
-	    	case "shooter": this.shooter.runShootMotor(speed);
-	    		break;
-	    	case "turret": this.shooter.runTurretMotor(speed);
-	    		break;
-	    	case "hood": this.shooter.runHoodMotor(speed);
-	    		break;
-    	}
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		String system = SmartDashboard.getString("Manual Control Mech");
+		manualSwitch(system, Robot.oi.manipulator.getThrottle());
+	}
+
+	public void manualSwitch(String system, double speed) {
+		switch (system.toLowerCase()) {
+		case "intake":
+			this.intake.runIntake(speed);
+			break;
+		case "feeder":
+			this.shooter.runFeederMotor(speed);
+			break;
+		case "climber":
+			this.climber.runClimber(speed);
+			break;
+		case "shooter":
+			this.shooter.runShootMotor(speed);
+			break;
+		case "turret":
+			this.shooter.runTurretMotor(speed);
+			break;
+//		case "hood":
+//			this.shooter.runHoodMotor(speed);
+//			break;
+		}
+	}
+
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		return false;
