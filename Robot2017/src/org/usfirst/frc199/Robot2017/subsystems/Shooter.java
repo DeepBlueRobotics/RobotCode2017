@@ -323,7 +323,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		// target angle for angle piston/hood-hood pivot-piston-body
 		double targetPistonAngle = Math.atan(pistonBottomY / pistonBottomX) - targetShootAngle + Math.PI / 2;
 		// distance from hood-body pivot to piston-hood pivot
-		double hoodHeight = 6.5005459;
+		double hoodHeight = Math.sqrt(pistonBottomX * pistonBottomX + pistonBottomY * pistonBottomY);
 		// distance from hood-body pivot to piston-body pivot
 		double pistonDistance = 3.6258839;
 		// length the piston should be, from piston-body piston to piston-hood
