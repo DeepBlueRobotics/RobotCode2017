@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class DisplayBoilerVision extends StaticWidget{
 	private static ITable table = NetworkTable.getTable("SmartDashboard/Vision");
+	private final String[] ipList = { "172.22.11.2", "10.1.99.2", "10.1.99.0", "roboRIO-199-FRC.local" };
     private final int WID = 320;
     private final int HIGHT = 180;
     private final int BUTTON_HIGHT = 25;
@@ -36,13 +37,16 @@ public class DisplayBoilerVision extends StaticWidget{
     private int centerY = -DOT_H;
     
     private JPanel grid;
-    private JComponent pic;
     private JButton calibrate = new JButton();
 	
 	@Override
 	public void init(){
+		NetworkTable.setClientMode();
+		NetworkTable.setTeam(199);
+		NetworkTable.setIPAddress(ipList);
+		NetworkTable.initialize();
 		try {
-            table = NetworkTable.getTable("Vision");
+            table = NetworkTable.getTable("SmartDashboard/Vision");
         } catch(Exception e) {
             System.out.println("Vision not found");
             return;
@@ -55,13 +59,11 @@ public class DisplayBoilerVision extends StaticWidget{
 				
 				//displays the previous calibrated center point
 				g.setColor(Color.RED);
-		        g.fillRect(centerX - DOT_W/2, centerY - DOT_H/2,
-		        				DOT_W, DOT_H);
+		        g.fillRect(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W, DOT_H);
 		        
 		        //displays the current center point (from table)
 		        g.setColor(Color.BLACK);
-		        g.fillRect(x - DOT_W/2, y - DOT_H/2,
-        				DOT_W, DOT_H);
+		        g.fillRect(x - DOT_W/2, y - DOT_H/2, DOT_W, DOT_H);
 			}
 		};
 		
@@ -114,12 +116,10 @@ public class DisplayBoilerVision extends StaticWidget{
 	private void moveCalibCenter(int x, int y) {
         int OFFSET = 1;
         if ((centerX!=x) || (centerY!=y)) {
-            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
             centerX = x;
             centerY = y;
-            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
         } 
     }
 	

@@ -74,14 +74,12 @@ public class OI {
 		SmartDashboard.putData("MainAutoMode", new AutoModeBasic(0));
 		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0, Robot.drivetrain));
 		SmartDashboard.putData("AutoDelay", new AutoDelay(-2, Robot.intake));
-		SmartDashboard.putData("AutoAdjustHood", new AutoAdjustHood(Robot.shooter));
 		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret(0, Robot.shooter));
 		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
 		SmartDashboard.putData("TeleopDrive", new TeleopDrive(Robot.drivetrain));
 		SmartDashboard.putData("GradualDrive", new GradualDrive(Robot.drivetrain));
 		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType(Robot.drivetrain));
 		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift(Robot.drivetrain));
-		SmartDashboard.putData("TestPID", new TestPID(TestPID.System.DRIVEDISTANCE, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("RunIntake", new RunIntake(0, Robot.intake));
 		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
 		SmartDashboard.putData("TurnTurret", new TurnTurret(0, Robot.shooter));

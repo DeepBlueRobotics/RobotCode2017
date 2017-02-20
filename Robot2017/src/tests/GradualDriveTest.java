@@ -17,6 +17,5 @@ public class GradualDriveTest {
 		testCommand.execute();
 		verify(mockDrivetrain).gradualDrive();
 		verify(mockDrivetrain).currentControl();
-		verify(mockDrivetrain).shiftGears();
 	}
 }

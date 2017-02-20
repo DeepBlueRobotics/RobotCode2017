@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Servo;
 
 public class RobotMap {
 	public static SpeedController drivetrainLeftMotor;
@@ -43,8 +45,7 @@ public class RobotMap {
 	private final static double shootFGain = 0.374;
 	public static SpeedController turretTurnMotor;
 	public static Encoder turretTurretEncoder;
-	public static SpeedController hoodAngleMotor;
-	public static Encoder hoodAngleEncoder;
+	public static Servo hoodServo;
 	public static SpeedController climberWinchMotor;
 	public static AnalogInput climberPlateIRSensor;
 	public static Encoder winchEncoder;
@@ -56,14 +57,19 @@ public class RobotMap {
 	public static AnalogInput drivetrainRightUSsensor;
 	public static boolean practice = Robot.getPref("Is practice robot?", false);
 	
+//	public static PWM port0 = new PWM(0);
+//	public static PWM port1 = new PWM(1);
+	
 	public static void init() {
 		
-		if(practice)
+		if(!practice)
 		{
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
-			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
-			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
+			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
+			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
+			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
+			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
@@ -71,8 +77,8 @@ public class RobotMap {
 			intakeIntakeMotor = new VictorSP(2);
 			shooterShootMotor = new Talon(3);
 			shooterFeedMotor = new VictorSP(4);
-			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
-			hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
+//			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
 			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
@@ -87,8 +93,10 @@ public class RobotMap {
 		{
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
-			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
-			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
+			drivetrainLeftEncoder = new Encoder(1,0, false, EncodingType.k4X);
+			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
+			drivetrainRightEncoder = new Encoder(2,3, false, EncodingType.k4X);
+			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
@@ -96,8 +104,8 @@ public class RobotMap {
 			intakeIntakeMotor = new VictorSP(2);
 			shooterShootMotor = new Talon(3);
 			shooterFeedMotor = new VictorSP(4);
-			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
-			hoodAngleEncoder = new Encoder(8, 9, false, EncodingType.k4X);
+//			shooterShootEncoder = new Encoder(4, 5, false, EncodingType.k4X);
+			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
 			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
@@ -124,11 +132,9 @@ public class RobotMap {
 
 		
 		LiveWindow.addSensor("Drivetrain", "LeftEncoder", drivetrainLeftEncoder);
-		drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0531));
 		drivetrainLeftEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		LiveWindow.addSensor("Drivetrain", "RightEncoder", drivetrainRightEncoder);
-		drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0521));
 		drivetrainRightEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		
@@ -152,10 +158,10 @@ public class RobotMap {
 		
 		LiveWindow.addActuator("Shooter", "FeedMotor", (VictorSP) shooterFeedMotor);
 
-		
-		LiveWindow.addSensor("Shooter", "ShootEncoder", shooterShootEncoder);
-		shooterShootEncoder.setDistancePerPulse(1.0);
-		shooterShootEncoder.setPIDSourceType(PIDSourceType.kRate);
+//		
+//		LiveWindow.addSensor("Shooter", "ShootEncoder", shooterShootEncoder);
+//		shooterShootEncoder.setDistancePerPulse(1.0);
+//		shooterShootEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		shooterShootMotorAndEncoder = new CANTalon(CANTalonIDNum);
 		LiveWindow.addSensor("Shooter", "ShootMotorAndEncoder", shooterShootMotorAndEncoder);
@@ -167,10 +173,7 @@ public class RobotMap {
 		shooterShootMotorAndEncoder.changeControlMode(TalonControlMode.Speed);
 		
 	
-		LiveWindow.addSensor("Shooter", "HoodAngleEncoder", hoodAngleEncoder);
-		hoodAngleEncoder.setDistancePerPulse(1.0);
-		hoodAngleEncoder.setPIDSourceType(PIDSourceType.kRate);
-		
+		LiveWindow.addActuator("Shooter", "HoodServo", hoodServo);
 	
 		LiveWindow.addActuator("Shooter", "TurnMotor", (VictorSP) turretTurnMotor);
 		

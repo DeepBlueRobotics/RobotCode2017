@@ -5,48 +5,43 @@ import org.usfirst.frc199.Robot2017.Robot;
 
 public interface ShooterInterface extends DashboardInterface {
 	public void initDefaultCommand();
-	
+
 	/**
 	 * Sets the feeder motor's speed (from -1.0 to 1.0).
 	 * 
-	 * @param rate
-	 *            - speed to give the feeder motor
+	 * @param rate - speed to give the feeder motor
 	 */
 	public void runFeederMotor(double speed);
-	
+
 	/**
-	 * Sets the shooter motor's speed (from -1.0 to 1.0).
-	 * For PID AutoShoot (AutoShoot2)
+	 * Sets the shooter motor's speed (from -1.0 to 1.0). For PID AutoShoot
+	 * (AutoShoot2)
 	 * 
-	 * @param rate
-	 *            - speed to give the shooter motor
+	 * @param rate - speed to give the shooter motor
 	 */
 	public void runShootMotor2(double speed);
-	
+
 	/**
-	 * Sets the shooter motor's speed (from -1.0 to 1.0).
-	 * For CANTalon AutoShoot
+	 * Sets the shooter motor's speed (from -1.0 to 1.0). For CANTalon AutoShoot
 	 * 
-	 * @param rate
-	 *            - speed to give the shooter motor
+	 * @param rate - speed to give the shooter motor
 	 */
 	public void runShootMotor(double speed);
 
 	/**
 	 * This method checks if 1)shootMotor is set to a high value 2)encoder is
 	 * saying the shooter isn't moving 3)getPref is saying the shooterEncoder
-	 * works
-	 * For PID AutoShoot (AutoShoot2)
+	 * works For PID AutoShoot (AutoShoot2)
 	 * 
 	 * @return return whether shooter motor is deemed stalled, however, if it is
 	 *         it automatically sets it to 0
 	 */
 	public boolean shooterMotorStalled2();
+
 	/**
 	 * This method checks if 1)shootMotor is set to a high value 2)encoder is
 	 * saying the shooter isn't moving 3)getPref is saying the shooterEncoder
-	 * works
-	 * For CANTalon AutoShoot
+	 * works For CANTalon AutoShoot
 	 * 
 	 * @return return whether shooter motor is deemed stalled, however, if it is
 	 *         it automatically sets it to 0
@@ -54,16 +49,15 @@ public interface ShooterInterface extends DashboardInterface {
 	public boolean shooterMotorStalled();
 
 	/**
-	 * Returns the current speed of the shooter wheel.
-	 * For PID AutoShoot (AutoShoot2)
+	 * Returns the current speed of the shooter wheel. For PID AutoShoot
+	 * (AutoShoot2)
 	 * 
 	 * @return shooter speed in inches per second
 	 */
 	public double getShooterSpeed2();
-	
+
 	/**
-	 * Returns the current speed of the shooter wheel.
-	 * For CANTalon AutoShoot
+	 * Returns the current speed of the shooter wheel. For CANTalon AutoShoot
 	 * 
 	 * @return shooter speed in inches per second
 	 */
@@ -72,8 +66,7 @@ public interface ShooterInterface extends DashboardInterface {
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
-	 * @param targetRate
-	 *            - target speed for shooter motor PID
+	 * @param targetRate - target speed for shooter motor PID
 	 */
 	public void setShooterPIDTarget(double targetRate);
 
@@ -87,8 +80,7 @@ public interface ShooterInterface extends DashboardInterface {
 	/**
 	 * Updates the shooter motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValue
-	 *            current shooter motor encoder speed
+	 * @param updateValue current shooter motor encoder speed
 	 */
 	public void updateShooterPID(double updateValue);
 
@@ -99,8 +91,8 @@ public interface ShooterInterface extends DashboardInterface {
 
 	/**
 	 * Used only in TestPID
-	 * @param target
-	 *            - the target value for PID
+	 * 
+	 * @param target - the target value for PID
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target);
@@ -109,8 +101,7 @@ public interface ShooterInterface extends DashboardInterface {
 	 * Passes the distance of the robot from the boiler through an equation to
 	 * compute the speed at which we should be shooting.
 	 * 
-	 * @param distance
-	 *            - in inches of the front of the robot from the boiler
+	 * @param distance - in inches of the front of the robot from the boiler
 	 * @return the ideal exit speed of the ball in inches/second
 	 */
 	public double convertDistanceToTargetVelocity(double distance);
@@ -119,32 +110,42 @@ public interface ShooterInterface extends DashboardInterface {
 	 * Passes the distance of the robot from the boiler through an equation to
 	 * compute the speed at which we should be shooting.
 	 * 
-	 * @param distance
-	 *            - in inches of the front of the robot from the boiler
+	 * @param distance - in inches of the front of the robot from the boiler
 	 * @return the ideal exit angle of the ball in radians
 	 */
 	public double convertDistanceToTargetAngle(double distance);
-
+	
+	/**
+	 * Used for turret only
+	 * @param angle - in degrees
+	 * @return the target distance in ??? (in/s???)
+	 * */
+	public double convertAngleToTargetDistance(double angle);
+	
+	/**
+	 * Resets turret encoder
+	 * Sets distPerPulse for turret encoder???
+	 * */
+	public void resetTurretEncoder();
+	
 	/**
 	 * Gets the turret encoder value
 	 * 
 	 * @return the turret encoder value
 	 */
 	public double getTurretEncoder();
-	
+
 	/**
 	 * Sets the turret motor's speed (from -1.0 to 1.0).
 	 * 
-	 * @param rate
-	 *            - speed to give the turret motor
+	 * @param rate - speed to give the turret motor
 	 */
 	public void runTurretMotor(double speed);
 
 	/**
 	 * Tells the turret motor's PID the target speed to reach.
 	 * 
-	 * @param targetRate
-	 *            - target speed for turret motor PID
+	 * @param targetRate - target speed for turret motor PID
 	 */
 	public void setTurretPIDTarget(double target);
 
@@ -158,15 +159,15 @@ public interface ShooterInterface extends DashboardInterface {
 	/**
 	 * Updates the turret motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValue
-	 *            current turret motor encoder speed
+	 * @param updateValue current turret motor encoder speed
 	 */
 	public void updateTurretPID(double updateValue);
-	
+
 	/**
 	 * Gets if turret PID target reached or not.
+	 * 
 	 * @return turret PID target is reached or not
-	 * */
+	 */
 	public boolean turretPIDTargetReached();
 
 	/**
@@ -175,53 +176,26 @@ public interface ShooterInterface extends DashboardInterface {
 	public void stopTurretMotor();
 
 	/**
-	 * Gets the hood encoder value
+	 * Gets the hood servo value
 	 * 
-	 * @return the hood encoder value
+	 * @return the hood servo value
 	 */
-	public double getHoodEncoder();
+	public double getHoodServo();
 
 	/**
-	 * Sets the hood motor's speed (from -1.0 to 1.0).
+	 * Sets the hood servo's position (from 0.0 to 1.0).
 	 * 
-	 * @param rate
-	 *            - speed to give the hood motor
+	 * @param position - position to give the hood servo
 	 */
-	public void runHoodMotor(double speed);
-	
-	/**
-	 * Tells the hood motor's PID the target speed to reach.
-	 * 
-	 * @param targetRate
-	 *            - target speed for hood motor PID
-	 */
-	public void setHoodPIDTarget(double target);
+	public void setHoodServo(double position);
 
 	/**
-	 * Gets the speed for the hood motor from the hood PID.
+	 * Sets the hood angle in radians using the hood servo. Uses math to turn
+	 * that angle into an argument for setHoodServo().
 	 * 
-	 * @return speed for motor
+	 * @param angle - angle to give the hood
 	 */
-	public double getHoodPIDOutput();
-
-	/**
-	 * Updates the hood motor PID with the current speed from the encoder.
-	 * 
-	 * @param updateValue
-	 *            current hood motor encoder speed
-	 */
-	public void updateHoodPID(double updateValue);
-	
-	/**
-	 * Gets if hood PID target reached or not.
-	 * @return hood PID target is reached or not
-	 * */
-	public boolean hoodPIDTargetReached();
-
-	/**
-	 * Stops the hood motor
-	 */
-	public void stopHoodMotor();
+	public void setHoodAngle(double angle);
 
 	@Override
 	public void displayData();

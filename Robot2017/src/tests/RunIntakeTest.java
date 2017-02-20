@@ -14,9 +14,9 @@ public class RunIntakeTest {
 		RunIntake testCommand = new RunIntake(0, mockIntake);
 		
 		testCommand.execute();
-		verify(mockIntake).runIntake(0);
+		verify(mockIntake).intakeIsUp();
 		
 		testCommand.end();
-		verify(mockIntake).stopIntake();
+		verify(mockIntake).runIntake(0);
 	}
 }

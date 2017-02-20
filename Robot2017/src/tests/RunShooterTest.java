@@ -16,7 +16,6 @@ public class RunShooterTest {
 		
 		testCommand.execute();
 		verify(mockShooter).shooterMotorStalled();
-		verify(mockShooter).runShootMotor(0.2);
 		
 		testCommand.end();
 		verify(mockShooter).runShootMotor(0);

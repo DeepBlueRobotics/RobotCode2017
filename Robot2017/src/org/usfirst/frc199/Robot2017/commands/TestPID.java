@@ -31,6 +31,10 @@ public class TestPID extends Command {
 		this.system = system;
 		this.drivetrain = driver;
 		this.shooter = shooter;
+		switch(system) {
+			case SHOOTER: requires(Robot.shooter); break;
+			default: requires(Robot.drivetrain);
+		}
 	}
 
 	// Called just before this Command runs the first time
@@ -62,9 +66,11 @@ public class TestPID extends Command {
 			case LEFTDRIVESPEED:
 				target = SmartDashboard.getNumber("PID/LeftDriveSpeed/TestTarget", 0);
 				drivetrain.setLeftSpeedTarget(target);
+				break;
 			case RIGHTDRIVESPEED:
 				target = SmartDashboard.getNumber("PID/RightDriveSpeed/TestTarget", 0);
 				drivetrain.setRightSpeedTarget(target);
+				break;
 		}
 	}
 
@@ -90,8 +96,8 @@ public class TestPID extends Command {
 			case DRIVEANGLE: return drivetrain.angleReachedTarget();
 			case DRIVEVELOCITY: return false;
 			case DRIVEANGULARVELOCITY: return false;
-			case LEFTDRIVESPEED: return drivetrain.leftSpeedReachedTarget();
-			case RIGHTDRIVESPEED: return drivetrain.rightSpeedReachedTarget();
+			case LEFTDRIVESPEED: return false;
+			case RIGHTDRIVESPEED: return false;
 			default: return false;
 		}
 	}

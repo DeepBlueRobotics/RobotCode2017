@@ -1,5 +1,6 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -13,6 +14,7 @@ public class ToggleIntakeRamp extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.intake = intake;
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
