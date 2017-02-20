@@ -49,9 +49,6 @@ public class ManualControlMechs extends Command {
 		case "turret":
 			this.shooter.runTurretMotor(speed);
 			break;
-//		case "hood":
-//			this.shooter.runHoodMotor(speed);
-//			break;
 		}
 	}
 
