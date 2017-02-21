@@ -51,7 +51,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID angularVelocityPID = new PID("DriveAngularVelocity");
 
 	// Variables for motion profiling and acceleration control
-	private double prevEncoderRate= 0, prevGyroRate= 0, prevTime= 0, driveLimit= 0, turnLimit= 0, prevLeftEnc= 0, prevRightEnc = 0;
+	private double prevEncoderRate = 0, prevGyroRate = 0, prevTime = 0, driveLimit = 0, turnLimit = 0, prevLeftEnc = 0, prevRightEnc = 0;
 	private double gyroCalibrationInitalValue = 0, gyroDriftRate = 0;
 	private Timer gyroDriftTimer = new Timer();
 
@@ -63,8 +63,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private double currentTurn = 0;
 	
 	//for ultrasonic sensors
-	private final double distBtwnUSsensors = 25;
-	private final double distFromUSToRobotFront = 6.19;
+	private final double distBtwnUSsensors = 9.9;
+	private final double distFromUSToRobotFront = 7.5;
 	private final double targetUSDist = 3.5;
 
 	private DriveTypes currentDrive = DriveTypes.ARCADE;
