@@ -83,7 +83,6 @@ while(True):
                 gearCap.set(4, 180)
                 if gearFailCounter < 10:
                         nt.write("Vision", "gearVisionRunning", True)
-                        nt.write("Vision", "OH-YEAH", False)
 
                         ret, gearFrame = gearCap.read()
                         # Run gear mark identification
@@ -106,8 +105,6 @@ while(True):
                                 nt.write("Vision", "OH-YEAH", False)
                 elif not nt.get("Vision", "OH-YEAH", False):
                         nt.write("Vision", "gearVisionRunning", False)
-
-
                         gearFailCounter = 0
         else:
                 nt.write("Vision", "gearVisionRunning", False)

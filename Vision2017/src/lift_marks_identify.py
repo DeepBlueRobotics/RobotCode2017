@@ -34,21 +34,23 @@ def findTape(frame, lower, upper):
                 
                 Mi = cv2.moments(np.array(cnts2[i][1]))
                 if Mi["m00"] != 0:
-                    centerXi = int(Mi["m10"] / Mi["m00"])
-                    centerYi = int(Mi["m01"] / Mi["m00"])
+                    centerXi = 320 - int(Mi["m10"] / Mi["m00"])
+                    centerYi = 180 - int(Mi["m01"] / Mi["m00"])
                 else:
                     return -1, -1, -1, -1, False
 
 
                 Mj = cv2.moments(np.array(cnts2[j][1]))
                 if Mj["m00"] != 0:
-                    centerXj = int(Mj["m10"] / Mj["m00"])
-                    centerYj = int(Mj["m01"] / Mj["m00"])
+                    centerXj = 320 - int(Mj["m10"] / Mj["m00"])
+                    centerYj = 180 - int(Mj["m01"] / Mj["m00"])
                 else:
                     return -1, -1, -1, -1, False
 
                 if centerXi > centerXj:
                     return centerXj, centerYj, centerXi, centerYi, True
+                else:
+                    return centerXi, centerYi, centerXj, centerYj, True
 
 
     return -1, -1, -1, -1, False
