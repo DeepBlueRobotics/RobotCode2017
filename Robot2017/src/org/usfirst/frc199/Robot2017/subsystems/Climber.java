@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Climber extends Subsystem implements ClimberInterface {
 
 	private final SpeedController winchMotor = RobotMap.climberWinchMotor;
-	private final AnalogInput plateLimit = RobotMap.climberPlateIRSensor;
-	private final Encoder winchEncoder = RobotMap.winchEncoder;
+//	private final AnalogInput plateLimit = RobotMap.climberPlateIRSensor;
+//	private final Encoder winchEncoder = RobotMap.winchEncoder;
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	public boolean AIEnabled = false;
 
@@ -30,19 +30,19 @@ public class Climber extends Subsystem implements ClimberInterface {
 	public void initDefaultCommand() {
 		
 	}
-	/**
-	 * 
-	 * @return - returns the value of AIEnabled
-	 */
-	public boolean getAIEnabled() {
-		return AIEnabled;
-	}
-	/**
-	 * this method sets the value of AIEnabled
-	 */
-	public void setAIEnabled(boolean value) {
-		AIEnabled = value;
-	}
+//	/**
+//	 * 
+//	 * @return - returns the value of AIEnabled
+//	 */
+//	public boolean getAIEnabled() {
+//		return AIEnabled;
+//	}
+//	/**
+//	 * this method sets the value of AIEnabled
+//	 */
+//	public void setAIEnabled(boolean value) {
+//		AIEnabled = value;
+//	}
 	/**
 	 * This method uses the winch to let the robot climb
 	 * 
@@ -56,17 +56,17 @@ public class Climber extends Subsystem implements ClimberInterface {
 		return winchMotor.get();
 	}
 
-	/**
-	 * This method returns whether the plate is sensing being touched
-	 * 
-	 * @return
-	 */
-	public boolean returnPlate() {
-		if (plateLimit.getVoltage() < 0.102 && AIEnabled) {
-			return true;
-		}
-		return false;
-	}
+//	/**
+//	 * This method returns whether the plate is sensing being touched
+//	 * 
+//	 * @return
+//	 */
+//	public boolean returnPlate() {
+//		if (plateLimit.getVoltage() < 0.102 && AIEnabled) {
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public boolean checkMotorDraw() {
 		int channel = (int) (Robot.getPref("climber channel", 1));
@@ -82,13 +82,13 @@ public class Climber extends Subsystem implements ClimberInterface {
 	public void stopWinch() {
 		winchMotor.set(0);
 	}
-	public void encoderReset() {
-		winchEncoder.reset();
-	}
-	public double getEncoder() {
-		//TODO: anyone, set distance per pulse to inches per pulse
-		return winchEncoder.getDistance();
-	}
+//	public void encoderReset() {
+//		winchEncoder.reset();
+//	}
+//	public double getEncoder() {
+//		//TODO: anyone, set distance per pulse to inches per pulse
+//		return winchEncoder.getDistance();
+//	}
 
 	@Override
 	/**
@@ -96,8 +96,8 @@ public class Climber extends Subsystem implements ClimberInterface {
 	 */
 	public void displayData() {
 //		SmartDashboard.putBoolean("plateLimit", plateLimit.get());
-		putNumber("Encoder", getEncoder());
-		putBoolean("TouchingPlate", returnPlate());
+//		putNumber("Encoder", getEncoder());
+//		putBoolean("TouchingPlate", returnPlate());
 		putNumber("winchMotor", getClimber());
 	}
 }

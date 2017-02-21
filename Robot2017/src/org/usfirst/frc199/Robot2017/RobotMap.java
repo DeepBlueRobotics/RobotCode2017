@@ -47,8 +47,8 @@ public class RobotMap {
 	public static Encoder turretTurretEncoder;
 	public static Servo hoodServo;
 	public static SpeedController climberWinchMotor;
-	public static AnalogInput climberPlateIRSensor;
-	public static Encoder winchEncoder;
+//	public static AnalogInput climberPlateIRSensor;
+//	public static Encoder winchEncoder;
 	public static AHRS ahrs;
 	public static PowerDistributionPanel pdp;
 	public static AnalogInput driverAI;
@@ -81,9 +81,9 @@ public class RobotMap {
 			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
-			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
+//			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
 			climberWinchMotor = new VictorSP(8);
-			climberPlateIRSensor = new AnalogInput(1);
+//			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
 			flipperFlapper = new DoubleSolenoid(3,4,5);
 			drivetrainLeftUSsensor = new AnalogInput(3);
@@ -108,10 +108,10 @@ public class RobotMap {
 			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
-			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
+//			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
 			climberWinchMotor = new VictorSP(8);
 			climberWinchMotor.setInverted(true);
-			climberPlateIRSensor = new AnalogInput(1);
+//			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
 			flipperFlapper = new DoubleSolenoid(3,4,5);
 			drivetrainLeftUSsensor = new AnalogInput(3);
@@ -183,15 +183,15 @@ public class RobotMap {
 		turretTurretEncoder.setPIDSourceType(PIDSourceType.kRate);
 		
 		
-		LiveWindow.addSensor("Climber", "WinchEncoder", winchEncoder);
-		winchEncoder.setDistancePerPulse(1.0);
-		winchEncoder.setPIDSourceType(PIDSourceType.kRate);
+//		LiveWindow.addSensor("Climber", "WinchEncoder", winchEncoder);
+//		winchEncoder.setDistancePerPulse(1.0);
+//		winchEncoder.setPIDSourceType(PIDSourceType.kRate);
 	
 		LiveWindow.addActuator("Climber", "WinchMotor", (VictorSP) climberWinchMotor);
 		
 		
 		
-		LiveWindow.addSensor("Climber", "ClimberInfrared", climberPlateIRSensor);
+//		LiveWindow.addSensor("Climber", "ClimberInfrared", climberPlateIRSensor);
 		
 		
 		LiveWindow.addSensor("Drivetrain", "ClimberInfrared", driverAI);

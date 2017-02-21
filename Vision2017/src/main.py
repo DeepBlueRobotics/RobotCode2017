@@ -111,4 +111,6 @@ while(True):
                         gearFailCounter = 0
         else:
                 nt.write("Vision", "gearVisionRunning", False)
+                nt.write("Vision", "OH-YEAH", False)
+                gearFailCounter = 0
                 gearCap.release()
