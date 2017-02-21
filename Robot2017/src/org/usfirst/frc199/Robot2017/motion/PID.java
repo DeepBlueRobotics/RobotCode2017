@@ -29,7 +29,7 @@ public class PID implements DashboardInterface {
 	private double output; // The computed PID output
 	private double rate; // Change in error over time
 	private double interval; // Time elapsed since last update
-	private double offset; // Sets what the "zero" value is
+	private double offset = 0; // Sets what the "zero" value is
 	private boolean reset; // Flag indicating loop needs to be reset
 
 	/**
@@ -67,8 +67,14 @@ public class PID implements DashboardInterface {
 	 *            - new input value in real units
 	 */
 	public void update(double newValue) {
-		kP = getNumber("kP", 0);
-		kI = getNumber("kI", 0);
+		if(name.toLowerCase().contains("speed") || name.toLowerCase().contains("velocity")) {
+			kP = getNumber("kP", 0);
+			kI = 1/target;
+		} else {
+			//this happens if is a distance or angle PID
+			kP = 1/target;
+			kI = getNumber("kI", 0);
+		}
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;
@@ -94,9 +100,7 @@ public class PID implements DashboardInterface {
 	 *            - The desired value of the current location
 	 */
 	public void setRelativeLocation(double value) {
-		offset += input - value;
-		input = value;
-		setTarget(target);
+		offset = value;
 	}
 
 	/**

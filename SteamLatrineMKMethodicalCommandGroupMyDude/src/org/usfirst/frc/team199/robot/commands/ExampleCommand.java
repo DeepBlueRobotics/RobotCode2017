@@ -1,43 +1,45 @@
-package org.usfirst.frc199.Robot2017.commands;
+package org.usfirst.frc.team199.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc199.Robot2017.Robot;
-import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team199.robot.Robot;
 
 /**
  *
  */
-public class GradualDrive extends Command {
-	DrivetrainInterface drivetrain;
-	
-	public GradualDrive(DrivetrainInterface drivetrain) {
-		this.drivetrain = drivetrain;
-		requires(Robot.drivetrain);
+public class ExampleCommand extends Command {
+	public ExampleCommand() {
+		// Use requires() here to declare subsystem dependencies
 	}
 
 	// Called just before this Command runs the first time
+	@Override
 	protected void initialize() {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	public void execute() {
-		drivetrain.gradualDrive();
-		if(drivetrain.currentControl()){
-			drivetrain.shiftGears();
+	@Override
+	protected void execute() {
+		if(SmartDashboard.getBoolean("ayyyy", false)) {
+			SmartDashboard.putBoolean("mancat", true);
 		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
+	@Override
 	protected boolean isFinished() {
 		return false;
 	}
 
 	// Called once after isFinished returns true
+	@Override
 	protected void end() {
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
+	@Override
 	protected void interrupted() {
 	}
 }

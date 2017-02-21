@@ -23,12 +23,18 @@ public class OmniWidget extends AbstractTableWidget{
     private ITable prefs;
     private ArrayList<Object> labels = new ArrayList<>();
     private ArrayList<EditorTextField> fields = new ArrayList<>();
+	private final String[] ipList = {"roboRIO-199-FRC.local", "172.22.11.2", "10.1.99.2", "10.1.99.0"};
     
     @Override
     public void init() {
         layout = new GridLayout(0,2);
         this.setLayout(layout);
         setMaximumSize(new Dimension(Integer.MAX_VALUE, getPreferredSize().height));
+        
+        NetworkTable.setClientMode();
+		NetworkTable.setTeam(199);
+		NetworkTable.setIPAddress(ipList);
+		NetworkTable.initialize();
         prefs = NetworkTable.getTable("SmartDashboard/"+getFieldName());
         prefs.addTableListener(new ITableListener() {
             @Override

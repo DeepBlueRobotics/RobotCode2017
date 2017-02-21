@@ -32,7 +32,7 @@ public class AutoAdjustHood extends Command {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return shooter.hoodPIDTargetReached();
     }
 

@@ -17,7 +17,7 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public void initDefaultCommand();
 	
 	public enum DriveTypes {
-		ARCADE, TANK, DRIFT_TANK
+		ARCADE, TANK, DRIFT_TANK, DRIFT_ARCADE
 	}
 	
 	/**
@@ -39,10 +39,16 @@ public interface DrivetrainInterface extends DashboardInterface {
 	public void arcadeDrive(double speed, double turn);
 	
 	/**
-	 * Accounts for drift towards right when in tank drive and essentially
-	 * 	calibrates the left joystick/motor.
+	 * Accounts for drift when in arcade drive
+	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
-	public void unevenTankDrive();
+	public void unevenArcadeDrive(double speedJoy, double turnJoy);
+	
+	/**
+	 * Accounts for drift when in tank drive
+	 * Sets each motor's respective target speed based on speed to joystick ratios
+	 * */
+	public void unevenTankDrive(double leftJoy, double rightJoy);
 
 	/**
 	 * Forces the robot's turn and move speed to change at a max of 5% each
@@ -125,6 +131,70 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 * @return Whether angle target has been reached
 	 */
 	public boolean angleReachedTarget();
+	
+	/**
+	 * @return the speed of the left side of the robot at the current time
+	 */
+	public double getLeftSpeed();
+	
+	/**
+	 * Gets the leftSpeedPID
+	 * Only used in tests
+	 * @return the leftSpeedPID
+	 * */
+	public PID getLeftSpeedPID();
+	
+	/**
+	 * Sets the left speed for PID target
+	 * 
+	 * @param targetSpeed
+	 *            - the target left speed being set to PID
+	 */
+	public void setLeftSpeedTarget(double targetSpeed);
+
+	/** 
+	 * Updates and tests/runs leftDriveSpeedPID
+	 */
+	public void updateLeftSpeedPID();
+
+	/**
+	 * Checks to see if the left speed PID has reached the target
+	 * 
+	 * @return Whether left speed target has been reached
+	 */
+	public boolean leftSpeedReachedTarget();
+	
+	/**
+	 * @return the speed of the right side of the robot at the current time
+	 */
+	public double getRightSpeed();
+	
+	/**
+	 * Gets the rightSpeedPID
+	 * Only used in tests
+	 * @return the rightSpeedPID
+	 * */
+	public PID getRightSpeedPID();
+	
+	/**
+	 * Sets the right speed for PID target
+	 * 
+	 * @param targetSpeed
+	 *            - the target right speed being set to PID
+	 */
+	public void setRightSpeedTarget(double targetSpeed);
+
+	/** 
+	 * Updates and tests/runs rightDriveSpeedPID
+	 */
+	public void updateRightSpeedPID();
+
+	/**
+	 * Checks to see if the right speed PID has reached the target
+	 * 
+	 * @return Whether right speed target has been reached
+	 */
+	public boolean rightSpeedReachedTarget();
 
 	/**
 	 * @return the average speed of the two sides of the robot at the current time

@@ -2,6 +2,7 @@ package team199.smartdashboard.extensions;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,9 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import edu.wpi.first.smartdashboard.gui.StaticWidget;
 import edu.wpi.first.smartdashboard.properties.Property;
@@ -19,6 +22,7 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 
 public class DisplayBoilerVision extends StaticWidget{
 	private static ITable table = NetworkTable.getTable("SmartDashboard/Vision");
+	private final String[] ipList = { "172.22.11.2", "10.1.99.2", "10.1.99.0", "roboRIO-199-FRC.local" };
     private final int WID = 320;
     private final int HIGHT = 180;
     private final int BUTTON_HIGHT = 25;
@@ -36,13 +40,17 @@ public class DisplayBoilerVision extends StaticWidget{
     private int centerY = -DOT_H;
     
     private JPanel grid;
-    private JComponent pic;
     private JButton calibrate = new JButton();
+    private JLabel title = new JLabel("<html><font color='black'>Shooter Vision</font></html>", SwingConstants.CENTER);
 	
 	@Override
 	public void init(){
+		NetworkTable.setClientMode();
+		NetworkTable.setTeam(199);
+		NetworkTable.setIPAddress(ipList);
+		NetworkTable.initialize();
 		try {
-            table = NetworkTable.getTable("Vision");
+            table = NetworkTable.getTable("SmartDashboard/Vision");
         } catch(Exception e) {
             System.out.println("Vision not found");
             return;
@@ -55,13 +63,11 @@ public class DisplayBoilerVision extends StaticWidget{
 				
 				//displays the previous calibrated center point
 				g.setColor(Color.RED);
-		        g.fillRect(centerX - DOT_W/2, centerY - DOT_H/2,
-		        				DOT_W, DOT_H);
+		        g.fillRect(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W, DOT_H);
 		        
 		        //displays the current center point (from table)
 		        g.setColor(Color.BLACK);
-		        g.fillRect(x - DOT_W/2, y - DOT_H/2,
-        				DOT_W, DOT_H);
+		        g.fillRect(x - DOT_W/2, y - DOT_H/2, DOT_W, DOT_H);
 			}
 		};
 		
@@ -89,11 +95,14 @@ public class DisplayBoilerVision extends StaticWidget{
             }
         });
         
-		setPreferredSize(new Dimension(WID, HIGHT + BUTTON_HIGHT + 5));
+		setPreferredSize(new Dimension(WID, HIGHT + 2 * BUTTON_HIGHT + 10));
+		title.setPreferredSize(new Dimension(WID, BUTTON_HIGHT));
+		title.setFont(new Font(title.getFont().getFontName(), Font.BOLD, 20));
 		grid.setPreferredSize(new Dimension(WID, HIGHT));
 		grid.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		calibrate.setPreferredSize(new Dimension(WID, BUTTON_HIGHT));
 		calibrate.setText("Calibrate");
+		add(title);
 		add(grid);
 		add(calibrate);
         
@@ -114,12 +123,10 @@ public class DisplayBoilerVision extends StaticWidget{
 	private void moveCalibCenter(int x, int y) {
         int OFFSET = 1;
         if ((centerX!=x) || (centerY!=y)) {
-            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
             centerX = x;
             centerY = y;
-            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W +
-            				OFFSET, DOT_H + OFFSET);
+            grid.repaint(centerX - DOT_W/2, centerY - DOT_H/2, DOT_W + OFFSET, DOT_H + OFFSET);
         } 
     }
 	

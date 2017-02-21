@@ -24,6 +24,7 @@ public class RunFeeder extends Command {
 	public RunFeeder(double speed, ShooterInterface shooter) {
 		this.speed = speed;
 		this.shooter = shooter;
+		requires(Robot.shooter);
 	}
 
 	// Called just before this Command runs the first time

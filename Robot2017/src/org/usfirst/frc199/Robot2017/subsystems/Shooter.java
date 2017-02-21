@@ -11,6 +11,7 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -35,18 +36,18 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private final double thetaErr = 0.05; // CHANGE LATER
 	private final double velErr = 0.05; // CHANGE LATER
 	
+	private final double turretDiam = 7.71;
+	
 	private final SpeedController shootMotor = RobotMap.shooterShootMotor;
 	private final SpeedController feedMotor = RobotMap.shooterFeedMotor;
 	private final Encoder shootEncoder = RobotMap.shooterShootEncoder;
 	private final CANTalon shootMotorAndEnc = RobotMap.shooterShootMotorAndEncoder;
 	private final SpeedController turretMotor = RobotMap.turretTurnMotor;
 	private final Encoder turretEncoder = RobotMap.turretTurretEncoder;
-	private final SpeedController hoodMotor = RobotMap.hoodAngleMotor;
-	private final Encoder hoodEncoder = RobotMap.hoodAngleEncoder;
+	private final Servo hoodServo = RobotMap.hoodServo;
 
 	private PID ShooterPID = new PID("ShooterPID");
 	private PID TurretPID = new PID("TurretPID");
-	private PID HoodPID = new PID("HoodPID");
 
 	private double prevShooterEncoder = 0;
 	private boolean shooterMotorStalled = false;
@@ -90,12 +91,6 @@ public class Shooter extends Subsystem implements ShooterInterface {
 				}
 			}
 		}
-//		for (int i = 0; i < 48; i++) {
-//			for (int j = 0; j < 45; j++) {
-//				if (distances[i][j]
-//			}
-//		}
-		
 	}
 
 	public void initDefaultCommand() {
@@ -104,8 +99,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Sets the feeder motor's speed (from -1.0 to 1.0).
 	 * 
-	 * @param rate
-	 *            - speed to give the feeder motor
+	 * @param rate - speed to give the feeder motor
 	 */
 	public void runFeederMotor(double speed) {
 		feedMotor.set(speed);
@@ -115,8 +109,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * Sets the shooter motor's speed (from -1.0 to 1.0). For PID AutoShoot
 	 * (AutoShoot2)
 	 * 
-	 * @param rate
-	 *            - speed to give the shooter motor
+	 * @param rate - speed to give the shooter motor
 	 */
 	public void runShootMotor2(double speed) {
 		shootMotor.set(speed);
@@ -125,8 +118,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0). For CANTalon AutoShoot
 	 * 
-	 * @param rate
-	 *            - speed to give the shooter motor
+	 * @param rate - speed to give the shooter motor
 	 */
 	public void runShootMotor(double speed) {
 		double targetSpeed = speed;
@@ -202,8 +194,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
-	 * @param targetRate
-	 *            - target speed for shooter motor PID
+	 * @param targetRate - target speed for shooter motor PID
 	 */
 	public void setShooterPIDTarget(double targetRate) {
 		ShooterPID.setTarget(targetRate);
@@ -221,8 +212,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Updates the shooter motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValue
-	 *            current shooter motor encoder speed
+	 * @param updateValue current shooter motor encoder speed
 	 */
 	public void updateShooterPID(double updateValue) {
 		ShooterPID.update(updateValue);
@@ -238,8 +228,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Used only in TestPID
 	 * 
-	 * @param target
-	 *            - the target value for PID
+	 * @param target - the target value for PID
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target) {
@@ -283,10 +272,28 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		return result;
 	}
 
-	// come up with PID methods (for turret and hood) similar to those of
+	// come up with PID methods (for turret) similar to those of
 	// shooter
 	// turret should use vision
 	// hood should convert real angles to encoder values (test to find a ratio)
+	
+	/**
+	 * Used for turret only
+	 * @param angle - in degrees
+	 * @return the target distance in inches
+	 * */
+	public double convertAngleToTargetDistance(double angle){
+		//return (turretDiam / 2) * angle * Math.PI / 180;
+		return angle * 18 / 3 * 256;
+	}
+	
+	/**
+	 * Resets turret encoder
+	 * Sets distPerPulse for turret encoder???
+	 * */
+	public void resetTurretEncoder(){
+		turretEncoder.reset();
+	}
 
 	/**
 	 * Gets the turret encoder value
@@ -294,7 +301,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @return the turret encoder value
 	 */
 	public double getTurretEncoder() {
-		return turretEncoder.get();
+		return turretEncoder.getDistance();
 	}
 
 	/**
@@ -302,6 +309,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 *  
 	 * @param rate
 	 *            - speed to give the turret motor
+	 * 
+	 * @param rate - speed to give the turret motor
 	 */
 	public void runTurretMotor(double speed) {
 		turretMotor.set(speed);
@@ -310,8 +319,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Tells the turret motor's PID the target speed to reach.
 	 * 
-	 * @param targetRate
-	 *            - target speed for turret motor PID
+	 * @param targetRate - target speed for turret motor PID
 	 */
 	public void setTurretPIDTarget(double target) {
 		TurretPID.setTarget(target);
@@ -329,8 +337,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Updates the turret motor PID with the current speed from the encoder.
 	 * 
-	 * @param updateValue
-	 *            current turret motor encoder speed
+	 * @param updateValue current turret motor encoder speed
 	 */
 	public void updateTurretPID(double updateValue) {
 		TurretPID.update(updateValue);
@@ -353,75 +360,67 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Gets the hood encoder value
+	 * Gets the hood servo value
 	 * 
-	 * @return the hood encoder value
+	 * @return the hood servo value
 	 */
-	public double getHoodEncoder() {
-		return hoodEncoder.get();
+	public double getHoodServo() {
+		return hoodServo.get();
 	}
 
 	/**
-	 * Sets the hood motor's speed (from -1.0 to 1.0).
+	 * Sets the hood servo's position (from 0.0 to 1.0).
 	 * 
-	 * @param rate
-	 *            - speed to give the hood motor
+	 * @param position - position to give the hood servo
 	 */
-	public void runHoodMotor(double speed) {
-		hoodMotor.set(speed);
+	public void setHoodServo(double position) {
+		hoodServo.set(position);
 	}
 
 	/**
-	 * Tells the hood motor's PID the target speed to reach.
+	 * Sets the hood angle in radians using the hood servo. Uses math to turn
+	 * that angle into an argument for setHoodServo().
 	 * 
-	 * @param targetRate
-	 *            - target speed for hood motor PID
+	 * @param targetShootAngle - angle from ground for the ball to exit to give
+	 *            the hood
 	 */
-	public void setHoodPIDTarget(double target) {
-		HoodPID.setTarget(target);
-	}
+	public void setHoodAngle(double targetShootAngle) {
+		// all distances are in inches
+		// actuator measurements
+		double closedLength = 4.64567;
+		double stroke = 1.9685;
+	
+		// all angles are in radians
+		//
+		// components of pistonDistance
+		double pistonBottomX = 2.930586;
+		double pistonBottomY = 2.1351762;
+		// target angle for angle piston/hood-hood pivot-piston-body
+		double targetPistonAngle = Math.atan(pistonBottomY / pistonBottomX) - targetShootAngle + Math.PI / 2;
+		// distance from hood-body pivot to piston-hood pivot
+		double hoodHeight = Math.sqrt(pistonBottomX * pistonBottomX + pistonBottomY * pistonBottomY);
+		// distance from hood-body pivot to piston-body pivot
+		double pistonDistance = 3.6258839;
+		// length the piston should be, from piston-body piston to piston-hood
+		// piston
+		double pistonHeight = Math.sqrt(
+				// ( a^2 + b^2
+				hoodHeight * hoodHeight + pistonDistance * pistonDistance
+				// - 2ab*cos(C) )
+						- 2 * hoodHeight * pistonDistance * Math.cos(targetPistonAngle));
+		// the value (0.0 to 1.0) to pass to .set()
+		double pistonArgument = (pistonHeight - closedLength) / stroke;
 
-	/**
-	 * Gets the speed for the hood motor from the hood PID.
-	 * 
-	 * @return speed for motor
-	 */
-	public double getHoodPIDOutput() {
-		return HoodPID.getOutput();
-	}
 
-	/**
-	 * Updates the hood motor PID with the current speed from the encoder.
-	 * 
-	 * @param updateValue
-	 *            current hood motor encoder speed
-	 */
-	public void updateHoodPID(double updateValue) {
-		HoodPID.update(updateValue);
-	}
-
-	/**
-	 * Gets if hood PID target reached or not.
-	 * 
-	 * @return hood PID target is reached or not
-	 */
-	public boolean hoodPIDTargetReached() {
-		return HoodPID.reachedTarget();
-	}
-
-	/**
-	 * Stops the hood motor
-	 */
-	public void stopHoodMotor() {
-		runHoodMotor(0);
+		setHoodServo(pistonArgument);
 	}
 
 	@Override
 	public void displayData() {
 		putBoolean("Shooter motor stalled", shooterMotorStalled);
-		putNumber("Shoot encoder rate", shootEncoder.getRate());
+		// putNumber("Shoot encoder rate", shootEncoder.getRate());
 		putNumber("Shooter PID output", getShooterPIDOutput());
 		putNumber("Turret encoder value", turretEncoder.get());
-		putNumber("Hood encoder value", hoodEncoder.get());
+		putNumber("Hood servo value", hoodServo.get());
 	}
 }

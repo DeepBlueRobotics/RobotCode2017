@@ -15,6 +15,7 @@ public class TurnTurret extends Command {
 	public TurnTurret(double speed, ShooterInterface shooter) {
 		this.speed = speed;
 		this.shooter = shooter;
+		requires(Robot.shooter);
 	}
 
 	// Called just before this Command runs the first time

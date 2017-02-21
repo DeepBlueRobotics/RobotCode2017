@@ -26,4 +26,6 @@ public interface IntakeInterface extends DashboardInterface {
 	public void toggleFlipperFlapper();
 	
 	public void stopFlipperFlapper();
+	
+	public void controlledIntake(double speed);
 }
