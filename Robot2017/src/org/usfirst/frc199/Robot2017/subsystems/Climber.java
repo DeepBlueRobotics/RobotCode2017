@@ -98,6 +98,7 @@ public class Climber extends Subsystem implements ClimberInterface {
 //		SmartDashboard.putBoolean("plateLimit", plateLimit.get());
 //		putNumber("Encoder", getEncoder());
 //		putBoolean("TouchingPlate", returnPlate());
-		putNumber("winchMotor", getClimber());
+		putNumber("Winch set speed", getClimber());
+		putNumber("Winch current draw", pdp.getCurrent((int)Robot.getPref("climber channel", 1)));
 	}
 }

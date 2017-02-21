@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutoAlignGear extends CommandGroup {
 
 	/**
-	 * @param shoot	whether to shoot or not
+	 * @param shoot - whether to shoot or not
 	 */
     public AutoAlignGear(boolean shoot) {
     	addSequential(new WriteToNT("gearRunning", true));

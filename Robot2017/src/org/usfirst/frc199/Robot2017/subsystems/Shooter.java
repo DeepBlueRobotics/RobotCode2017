@@ -274,11 +274,6 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		result[1] = angle;
 		return result;
 	}
-
-	// come up with PID methods (for turret) similar to those of
-	// shooter
-	// turret should use vision
-	// hood should convert real angles to encoder values (test to find a ratio)
 	
 	/**
 	 * Used for turret only

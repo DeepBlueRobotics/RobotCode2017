@@ -23,7 +23,6 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
-	private boolean isPistonUp = getBoolean("isIntakePistonUp", true);
 
 	public Intake(){
 		super();
@@ -58,7 +57,6 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * This method moves the intake up if it is down, and vice versa
 	 */
 	public void toggleIntake() {
-		isPistonUp = !isPistonUp;
 		if (!pivotPiston.get().toString().equals("kForward")) {
 			pivotPiston.set(DoubleSolenoid.Value.kForward);
 		} else {
@@ -104,7 +102,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * This method sets flipperFlapper to forward unless it already is, then sets to backwards
 	 */
 	public void toggleFlipperFlapper() {
-		if (flipperFlapper.get() != DoubleSolenoid.Value.kForward) {
+		if (!flipperFlapper.get().toString().equals("kForward")) {
 			flipperFlapper.set(DoubleSolenoid.Value.kForward);
 		} else {
 			flipperFlapper.set(DoubleSolenoid.Value.kReverse);
@@ -130,9 +128,11 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * This method displays data to SmartDashboard
 	 */
 	public void displayData() {
-		putBoolean("isPistonUp", isPistonUp);
-		putNumber("intakeCurrent", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
+		putString("Flap piston status", flipperFlapper.get().toString());
+		putNumber("Intake current draw", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
 		putNumber("Sending to intake", getIntake());
 		putString("Intake piston status", pivotPiston.get().toString());
+		putBoolean("Gear has been lifted", gearLifted());
+		putNumber("Peg sensor reading", AI.getVoltage());
 	}
 }

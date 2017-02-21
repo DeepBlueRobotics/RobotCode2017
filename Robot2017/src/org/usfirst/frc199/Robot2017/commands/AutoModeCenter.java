@@ -21,13 +21,9 @@ public class AutoModeCenter extends CommandGroup {
 	 */
     public AutoModeCenter(boolean alliance) {
         
-    	double direction;
-    	if(alliance) {
-    		direction = -1;
-    	}
-    	else {
-    		direction = 1;
-    	}
+    	double direction = 1;
+    	if(alliance) direction = -1;
+    	
     	final double DIVIDER_DEPTH = Robot.getPref("DividerDepth", 21.5); //in. dividers protrude from the airship toward alliance wall (approx.)
     	final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07); //in. from corner to corner of airship;
     	

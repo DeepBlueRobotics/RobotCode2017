@@ -16,8 +16,6 @@ public class AutoAdjustTurret extends Command {
 	private double target;
 	
     public AutoAdjustTurret(double target, ShooterInterface shooter) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	this.shooter = shooter;
     	this.target = target;
     	requires(Robot.shooter);

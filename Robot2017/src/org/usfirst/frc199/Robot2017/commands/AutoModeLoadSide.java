@@ -26,13 +26,9 @@ public class AutoModeLoadSide extends CommandGroup {
 	 */
     public AutoModeLoadSide(boolean alliance) {
     	
-    	double direction;
-    	if(alliance) {
-    		direction = -1;
-    	}
-    	else {
-    		direction = 1;
-    	}
+    	double direction = 1;
+    	if(alliance) direction = -1;
+    	
     	final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 101.908); //in. from front end of robot to point on field
     	
     	final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 11); //in. from front of robot to lift (after pivot)

@@ -23,13 +23,9 @@ public class AutoModeBoilerSide extends CommandGroup {
 	 */
     public AutoModeBoilerSide(boolean alliance) {
     	
-        double direction;
-    	if(alliance) {
-    		direction = -1;
-    	}
-    	else {
-    		direction = 1;
-    	}
+        double direction = 1;
+    	if(alliance) direction = -1;
+    	
     	final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 95.742);; //in. from front end of robot to point on field
     	
     	/*

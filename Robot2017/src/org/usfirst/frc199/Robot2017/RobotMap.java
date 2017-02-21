@@ -56,14 +56,10 @@ public class RobotMap {
 	public static AnalogInput drivetrainLeftUSsensor;
 	public static AnalogInput drivetrainRightUSsensor;
 	public static boolean practice = Robot.getPref("Is practice robot?", false);
-	
-//	public static PWM port0 = new PWM(0);
-//	public static PWM port1 = new PWM(1);
-	
+		
 	public static void init() {
 		
-		if(!practice)
-		{
+		if(!practice) {
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
 			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
@@ -85,12 +81,10 @@ public class RobotMap {
 			climberWinchMotor = new VictorSP(8);
 //			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
-			flipperFlapper = new DoubleSolenoid(3,4,5);
+			flipperFlapper = new DoubleSolenoid(0,4,5);
 			drivetrainLeftUSsensor = new AnalogInput(3);
 			drivetrainRightUSsensor = new AnalogInput(4);
-		}
-		else
-		{
+		} else {
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
 			drivetrainLeftEncoder = new Encoder(1,0, false, EncodingType.k4X);
@@ -113,19 +107,15 @@ public class RobotMap {
 			climberWinchMotor.setInverted(true);
 //			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
-			flipperFlapper = new DoubleSolenoid(3,4,5);
+			flipperFlapper = new DoubleSolenoid(0,4,5);
 			drivetrainLeftUSsensor = new AnalogInput(3);
 			drivetrainRightUSsensor = new AnalogInput(4);
 		}
 		
 		LiveWindow.addActuator("Drivetrain", "LeftMotor", (VictorSP) drivetrainLeftMotor);
-//		drivetrainLeftMotor.setInverted(true);
-		
-		
 		LiveWindow.addActuator("Drivetrain", "RightMotor", (VictorSP) drivetrainRightMotor);
 
 		drivetrainRobotDrive = new RobotDrive(drivetrainLeftMotor, drivetrainRightMotor);
-
 		drivetrainRobotDrive.setSafetyEnabled(true);
 		drivetrainRobotDrive.setExpiration(0.1);
 		drivetrainRobotDrive.setSensitivity(0.7);

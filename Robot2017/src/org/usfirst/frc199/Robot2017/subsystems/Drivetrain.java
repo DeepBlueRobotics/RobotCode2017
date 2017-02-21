@@ -30,12 +30,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	private final VictorSP leftMotor = (VictorSP) RobotMap.drivetrainLeftMotor;
 	private final VictorSP rightMotor = (VictorSP) RobotMap.drivetrainRightMotor;
-//	private final PWM leftPWM = RobotMap.port0;
-//	private final PWM rightPWM = RobotMap.port1;
 	private final RobotDrive robotDrive = RobotMap.drivetrainRobotDrive;
 	private final Encoder leftEncoder = RobotMap.drivetrainLeftEncoder;
 	private final Encoder rightEncoder = RobotMap.drivetrainRightEncoder;
-	// private final AnalogGyro gyro = RobotMap.drivetrainGyro;
 
 	private final Compressor compressor = RobotMap.drivetrainCompressor;
 	private final DoubleSolenoid shiftPiston = RobotMap.drivetrainShiftPiston;
@@ -55,10 +52,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private double gyroCalibrationInitalValue = 0, gyroDriftRate = 0;
 	private Timer gyroDriftTimer = new Timer();
 
-	/** 
-	 * isInArcadeDrive is deprecated. Use the enum currentDrive instead 
-	 */
-	// public boolean isInArcadeDrive = true;
 	private double currentSpeed = 0; // only used and changed in Arcade Drive
 	private double currentTurn = 0;
 	
@@ -71,8 +64,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	private PID distancePID = new PID("DriveDistance");
 	private PID anglePID = new PID("DriveAngle");
-	private PID leftDriveSpeedPID = new PID("LeftDriveSpeed");
-	private PID rightDriveSpeedPID = new PID("RightDriveSpeed");
+	private PID leftDriveVelocityPID = new PID("LeftDriveVelocity");
+	private PID rightDriveVelocityPID = new PID("RightDriveVelocity");
 	
 	public Drivetrain(){
 		super();
@@ -138,10 +131,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		//not sure if the way I calculated each target works properly...
 		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*(speedJoy - turnJoy));
 		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*(speedJoy + turnJoy));
-		rightDriveSpeedPID.update(rightEncoder.getRate());
-		leftDriveSpeedPID.update(leftEncoder.getRate());
+		rightDriveVelocityPID.update(rightEncoder.getRate());
+		leftDriveVelocityPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
-		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), rightMotor.get() + rightDriveSpeedPID.getOutput());
+		robotDrive.tankDrive(leftMotor.get() + leftDriveVelocityPID.getOutput(), rightMotor.get() + rightDriveVelocityPID.getOutput());
 	}
 	
 	/**
@@ -151,10 +144,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void unevenTankDrive(double leftJoy, double rightJoy){
 		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*leftJoy);
 		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*rightJoy);
-		rightDriveSpeedPID.update(rightEncoder.getRate());
-		leftDriveSpeedPID.update(leftEncoder.getRate());
+		rightDriveVelocityPID.update(rightEncoder.getRate());
+		leftDriveVelocityPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
-		robotDrive.tankDrive(leftMotor.get() + leftDriveSpeedPID.getOutput(), rightMotor.get() + rightDriveSpeedPID.getOutput());
+		robotDrive.tankDrive(leftMotor.get() + leftDriveVelocityPID.getOutput(), rightMotor.get() + rightDriveVelocityPID.getOutput());
 	}
 
 	/**
@@ -303,7 +296,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return the leftSpeedPID
 	 * */
 	public PID getLeftSpeedPID(){
-		return leftDriveSpeedPID;
+		return leftDriveVelocityPID;
 	}
 	
 	/**
@@ -313,18 +306,18 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target left speed being set to PID
 	 */
 	public void setLeftSpeedTarget(double targetSpeed) {
-		leftDriveSpeedPID.setTarget(targetSpeed);
-		leftDriveSpeedPID.setRelativeLocation(0);
-		leftDriveSpeedPID.update(leftEncoder.getRate());
+		leftDriveVelocityPID.setTarget(targetSpeed);
+		leftDriveVelocityPID.setRelativeLocation(0);
+		leftDriveVelocityPID.update(leftEncoder.getRate());
 	}
 
 	/** 
 	 * Updates and tests/runs leftDriveSpeedPID
 	 */
 	public void updateLeftSpeedPID() {
-		leftDriveSpeedPID.update(leftEncoder.getRate());
+		leftDriveVelocityPID.update(leftEncoder.getRate());
 		SmartDashboard.putNumber("Sending to left motor", leftMotor.get());
-		leftMotor.set(leftDriveSpeedPID.getOutput());
+		leftMotor.set(leftDriveVelocityPID.getOutput());
 	}
 
 	/**
@@ -333,7 +326,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return Whether left speed target has been reached
 	 */
 	public boolean leftSpeedReachedTarget() {
-		return leftDriveSpeedPID.reachedTarget();
+		return leftDriveVelocityPID.reachedTarget();
 	}
 	
 //	STARTS RIGHT HALF
@@ -355,7 +348,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return the rightSpeedPID
 	 * */
 	public PID getRightSpeedPID(){
-		return rightDriveSpeedPID;
+		return rightDriveVelocityPID;
 	}
 	
 	/**
@@ -365,18 +358,18 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *            - the target right speed being set to PID
 	 */
 	public void setRightSpeedTarget(double targetSpeed) {
-		rightDriveSpeedPID.setTarget(targetSpeed);
-		rightDriveSpeedPID.setRelativeLocation(0);
-		rightDriveSpeedPID.update(rightEncoder.getRate());
+		rightDriveVelocityPID.setTarget(targetSpeed);
+		rightDriveVelocityPID.setRelativeLocation(0);
+		rightDriveVelocityPID.update(rightEncoder.getRate());
 	}
 
 	/** 
 	 * Updates and tests/runs rightDriveSpeedPID
 	 */
 	public void updateRightSpeedPID() {
-		rightDriveSpeedPID.update(rightEncoder.getRate());
+		rightDriveVelocityPID.update(rightEncoder.getRate());
 		SmartDashboard.putNumber("Sending to right motor", rightMotor.getRaw());
-		rightMotor.set(rightDriveSpeedPID.getOutput());
+		rightMotor.set(rightDriveVelocityPID.getOutput());
 	}
 
 	/**
@@ -385,7 +378,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return Whether right speed target has been reached
 	 */
 	public boolean rightSpeedReachedTarget() {
-		return rightDriveSpeedPID.reachedTarget();
+		return rightDriveVelocityPID.reachedTarget();
 	}
 	
 //	NEW PIDS END HERE!
@@ -617,8 +610,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Sending to right motor", rightMotor.getRaw());
 		putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
 		putString("Current drive", currentDrive.toString());
-		putNumber("Left PID out: ", leftDriveSpeedPID.getOutput());
-		putNumber("Right PID out: ", rightDriveSpeedPID.getOutput());
+		putNumber("Left PID out: ", leftDriveVelocityPID.getOutput());
+		putNumber("Right PID out: ", rightDriveVelocityPID.getOutput());
 
 		putString("Shift piston status", shiftPiston.get().toString());
 

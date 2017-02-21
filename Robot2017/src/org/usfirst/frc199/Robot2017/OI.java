@@ -51,9 +51,7 @@ public class OI {
 		rightJoy = new Joystick(1);
 		
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
-		// TODO: (Ana T.) Insert accurate AutoShoot arguments to be executed
-		// when autoShootRoutineButton is held
-		autoShootRoutineButton.whileHeld(new AutoShoot(0, 0, Robot.shooter));
+		autoShootRoutineButton.whileHeld(new AutoShootRoutine());
 		gradualDriveButton = new JoystickButton(rightJoy, 1);
 		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
 		shiftGearsButton = new JoystickButton(rightJoy, 2);
@@ -66,38 +64,20 @@ public class OI {
 		switchDriveButton = new JoystickButton(leftJoy, 4);
 		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
-		// TODO: (Ana T.) Insert accurate AutoAlignGear arguments to be executed
-		// when autoShootRoutineButton is held
 		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
-
-		// SmartDashboard Buttons
-		SmartDashboard.putData("MainAutoMode", new AutoModeBasic(0));
-		SmartDashboard.putData("AutoDrive", new AutoDrive(0, 0, Robot.drivetrain));
-		SmartDashboard.putData("AutoDelay", new AutoDelay(-2, Robot.intake));
-		SmartDashboard.putData("AutoAdjustTurret", new AutoAdjustTurret(0, Robot.shooter));
-		SmartDashboard.putData("AutoShoot", new AutoShoot(0, 0, Robot.shooter));
-		SmartDashboard.putData("TeleopDrive", new TeleopDrive(Robot.drivetrain));
-		SmartDashboard.putData("GradualDrive", new GradualDrive(Robot.drivetrain));
-		SmartDashboard.putData("ToggleDriveType", new ToggleDriveType(Robot.drivetrain));
-		SmartDashboard.putData("ToggleDrivetrainShift", new ToggleDrivetrainShift(Robot.drivetrain));
-		SmartDashboard.putData("RunIntake", new RunIntake(0, Robot.intake));
-		SmartDashboard.putData("FeederIn", new RunFeeder(0, Robot.shooter));
-		SmartDashboard.putData("TurnTurret", new TurnTurret(0, Robot.shooter));
-		SmartDashboard.putData("ToggleIntake", new ToggleIntake(Robot.intake));
-		SmartDashboard.putData("Climb", new Climb(Robot.climber));
 
 		// For use by Manual Control Widget
 		SmartDashboard.putData("ManualControl/Command",
 				new ManualControlMechs(Robot.intake, Robot.shooter, Robot.climber));
 		
-		//TestPID Commands
+		// For use by PID Widget
 		SmartDashboard.putData("PID/DriveDistance/TestDriveDistancePID", new TestPID(TestPID.System.DRIVEDISTANCE, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("PID/DriveAngle/TestDriveAnglePID", new TestPID(TestPID.System.DRIVEANGLE, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("PID/Shooter/TestShooterPID", new TestPID(TestPID.System.SHOOTER, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("PID/DriveVelocity/TestDriveVelocityPID", new TestPID(TestPID.System.DRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("PID/DriveAngularVelocity/TestDriveAngularVelocityPID", new TestPID(TestPID.System.DRIVEANGULARVELOCITY, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/LeftDriveSpeed/TestLeftDriveSpeedPID", new TestPID(TestPID.System.LEFTDRIVESPEED, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/RightDriveSpeed/TestRightDriveSpeedPID", new TestPID(TestPID.System.RIGHTDRIVESPEED, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/LeftDriveVelocity/TestLeftDriveVelocityPID", new TestPID(TestPID.System.LEFTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/RightDriveVelocity/TestRightDriveVelocityPID", new TestPID(TestPID.System.RIGHTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
 		
 
 	}

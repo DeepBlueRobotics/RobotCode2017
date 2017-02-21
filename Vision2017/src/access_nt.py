@@ -2,16 +2,13 @@ from networktables import NetworkTables
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-debug = True
+debug = False
 shooterRunning = False
 gearRunning = False
 
 
-
-    #print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isnew))
-
 def connectionListener(connected, info):
-        print(info, '; Connected=%s' %connected)
+    print(info, '; Connected=%s' %connected)
 
 class NTClient:
     def __init__(self): 
@@ -19,17 +16,20 @@ class NTClient:
         self.nt = NetworkTables.getTable("SmartDashboard/Vision")
         self.gearRunning = False
         self.shooterRunning = False
-        if debug:
-            NetworkTables.addGlobalListener(self.valueChanged)
+        NetworkTables.addGlobalListener(self.valueChanged)
+        
     def valueChanged(self, key, value, isnew):
+        """Used by the GlobalListener to change desired values, if change in them detected"""
         if key == '/SmartDashboard/Vision/shooterRunning' and not isnew:
             self.shooterRunning = value
-            print key
-            print self.shooterRunning
+            if debug:
+                print key
+                print self.shooterRunning
         if key == '/SmartDashboard/Vision/gearRunning' and not isnew:
             self.gearRunning = value
-            print key
-            print self.gearRunning
+            if debug:
+                print key
+                print self.gearRunning
             
          
     def changeSubTable(self, subtable):
@@ -48,15 +48,10 @@ class NTClient:
             self.nt.putString(key, value)
         self.nt = NetworkTables.getTable("SmartDashboard/Vision")
                 
+    #Does not work for unknown reason, use getGear() and getShooter() instead
     def get(self, subtable, key, defaultValue):
         """Specify a subtable that you want to retrieve a value from, the key of the value, and the value"""
         self.nt = NetworkTables.getTable("SmartDashboard/" + subtable)
-#        if type(defaultValue) == bool:
-#            return self.nt.getBoolean(key, defaultValue)
-#        if type(defaultValue) == int or type(defaultValue) == float:
-#            return self.nt.getNumber(key, defaultValue)
-#        if type(defaultValue) == type(""):
-#            return self.nt.getString(key, defaultValue)
         return self.nt.getValue(key, defaultValue=None)
         self.nt = NetworkTables.getTable("/SmartDashboard/Vision")
 
