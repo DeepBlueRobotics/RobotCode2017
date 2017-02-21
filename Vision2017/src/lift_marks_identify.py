@@ -21,7 +21,7 @@ def findTape(frame, lower, upper):
 
         area = cv2.contourArea(c)
 
-        if (len(c) == 4 and area > 100 and cv2.isContourConvex(c)): 
+        if (len(c) == 4 and area > 400 and cv2.isContourConvex(c)): 
             cnts2.append((area, c))
 
     # sorts contours by largest to smallest area
