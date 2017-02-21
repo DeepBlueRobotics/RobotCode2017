@@ -19,7 +19,7 @@ public interface IntakeInterface extends DashboardInterface {
 	
 	public boolean intakeCurrentOverflow();
 	
-	public boolean gearLifted();
+	public boolean gearLifted(boolean isTriggered);
 	
 	public double getIntake();
 	

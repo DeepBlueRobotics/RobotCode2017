@@ -38,7 +38,7 @@ public class AutoDelay extends Command {
     	if(time == -1) {
     		return SmartDashboard.getBoolean("Vision/gearVisionRunning", false);
     	} else if (time == 0) {
-    		return intake.gearLifted() && SmartDashboard.getBoolean("Vision/OH-YEAH", false);
+    		return intake.gearLifted(true) && SmartDashboard.getBoolean("Vision/OH-YEAH", false);
     	} else {
     		return tim.get() >= time;
     	}

@@ -91,17 +91,27 @@ public class Intake extends Subsystem implements IntakeInterface {
 		return false;
 	}
 	
-	public boolean gearLifted() {
+	public boolean gearLifted(boolean isTriggered) {
 		// return if gear lifted or not
-		if (AI.getVoltage() > 0.15) {
-			AItriggered = true;
+		if(AI.getVoltage() > 0.15) {
 			tim.reset();
 			tim.start();
-			return true;
-		} else {
-			if(tim.get() > 5) AItriggered = false;
-			return false;
 		}
+		AItriggered = (tim.get() > 2);
+		if(isTriggered) {
+			return AItriggered;
+		} else {
+			return(AI.getVoltage() > 0.15);
+		}
+//		if (AI.getVoltage() > 0.15) {
+//			AItriggered = true;
+//			tim.reset();
+//			tim.start();
+//			return true;
+//		} else {
+//			if(tim.get() > 5) AItriggered = false;
+//			return false;
+//		}
 	}
 	public void resetAITrigger() {
 		AItriggered = false;
@@ -141,7 +151,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putNumber("Intake current draw", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
 		putNumber("Sending to intake", getIntake());
 		putString("Intake piston status", pivotPiston.get().toString());
-		putBoolean("Gear has been lifted", gearLifted());
+		putBoolean("Gear has been lifted", gearLifted(false));
 		putNumber("Peg sensor reading", AI.getVoltage());
 		putBoolean("Peg sensor has triggered", AItriggered);
 	}
