@@ -79,8 +79,8 @@ while(True):
         if nt.getGear():
                 log.write("gear running\n")
                 gearCap.open(1)
-                gearCap.set(3, 320)
-                gearCap.set(4, 180)
+##                gearCap.set(3, 320)
+##                gearCap.set(4, 180)
                 if gearFailCounter < 10:
                         nt.write("Vision", "gearVisionRunning", True)
 
