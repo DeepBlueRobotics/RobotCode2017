@@ -111,6 +111,15 @@ public class PID implements DashboardInterface {
 	public double getOutput() {
 		return output;
 	}
+	
+	/**
+	 * Gets the computed PID error
+	 * 
+	 * @return - The computed PID error
+	 */
+	public double getError() {
+		return error;
+	}
 
 	/**
 	 * Gets the current target

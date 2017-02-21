@@ -64,11 +64,11 @@ public class TestPID extends Command {
 				drivetrain.setVelocityTarget(0, target);
 				break;
 			case LEFTDRIVEVELOCITY:
-				target = SmartDashboard.getNumber("PID/LeftDriveSpeed/TestTarget", 0);
+				target = SmartDashboard.getNumber("PID/LeftDriveVelocity/TestTarget", 0);
 				drivetrain.setLeftSpeedTarget(target);
 				break;
 			case RIGHTDRIVEVELOCITY:
-				target = SmartDashboard.getNumber("PID/RightDriveSpeed/TestTarget", 0);
+				target = SmartDashboard.getNumber("PID/RightDriveVelocity/TestTarget", 0);
 				drivetrain.setRightSpeedTarget(target);
 				break;
 		}

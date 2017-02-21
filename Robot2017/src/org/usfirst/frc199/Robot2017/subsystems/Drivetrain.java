@@ -107,8 +107,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void drive() {
 		if (currentDrive == DriveTypes.ARCADE) {
-			currentSpeed = -Robot.oi.rightJoy.getY();
-			currentTurn = -Robot.oi.leftJoy.getX();
+			currentTurn = Robot.oi.rightJoy.getY();
+			currentSpeed = Robot.oi.leftJoy.getX();
 			arcadeDrive(currentSpeed, currentTurn);
 		} else if(currentDrive == DriveTypes.TANK){
 			robotDrive.tankDrive(Robot.oi.leftJoy.getY(), -Robot.oi.rightJoy.getY());
@@ -134,7 +134,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		rightDriveVelocityPID.update(rightEncoder.getRate());
 		leftDriveVelocityPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
-		robotDrive.tankDrive(leftMotor.get() + leftDriveVelocityPID.getOutput(), rightMotor.get() + rightDriveVelocityPID.getOutput());
+		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		rightDriveVelocityPID.update(rightEncoder.getRate());
 		leftDriveVelocityPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
-		robotDrive.tankDrive(leftMotor.get() + leftDriveVelocityPID.getOutput(), rightMotor.get() + rightDriveVelocityPID.getOutput());
+		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
 	}
 
 	/**
@@ -598,14 +598,17 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		
 		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
-		putNumber("Left enc speed", leftEncoder.getRate());
-		putNumber("Right enc speed", rightEncoder.getRate());
+		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
+		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
 		putNumber("Sending to left motor", leftMotor.getRaw());
 		putNumber("Sending to right motor", rightMotor.getRaw());
 		putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
 		putString("Current drive", currentDrive.toString());
-		putNumber("Left PID out: ", leftDriveVelocityPID.getOutput());
-		putNumber("Right PID out: ", rightDriveVelocityPID.getOutput());
+		SmartDashboard.putNumber("Left PID out: ", leftDriveVelocityPID.getOutput());
+		SmartDashboard.putNumber("Right PID out: ", rightDriveVelocityPID.getOutput());
+
+		SmartDashboard.putNumber("Left PID error: ", leftDriveVelocityPID.getError());
+		SmartDashboard.putNumber("Right PID error: ", rightDriveVelocityPID.getError());
 
 		putString("Shift piston status", shiftPiston.get().toString());
 

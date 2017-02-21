@@ -86,10 +86,12 @@ public class RobotMap {
 			drivetrainRightUSsensor = new AnalogInput(4);
 		} else {
 			drivetrainLeftMotor = new VictorSP(0);
+//			drivetrainLeftMotor.setInverted(true);
 			drivetrainRightMotor = new VictorSP(1);
-			drivetrainLeftEncoder = new Encoder(1,0, false, EncodingType.k4X);
+			drivetrainRightMotor.setInverted(true);
+			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
 			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
-			drivetrainRightEncoder = new Encoder(2,3, false, EncodingType.k4X);
+			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
 			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
