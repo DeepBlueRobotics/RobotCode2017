@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,6 +23,8 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
+	private boolean AItriggered = false;
+	private Timer tim = new Timer();
 
 	public Intake(){
 		super();
@@ -91,11 +93,18 @@ public class Intake extends Subsystem implements IntakeInterface {
 	
 	public boolean gearLifted() {
 		// return if gear lifted or not
-		if (AI.getVoltage() > 0.19) {
+		if (AI.getVoltage() > 0.15) {
+			AItriggered = true;
+			tim.reset();
+			tim.start();
 			return true;
 		} else {
+			if(tim.get() > 5) AItriggered = false;
 			return false;
 		}
+	}
+	public void resetAITrigger() {
+		AItriggered = false;
 	}
 	
 	/**
@@ -134,5 +143,6 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putString("Intake piston status", pivotPiston.get().toString());
 		putBoolean("Gear has been lifted", gearLifted());
 		putNumber("Peg sensor reading", AI.getVoltage());
+		putBoolean("Peg sensor has triggered", AItriggered);
 	}
 }
