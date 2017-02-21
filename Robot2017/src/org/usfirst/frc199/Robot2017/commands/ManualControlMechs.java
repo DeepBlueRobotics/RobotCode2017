@@ -28,7 +28,7 @@ public class ManualControlMechs extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		String system = SmartDashboard.getString("Manual Control Mech");
+		String system = SmartDashboard.getString("ManualControl/Manual Control Mech");
 		manualSwitch(system, Robot.oi.manipulator.getThrottle());
 	}
 

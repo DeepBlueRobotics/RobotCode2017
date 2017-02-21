@@ -41,6 +41,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putBoolean("ayyyy", false);
 		SmartDashboard.putBoolean("mancat", false);
+		commandGroupMyDude = new CommandGroupMyDude();
 	}
 
 	/**
@@ -109,6 +110,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		commandGroupMyDude.start();
 	}
 
 	/**

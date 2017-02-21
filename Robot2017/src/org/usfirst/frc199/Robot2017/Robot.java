@@ -63,6 +63,8 @@ public class Robot extends IterativeRobot {
     		}
     	}
         SmartDashboard.putData(Scheduler.getInstance());
+        SmartDashboard.putBoolean("Vision/gearRunning", false);
+        SmartDashboard.putBoolean("Vision/shooterRunning", false);
 	}
 
 	/**
@@ -133,9 +135,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		SmartDashboard.putBoolean("button 5 (forward)", oi.outputButton.get());
-		SmartDashboard.putBoolean("button 7 (backward)", oi.intakeButton.get());
-		SmartDashboard.putNumber("Sending to intake", intake.getIntake());
 	}
 
 	public void testPeriodic() {
