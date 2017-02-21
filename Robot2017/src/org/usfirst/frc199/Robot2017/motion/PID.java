@@ -59,6 +59,11 @@ public class PID implements DashboardInterface {
 		reset = true;
 		output = 0.0;
 	}
+	public void setTarget(double value, boolean reset) {
+		target = value;
+		this.reset = reset;
+		if(reset) output = 0.0;
+	}
 
 	/**
 	 * Updates state based on a new input value
@@ -69,10 +74,12 @@ public class PID implements DashboardInterface {
 	public void update(double newValue) {
 		if(name.toLowerCase().contains("velocity")) {
 			kP = getNumber("kP", 0);
-			kI = 1/target;
+			kI = 1/(Math.abs(target)+.001);
+			putNumber("kI", kI);
 		} else {
 			//this happens if is a distance or angle PID
-			kP = 1/target;
+			kP = 1/(Math.abs(target)+.001);
+			putNumber("kP", kP);
 			kI = getNumber("kI", 0);
 		}
 		kD = getNumber("kD", 0);

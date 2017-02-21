@@ -29,8 +29,8 @@ public class Vision extends Subsystem implements DashboardInterface {
 																// camera's
 																// vertical
 																// field of view
-	private final double RESOLUTION_WIDTH = 320; // pixel width of image
-	private final double RESOLUTION_HEIGHT = 180; // pixel height of image
+	private final double RESOLUTION_WIDTH = 640; // pixel width of image
+	private final double RESOLUTION_HEIGHT = 360; // pixel height of image
 	private double SCREEN_DEPTH = RESOLUTION_HEIGHT / Math.tan(CAM_ANGLE);
 	private final double SCREEN_CENTER = RESOLUTION_WIDTH / 2;
 
