@@ -31,7 +31,7 @@ public class ManualControlMechs extends Command {
 	
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	String system = SmartDashboard.getString("Manual Control Mech");
+    	String system = SmartDashboard.getString("ManualControl/Manual Control Mech");
     	manualSwitch(system, Robot.oi.manipulator.getThrottle());
     }
     
@@ -47,8 +47,6 @@ public class ManualControlMechs extends Command {
 	    		break;
 	    	case "turret": this.shooter.runTurretMotor(speed);
 	    		break;
-	    	case "hood": this.shooter.runHoodMotor(speed);
-	    		break;
     	}
     }
 	// Make this return true when this Command no longer needs to run execute()
@@ -58,12 +56,14 @@ public class ManualControlMechs extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		String system = SmartDashboard.getString("Manual Control Mech");
+		String system = SmartDashboard.getString("ManualControl/Manual Control Mech");
 		manualSwitch(system, 0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		String system = SmartDashboard.getString("ManualControl/Manual Control Mech");
+		manualSwitch(system, 0);
 	}
 }
