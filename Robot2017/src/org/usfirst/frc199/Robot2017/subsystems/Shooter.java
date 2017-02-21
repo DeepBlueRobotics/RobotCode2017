@@ -60,8 +60,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public Shooter() {
 		super();
 		putString("~TYPE~", "Shooter");
-		for (int v = 0; v < 24; v += 0.5) {
-			for (int theta = 0; theta < 90; theta += 2) {
+		for (double v = 0; v < 24; v += 0.5) {
+			for (double theta = 0; theta < 90; theta += 2) {
 				double[][] traj = new double[500][4];
 				traj[0][0] = v * Math.cos(theta * Math.PI / 180);
 				traj[0][1] = v * Math.sin(theta * Math.PI / 180);
@@ -72,20 +72,23 @@ public class Shooter extends Subsystem implements ShooterInterface {
 					double vyprev = traj[i - 1][1];
 					double xprev = traj[i - 1][2];
 					double yprev = traj[i - 1][3];
-					double vx = traj[i][0];
-					double vy = traj[i][1];
-					double x = traj[i][2];
-					double y = traj[i][3];
-					vx = -k * vxprev
+
+					double vx = -k * vxprev
 							* Math.sqrt(vxprev * vxprev + vyprev * vyprev) * 0.01 / mass
 							+ vxprev;
-					vy = (-k * vyprev
+					double vy = (-k * vyprev
 							* Math.sqrt(vxprev * vxprev + vyprev * vyprev) / mass
 							- gravity) * 0.01 + vyprev;
-					x = vxprev * 0.01 + xprev;
-					y = vyprev * 0.01 + yprev;
+					double x = vxprev * 0.01 + xprev;
+					double y = vyprev * 0.01 + yprev;
+					
+					traj[i][0] = vx;
+					traj[i][1] = vy;
+					traj[i][2] = x;
+					traj[i][3] = y;
+					
 					if (y < 2.4638 && vy < 0) {
-						distances[v * 2][theta / 2] = x - (2.4638 - y) * (x - xprev) / (yprev - y);
+						distances[(int) v * 2][(int) theta / 2] = x - (2.4638 - y) * (x - xprev) / (yprev - y);
 						break;
 					}
 				}
@@ -249,8 +252,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		double minErr = 100;
 		double velocity = 0;
 		double angle = 0;
-		for (int j = 0; j < 45; j++) {
-			for (int i = 0; i < 48; i++) {
+		for (int j = 1; j < 44; j++) {
+			for (int i = 0; i < 47; i++) {
 				double d = distances[i + 1][j] - distance;
 				double totd = distances[i + 1][j] - distances[i][j];
 				if (distances[i][j] < distance && distances[i + 1][j] > distance) {
