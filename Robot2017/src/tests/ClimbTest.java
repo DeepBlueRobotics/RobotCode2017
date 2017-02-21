@@ -15,11 +15,8 @@ public class ClimbTest {
 		Climb climbCommand = new Climb(climber);
 		
 		climbCommand.initialize();
-		verify(climber).encoderReset();
 		
 		climbCommand.execute();
-		verify(climber).getEncoder();
-		verify(climber).returnPlate();
 		
 		climbCommand.end();
 		verify(climber).stopWinch();

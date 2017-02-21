@@ -1,6 +1,7 @@
 package org.usfirst.frc.team199.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -25,6 +26,8 @@ public class CommandGroupMyDude extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	addSequential(new AutoWait(5));
-    	addSequential(new ExampleCommand());
+    	if(SmartDashboard.getBoolean("ayyyy", false)) {
+        	addSequential(new ExampleCommand());
+    	}
     }
 }

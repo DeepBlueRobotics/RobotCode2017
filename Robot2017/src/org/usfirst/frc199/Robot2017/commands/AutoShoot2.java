@@ -29,13 +29,15 @@ public class AutoShoot2 extends Command {
 	 */
 
 	public AutoShoot2(double targetDistance, double runTime, ShooterInterface shooter) {
+		requires(Robot.shooter);
 		this.shooter = shooter;
-		target = this.shooter.convertDistanceToTargetVelocity(targetDistance);
-		//converts in/s to rpm
+		double[] targetandangle = this.shooter.convertDistanceToTargetVelocityAndAngle(targetDistance / 12 * 0.3048);
+		target = targetandangle[0] * 12 / 0.3048; // inches per second
+		angle = targetandangle[1];
+		
+		//converts in/s to rpm: in/s * s/min * circumference
 		target = target*60*Robot.getPref("shooterWheelRadius", 4.5)*2*Math.PI;
 		
-		requires(Robot.shooter);
-		angle = this.shooter.convertDistanceToTargetAngle(targetDistance);
 		duration = runTime;
 	}
 

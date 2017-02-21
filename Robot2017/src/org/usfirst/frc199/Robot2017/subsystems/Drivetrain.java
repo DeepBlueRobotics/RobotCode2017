@@ -51,7 +51,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID angularVelocityPID = new PID("DriveAngularVelocity");
 
 	// Variables for motion profiling and acceleration control
-	private double prevEncoderRate= 0, prevGyroRate= 0, prevTime= 0, driveLimit= 0, turnLimit= 0, prevLeftEnc= 0, prevRightEnc = 0;
+	private double prevEncoderRate = 0, prevGyroRate = 0, prevTime = 0, driveLimit = 0, turnLimit = 0, prevLeftEnc = 0, prevRightEnc = 0;
 	private double gyroCalibrationInitalValue = 0, gyroDriftRate = 0;
 	private Timer gyroDriftTimer = new Timer();
 
@@ -63,8 +63,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private double currentTurn = 0;
 	
 	//for ultrasonic sensors
-	private final double distBtwnUSsensors = 25;
-	private final double distFromUSToRobotFront = 6.19;
+	private final double distBtwnUSsensors = 9.9;
+	private final double distFromUSToRobotFront = 7.5;
 	private final double targetUSDist = 3.5;
 
 	private DriveTypes currentDrive = DriveTypes.ARCADE;
@@ -83,7 +83,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * This method initializes the command used in teleop
 	 */
 	public void initDefaultCommand() {
-//		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
+		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
 	
 	/**
@@ -395,7 +395,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 *         time
 	 */
 	public double getVelocity() {
-		return (getLeftSpeed() + getRightSpeed()) / 2;
+		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
 	}
 	
 	
@@ -594,8 +594,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
-		SmartDashboard.putNumber("Left Speed", getLeftSpeed());
-		SmartDashboard.putNumber("Right Speed", getRightSpeed());
 		putNumber("Average Speed", getVelocity());
 
 		putNumber("Left Distance", leftEncoder.getDistance());
@@ -608,19 +606,19 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Angle", gyro.getAngle());
 		putNumber("Turn Speed", gyro.getRate());
 		
-		SmartDashboard.putNumber("Left DT Signal", leftMotor.get());
-		SmartDashboard.putNumber("Right DT Signal", rightMotor.get());
+		putNumber("Left DT Signal", leftMotor.get());
+		putNumber("Right DT Signal", rightMotor.get());
 		
 		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
-		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
-		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
-		SmartDashboard.putNumber("Sending to left motor", leftMotor.getRaw());
-		SmartDashboard.putNumber("Sending to right motor", rightMotor.getRaw());
-		SmartDashboard.putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
-		SmartDashboard.putString("Current drive", currentDrive.toString());
-		SmartDashboard.putNumber("Left PID out: ", leftDriveSpeedPID.getOutput());
-		SmartDashboard.putNumber("Right PID out: ", rightDriveSpeedPID.getOutput());
+		putNumber("Left enc speed", leftEncoder.getRate());
+		putNumber("Right enc speed", rightEncoder.getRate());
+		putNumber("Sending to left motor", leftMotor.getRaw());
+		putNumber("Sending to right motor", rightMotor.getRaw());
+		putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
+		putString("Current drive", currentDrive.toString());
+		putNumber("Left PID out: ", leftDriveSpeedPID.getOutput());
+		putNumber("Right PID out: ", rightDriveSpeedPID.getOutput());
 
 		putString("Shift piston status", shiftPiston.get().toString());
 

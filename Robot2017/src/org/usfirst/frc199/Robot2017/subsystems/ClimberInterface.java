@@ -7,21 +7,21 @@ public interface ClimberInterface extends DashboardInterface {
 
 	public void runClimber(double speed);
 
-	public boolean returnPlate();
+//	public boolean returnPlate();
 
 	public void stopWinch();
 
-	public void encoderReset();
+//	public void encoderReset();
 
-	public double getEncoder();
+//	public double getEncoder();
 	
 	public boolean checkMotorDraw();
 	
 	public double getClimber();
 	
-	public boolean getAIEnabled();
+//	public boolean getAIEnabled();
 	
-	public void setAIEnabled(boolean value);
+//	public void setAIEnabled(boolean value);
 //	boolean AIEnabled = false;
 
 
