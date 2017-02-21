@@ -128,13 +128,15 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
 	public void unevenArcadeDrive(double speedJoy, double turnJoy){
+		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
+		if(inHighGear()) ratio = Robot.getPref("highGearSpeedRatio", 175);
 		//not sure if the way I calculated each target works properly...
-		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*(speedJoy - turnJoy));
-		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*(speedJoy + turnJoy));
+		setRightSpeedTarget(ratio*(speedJoy - turnJoy));
+		setLeftSpeedTarget(ratio*(speedJoy + turnJoy));
 		rightDriveVelocityPID.update(rightEncoder.getRate());
 		leftDriveVelocityPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
-		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
+		robotDrive.tankDrive(leftMotor.get() + leftDriveVelocityPID.getOutput(), rightMotor.get() + rightDriveVelocityPID.getOutput());
 	}
 	
 	/**
@@ -142,12 +144,19 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Sets each motor's respective target speed based on speed to joystick ratios
 	 * */
 	public void unevenTankDrive(double leftJoy, double rightJoy){
-		setRightSpeedTarget(Robot.getPref("rightDriveSpeedRatio", 1)*leftJoy);
-		setLeftSpeedTarget(Robot.getPref("leftDriveSpeedRatio", 1)*rightJoy);
+		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
+		if(inHighGear()) ratio = Robot.getPref("highGearSpeedRatio", 175);
+		setRightSpeedTarget(ratio*leftJoy);
+		setLeftSpeedTarget(ratio*rightJoy);
 		rightDriveVelocityPID.update(rightEncoder.getRate());
 		leftDriveVelocityPID.update(leftEncoder.getRate());
 		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
-		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
+		robotDrive.tankDrive(leftMotor.get() + leftDriveVelocityPID.getOutput(), rightMotor.get() + rightDriveVelocityPID.getOutput());
+	}
+
+	//shiftPiston.get().toString()
+	public boolean inHighGear() {
+		return shiftPiston.get().toString().equals("kReverse");
 	}
 
 	/**
