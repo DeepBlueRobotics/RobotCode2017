@@ -252,8 +252,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		double minErr = 100;
 		double velocity = 0;
 		double angle = 0;
-		for (int j = 0; j < 45; j++) {
-			for (int i = 0; i < 48; i++) {
+		for (int j = 1; j < 44; j++) {
+			for (int i = 0; i < 47; i++) {
 				double d = distances[i + 1][j] - distance;
 				double totd = distances[i + 1][j] - distances[i][j];
 				if (distances[i][j] < distance && distances[i + 1][j] > distance) {
