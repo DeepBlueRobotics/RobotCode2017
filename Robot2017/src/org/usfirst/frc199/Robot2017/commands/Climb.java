@@ -16,28 +16,35 @@ public class Climb extends Command {
 
 	// Called just before this Command runs the first time
 	public void initialize() {
-		climber.encoderReset();
+//		climber.encoderReset();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if (climber.getEncoder() >= 48 && climber.getAIEnabled() == false) {
-			climber.setAIEnabled(!climber.getAIEnabled());
-		}
-		if (!climber.returnPlate()) {
-			isStopped = false;
-			if (!climber.checkMotorDraw()) {
-				climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
-			} else if (climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
-				climber.runClimber(climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
-			} else {
-				climber.stopWinch();
-			}
-		} else if (!isStopped) {
-			isStopped = true;
+//		if (climber.getEncoder() >= 48 && climber.getAIEnabled() == false) {
+//			climber.setAIEnabled(!climber.getAIEnabled());
+//		}
+//		if (!climber.returnPlate()) {
+//			isStopped = false;
+//			if (!climber.checkMotorDraw()) {
+//				climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
+//			} else if (climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
+//				climber.runClimber(climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
+//			} else {
+//				climber.stopWinch();
+//			}
+//		} else if (!isStopped) {
+//			isStopped = true;
+//			climber.stopWinch();
+//		}
+
+		if (!climber.checkMotorDraw()) {
+			climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
+		} else if (climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
+			climber.runClimber(climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
+		} else {
 			climber.stopWinch();
 		}
-
 		// if(climber.returnPlate()) {
 		// climber.stopWinch();
 		// } else {
