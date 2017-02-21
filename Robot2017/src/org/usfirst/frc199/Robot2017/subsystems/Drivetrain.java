@@ -283,10 +283,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return the speed of the left side of the robot at the current time
 	 */
 	public double getLeftSpeed() {
-		prevTime = Timer.getFPGATimestamp();
-		double vel = (leftEncoder.getDistance() - prevLeftEnc) / (Timer.getFPGATimestamp() - prevTime);
-		prevLeftEnc = leftEncoder.getDistance();
-		return vel;
+		return leftEncoder.getRate();
 		
 	}
 	
@@ -335,10 +332,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return the speed of the right side of the robot at the current time
 	 */
 	public double getRightSpeed() {
-		prevTime = Timer.getFPGATimestamp();
-		double vel = (rightEncoder.getDistance() - prevRightEnc) / (Timer.getFPGATimestamp() - prevTime);
-		prevRightEnc = rightEncoder.getDistance();
-		return vel;
+		return rightEncoder.getRate();
 		
 	}
 	

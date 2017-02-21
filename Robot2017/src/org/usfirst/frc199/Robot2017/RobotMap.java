@@ -104,7 +104,6 @@ public class RobotMap {
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
 //			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
 			climberWinchMotor = new VictorSP(8);
-			climberWinchMotor.setInverted(true);
 //			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
 			flipperFlapper = new DoubleSolenoid(0,4,5);
