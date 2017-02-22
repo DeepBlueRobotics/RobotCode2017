@@ -25,21 +25,26 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	private boolean AItriggered = false;
 	private Timer tim = new Timer();
+	private boolean intakeIsDown = true;
+	private boolean flipperIsUp = false;
 
 	public Intake(){
 		super();
 		putString("~TYPE~", "Intake");
 	}
 	
-	public void controlledIntake(double speed) {
-		intakeMotor.set(0.67 * (Robot.drivetrain.getRightSpeed() + Robot.drivetrain.getLeftSpeed())/2 + 0.33 * speed);
+	public void initDefaultCommand() {
 	}
 	
-	public void initDefaultCommand() {
+	/**
+	 * Returns the current value of the intakeMotor
+	 */
+	public double getIntake() {
+		return intakeMotor.get();
 	}
 
 	/**
-	 * This method runs the intake motor at a set speed
+	 * Rruns the intake motor at a set speed
 	 * 
 	 * @param speed
 	 *            - the speed you want the intake motor to run at -1 -> 1
@@ -47,41 +52,16 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void runIntake(double speed) {
 		intakeMotor.set(speed);
 	}
-
-	/**
-	 * This method stops the intake motor
-	 */
-	public void stopIntake() {
-		intakeMotor.set(0);
-	}
-
-	/**
-	 * This method moves the intake up if it is down, and vice versa
-	 */
-	public void toggleIntake() {
-		if (!pivotPiston.get().toString().equals("kForward")) {
-			pivotPiston.set(DoubleSolenoid.Value.kForward);
-		} else {
-			pivotPiston.set(DoubleSolenoid.Value.kReverse);
-		}
-	}
 	
 	/**
-	 * @return if the intake is up or not
+	 * Runs intake at a speed based on drive speed
 	 * */
-	public boolean intakeIsUp(){
-		return pivotPiston.get().toString().equals("kReverse");
+	public void controlledIntake(double speed) {
+		intakeMotor.set(0.67 * (Robot.drivetrain.getRightSpeed() + Robot.drivetrain.getLeftSpeed())/2 + 0.33 * speed);
 	}
 
 	/**
-	 * This method stops the DoubleSolenoid responsible for intaking
-	 */
-	public void stopIntakeDoubleSolenoid() {
-		pivotPiston.set(DoubleSolenoid.Value.kOff);
-	}
-
-	/**
-	 * This method returns whether or not the pdp detects the intake drawing more current than allowed
+	 * Returns whether or not the pdp detects the intake drawing more current than allowed
 	 */
 	public boolean intakeCurrentOverflow() {
 		int channel = (int) (Robot.getPref("Intake PDP channel", 2));
@@ -90,7 +70,68 @@ public class Intake extends Subsystem implements IntakeInterface {
 			return true;
 		return false;
 	}
+
+	/**
+	 * Stops the intake motor
+	 */
+	public void stopIntake() {
+		intakeMotor.set(0);
+	}
+
+	/**
+	 * Moves the intake up if it is down, and vice versa
+	 */
+	public void toggleIntake() {
+		if (!intakeIsDown) {
+			// shifts to intake up
+			pivotPiston.set(DoubleSolenoid.Value.kReverse);
+			intakeIsDown = true;
+		} else {
+			// shifts to intake down
+			pivotPiston.set(DoubleSolenoid.Value.kForward);
+			intakeIsDown = false;
+		}
+	}
 	
+	/**
+	 * Sets the pivot piston to neutral
+	 * */
+	public void setIntakePistonNeutral(){
+		pivotPiston.set(DoubleSolenoid.Value.kOff);
+	}
+	
+	/**
+	 * @return if the intake is up or not
+	 * */
+	public boolean intakeIsDown(){
+		return intakeIsDown;
+	}
+	
+	/**
+	 * Sets flipperFlapper to forward unless it already is, then sets to backwards
+	 */
+	public void toggleFlipperFlapper() {
+		if (!flipperIsUp) {
+			// shifts flipper to down
+			flipperFlapper.set(DoubleSolenoid.Value.kReverse);
+			flipperIsUp = true;
+		} else {
+			// shifts flipper to up
+			flipperFlapper.set(DoubleSolenoid.Value.kForward);
+			flipperIsUp = false;
+		}
+	}
+	
+	/**
+	 * Sets the flipperFlapper to neutral
+	 * */
+	public void setFlipperFlapperNeutral(){
+		flipperFlapper.set(DoubleSolenoid.Value.kOff);
+	}
+	
+	/**
+	 * @return if the gear has been lifted or not
+	 * */
 	public boolean gearLifted(boolean isTriggered) {
 		// return if gear lifted or not
 		if(AI.getVoltage() > 0.15) {
@@ -113,38 +154,17 @@ public class Intake extends Subsystem implements IntakeInterface {
 //			return false;
 //		}
 	}
+	
+	/**
+	 * Resets the light sensor trigger value
+	 * */
 	public void resetAITrigger() {
 		AItriggered = false;
 	}
 	
-	/**
-	 * This method sets flipperFlapper to forward unless it already is, then sets to backwards
-	 */
-	public void toggleFlipperFlapper() {
-		if (!flipperFlapper.get().toString().equals("kForward")) {
-			flipperFlapper.set(DoubleSolenoid.Value.kForward);
-		} else {
-			flipperFlapper.set(DoubleSolenoid.Value.kReverse);
-		}
-	}
-	
-	/**
-	 * This method stops the flipperFlapper
-	 */
-	public void stopFlipperFlapper() {
-		flipperFlapper.set(DoubleSolenoid.Value.kOff);
-	}
-	
-	/**
-	 * This method returns the current value of the intakeMotor
-	 */
-	public double getIntake() {
-		return intakeMotor.get();
-	}
-	
 	@Override
 	/**
-	 * This method displays data to SmartDashboard
+	 * Displays data to SmartDashboard
 	 */
 	public void displayData() {
 		putString("Flap piston status", flipperFlapper.get().toString());

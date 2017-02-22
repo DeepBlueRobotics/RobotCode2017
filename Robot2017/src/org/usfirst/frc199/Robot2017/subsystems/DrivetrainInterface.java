@@ -288,6 +288,11 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 * Shifts gears to whatever state they are not in
 	 */
 	public void shiftGears();
+	
+	/**
+	 * Sets the shifter piston to neutral
+	 * */
+	public void setShifterNeutral();
 
 	/**
 	 * Monitors current draw of drivetrain

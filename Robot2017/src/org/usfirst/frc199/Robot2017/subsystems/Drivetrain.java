@@ -66,6 +66,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID anglePID = new PID("DriveAngle");
 	private PID leftDriveVelocityPID = new PID("LeftDriveVelocity");
 	private PID rightDriveVelocityPID = new PID("RightDriveVelocity");
+	public boolean shiftedHigh = true;
 	
 	public Drivetrain(){
 		super();
@@ -87,10 +88,16 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			currentDrive = DriveTypes.TANK;
 		} else if(currentDrive == DriveTypes.TANK){
 			currentDrive = DriveTypes.DRIFT_TANK;
+			rightDriveVelocityPID.setTarget(0, true);
+			leftDriveVelocityPID.setTarget(0, true);
 		} else if(currentDrive == DriveTypes.DRIFT_TANK){
 			currentDrive = DriveTypes.DRIFT_ARCADE;
+			rightDriveVelocityPID.setTarget(0, true);
+			leftDriveVelocityPID.setTarget(0, true);
 		} else if(currentDrive == DriveTypes.DRIFT_ARCADE) {
 			currentDrive = DriveTypes.ARCADE;
+			rightDriveVelocityPID.setTarget(0, true);
+			leftDriveVelocityPID.setTarget(0, true);
 		}
 	}
 	
@@ -113,9 +120,33 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		} else if(currentDrive == DriveTypes.TANK){
 			robotDrive.tankDrive(-Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
 		} else if(currentDrive == DriveTypes.DRIFT_TANK){
-			unevenTankDrive(Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
+			double leftValue = -Robot.oi.leftJoy.getY();
+			if(Math.abs(leftValue) < Robot.getPref("Tank deadband", .1)) {
+				leftValue = 0;
+				leftDriveVelocityPID.setTarget(0, true);
+			}
+			double rightValue = -Robot.oi.rightJoy.getY();
+			if(Math.abs(rightValue) < Robot.getPref("Tank deadband", .1)) {
+				rightValue = 0;
+				rightDriveVelocityPID.setTarget(0, true);
+			}
+			unevenTankDrive(leftValue, rightValue);
 		} else if(currentDrive == DriveTypes.DRIFT_ARCADE) {
-			unevenArcadeDrive(currentSpeed, currentTurn);
+			double turnValue = Robot.oi.leftJoy.getX();
+			double speedValue = -Robot.oi.rightJoy.getY();
+
+			if(Math.abs(speedValue) < Robot.getPref("Arcade deadband", .1)) {
+				speedValue = 0;
+			}
+			if(Math.abs(turnValue) < Robot.getPref("Arcade deadband", .1)) {
+				turnValue = 0;
+			}
+			if(Math.abs(turnValue) < Robot.getPref("Arcade deadband", .05) &&
+					Math.abs(speedValue) < Robot.getPref("Arcade deadband", .05)) {
+				leftDriveVelocityPID.setTarget(0, true);
+				rightDriveVelocityPID.setTarget(0, true);
+			}
+			unevenArcadeDrive(speedValue, turnValue);
 		}
 	}
 
@@ -138,7 +169,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		updateRightSpeedPID();
 		updateLeftSpeedPID();
 		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
-		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
+//		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
 	}
 	
 	/**
@@ -148,8 +179,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void unevenTankDrive(double leftJoy, double rightJoy){
 		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
 		if(inHighGear()) ratio = Robot.getPref("highGearSpeedRatio", 175);
-		setRightSpeedTarget(ratio*rightJoy - rightEncoder.getRate());
-		setLeftSpeedTarget(ratio*leftJoy - leftEncoder.getRate());
+		setRightSpeedTarget(ratio*rightJoy);
+		setLeftSpeedTarget(ratio*leftJoy);
 //		rightDriveVelocityPID.update(rightEncoder.getRate());
 //		leftDriveVelocityPID.update(leftEncoder.getRate());
 		updateRightSpeedPID();
@@ -186,11 +217,22 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void autoDrive() {
 		distancePID.update(getDistance());
 		anglePID.update(getAngle());
-		if (!angleReachedTarget()) {
-			unevenArcadeDrive(0, anglePID.getOutput());
-		} else {
-			unevenArcadeDrive(distancePID.getOutput(), 0);
-		}
+//		if (!angleReachedTarget()) {
+////			unevenArcadeDrive(0, anglePID.getOutput());
+//			arcadeDrive(0, anglePID.getOutput());
+//		} else {
+//			unevenArcadeDrive(distancePID.getOutput(), 0);
+		arcadeDrive(0, distancePID.getOutput());
+//		}
+	}
+	
+	public void updateDriveDistancePID() {
+		distancePID.update(getDistance());
+		arcadeDrive(distancePID.getOutput(), 0);
+	}
+	public void updateDriveAnglePID() {
+		anglePID.update(getDistance());
+		arcadeDrive(anglePID.getOutput(), 0);
 	}
 
 	/**
@@ -207,6 +249,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public double getDistance() {
 		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
+	}
+	
+	public void resetEncoders() {
+		rightEncoder.reset();
+		leftEncoder.reset();
 	}
 	
 	/**
@@ -235,7 +282,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
-		robotDrive.arcadeDrive(distancePID.getOutput(), 0);
+		robotDrive.arcadeDrive(0, -distancePID.getOutput());
 	}
 
 	/**
@@ -280,7 +327,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
-		robotDrive.arcadeDrive(0, anglePID.getOutput());
+		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
 	}
 
 	/**
@@ -555,13 +602,22 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Shifts gears to whatever state they are not in
 	 */
 	public void shiftGears() {
-		if (!shiftPiston.get().toString().equals("kReverse")) {
+		if (!shiftedHigh) {
 			// shift to high gear
 			shiftPiston.set(DoubleSolenoid.Value.kReverse);
+			shiftedHigh = true;
 		} else {
 			// shift to low gear
 			shiftPiston.set(DoubleSolenoid.Value.kForward);
+			shiftedHigh = false;
 		}
+	}
+	
+	/**
+	 * Sets the shifter piston to neutral
+	 * */
+	public void setShifterNeutral() {
+		shiftPiston.set(DoubleSolenoid.Value.kOff);
 	}
 
 	/**
@@ -619,6 +675,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Sending to right motor", rightMotor.getRaw());
 		putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
 		putString("Current drive", currentDrive.toString());
+		putNumber("Right US Voltage", rightUSsensor.getVoltage());
+		putNumber("Left US Voltage", leftUSsensor.getVoltage());
+		putNumber("Avg US Voltage", (getUSVoltage(true) + getUSVoltage(false))/2);
+		putNumber("US Dist to Drive", getUSDistToDrive());
+		putNumber("US Angle", getUSTargetAngle());
 		SmartDashboard.putNumber("Left PID out: ", leftDriveVelocityPID.getOutput());
 		SmartDashboard.putNumber("Right PID out: ", rightDriveVelocityPID.getOutput());
 

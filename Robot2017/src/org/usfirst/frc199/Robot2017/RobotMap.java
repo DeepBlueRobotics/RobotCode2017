@@ -62,10 +62,11 @@ public class RobotMap {
 		if(!practice) {
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
+			drivetrainRightMotor.setInverted(true);
 			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
-			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
+			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0522));
 			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
-			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
+			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0522));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
@@ -79,6 +80,7 @@ public class RobotMap {
 			turretTurretEncoder = new Encoder(6, 7, false, EncodingType.k4X);
 //			winchEncoder = new Encoder(11, 12, false, EncodingType.k4X);
 			climberWinchMotor = new VictorSP(8);
+			climberWinchMotor.setInverted(true);
 //			climberPlateIRSensor = new AnalogInput(1);
 			driverAI = new AnalogInput(2);
 			flipperFlapper = new DoubleSolenoid(0,4,5);
@@ -92,7 +94,7 @@ public class RobotMap {
 			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
 			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
 			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
-			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
+			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", 0525));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);

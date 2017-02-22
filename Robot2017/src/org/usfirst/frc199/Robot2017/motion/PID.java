@@ -61,8 +61,11 @@ public class PID implements DashboardInterface {
 	}
 	public void setTarget(double value, boolean reset) {
 		target = value;
-		this.reset = reset;
-		if(reset) output = 0.0;
+		if(reset) {
+			this.reset = true;
+			output = 0.0;
+			totalError = 0.0;
+		}
 	}
 
 	/**
@@ -74,11 +77,16 @@ public class PID implements DashboardInterface {
 	public void update(double newValue) {
 		if(name.toLowerCase().contains("velocity")) {
 			kP = getNumber("kP", 0);
-			kI = 1/(Math.abs(target)+.001);
+			if(Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
+				kI = 0;
+			} else {
+				kI = 1/(Math.abs(target));
+			}
+			
 			putNumber("kI", kI);
 		} else {
 			//this happens if is a distance or angle PID
-			kP = 1/(Math.abs(target)+.001);
+			kP = 1/(Math.abs(target));
 			putNumber("kP", kP);
 			kI = getNumber("kI", 0);
 		}

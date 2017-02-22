@@ -30,7 +30,7 @@ public class ToggleIntakeRamp extends Command {
     public void execute() {
 		if(firstTime) {
 			intake.toggleFlipperFlapper();
-			firstTime=false;
+			firstTime = false;
 		}
     }
 
@@ -41,7 +41,7 @@ public class ToggleIntakeRamp extends Command {
 
     // Called once after isFinished returns true
     public void end() {
-//    	intake.stopFlipperFlapper();
+    	intake.setFlipperFlapperNeutral();
     }
 
     // Called when another command which requires one or more of the same
