@@ -14,6 +14,9 @@ public class AutoAlignGear extends CommandGroup {
 	 * @param shoot - whether to shoot or not
 	 */
     public AutoAlignGear(boolean shoot) {
+    	if(!Robot.intake.intakeIsUp()) {
+    		addSequential(new ToggleIntake(Robot.intake));
+    	}
     	addSequential(new WriteToNT("gearRunning", true));
     	addSequential(new AutoDelay(-1, Robot.intake));
         addSequential(new AutoDelay(0.25, Robot.intake));
@@ -24,6 +27,7 @@ public class AutoAlignGear extends CommandGroup {
        	addSequential(new AutoDelay(0, Robot.intake));
        	addSequential(new RunShooter(0, Robot.shooter, 0.1));
         addSequential(new WriteToNT("gearRunning", false));
+        
     }
 
 }
