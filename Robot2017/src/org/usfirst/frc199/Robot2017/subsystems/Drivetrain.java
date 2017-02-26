@@ -654,9 +654,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void displayData() {
 		putNumber("Average Speed", getVelocity());
 
-		putNumber("Left Distance", leftEncoder.getDistance());
-		putNumber("Right Distance", rightEncoder.getDistance());
-		putNumber("Average Distance", getDistance());
+		SmartDashboard.putNumber("Left Distance", leftEncoder.getDistance());
+		SmartDashboard.putNumber("Right Distance", rightEncoder.getDistance());
+		SmartDashboard.putNumber("Average Distance", getDistance());
 		
 		putNumber("Acceleration", (getVelocity() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
 		putNumber("Angular acceleration", (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
@@ -671,8 +671,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
 		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
-		putNumber("Sending to left motor", leftMotor.getRaw());
-		putNumber("Sending to right motor", rightMotor.getRaw());
+		putNumber("Sending to left motor", leftMotor.get());
+		putNumber("Sending to right motor", rightMotor.get());
 		putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
 		putString("Current drive", currentDrive.toString());
 		putNumber("Right US Voltage", rightUSsensor.getVoltage());
@@ -699,4 +699,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * returns whether or not the AnalogInput detects an object blocking the
 	 * light
 	 */
+	public double getAverageMotors() {
+		return (Math.abs(leftMotor.get()) + Math.abs(rightMotor.get()))/2;
+	}
 }
