@@ -43,11 +43,13 @@ public class TestPID extends Command {
 		switch(system) {
 			case DRIVEDISTANCE:
 				target = SmartDashboard.getNumber("PID/DriveDistance/TestTarget" , 0);
+				drivetrain.resetEncoder();
 				drivetrain.setDistanceTarget(target);
 				drivetrain.setAngleTarget(0);
 				break;
 			case DRIVEANGLE:
 				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
+				drivetrain.resetGyro();
 				drivetrain.setAngleTarget(target);
 				break;
 			case SHOOTER:
@@ -78,7 +80,7 @@ public class TestPID extends Command {
 	public void execute() {
 		switch(system) {
 			case SHOOTER: shooter.runShootMotor(shooter.updateSpeed(target)); break;
-			case DRIVEDISTANCE: drivetrain.autoDrive(); break;
+			case DRIVEDISTANCE: drivetrain.updateDistancePID(); break;
 			case DRIVEANGLE: drivetrain.updateAnglePID(); break;
 			case DRIVEVELOCITY: drivetrain.updateVelocityPIDs(); break;
 			case DRIVEANGULARVELOCITY: drivetrain.updateVelocityPIDs(); break;
@@ -91,8 +93,7 @@ public class TestPID extends Command {
 	public boolean isFinished() {
 		switch(system) {
 			case SHOOTER: return false;
-			case DRIVEDISTANCE: return drivetrain.distanceReachedTarget() && 
-					drivetrain.angleReachedTarget();
+			case DRIVEDISTANCE: return drivetrain.distanceReachedTarget();
 			case DRIVEANGLE: return drivetrain.angleReachedTarget();
 			case DRIVEVELOCITY: return false;
 			case DRIVEANGULARVELOCITY: return false;

@@ -18,7 +18,7 @@ public class ToggleIntakeRampTest {
 		verify(intake).toggleFlipperFlapper();
 		
 		myCommand.end();
-		verify(intake).stopFlipperFlapper();
+		verify(intake).setFlipperFlapperNeutral();
 	}
 
 }

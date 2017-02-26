@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 public class DisplayGearVision extends StaticWidget{
 	private static ITable table = NetworkTable.getTable("SmartDashboard/Vision");
 	private final String[] ipList = { "172.22.11.2", "10.1.99.2", "10.1.99.0", "roboRIO-199-FRC.local" };
-    private final int WID = 320;
-    private final int HIGHT = 180;
+    private final int WID = 640;
+    private final int HIGHT = 360;
     private final int BUTTON_HIGHT = 25;
     private final int OFF_X = WID/2;
     private final int OFF_Y = HIGHT/2;

@@ -12,7 +12,7 @@ public class RunIntake extends Command {
 	IntakeInterface intake;
 
 	public RunIntake(double speed, IntakeInterface intake) {
-//		requires(Robot.intake);
+		requires(Robot.intake);
 		this.speed = speed;
 		this.intake = intake;
 	}
@@ -23,9 +23,14 @@ public class RunIntake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(intake.intakeIsUp()){
+		if(intake.intakeIsDown()){
 			if (!intake.intakeCurrentOverflow()) {
-				intake.controlledIntake(speed);
+				if(speed > 0) {
+					intake.controlledIntake(speed);
+				} else {
+					intake.runIntake(speed);
+
+				}
 			}
 		}
 	}
