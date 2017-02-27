@@ -11,7 +11,7 @@ public class RunIntakeTest {
 	public void test(){
 		IntakeInterface mockIntake = mock(IntakeInterface.class);
 		
-		RunIntake testCommand = new RunIntake(0, mockIntake);
+		RunIntake testCommand = new RunIntake(0, false, mockIntake);
 		
 		testCommand.execute();
 		verify(mockIntake).intakeIsDown();

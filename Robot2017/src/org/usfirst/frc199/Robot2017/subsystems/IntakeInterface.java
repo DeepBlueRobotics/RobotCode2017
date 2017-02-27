@@ -25,7 +25,7 @@ public interface IntakeInterface extends DashboardInterface {
 	/**
 	 * Runs intake at a speed based on drive speed
 	 * */
-	public void controlledIntake(double speed);
+	public void controlledIntake(boolean isBackwards);
 
 	/**
 	 * Returns whether or not the pdp detects the intake drawing more current than allowed

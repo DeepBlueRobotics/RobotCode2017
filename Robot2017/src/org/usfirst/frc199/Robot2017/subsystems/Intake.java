@@ -56,8 +56,12 @@ public class Intake extends Subsystem implements IntakeInterface {
 	/**
 	 * Runs intake at a speed based on drive speed
 	 * */
-	public void controlledIntake(double speed) {
-		intakeMotor.set(-0.67 * Robot.drivetrain.getAverageMotors() - 0.33 * speed);
+	public void controlledIntake(boolean isBackwards) {
+		if(isBackwards) {
+			intakeMotor.set(-1);
+		} else {
+			intakeMotor.set((Robot.getPref("intakeDirection", 1))*(0.67 * Robot.drivetrain.getAverageMotors() + 0.33));
+		}
 	}
 
 	/**
