@@ -39,9 +39,9 @@ public class OI {
 		shootOutButton = new JoystickButton(manipulator, 4);
 		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter, 0));
 		outputButton = new JoystickButton(manipulator, 5);
-		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), Robot.intake));
+		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
 		intakeButton = new JoystickButton(manipulator, 7);
-		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), Robot.intake));
+		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
 		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
 		autoUSAdjustButton = new JoystickButton(manipulator, 1);
@@ -79,6 +79,8 @@ public class OI {
 		SmartDashboard.putData("PID/LeftDriveVelocity/TestLeftDriveVelocityPID", new TestPID(TestPID.System.LEFTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
 		SmartDashboard.putData("PID/RightDriveVelocity/TestRightDriveVelocityPID", new TestPID(TestPID.System.RIGHTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
 		
+		//For Trajectory Following Testing
+		SmartDashboard.putData("FollowTrajectory", new FollowTrajectory());
 
 	}
 

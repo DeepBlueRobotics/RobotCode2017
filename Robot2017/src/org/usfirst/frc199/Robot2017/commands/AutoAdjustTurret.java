@@ -14,6 +14,7 @@ public class AutoAdjustTurret extends Command {
 	
 	private ShooterInterface shooter;
 	private double target;
+	private double convertedTarget;
 	
     public AutoAdjustTurret(double target, ShooterInterface shooter) {
     	this.shooter = shooter;
@@ -23,8 +24,8 @@ public class AutoAdjustTurret extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	target = shooter.convertAngleToTargetDistance(target);
-    	shooter.setTurretPIDTarget(target);
+    	convertedTarget = shooter.convertAngleToTargetDistance(target);
+    	shooter.setTurretPIDTarget(convertedTarget);
     	shooter.resetTurretEncoder();
     }
 

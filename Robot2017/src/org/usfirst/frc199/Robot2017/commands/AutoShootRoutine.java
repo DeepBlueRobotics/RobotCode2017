@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutoShootRoutine extends CommandGroup {
 
     public AutoShootRoutine() {
+    	addSequential(new WriteToNT("Vision/shooterRunning", true));
     	addSequential(new AutoAdjustTurret(360, Robot.shooter));
     	addSequential(new AutoAdjustTurret(Robot.vision.getAngleToBoiler(), Robot.shooter));
     	addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
+    	addSequential(new WriteToNT("Vision/shooterRunning", false));
     }
 }
