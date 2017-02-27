@@ -390,27 +390,27 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	
 		// all angles are in radians
 		//
-		// components of pistonDistance
-		double pistonBottomX = 2.930586;
-		double pistonBottomY = 2.1351762;
-		// target angle for angle piston/hood-hood pivot-piston-body
-		double targetPistonAngle = Math.atan(pistonBottomY / pistonBottomX) - targetShootAngle + Math.PI / 2;
-		// distance from hood-body pivot to piston-hood pivot
-		double hoodHeight = Math.sqrt(pistonBottomX * pistonBottomX + pistonBottomY * pistonBottomY);
-		// distance from hood-body pivot to piston-body pivot
-		double pistonDistance = 3.6258839;
-		// length the piston should be, from piston-body piston to piston-hood
-		// piston
-		double pistonHeight = Math.sqrt(
+		// components of servoDistance
+		double servoBottomX = 2.930586;
+		double servoBottomY = 2.1351762;
+		// target angle for angle servo/hood-hood pivot-servo-body
+		double targetServoAngle = Math.atan(servoBottomY / servoBottomX) - targetShootAngle + Math.PI / 2;
+		// distance from hood-body pivot to servo-hood pivot
+		double hoodHeight = Math.sqrt(servoBottomX * servoBottomX + servoBottomY * servoBottomY);
+		// distance from hood-body pivot to servo-body pivot
+		double servoDistance = 3.6258839;
+		// length the servo should be, from servo-body servo to servo-hood
+		// servo
+		double servoHeight = Math.sqrt(
 				// ( a^2 + b^2
-				hoodHeight * hoodHeight + pistonDistance * pistonDistance
+				hoodHeight * hoodHeight + servoDistance * servoDistance
 				// - 2ab*cos(C) )
-						- 2 * hoodHeight * pistonDistance * Math.cos(targetPistonAngle));
+						- 2 * hoodHeight * servoDistance * Math.cos(targetServoAngle));
 		// the value (0.0 to 1.0) to pass to .set()
-		double pistonArgument = (pistonHeight - closedLength) / stroke;
+		double servoArgument = (servoHeight - closedLength) / stroke;
 
 
-		setHoodServo(pistonArgument);
+		setHoodServo(servoArgument);
 	}
 
 	@Override
