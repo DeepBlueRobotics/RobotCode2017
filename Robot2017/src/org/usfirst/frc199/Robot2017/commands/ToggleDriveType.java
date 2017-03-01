@@ -9,6 +9,7 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
  */
 public class ToggleDriveType extends Command {
 	DrivetrainInterface drivetrain;
+
 	public ToggleDriveType(DrivetrainInterface drivetrain) {
 		this.drivetrain = drivetrain;
 		requires(Robot.drivetrain);

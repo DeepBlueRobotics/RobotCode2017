@@ -27,16 +27,16 @@ public class ToggleIntake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(firstTime) {
-			intake.toggleIntake();	
+		if (firstTime) {
+			intake.toggleIntake();
 			firstTime = false;
-		} 
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		return tim.get() >= 0.0625;
-    	
+
 	}
 
 	// Called once after isFinished returns true

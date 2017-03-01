@@ -11,44 +11,45 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class AutoAdjustTurret extends Command {
-	
+
 	private ShooterInterface shooter;
 	private double target;
-	
-    public AutoAdjustTurret(double target, ShooterInterface shooter) {
-    	this.shooter = shooter;
-    	this.target = target;
-    	requires(Robot.shooter);
-    }
+	private double convertedTarget;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	target = shooter.convertAngleToTargetDistance(target);
-    	shooter.setTurretPIDTarget(target);
-    	shooter.resetTurretEncoder();
-    }
+	public AutoAdjustTurret(double target, ShooterInterface shooter) {
+		this.shooter = shooter;
+		this.target = target;
+		requires(Robot.shooter);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	shooter.updateTurretPID(shooter.getTurretEncoder());
-    	shooter.runTurretMotor(shooter.getTurretPIDOutput());
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		convertedTarget = shooter.convertAngleToTargetDistance(target);
+		shooter.setTurretPIDTarget(convertedTarget);
+		shooter.resetTurretEncoder();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	if(target == 360){
-    		return SmartDashboard.getBoolean("Vision/boilerFound", false);
-    	}
-        return shooter.turretPIDTargetReached();
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		shooter.updateTurretPID(shooter.getTurretEncoder());
+		shooter.runTurretMotor(shooter.getTurretPIDOutput());
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	shooter.stopTurretMotor();
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		if (target == 360) {
+			return SmartDashboard.getBoolean("Vision/boilerFound", false);
+		}
+		return shooter.turretPIDTargetReached();
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+		shooter.stopTurretMotor();
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

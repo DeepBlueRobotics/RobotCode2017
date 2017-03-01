@@ -22,10 +22,8 @@ public class AutoShoot2 extends Command {
 	 * duration. Runs feeder motors while the shooter motor is with in 5% of the
 	 * target speed.
 	 * 
-	 * @param targetDistance
-	 *            - distance to the boiler
-	 * @param runTime
-	 *            - duration to run the shooter motor
+	 * @param targetDistance - distance to the boiler
+	 * @param runTime - duration to run the shooter motor
 	 */
 
 	public AutoShoot2(double targetDistance, double runTime, ShooterInterface shooter) {
@@ -34,10 +32,10 @@ public class AutoShoot2 extends Command {
 		double[] targetandangle = this.shooter.convertDistanceToTargetVelocityAndAngle(targetDistance / 12 * 0.3048);
 		target = targetandangle[0] * 12 / 0.3048; // inches per second
 		angle = targetandangle[1];
-		
-		//converts in/s to rpm: in/s * s/min * circumference
-		target = target*60*Robot.getPref("shooterWheelRadius", 4.5)*2*Math.PI;
-		
+
+		// converts in/s to rpm: in/s * s/min * circumference
+		target = target * 60 * Robot.getPref("shooterWheelRadius", 4.5) * 2 * Math.PI;
+
 		duration = runTime;
 	}
 
@@ -55,8 +53,7 @@ public class AutoShoot2 extends Command {
 		if (!shooter.shooterMotorStalled2()) {
 			shooter.runShootMotor2(shooter.getShooterPIDOutput());
 		}
-		if (Math.abs(shooter.getShooterSpeed2() - target) <= Robot.getPref("speedErrorConstant", .05)
-				* target) {
+		if (Math.abs(shooter.getShooterSpeed2() - target) <= Robot.getPref("speedErrorConstant", .05) * target) {
 			shooter.runFeederMotor(1);
 		}
 	}

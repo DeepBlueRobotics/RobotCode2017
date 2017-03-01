@@ -11,45 +11,46 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class AutoDelay extends Command {
-	
+
 	Timer tim = new Timer();
 	private double time;
 	IntakeInterface intake;
-	
-	//can use either time limit or the end condition of gear being lifted for this command
-	//if using time limit, just enter the time
-	//if using end condition, enter 0 for time
-    public AutoDelay(double time, IntakeInterface intake) {
-        this.time = time;
-        this.intake = intake;
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	tim.start();
-    }
+	// can use either time limit or the end condition of gear being lifted for
+	// this command
+	// if using time limit, just enter the time
+	// if using end condition, enter 0 for time
+	public AutoDelay(double time, IntakeInterface intake) {
+		this.time = time;
+		this.intake = intake;
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		tim.start();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	if(time == -1) {
-    		return SmartDashboard.getBoolean("Vision/gearVisionRunning", false);
-    	} else if (time == 0) {
-    		return intake.gearLifted(true) && SmartDashboard.getBoolean("Vision/OH-YEAH", false);
-    	} else {
-    		return tim.get() >= time;
-    	}
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		if (time == -1) {
+			return SmartDashboard.getBoolean("Vision/gearVisionRunning", false);
+		} else if (time == 0) {
+			return intake.gearLifted(true) && SmartDashboard.getBoolean("Vision/OH-YEAH", false);
+		} else {
+			return tim.get() >= time;
+		}
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

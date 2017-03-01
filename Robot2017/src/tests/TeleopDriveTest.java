@@ -20,6 +20,7 @@ public class TeleopDriveTest {
 		verify(testTeleopDrive).drive();
 
 		verify(testTeleopDrive).currentControl();
-//		verify(testTeleopDrive).shiftGears();  This doesn't get called when line 22 returns false
+		// verify(testTeleopDrive).shiftGears(); This doesn't get called when
+		// line 22 returns false
 	}
 }

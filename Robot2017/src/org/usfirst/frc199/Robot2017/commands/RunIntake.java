@@ -9,11 +9,13 @@ import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
  */
 public class RunIntake extends Command {
 	double speed;
+	boolean isBackwards;
 	IntakeInterface intake;
 
-	public RunIntake(double speed, IntakeInterface intake) {
+	public RunIntake(double speed, boolean isBackwards, IntakeInterface intake) {
 		requires(Robot.intake);
 		this.speed = speed;
+		this.isBackwards = isBackwards;
 		this.intake = intake;
 	}
 
@@ -23,14 +25,14 @@ public class RunIntake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(intake.intakeIsDown()){
+		if (intake.intakeIsDown()) {
 			if (!intake.intakeCurrentOverflow()) {
-				if(speed > 0) {
-					intake.controlledIntake(speed);
-				} else {
-					intake.runIntake(speed);
-
-				}
+				// if(speed > 0) {
+				intake.controlledIntake(isBackwards);
+				// } else {
+				// intake.runIntake(speed);
+				//
+				// }
 			}
 		}
 	}

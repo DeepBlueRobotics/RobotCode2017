@@ -35,8 +35,7 @@ public class PID implements DashboardInterface {
 	/**
 	 * Creates a new PID loop
 	 * 
-	 * @param name
-	 *            - The identifier of the loop
+	 * @param name - The identifier of the loop
 	 */
 	public PID(String name) {
 		this.name = name;
@@ -51,17 +50,17 @@ public class PID implements DashboardInterface {
 	/**
 	 * Sets the target value of the loop
 	 * 
-	 * @param value
-	 *            - The target value in real units
+	 * @param value - The target value in real units
 	 */
 	public void setTarget(double value) {
 		target = value;
 		reset = true;
 		output = 0.0;
 	}
+
 	public void setTarget(double value, boolean reset) {
 		target = value;
-		if(reset) {
+		if (reset) {
 			this.reset = true;
 			output = 0.0;
 			totalError = 0.0;
@@ -71,22 +70,21 @@ public class PID implements DashboardInterface {
 	/**
 	 * Updates state based on a new input value
 	 * 
-	 * @param newValue
-	 *            - new input value in real units
+	 * @param newValue - new input value in real units
 	 */
 	public void update(double newValue) {
-		if(name.toLowerCase().contains("velocity")) {
+		if (name.toLowerCase().contains("velocity")) {
 			kP = getNumber("kP", 0);
-			if(Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
+			if (Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
 				kI = 0;
 			} else {
-				kI = 1/(Math.abs(target));
+				kI = 1 / (Math.abs(target));
 			}
-			
+
 			putNumber("kI", kI);
 		} else {
-			//this happens if is a distance or angle PID
-			kP = 1/(Math.abs(target));
+			// this happens if is a distance or angle PID
+			kP = 1 / (Math.abs(target));
 			putNumber("kP", kP);
 			kI = getNumber("kI", 0);
 		}
@@ -111,8 +109,7 @@ public class PID implements DashboardInterface {
 	/**
 	 * Sets the relative value of the current location
 	 * 
-	 * @param value
-	 *            - The desired value of the current location
+	 * @param value - The desired value of the current location
 	 */
 	public void setRelativeLocation(double value) {
 		offset = value;
@@ -126,7 +123,7 @@ public class PID implements DashboardInterface {
 	public double getOutput() {
 		return output;
 	}
-	
+
 	/**
 	 * Gets the computed PID error
 	 * 
@@ -157,8 +154,7 @@ public class PID implements DashboardInterface {
 	/**
 	 * Gets a preference for the specific instance of the PID class
 	 * 
-	 * @param key
-	 *            - The name of the preference
+	 * @param key - The name of the preference
 	 * @return The value of the preference
 	 */
 	private double getPref(String key) {

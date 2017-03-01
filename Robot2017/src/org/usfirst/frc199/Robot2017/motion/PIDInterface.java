@@ -9,24 +9,21 @@ public interface PIDInterface {
 	/**
 	 * Sets the target value of the loop
 	 * 
-	 * @param value
-	 *            - The target value in real units
+	 * @param value - The target value in real units
 	 */
 	public void setTarget(double value);
 
 	/**
 	 * Updates state based on a new input value
 	 * 
-	 * @param newValue
-	 *            - new input value in real units
+	 * @param newValue - new input value in real units
 	 */
 	public void update(double newValue);
 
 	/**
 	 * Sets the relative value of the current location
 	 * 
-	 * @param value
-	 *            - The desired value of the current location
+	 * @param value - The desired value of the current location
 	 */
 	public void setRelativeLocation(double value);
 

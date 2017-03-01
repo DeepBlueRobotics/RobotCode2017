@@ -15,7 +15,7 @@ public class TestPID extends Command {
 
 	private final System system;
 	private double target = 0;
-	
+
 	DrivetrainInterface drivetrain;
 	ShooterInterface shooter;
 
@@ -31,14 +31,18 @@ public class TestPID extends Command {
 		this.system = system;
 		this.drivetrain = driver;
 		this.shooter = shooter;
-		switch(system) {
-			case SHOOTER: requires(Robot.shooter); break;
-			default: requires(Robot.drivetrain);
+		switch (system) {
+		case SHOOTER:
+			requires(Robot.shooter);
+			break;
+		default:
+			requires(Robot.drivetrain);
 		}
 	}
 
 	// Called just before this Command runs the first time
-	// Uncomment the SmartDashboard before use, commented out b/c of test issues.
+	// Uncomment the SmartDashboard before use, commented out b/c of test
+	// issues.
 	public void initialize() {
 		switch(system) {
 			case DRIVEDISTANCE:
@@ -77,36 +81,61 @@ public class TestPID extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		switch(system) {
-			case SHOOTER: shooter.runShootMotor(shooter.updateSpeed(target)); break;
-			case DRIVEDISTANCE: drivetrain.updateDistancePID(); break;
-			case DRIVEANGLE: drivetrain.updateAnglePID(); break;
-			case DRIVEVELOCITY: drivetrain.updateVelocityPIDs(); break;
-			case DRIVEANGULARVELOCITY: drivetrain.updateVelocityPIDs(); break;
-			case LEFTDRIVEVELOCITY: drivetrain.updateLeftSpeedPID(); break;
-			case RIGHTDRIVEVELOCITY: drivetrain.updateRightSpeedPID(); break;
+		switch (system) {
+		case SHOOTER:
+			shooter.runShootMotor(shooter.updateSpeed(target));
+			break;
+		case DRIVEDISTANCE:
+			drivetrain.updateDistancePID();
+			break;
+		case DRIVEANGLE:
+			drivetrain.updateAnglePID();
+			break;
+		case DRIVEVELOCITY:
+			drivetrain.updateVelocityPIDs();
+			break;
+		case DRIVEANGULARVELOCITY:
+			drivetrain.updateVelocityPIDs();
+			break;
+		case LEFTDRIVEVELOCITY:
+			drivetrain.updateLeftSpeedPID();
+			break;
+		case RIGHTDRIVEVELOCITY:
+			drivetrain.updateRightSpeedPID();
+			break;
 		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-		switch(system) {
-			case SHOOTER: return false;
-			case DRIVEDISTANCE: return drivetrain.distanceReachedTarget();
-			case DRIVEANGLE: return drivetrain.angleReachedTarget();
-			case DRIVEVELOCITY: return false;
-			case DRIVEANGULARVELOCITY: return false;
-			case LEFTDRIVEVELOCITY: return false;
-			case RIGHTDRIVEVELOCITY: return false;
-			default: return false;
+		switch (system) {
+		case SHOOTER:
+			return false;
+		case DRIVEDISTANCE:
+			return drivetrain.distanceReachedTarget();
+		case DRIVEANGLE:
+			return drivetrain.angleReachedTarget();
+		case DRIVEVELOCITY:
+			return false;
+		case DRIVEANGULARVELOCITY:
+			return false;
+		case LEFTDRIVEVELOCITY:
+			return false;
+		case RIGHTDRIVEVELOCITY:
+			return false;
+		default:
+			return false;
 		}
 	}
 
 	// Called once after isFinished returns true
 	public void end() {
-		switch(system) {
-			case SHOOTER: shooter.runShootMotor(0); break;
-			default: drivetrain.stopDrive();
+		switch (system) {
+		case SHOOTER:
+			shooter.runShootMotor(0);
+			break;
+		default:
+			drivetrain.stopDrive();
 		}
 	}
 
