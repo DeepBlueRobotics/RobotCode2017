@@ -45,7 +45,6 @@ public class TestPID extends Command {
 				target = SmartDashboard.getNumber("PID/DriveDistance/TestTarget" , 0);
 				drivetrain.resetEncoder();
 				drivetrain.setDistanceTarget(target);
-				drivetrain.setAngleTarget(0);
 				break;
 			case DRIVEANGLE:
 				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
