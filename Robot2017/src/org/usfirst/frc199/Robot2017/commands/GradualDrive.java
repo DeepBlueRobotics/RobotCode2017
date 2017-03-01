@@ -9,7 +9,7 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
  */
 public class GradualDrive extends Command {
 	DrivetrainInterface drivetrain;
-	
+
 	public GradualDrive(DrivetrainInterface drivetrain) {
 		this.drivetrain = drivetrain;
 		requires(Robot.drivetrain);
@@ -22,7 +22,7 @@ public class GradualDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		drivetrain.gradualDrive();
-		if(drivetrain.currentControl()){
+		if (drivetrain.currentControl()) {
 			drivetrain.shiftGears();
 		}
 	}

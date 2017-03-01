@@ -25,14 +25,14 @@ public class RunIntake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(intake.intakeIsDown()){
+		if (intake.intakeIsDown()) {
 			if (!intake.intakeCurrentOverflow()) {
-//				if(speed > 0) {
+				// if(speed > 0) {
 				intake.controlledIntake(isBackwards);
-//				} else {
-//					intake.runIntake(speed);
-//
-//				}
+				// } else {
+				// intake.runIntake(speed);
+				//
+				// }
 			}
 		}
 	}

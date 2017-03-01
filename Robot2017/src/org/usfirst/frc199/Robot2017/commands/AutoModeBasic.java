@@ -11,7 +11,7 @@ public class AutoModeBasic extends Command {
 
 	Timer tim = new Timer();
 	private double time;
-	
+
 	public AutoModeBasic(double timeLimit) {
 		this.time = timeLimit;
 	}

@@ -11,16 +11,16 @@ public class ClimbTest {
 	@Test
 	public void test() {
 		ClimberInterface climber = mock(ClimberInterface.class);
-		
+
 		Climb climbCommand = new Climb(climber);
-		
+
 		climbCommand.initialize();
-		
+
 		climbCommand.execute();
-		
+
 		climbCommand.end();
 		verify(climber).stopWinch();
-		
+
 	}
 
 }

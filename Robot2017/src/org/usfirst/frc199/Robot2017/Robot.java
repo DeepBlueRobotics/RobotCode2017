@@ -55,14 +55,14 @@ public class Robot extends IterativeRobot {
 		subsystems.add(climber);
 		subsystems.add(vision);
 		oi = new OI();
-		for(DashboardInterface s: Robot.subsystems) {
-    		if(!s.getKey("").substring(0, 4).equals("PID/")) {
-    			s.putString("~TYPE~", "SubSystem");
-    		}
-    	}
-        SmartDashboard.putData(Scheduler.getInstance());
-        SmartDashboard.putBoolean("Vision/gearRunning", false);
-        SmartDashboard.putBoolean("Vision/shooterRunning", false);
+		for (DashboardInterface s : Robot.subsystems) {
+			if (!s.getKey("").substring(0, 4).equals("PID/")) {
+				s.putString("~TYPE~", "SubSystem");
+			}
+		}
+		SmartDashboard.putData(Scheduler.getInstance());
+		SmartDashboard.putBoolean("Vision/gearRunning", false);
+		SmartDashboard.putBoolean("Vision/shooterRunning", false);
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
+
 	}
 
 	public void testPeriodic() {

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -35,15 +36,15 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private final double k = drag * ro * Math.PI * r * r / 2;
 	private final double thetaErr = 0.05; // CHANGE LATER
 	private final double velErr = 0.05; // CHANGE LATER
-	
+
 	private final double turretDiam = 7.71;
-	
+
 	private final SpeedController shootMotor = RobotMap.shooterShootMotor;
 	private final SpeedController feedMotor = RobotMap.shooterFeedMotor;
 	private final Encoder shootEncoder = RobotMap.shooterShootEncoder;
 	private final CANTalon shootMotorAndEnc = RobotMap.shooterShootMotorAndEncoder;
 	private final SpeedController turretMotor = RobotMap.turretTurnMotor;
-	private final Encoder turretEncoder = RobotMap.turretTurretEncoder;
+	private final Potentiometer turretEncoder = RobotMap.turretTurretEncoder;
 	private final Servo hoodServo = RobotMap.hoodServo;
 
 	private PID ShooterPID = new PID("ShooterPID");
@@ -52,11 +53,12 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private double prevShooterEncoder = 0;
 	private boolean shooterMotorStalled = false;
 
+	private int turretEncoderTurnCounter = 0;
 	private double prevTurretEncoder = 0;
 	private double prevHoodEncoder = 0;
 
 	double[][] distances = new double[48][45];
-	
+
 	public Shooter() {
 		super();
 		putString("~TYPE~", "Shooter");
@@ -73,20 +75,17 @@ public class Shooter extends Subsystem implements ShooterInterface {
 					double xprev = traj[i - 1][2];
 					double yprev = traj[i - 1][3];
 
-					double vx = -k * vxprev
-							* Math.sqrt(vxprev * vxprev + vyprev * vyprev) * 0.01 / mass
-							+ vxprev;
-					double vy = (-k * vyprev
-							* Math.sqrt(vxprev * vxprev + vyprev * vyprev) / mass
-							- gravity) * 0.01 + vyprev;
+					double vx = -k * vxprev * Math.sqrt(vxprev * vxprev + vyprev * vyprev) * 0.01 / mass + vxprev;
+					double vy = (-k * vyprev * Math.sqrt(vxprev * vxprev + vyprev * vyprev) / mass - gravity) * 0.01
+							+ vyprev;
 					double x = vxprev * 0.01 + xprev;
 					double y = vyprev * 0.01 + yprev;
-					
+
 					traj[i][0] = vx;
 					traj[i][1] = vy;
 					traj[i][2] = x;
 					traj[i][3] = y;
-					
+
 					if (y < 2.4638 && vy < 0) {
 						distances[(int) v * 2][(int) theta / 2] = x - (2.4638 - y) * (x - xprev) / (yprev - y);
 						break;
@@ -244,9 +243,9 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * Passes the distance of the robot from the boiler through an equation to
 	 * compute the speed at which we should be shooting.
 	 * 
-	 * @param distance
-	 *            - in meters of the front of the robot from the boiler
-	 * @return the ideal exit speed of the ball in meters per second and the ideal angle in degrees in an array
+	 * @param distance - in meters of the front of the robot from the boiler
+	 * @return the ideal exit speed of the ball in meters per second and the
+	 *         ideal angle in degrees in an array
 	 */
 	public double[] convertDistanceToTargetVelocityAndAngle(double distance) {
 		double minErr = 100;
@@ -257,9 +256,12 @@ public class Shooter extends Subsystem implements ShooterInterface {
 				double d = distances[i + 1][j] - distance;
 				double totd = distances[i + 1][j] - distances[i][j];
 				if (distances[i][j] < distance && distances[i + 1][j] > distance) {
-					// velError = velocity * velErr * change in distance per velocity 
-					double velError = (((i + 1)/ 2) - 0.5 * d / totd) * velErr * (distances[i + 1][j] - distances[i][j]); 
-					// thetaError = theta * thetaErr * change in distance per theta
+					// velError = velocity * velErr * change in distance per
+					// velocity
+					double velError = (((i + 1) / 2) - 0.5 * d / totd) * velErr
+							* (distances[i + 1][j] - distances[i][j]);
+					// thetaError = theta * thetaErr * change in distance per
+					// theta
 					double thetaError = (j * 2) * thetaErr * (distances[i][j + 1] - distances[i][j - 1]) / 4;
 					if (minErr > velError + thetaError) {
 						minErr = velError + thetaError;
@@ -274,39 +276,46 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		result[1] = angle;
 		return result;
 	}
-	
+
 	/**
 	 * Used for turret only
+	 * 
 	 * @param angle - in degrees
 	 * @return the target distance in inches
-	 * */
-	public double convertAngleToTargetDistance(double angle){
-		//return (turretDiam / 2) * angle * Math.PI / 180;
+	 */
+	public double convertAngleToTargetDistance(double angle) {
+		// return (turretDiam / 2) * angle * Math.PI / 180;
 		return angle * 18 / 3 * 256;
-	}
-	
-	/**
-	 * Resets turret encoder
-	 * Sets distPerPulse for turret encoder???
-	 * */
-	public void resetTurretEncoder(){
-		turretEncoder.reset();
 	}
 
 	/**
-	 * Gets the turret encoder value
+	 * Resets turret encoder
+	 */
+	public void resetTurretEncoder() {
+		turretEncoderTurnCounter = 0;
+		prevTurretEncoder = 0;
+	}
+
+	/**
+	 * Gets the turret encoder value by updating the turn counter. Only works if
+	 * encoder turns less than 180 degrees each sampling
 	 * 
 	 * @return the turret encoder value
 	 */
 	public double getTurretEncoder() {
-		return turretEncoder.getDistance();
+		double newTurretEncoder = turretEncoder.get();
+		if (newTurretEncoder - prevTurretEncoder > 180) {
+			turretEncoderTurnCounter++;
+		} else if (newTurretEncoder - prevTurretEncoder < -180) {
+			turretEncoderTurnCounter--;
+		}
+		return turretEncoderTurnCounter * 360 + newTurretEncoder;
 	}
 
 	/**
 	 * Sets the turret motor's speed (from -1.0 to 1.0).
-	 *  
-	 * @param rate
-	 *            - speed to give the turret motor
+	 * 
+	 * @param rate - speed to give the turret motor
 	 * 
 	 * @param rate - speed to give the turret motor
 	 */
@@ -387,7 +396,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		// actuator measurements
 		double closedLength = 4.64567;
 		double stroke = 1.9685;
-	
+
 		// all angles are in radians
 		//
 		// components of servoDistance
@@ -408,7 +417,6 @@ public class Shooter extends Subsystem implements ShooterInterface {
 						- 2 * hoodHeight * servoDistance * Math.cos(targetServoAngle));
 		// the value (0.0 to 1.0) to pass to .set()
 		double servoArgument = (servoHeight - closedLength) / stroke;
-
 
 		setHoodServo(servoArgument);
 	}

@@ -9,6 +9,7 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
  */
 public class TeleopDrive extends Command {
 	DrivetrainInterface driver;
+
 	public TeleopDrive(DrivetrainInterface drive) {
 		this.driver = drive;
 		requires(Robot.drivetrain);

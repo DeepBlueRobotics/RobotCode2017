@@ -25,12 +25,9 @@ public class FollowTrajectory extends Command {
 	/**
 	 * Travels to the given coordinates assuming zero initial/final velocity
 	 * 
-	 * @param dx
-	 *            - Target horizontal displacement
-	 * @param dy
-	 *            - Target vertical displacement
-	 * @param dtheta
-	 *            - Target angle displacement
+	 * @param dx - Target horizontal displacement
+	 * @param dy - Target vertical displacement
+	 * @param dtheta - Target angle displacement
 	 */
 	public FollowTrajectory(double dx, double dy, double dtheta) {
 		this(new Path(0, 0, dx, dy, 0, dtheta, 2));
@@ -39,8 +36,7 @@ public class FollowTrajectory extends Command {
 	/**
 	 * Follows the given path assuming zero initial/final velocity
 	 * 
-	 * @param p
-	 *            - The path to follow
+	 * @param p - The path to follow
 	 */
 	public FollowTrajectory(Path p) {
 		requires(Robot.drivetrain);
@@ -52,8 +48,7 @@ public class FollowTrajectory extends Command {
 	/**
 	 * Follows the given trajectory
 	 * 
-	 * @param t
-	 *            - The trajectory to follow
+	 * @param t - The trajectory to follow
 	 */
 	public FollowTrajectory(Trajectory t) {
 		requires(Robot.drivetrain);
@@ -76,7 +71,8 @@ public class FollowTrajectory extends Command {
 			double x2 = p.getX(1);
 			double y2 = p.getY(1);
 			t = new Trajectory(p, 0, 0, maxV, maxA, maxW, maxAlpha, (int) (1000 * Math.sqrt(x2 * x2 + y2 * y2)));
-			// trajectory = new Trajectory(p, .05, .05, 25, 0.5, 25, 10, 1007); path,v0,v1,vmax,amax,wmax,alphamax,points
+			// trajectory = new Trajectory(p, .05, .05, 25, 0.5, 25, 10, 1007);
+			// path,v0,v1,vmax,amax,wmax,alphamax,points
 		}
 	}
 

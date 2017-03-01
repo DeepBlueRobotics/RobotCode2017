@@ -48,8 +48,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 			double leftGearCenterX = getNumber("leftGearCenterX", 0);
 			double rightGearCenterX = getNumber("rightGearCenterX", 0);
 			double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
-			double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH)
-					/ pixelDist;
+			double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
 			double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
 			return distanceToGear;
 		} else {
@@ -59,13 +58,11 @@ public class Vision extends Subsystem implements DashboardInterface {
 
 	public double getAngleToGear() {
 		if (getBoolean("OH-YEAH", true)) {
-			double pegX = (getNumber("leftGearCenterX", 0) + getNumber(
-					"rightGearCenterX", 0)) / 2;
+			double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
 			double pixelDisplacement = pegX - SCREEN_CENTER;
 			double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
 
-			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180)
-					/ Math.PI;
+			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180) / Math.PI;
 
 			return angle;
 		} else {
@@ -76,8 +73,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 	public double getDistanceToBoiler() {
 		if (getBoolean("boilerFound", true)) {
 			double pixelHeight = getNumber("boilerY", 0);
-			double distanceToBoiler = (SCREEN_DEPTH * BOILER_HEIGHT)
-					/ pixelHeight;
+			double distanceToBoiler = (SCREEN_DEPTH * BOILER_HEIGHT) / pixelHeight;
 			return distanceToBoiler;
 		} else {
 			return 0;
@@ -90,8 +86,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 			double pixelDisplacement = tapeCenterX - SCREEN_CENTER;
 			double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
 
-			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180)
-					/ Math.PI;
+			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180) / Math.PI;
 
 			return angle;
 		} else {

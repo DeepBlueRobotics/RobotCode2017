@@ -13,7 +13,7 @@ public class ToggleDriveTypeTest {
 	public void test() {
 		DrivetrainInterface drive = mock(DrivetrainInterface.class);
 		ToggleDriveType myCommand = new ToggleDriveType(drive);
-		
+
 		myCommand.execute();
 		verify(drive).toggleDriveType();
 	}

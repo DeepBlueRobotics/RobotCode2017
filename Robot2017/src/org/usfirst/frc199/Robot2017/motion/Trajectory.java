@@ -20,22 +20,14 @@ public class Trajectory {
 	 * Generates a trajectory that follows a given path under the given
 	 * constraints
 	 * 
-	 * @param path
-	 *            - the path to follow
-	 * @param v0
-	 *            - the initial velocity
-	 * @param v1
-	 *            - the final velocity
-	 * @param vmax
-	 *            - the absolute maximum allowed velocity
-	 * @param amax
-	 *            - the absolute maximum allowed acceleration
-	 * @param wmax
-	 *            - the absolute maximum allowed angular velocity
-	 * @param alphamax
-	 *            - the absolute maximum allowed angular acceleration
-	 * @param points
-	 *            - the number of points to sample along the trajectory
+	 * @param path - the path to follow
+	 * @param v0 - the initial velocity
+	 * @param v1 - the final velocity
+	 * @param vmax - the absolute maximum allowed velocity
+	 * @param amax - the absolute maximum allowed acceleration
+	 * @param wmax - the absolute maximum allowed angular velocity
+	 * @param alphamax - the absolute maximum allowed angular acceleration
+	 * @param points - the number of points to sample along the trajectory
 	 */
 	public Trajectory(Path path, double v0, double v1, double vmax, double amax, double wmax, double alphamax,
 			int points) {
@@ -61,14 +53,10 @@ public class Trajectory {
 	 * Generates a trajectory that follows a given path under default
 	 * constraints
 	 * 
-	 * @param path
-	 *            - the path to follow
-	 * @param v0
-	 *            - the initial velocity
-	 * @param v1
-	 *            - the final velocity
-	 * @param points
-	 *            - the number of points to sample along the trajectory
+	 * @param path - the path to follow
+	 * @param v0 - the initial velocity
+	 * @param v1 - the final velocity
+	 * @param points - the number of points to sample along the trajectory
 	 */
 	public Trajectory(Path path, double v0, double v1, int points) {
 		this.path = path;
@@ -131,8 +119,7 @@ public class Trajectory {
 	/**
 	 * Gets the maximum velocity allowed at a given point
 	 * 
-	 * @param i
-	 *            - the point being evaluated
+	 * @param i - the point being evaluated
 	 * @return the maximum allowed velocity
 	 */
 	private double getVmax(int i) {
@@ -154,12 +141,9 @@ public class Trajectory {
 	/**
 	 * Gets the maximum acceleration allowed at a given point and velocity
 	 * 
-	 * @param i1
-	 *            - the point being evaluated
-	 * @param i2
-	 *            - the next point on the path
-	 * @param v
-	 *            - the current velocity
+	 * @param i1 - the point being evaluated
+	 * @param i2 - the next point on the path
+	 * @param v - the current velocity
 	 * @return the maximum allowed acceleration (accurate to 3 decimal places)
 	 */
 	private double getAmax(int i1, int i2, double v) {
@@ -196,8 +180,7 @@ public class Trajectory {
 	/**
 	 * Gets the target velocity for a given point
 	 * 
-	 * @param i
-	 *            - the index of the point
+	 * @param i - the index of the point
 	 * @return the target velocity
 	 */
 	public double getV(int i) {
@@ -207,8 +190,7 @@ public class Trajectory {
 	/**
 	 * Gets the target angular velocity for a given point
 	 * 
-	 * @param i
-	 *            - the index of the point
+	 * @param i - the index of the point
 	 * @return the target angular velocity
 	 */
 	public double getW(int i) {
@@ -219,8 +201,7 @@ public class Trajectory {
 	/**
 	 * Determines the index of a point on the path
 	 * 
-	 * @param distance
-	 *            - the distance traveled along the path
+	 * @param distance - the distance traveled along the path
 	 * @return the index of the current point
 	 */
 	public int getCurrentIndex(double distance) {

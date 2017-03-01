@@ -13,21 +13,21 @@ public class AutoAlignGear extends CommandGroup {
 	/**
 	 * @param shoot - whether to shoot or not
 	 */
-    public AutoAlignGear(boolean shoot) {
-    	if(Robot.intake.intakeIsDown()) {
-    		addSequential(new ToggleIntake(Robot.intake));
-    	}
+	public AutoAlignGear(boolean shoot) {
+		if (Robot.intake.intakeIsDown()) {
+			addSequential(new ToggleIntake(Robot.intake));
+		}
 		addSequential(new WriteToNT("Vision/gearRunning", true));
-    	addSequential(new AutoDelay(-1, Robot.intake));
-        addSequential(new AutoDelay(0.25, Robot.intake));
-       	addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear(), Robot.drivetrain));
-        if(shoot) {
-       		addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(), 6.9, Robot.shooter));
-       	}
-       	addSequential(new AutoDelay(0, Robot.intake));
-       	addSequential(new RunShooter(0, Robot.shooter, 0.1));
-       	
-        addSequential(new WriteToNT("Vision/gearRunning", false));
-    }
+		addSequential(new AutoDelay(-1, Robot.intake));
+		addSequential(new AutoDelay(0.25, Robot.intake));
+		addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear(), Robot.drivetrain));
+		if (shoot) {
+			addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(), 6.9, Robot.shooter));
+		}
+		addSequential(new AutoDelay(0, Robot.intake));
+		addSequential(new RunShooter(0, Robot.shooter, 0.1));
+
+		addSequential(new WriteToNT("Vision/gearRunning", false));
+	}
 
 }

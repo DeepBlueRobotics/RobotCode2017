@@ -15,7 +15,7 @@ public class AutoShoot extends Command {
 	double angle;
 	Timer tim = new Timer();
 	double duration;
-	
+
 	ShooterInterface shooter;
 
 	/**
@@ -24,10 +24,8 @@ public class AutoShoot extends Command {
 	 * duration. Runs feeder motors while the shooter motor is with in 5% of the
 	 * target speed.
 	 * 
-	 * @param targetDistance
-	 *            - distance to the boiler
-	 * @param runTime
-	 *            - duration to run the shooter motor
+	 * @param targetDistance - distance to the boiler
+	 * @param runTime - duration to run the shooter motor
 	 */
 
 	public AutoShoot(double targetDistance, double runTime, ShooterInterface shooter) {
@@ -36,10 +34,10 @@ public class AutoShoot extends Command {
 		double[] targetandangle = this.shooter.convertDistanceToTargetVelocityAndAngle(targetDistance / 12 * 0.3048);
 		target = targetandangle[0] * 12 / 0.3048; // inches per second
 		angle = targetandangle[1];
-		
-		//converts in/s to rpm: in/s * s/min * circumference
-		target = target*60*Robot.getPref("shooterWheelRadius", 4.5)*2*Math.PI;
-		
+
+		// converts in/s to rpm: in/s * s/min * circumference
+		target = target * 60 * Robot.getPref("shooterWheelRadius", 4.5) * 2 * Math.PI;
+
 		duration = runTime;
 	}
 
@@ -51,16 +49,15 @@ public class AutoShoot extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(duration != 6.9 || SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
+		if (duration != 6.9 || SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
 			if (!shooter.shooterMotorStalled()) {
 				shooter.runShootMotor(target);
 			}
-			if (Math.abs(shooter.getShooterSpeed() - target) <= Robot.getPref("speedErrorConstant", .05)
-					* target) {
+			if (Math.abs(shooter.getShooterSpeed() - target) <= Robot.getPref("speedErrorConstant", .05) * target) {
 				shooter.runFeederMotor(1);
 			}
 		}
-		
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -73,8 +70,8 @@ public class AutoShoot extends Command {
 		shooter.stopShootMotor();
 	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

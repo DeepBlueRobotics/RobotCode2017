@@ -19,7 +19,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
 	private final DoubleSolenoid flipperFlapper = RobotMap.flipperFlapper;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
-	
+
 	private final AnalogInput AI = RobotMap.driverAI;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
@@ -28,14 +28,14 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private boolean intakeIsDown = true;
 	private boolean flipperIsUp = false;
 
-	public Intake(){
+	public Intake() {
 		super();
 		putString("~TYPE~", "Intake");
 	}
-	
+
 	public void initDefaultCommand() {
 	}
-	
+
 	/**
 	 * Returns the current value of the intakeMotor
 	 */
@@ -46,26 +46,27 @@ public class Intake extends Subsystem implements IntakeInterface {
 	/**
 	 * Rruns the intake motor at a set speed
 	 * 
-	 * @param speed
-	 *            - the speed you want the intake motor to run at -1 -> 1
+	 * @param speed - the speed you want the intake motor to run at -1 -> 1
 	 */
 	public void runIntake(double speed) {
 		intakeMotor.set(speed);
 	}
-	
+
 	/**
 	 * Runs intake at a speed based on drive speed
-	 * */
+	 */
 	public void controlledIntake(boolean isBackwards) {
-		if(isBackwards) {
+		if (isBackwards) {
 			intakeMotor.set(-1);
 		} else {
-			intakeMotor.set((Robot.getPref("intakeDirection", 1))*(0.67 * Robot.drivetrain.getAverageMotors() + 0.33));
+			intakeMotor
+					.set((Robot.getPref("intakeDirection", 1)) * (0.67 * Robot.drivetrain.getAverageMotors() + 0.33));
 		}
 	}
 
 	/**
-	 * Returns whether or not the pdp detects the intake drawing more current than allowed
+	 * Returns whether or not the pdp detects the intake drawing more current
+	 * than allowed
 	 */
 	public boolean intakeCurrentOverflow() {
 		int channel = (int) (Robot.getPref("Intake PDP channel", 2));
@@ -96,23 +97,24 @@ public class Intake extends Subsystem implements IntakeInterface {
 			intakeIsDown = false;
 		}
 	}
-	
+
 	/**
 	 * Sets the pivot piston to neutral
-	 * */
-	public void setIntakePistonNeutral(){
+	 */
+	public void setIntakePistonNeutral() {
 		pivotPiston.set(DoubleSolenoid.Value.kOff);
 	}
-	
+
 	/**
 	 * @return if the intake is up or not
-	 * */
-	public boolean intakeIsDown(){
+	 */
+	public boolean intakeIsDown() {
 		return intakeIsDown;
 	}
-	
+
 	/**
-	 * Sets flipperFlapper to forward unless it already is, then sets to backwards
+	 * Sets flipperFlapper to forward unless it already is, then sets to
+	 * backwards
 	 */
 	public void toggleFlipperFlapper() {
 		if (!flipperIsUp) {
@@ -125,54 +127,54 @@ public class Intake extends Subsystem implements IntakeInterface {
 			flipperIsUp = false;
 		}
 	}
-	
+
 	/**
 	 * Sets the flipperFlapper to neutral
-	 * */
-	public void setFlipperFlapperNeutral(){
+	 */
+	public void setFlipperFlapperNeutral() {
 		flipperFlapper.set(DoubleSolenoid.Value.kOff);
 	}
-	
+
 	/**
 	 * @return if the gear has been lifted or not
-	 * */
+	 */
 	public boolean gearLifted(boolean isTriggered) {
 		// return if gear lifted or not
-		if(AI.getVoltage() > 0.15) {
+		if (AI.getVoltage() > 0.15) {
 			tim.reset();
 			tim.start();
 		}
 		AItriggered = (tim.get() > 2);
-		if(isTriggered) {
+		if (isTriggered) {
 			return AItriggered;
 		} else {
-			return(AI.getVoltage() > 0.15);
+			return (AI.getVoltage() > 0.15);
 		}
-//		if (AI.getVoltage() > 0.15) {
-//			AItriggered = true;
-//			tim.reset();
-//			tim.start();
-//			return true;
-//		} else {
-//			if(tim.get() > 5) AItriggered = false;
-//			return false;
-//		}
+		// if (AI.getVoltage() > 0.15) {
+		// AItriggered = true;
+		// tim.reset();
+		// tim.start();
+		// return true;
+		// } else {
+		// if(tim.get() > 5) AItriggered = false;
+		// return false;
+		// }
 	}
-	
+
 	/**
 	 * Resets the light sensor trigger value
-	 * */
+	 */
 	public void resetAITrigger() {
 		AItriggered = false;
 	}
-	
+
 	@Override
 	/**
 	 * Displays data to SmartDashboard
 	 */
 	public void displayData() {
 		putString("Flap piston status", flipperFlapper.get().toString());
-		putNumber("Intake current draw", pdp.getCurrent((int)Robot.getPref("Intake PDP channel", 2)));
+		putNumber("Intake current draw", pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 2)));
 		putNumber("Sending to intake", getIntake());
 		putString("Intake piston status", pivotPiston.get().toString());
 		putBoolean("Gear has been lifted", gearLifted(false));

@@ -40,7 +40,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final AHRS gyro = RobotMap.ahrs;
 
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
-	
+
 	private final AnalogInput leftUSsensor = RobotMap.drivetrainLeftUSsensor;
 	private final AnalogInput rightUSsensor = RobotMap.drivetrainRightUSsensor;
 
@@ -48,14 +48,15 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID angularVelocityPID = new PID("DriveAngularVelocity");
 
 	// Variables for motion profiling and acceleration control
-	private double prevEncoderRate = 0, prevGyroRate = 0, prevTime = 0, driveLimit = 0, turnLimit = 0, prevLeftEnc = 0, prevRightEnc = 0;
+	private double prevEncoderRate = 0, prevGyroRate = 0, prevTime = 0, driveLimit = 0, turnLimit = 0, prevLeftEnc = 0,
+			prevRightEnc = 0;
 	private double gyroCalibrationInitalValue = 0, gyroDriftRate = 0;
 	private Timer gyroDriftTimer = new Timer();
 
 	private double currentSpeed = 0; // only used and changed in Arcade Drive
 	private double currentTurn = 0;
-	
-	//for ultrasonic sensors
+
+	// for ultrasonic sensors
 	private final double distBtwnUSsensors = 9.9;
 	private final double distFromUSToRobotFront = 7.5;
 	private final double targetUSDist = 3.5;
@@ -67,48 +68,49 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID leftDriveVelocityPID = new PID("LeftDriveVelocity");
 	private PID rightDriveVelocityPID = new PID("RightDriveVelocity");
 	public boolean shiftedHigh = true;
-	
-	public Drivetrain(){
+
+	public Drivetrain() {
 		super();
 		putString("~TYPE~", "Drivetrain");
 	}
-	
+
 	/**
 	 * This method initializes the command used in teleop
 	 */
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
-	
+
 	/**
 	 * Changes the drive type
 	 */
 	public void toggleDriveType() {
-		if (currentDrive == DriveTypes.ARCADE){
+		if (currentDrive == DriveTypes.ARCADE) {
 			currentDrive = DriveTypes.TANK;
-		} else if(currentDrive == DriveTypes.TANK){
+		} else if (currentDrive == DriveTypes.TANK) {
 			currentDrive = DriveTypes.DRIFT_TANK;
 			rightDriveVelocityPID.setTarget(0, true);
 			leftDriveVelocityPID.setTarget(0, true);
-		} else if(currentDrive == DriveTypes.DRIFT_TANK){
+		} else if (currentDrive == DriveTypes.DRIFT_TANK) {
 			currentDrive = DriveTypes.DRIFT_ARCADE;
 			rightDriveVelocityPID.setTarget(0, true);
 			leftDriveVelocityPID.setTarget(0, true);
-		} else if(currentDrive == DriveTypes.DRIFT_ARCADE) {
+		} else if (currentDrive == DriveTypes.DRIFT_ARCADE) {
 			currentDrive = DriveTypes.ARCADE;
 			rightDriveVelocityPID.setTarget(0, true);
 			leftDriveVelocityPID.setTarget(0, true);
 		}
 	}
-	
+
 	/**
 	 * 
-	 * @return either DriveTypes.ARCADE, DriveTypes.TANK or DriveTypes.DRIFT_TANK
+	 * @return either DriveTypes.ARCADE, DriveTypes.TANK or
+	 *         DriveTypes.DRIFT_TANK
 	 */
 	public DriveTypes getDriveType() {
 		return currentDrive;
 	}
-	
+
 	/**
 	 * Allows toggling between arcade and tank teleop driving
 	 */
@@ -117,32 +119,32 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		currentTurn = Robot.oi.leftJoy.getX();
 		if (currentDrive == DriveTypes.ARCADE) {
 			arcadeDrive(currentTurn, currentSpeed);
-		} else if(currentDrive == DriveTypes.TANK){
+		} else if (currentDrive == DriveTypes.TANK) {
 			robotDrive.tankDrive(-Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
-		} else if(currentDrive == DriveTypes.DRIFT_TANK){
+		} else if (currentDrive == DriveTypes.DRIFT_TANK) {
 			double leftValue = -Robot.oi.leftJoy.getY();
-			if(Math.abs(leftValue) < Robot.getPref("Tank deadband", .1)) {
+			if (Math.abs(leftValue) < Robot.getPref("Tank deadband", .1)) {
 				leftValue = 0;
 				leftDriveVelocityPID.setTarget(0, true);
 			}
 			double rightValue = -Robot.oi.rightJoy.getY();
-			if(Math.abs(rightValue) < Robot.getPref("Tank deadband", .1)) {
+			if (Math.abs(rightValue) < Robot.getPref("Tank deadband", .1)) {
 				rightValue = 0;
 				rightDriveVelocityPID.setTarget(0, true);
 			}
 			unevenTankDrive(leftValue, rightValue);
-		} else if(currentDrive == DriveTypes.DRIFT_ARCADE) {
+		} else if (currentDrive == DriveTypes.DRIFT_ARCADE) {
 			double turnValue = Robot.oi.leftJoy.getX();
 			double speedValue = -Robot.oi.rightJoy.getY();
 
-			if(Math.abs(speedValue) < Robot.getPref("Arcade deadband", .1)) {
+			if (Math.abs(speedValue) < Robot.getPref("Arcade deadband", .1)) {
 				speedValue = 0;
 			}
-			if(Math.abs(turnValue) < Robot.getPref("Arcade deadband", .1)) {
+			if (Math.abs(turnValue) < Robot.getPref("Arcade deadband", .1)) {
 				turnValue = 0;
 			}
-			if(Math.abs(turnValue) < Robot.getPref("Arcade deadband", .05) &&
-					Math.abs(speedValue) < Robot.getPref("Arcade deadband", .05)) {
+			if (Math.abs(turnValue) < Robot.getPref("Arcade deadband", .05)
+					&& Math.abs(speedValue) < Robot.getPref("Arcade deadband", .05)) {
 				leftDriveVelocityPID.setTarget(0, true);
 				rightDriveVelocityPID.setTarget(0, true);
 			}
@@ -153,45 +155,51 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void arcadeDrive(double speed, double turn) {
 		robotDrive.arcadeDrive(speed, turn);
 	}
-	
+
 	/**
-	 * Accounts for drift when in arcade drive
-	 * Sets each motor's respective target speed based on speed to joystick ratios
-	 * */
-	public void unevenArcadeDrive(double speedJoy, double turnJoy){
+	 * Accounts for drift when in arcade drive Sets each motor's respective
+	 * target speed based on speed to joystick ratios
+	 */
+	public void unevenArcadeDrive(double speedJoy, double turnJoy) {
 		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
-		if(inHighGear()) ratio = Robot.getPref("highGearSpeedRatio", 175);
-		//not sure if the way I calculated each target works properly...
-		setRightSpeedTarget(ratio*(speedJoy - turnJoy));
-		setLeftSpeedTarget(ratio*(speedJoy + turnJoy));
-//		rightDriveVelocityPID.update(rightEncoder.getRate());
-//		leftDriveVelocityPID.update(leftEncoder.getRate());
+		if (inHighGear())
+			ratio = Robot.getPref("highGearSpeedRatio", 175);
+		// not sure if the way I calculated each target works properly...
+		setRightSpeedTarget(ratio * (speedJoy - turnJoy));
+		setLeftSpeedTarget(ratio * (speedJoy + turnJoy));
+		// rightDriveVelocityPID.update(rightEncoder.getRate());
+		// leftDriveVelocityPID.update(leftEncoder.getRate());
 		updateRightSpeedPID();
 		updateLeftSpeedPID();
-		//not sure if right value needs to be negative or not (from copied unevenTankDrive)
-//		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
-	}
-	
-	/**
-	 * Accounts for drift when in tank drive
-	 * Sets each motor's respective target speed based on speed to joystick ratios
-	 * */
-	public void unevenTankDrive(double leftJoy, double rightJoy){
-		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
-		if(inHighGear()) ratio = Robot.getPref("highGearSpeedRatio", 175);
-		setRightSpeedTarget(ratio*rightJoy);
-		setLeftSpeedTarget(ratio*leftJoy);
-//		rightDriveVelocityPID.update(rightEncoder.getRate());
-//		leftDriveVelocityPID.update(leftEncoder.getRate());
-		updateRightSpeedPID();
-		updateLeftSpeedPID();
-		//not sure if right value needs to be negative or not; it was b4 I changed stuff just now
-//		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), rightDriveVelocityPID.getOutput());
-//		leftMotor.set(leftDriveVelocityPID.getOutput());
-//		rightMotor.set(rightDriveVelocityPID.getOutput());
+		// not sure if right value needs to be negative or not (from copied
+		// unevenTankDrive)
+		// robotDrive.tankDrive(leftDriveVelocityPID.getOutput(),
+		// rightDriveVelocityPID.getOutput());
 	}
 
-	//shiftPiston.get().toString()
+	/**
+	 * Accounts for drift when in tank drive Sets each motor's respective target
+	 * speed based on speed to joystick ratios
+	 */
+	public void unevenTankDrive(double leftJoy, double rightJoy) {
+		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
+		if (inHighGear())
+			ratio = Robot.getPref("highGearSpeedRatio", 175);
+		setRightSpeedTarget(ratio * rightJoy);
+		setLeftSpeedTarget(ratio * leftJoy);
+		// rightDriveVelocityPID.update(rightEncoder.getRate());
+		// leftDriveVelocityPID.update(leftEncoder.getRate());
+		updateRightSpeedPID();
+		updateLeftSpeedPID();
+		// not sure if right value needs to be negative or not; it was b4 I
+		// changed stuff just now
+		// robotDrive.tankDrive(leftDriveVelocityPID.getOutput(),
+		// rightDriveVelocityPID.getOutput());
+		// leftMotor.set(leftDriveVelocityPID.getOutput());
+		// rightMotor.set(rightDriveVelocityPID.getOutput());
+	}
+
+	// shiftPiston.get().toString()
 	public boolean inHighGear() {
 		return shiftPiston.get().toString().equals("kReverse");
 	}
@@ -217,19 +225,20 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void autoDrive() {
 		distancePID.update(getDistance());
 		anglePID.update(getAngle());
-//		if (!angleReachedTarget()) {
-////			unevenArcadeDrive(0, anglePID.getOutput());
-//			arcadeDrive(0, anglePID.getOutput());
-//		} else {
-//			unevenArcadeDrive(distancePID.getOutput(), 0);
+		// if (!angleReachedTarget()) {
+		//// unevenArcadeDrive(0, anglePID.getOutput());
+		// arcadeDrive(0, anglePID.getOutput());
+		// } else {
+		// unevenArcadeDrive(distancePID.getOutput(), 0);
 		arcadeDrive(0, distancePID.getOutput());
-//		}
+		// }
 	}
-	
+
 	public void updateDriveDistancePID() {
 		distancePID.update(getDistance());
 		arcadeDrive(distancePID.getOutput(), 0);
 	}
+
 	public void updateDriveAnglePID() {
 		anglePID.update(getDistance());
 		arcadeDrive(anglePID.getOutput(), 0);
@@ -250,26 +259,25 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public double getDistance() {
 		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
 	}
-	
+
 	public void resetEncoders() {
 		rightEncoder.reset();
 		leftEncoder.reset();
 	}
-	
+
 	/**
-	 * Gets the distancePID
-	 * Only used in tests
+	 * Gets the distancePID Only used in tests
+	 * 
 	 * @return the distancePID
-	 * */
-	public PID getDistancePID(){
+	 */
+	public PID getDistancePID() {
 		return distancePID;
 	}
-	
+
 	/**
 	 * Sets the distance for PID target
 	 * 
-	 * @param targetDistance
-	 *            - the target distance being set to PID
+	 * @param targetDistance - the target distance being set to PID
 	 */
 	public void setDistanceTarget(double targetDistance) {
 		distancePID.setRelativeLocation(0);
@@ -277,7 +285,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		distancePID.update(getDistance());
 	}
 
-	/** 
+	/**
 	 * Updates and tests/runs distancePID
 	 */
 	public void updateDistancePID() {
@@ -293,35 +301,34 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean distanceReachedTarget() {
 		return distancePID.reachedTarget();
 	}
-	
+
 	/**
 	 * @return the angle that the robot turned relative to the gyro's last reset
 	 */
 	public double getAngle() {
-		return gyro.getAngle()- gyroDriftRate * gyroDriftTimer.get();
+		return gyro.getAngle() - gyroDriftRate * gyroDriftTimer.get();
 	}
-	
+
 	/**
-	 * Gets the anglePID
-	 * Only used in tests
+	 * Gets the anglePID Only used in tests
+	 * 
 	 * @return the anglePID
-	 * */
-	public PID getAnglePID(){
+	 */
+	public PID getAnglePID() {
 		return anglePID;
 	}
 
 	/**
 	 * Sets the angle for PID target
 	 * 
-	 * @param targetAngle
-	 *            - the target angle in being set to PID
+	 * @param targetAngle - the target angle in being set to PID
 	 */
 	public void setAngleTarget(double targetAngle) {
 		anglePID.setRelativeLocation(0);
 		anglePID.setTarget(targetAngle);
 		anglePID.update(getAngle());
 	}
-	
+
 	/**
 	 * Updates and tests/runs anglePID
 	 */
@@ -338,31 +345,30 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean angleReachedTarget() {
 		return anglePID.reachedTarget();
 	}
-	
-//	NEW PIDS START HERE!!!
-	
+
+	// NEW PIDS START HERE!!!
+
 	/**
 	 * @return the speed of the left side of the robot at the current time
 	 */
 	public double getLeftSpeed() {
 		return leftEncoder.getRate();
-		
+
 	}
-	
+
 	/**
-	 * Gets the leftSpeedPID
-	 * Only used in tests
+	 * Gets the leftSpeedPID Only used in tests
+	 * 
 	 * @return the leftSpeedPID
-	 * */
-	public PID getLeftSpeedPID(){
+	 */
+	public PID getLeftSpeedPID() {
 		return leftDriveVelocityPID;
 	}
-	
+
 	/**
 	 * Sets the left speed for PID target
 	 * 
-	 * @param targetSpeed
-	 *            - the target left speed being set to PID
+	 * @param targetSpeed - the target left speed being set to PID
 	 */
 	public void setLeftSpeedTarget(double targetSpeed) {
 		leftDriveVelocityPID.setTarget(targetSpeed, false);
@@ -370,7 +376,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		leftDriveVelocityPID.update(leftEncoder.getRate());
 	}
 
-	/** 
+	/**
 	 * Updates and tests/runs leftDriveSpeedPID
 	 */
 	public void updateLeftSpeedPID() {
@@ -387,31 +393,30 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean leftSpeedReachedTarget() {
 		return leftDriveVelocityPID.reachedTarget();
 	}
-	
-//	STARTS RIGHT HALF
-	
+
+	// STARTS RIGHT HALF
+
 	/**
 	 * @return the speed of the right side of the robot at the current time
 	 */
 	public double getRightSpeed() {
 		return rightEncoder.getRate();
-		
+
 	}
-	
+
 	/**
-	 * Gets the rightSpeedPID
-	 * Only used in tests
+	 * Gets the rightSpeedPID Only used in tests
+	 * 
 	 * @return the rightSpeedPID
-	 * */
-	public PID getRightSpeedPID(){
+	 */
+	public PID getRightSpeedPID() {
 		return rightDriveVelocityPID;
 	}
-	
+
 	/**
 	 * Sets the right speed for PID target
 	 * 
-	 * @param targetSpeed
-	 *            - the target right speed being set to PID
+	 * @param targetSpeed - the target right speed being set to PID
 	 */
 	public void setRightSpeedTarget(double targetSpeed) {
 		rightDriveVelocityPID.setTarget(targetSpeed, false);
@@ -419,7 +424,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		rightDriveVelocityPID.update(rightEncoder.getRate());
 	}
 
-	/** 
+	/**
 	 * Updates and tests/runs rightDriveSpeedPID
 	 */
 	public void updateRightSpeedPID() {
@@ -436,8 +441,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean rightSpeedReachedTarget() {
 		return rightDriveVelocityPID.reachedTarget();
 	}
-	
-//	NEW PIDS END HERE!
+
+	// NEW PIDS END HERE!
 
 	/**
 	 * @return the average speed of the two sides of the robot at the current
@@ -446,8 +451,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public double getVelocity() {
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
 	}
-	
-	
+
 	/**
 	 * Sets targets for tracking velocity of robot for motion profiling
 	 * 
@@ -463,16 +467,17 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		angularVelocityPID.setTarget(angVelTarget);
 		angularVelocityPID.update(getAngularVelocity());
 	}
-	
+
 	/**
-	 * Updates and tests/runs linear and angular velocity PIDs for motion profiling
+	 * Updates and tests/runs linear and angular velocity PIDs for motion
+	 * profiling
 	 */
 	public void updateVelocityPIDs() {
 		velocityPID.update(getDistance());
 		angularVelocityPID.update(getAngle());
 		robotDrive.arcadeDrive(velocityPID.getOutput(), angularVelocityPID.getOutput());
 	}
-	
+
 	/**
 	 * Checks to see if the speed PID has reached the target
 	 * 
@@ -481,11 +486,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean velocityReachedTarget() {
 		return velocityPID.reachedTarget();
 	}
-	
+
 	/**
 	 * Gets the angular acceleration
+	 * 
 	 * @return the angular acceleration
-	 * */
+	 */
 	public double getAngularAcceleration() {
 		prevGyroRate = getAngularVelocity();
 		prevTime = Timer.getFPGATimestamp();
@@ -498,27 +504,23 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public double getAngularVelocity() {
 		return gyro.getRate();
 	}
-	
+
 	/**
 	 * Checks to see if the angular velocity PID has reached the target
-	 *  
+	 * 
 	 * @return Whether angular velocity PID has reached the target
 	 */
 	public boolean angularVelocityPIDReachedTarget() {
 		return angularVelocityPID.reachedTarget();
 	}
-	
+
 	/**
 	 * Uses PID to reach target velocity
 	 * 
-	 * @param v
-	 *            - linear velocity in inches/second
-	 * @param w
-	 *            - angular velocity in degrees/second
-	 * @param a
-	 *            - acceleration in inches/second/second
-	 * @param alpha
-	 *            - angular acceleration in degrees/second/second
+	 * @param v - linear velocity in inches/second
+	 * @param w - angular velocity in degrees/second
+	 * @param a - acceleration in inches/second/second
+	 * @param alpha - angular acceleration in degrees/second/second
 	 */
 	public void followTrajectory(double v, double w, double a, double alpha) {
 		velocityPID.setTarget(v);
@@ -550,52 +552,58 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		prevGyroRate = getAngularVelocity();
 		prevTime = Timer.getFPGATimestamp();
 	}
-	
+
 	/**
-	 * Converts volts from ultrasonic sensors into inches based on equation derived from testing.
+	 * Converts volts from ultrasonic sensors into inches based on equation
+	 * derived from testing.
+	 * 
 	 * @return distance in inches
-	 * */
-	public double convertVoltsToInches(double volts){
-		return (volts + 4.38e-3)/0.012;
+	 */
+	public double convertVoltsToInches(double volts) {
+		return (volts + 4.38e-3) / 0.012;
 	}
-	
+
 	/**
 	 * Gets the voltage from one of two ultrasonic sensors.
-	 * @param side tells which ultrasonic sensor to pull data from (left or right)
-	 * 	if side true, gets left voltage
-	 * 	if side false, gets right voltage
-	 * */
-	public double getUSVoltage(boolean side){
-		if(side){
+	 * 
+	 * @param side tells which ultrasonic sensor to pull data from (left or
+	 *            right) if side true, gets left voltage if side false, gets
+	 *            right voltage
+	 */
+	public double getUSVoltage(boolean side) {
+		if (side) {
 			return leftUSsensor.getVoltage();
-		} else{
+		} else {
 			return rightUSsensor.getVoltage();
 		}
 	}
-	
+
 	/**
-	 * Calculates the distance the robot needs to drive to reach target distance from wall
-	 * 	based on the average of the current US sensor readings.
-	 * Uses the average of the readings because this is measured before the robot auto truns
-	 * 	but is used to execute auto drive after the robot auto turns. The average distance from
-	 * 	the wall will not change in and ideal scenario because the distance from the robot center
-	 * 	will not change. Henceforth, average is used.
-	 * @return the distance to be antered into a drive PID 
-	 * */
-	public double getUSDistToDrive(){
+	 * Calculates the distance the robot needs to drive to reach target distance
+	 * from wall based on the average of the current US sensor readings. Uses
+	 * the average of the readings because this is measured before the robot
+	 * auto truns but is used to execute auto drive after the robot auto turns.
+	 * The average distance from the wall will not change in and ideal scenario
+	 * because the distance from the robot center will not change. Henceforth,
+	 * average is used.
+	 * 
+	 * @return the distance to be antered into a drive PID
+	 */
+	public double getUSDistToDrive() {
 		double leftDist = convertVoltsToInches(getUSVoltage(true));
 		double rightDist = convertVoltsToInches(getUSVoltage(false));
-		return ((leftDist+rightDist)/2 - distFromUSToRobotFront) - targetUSDist;
+		return ((leftDist + rightDist) / 2 - distFromUSToRobotFront) - targetUSDist;
 	}
-	
+
 	/**
 	 * Calculates the angle needed to turn to to approach the wall head on.
+	 * 
 	 * @return the angle to turn to
-	 * */
-	public double getUSTargetAngle(){
+	 */
+	public double getUSTargetAngle() {
 		double leftDist = convertVoltsToInches(getUSVoltage(true));
 		double rightDist = convertVoltsToInches(getUSVoltage(false));
-		return Math.toDegrees(Math.atan((leftDist-rightDist)/(distBtwnUSsensors)));
+		return Math.toDegrees(Math.atan((leftDist - rightDist) / (distBtwnUSsensors)));
 	}
 
 	/**
@@ -612,10 +620,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			shiftedHigh = false;
 		}
 	}
-	
+
 	/**
 	 * Sets the shifter piston to neutral
-	 * */
+	 */
 	public void setShifterNeutral() {
 		shiftPiston.set(DoubleSolenoid.Value.kOff);
 	}
@@ -630,7 +638,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		int leftChannel = (int) (Robot.getPref("Drivetrain PDP Channel Left", 15));
 		double rightCurrent = pdp.getCurrent(rightChannel);
 		double leftCurrent = pdp.getCurrent(leftChannel);
-		if (rightCurrent >= Robot.getPref("drivetrainMaxCurrentRight", 110) || leftCurrent >= Robot.getPref("drivetrainMaxCurrentLeft", 110))
+		if (rightCurrent >= Robot.getPref("drivetrainMaxCurrentRight", 110)
+				|| leftCurrent >= Robot.getPref("drivetrainMaxCurrentLeft", 110))
 			return true;
 		return false;
 	}
@@ -657,16 +666,17 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		SmartDashboard.putNumber("Left Distance", leftEncoder.getDistance());
 		SmartDashboard.putNumber("Right Distance", rightEncoder.getDistance());
 		SmartDashboard.putNumber("Average Distance", getDistance());
-		
+
 		putNumber("Acceleration", (getVelocity() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
-		putNumber("Angular acceleration", (getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
+		putNumber("Angular acceleration",
+				(getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
 
 		putNumber("Angle", gyro.getAngle());
 		putNumber("Turn Speed", gyro.getRate());
-		
+
 		putNumber("Left DT Signal", leftMotor.get());
 		putNumber("Right DT Signal", rightMotor.get());
-		
+
 		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
@@ -677,7 +687,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putString("Current drive", currentDrive.toString());
 		putNumber("Right US Voltage", rightUSsensor.getVoltage());
 		putNumber("Left US Voltage", leftUSsensor.getVoltage());
-		putNumber("Avg US Voltage", (getUSVoltage(true) + getUSVoltage(false))/2);
+		putNumber("Avg US Voltage", (getUSVoltage(true) + getUSVoltage(false)) / 2);
 		putNumber("US Dist to Drive", getUSDistToDrive());
 		putNumber("US Angle", getUSTargetAngle());
 		SmartDashboard.putNumber("Left PID out: ", leftDriveVelocityPID.getOutput());
@@ -700,6 +710,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * light
 	 */
 	public double getAverageMotors() {
-		return (Math.abs(leftMotor.get()) + Math.abs(rightMotor.get()))/2;
+		return (Math.abs(leftMotor.get()) + Math.abs(rightMotor.get())) / 2;
 	}
 }

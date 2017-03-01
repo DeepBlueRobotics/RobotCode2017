@@ -47,9 +47,9 @@ public class OI {
 		autoUSAdjustButton = new JoystickButton(manipulator, 1);
 		autoUSAdjustButton.whenPressed(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
 				Robot.drivetrain.getUSTargetAngle(), Robot.drivetrain));
-		
+
 		rightJoy = new Joystick(1);
-		
+
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
 		autoShootRoutineButton.whileHeld(new AutoShootRoutine());
 		gradualDriveButton = new JoystickButton(rightJoy, 1);
@@ -58,7 +58,7 @@ public class OI {
 		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
 		toggleFlipper = new JoystickButton(rightJoy, 5);
 		toggleFlipper.whenPressed(new ToggleIntakeRamp(Robot.intake));
-		
+
 		leftJoy = new Joystick(0);
 
 		switchDriveButton = new JoystickButton(leftJoy, 4);
@@ -69,17 +69,24 @@ public class OI {
 		// For use by Manual Control Widget
 		SmartDashboard.putData("ManualControl/Command",
 				new ManualControlMechs(Robot.intake, Robot.shooter, Robot.climber));
-		
+
 		// For use by PID Widget
-		SmartDashboard.putData("PID/DriveDistance/TestDriveDistancePID", new TestPID(TestPID.System.DRIVEDISTANCE, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/DriveAngle/TestDriveAnglePID", new TestPID(TestPID.System.DRIVEANGLE, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/Shooter/TestShooterPID", new TestPID(TestPID.System.SHOOTER, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/DriveVelocity/TestDriveVelocityPID", new TestPID(TestPID.System.DRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/DriveAngularVelocity/TestDriveAngularVelocityPID", new TestPID(TestPID.System.DRIVEANGULARVELOCITY, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/LeftDriveVelocity/TestLeftDriveVelocityPID", new TestPID(TestPID.System.LEFTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
-		SmartDashboard.putData("PID/RightDriveVelocity/TestRightDriveVelocityPID", new TestPID(TestPID.System.RIGHTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
-		
-		//For Trajectory Following Testing
+		SmartDashboard.putData("PID/DriveDistance/TestDriveDistancePID",
+				new TestPID(TestPID.System.DRIVEDISTANCE, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/DriveAngle/TestDriveAnglePID",
+				new TestPID(TestPID.System.DRIVEANGLE, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/Shooter/TestShooterPID",
+				new TestPID(TestPID.System.SHOOTER, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/DriveVelocity/TestDriveVelocityPID",
+				new TestPID(TestPID.System.DRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/DriveAngularVelocity/TestDriveAngularVelocityPID",
+				new TestPID(TestPID.System.DRIVEANGULARVELOCITY, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/LeftDriveVelocity/TestLeftDriveVelocityPID",
+				new TestPID(TestPID.System.LEFTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
+		SmartDashboard.putData("PID/RightDriveVelocity/TestRightDriveVelocityPID",
+				new TestPID(TestPID.System.RIGHTDRIVEVELOCITY, Robot.shooter, Robot.drivetrain));
+
+		// For Trajectory Following Testing
 		SmartDashboard.putData("FollowTrajectory", new FollowTrajectory());
 
 	}

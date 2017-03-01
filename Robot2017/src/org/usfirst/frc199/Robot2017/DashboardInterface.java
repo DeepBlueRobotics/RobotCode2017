@@ -22,7 +22,7 @@ public interface DashboardInterface {
 	 * Puts all desired data on SmartDashboard
 	 */
 	public default void displayData() {
-		
+
 	}
 
 	/*
@@ -64,8 +64,7 @@ public interface DashboardInterface {
 	 * appended as a prefix, to be compatible with the Subsystem widget on
 	 * SmartDashboard for organizational purposes
 	 * 
-	 * @param key
-	 *            - The name of the original key
+	 * @param key - The name of the original key
 	 * @return A modified key with prefix subsystem name
 	 */
 	default String getKey(String key) {

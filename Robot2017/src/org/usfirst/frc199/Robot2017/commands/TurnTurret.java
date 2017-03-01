@@ -8,10 +8,10 @@ import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
  *
  */
 public class TurnTurret extends Command {
-	
+
 	private double speed;
 	private ShooterInterface shooter;
-	
+
 	public TurnTurret(double speed, ShooterInterface shooter) {
 		this.speed = speed;
 		this.shooter = shooter;

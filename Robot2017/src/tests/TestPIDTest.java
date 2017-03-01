@@ -26,7 +26,8 @@ public class TestPIDTest {
 		verify(mockShoot).runShootMotor(0);
 
 		testShooter.end();
-		//Since this was called already earlier, verify this is the second time it happens
+		// Since this was called already earlier, verify this is the second time
+		// it happens
 		verify(mockShoot, times(2)).runShootMotor(0);
 
 		TestPID testDriveDist = new TestPID(TestPID.System.DRIVEDISTANCE, mockShoot, mockDrive);
@@ -42,7 +43,8 @@ public class TestPIDTest {
 		testDriveDist.isFinished();
 
 		verify(mockDrive).distanceReachedTarget();
-//		verify(mockDrive).angleReachedTarget();  Java '&&' shortcut causes this to be not called when line 44 returns false
+		// verify(mockDrive).angleReachedTarget(); Java '&&' shortcut causes
+		// this to be not called when line 44 returns false
 
 		testDriveDist.end();
 
