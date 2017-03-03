@@ -38,7 +38,7 @@ public class AutoDrive extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-		return drivetrain.distanceReachedTarget() || drivetrain.angleReachedTarget();
+		return drivetrain.distanceReachedTarget() && drivetrain.angleReachedTarget();
 
 	}
 

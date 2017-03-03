@@ -221,25 +221,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * For autonomous period, drives to angle given and then to distance given.
 	 */
 	public void autoDrive() {
-		distancePID.update(getDistance());
-		anglePID.update(getAngle());
-		// if (!angleReachedTarget()) {
-		//// unevenArcadeDrive(0, anglePID.getOutput());
-		// arcadeDrive(0, anglePID.getOutput());
-		// } else {
-		// unevenArcadeDrive(distancePID.getOutput(), 0);
-		arcadeDrive(0, distancePID.getOutput());
-		// }
-	}
-
-	public void updateDriveDistancePID() {
-		distancePID.update(getDistance());
-		arcadeDrive(distancePID.getOutput(), 0);
-	}
-
-	public void updateDriveAnglePID() {
-		anglePID.update(getDistance());
-		arcadeDrive(anglePID.getOutput(), 0);
+		 if (!angleReachedTarget()) {
+			 updateAnglePID();
+		 } else {
+			 updateDistancePID();
+		 }
 	}
 
 	/**
@@ -298,7 +284,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return Whether distance target has been reached
 	 */
 	public boolean distanceReachedTarget() {
-		return distancePID.reachedTarget();
+		if(distancePID.reachedTarget()) {
+			resetEncoders();
+			resetGyro();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -342,7 +334,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return Whether angle target has been reached
 	 */
 	public boolean angleReachedTarget() {
-		return anglePID.reachedTarget();
+		if(anglePID.reachedTarget()) {
+			resetEncoders();
+			resetGyro();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	// NEW PIDS START HERE!!!

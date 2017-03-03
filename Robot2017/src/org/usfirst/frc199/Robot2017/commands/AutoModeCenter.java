@@ -46,6 +46,9 @@ public class AutoModeCenter extends CommandGroup {
 		// Drives to lift and aligns
 		addSequential(new AutoAlignGear(true));
 
+		/**
+		 * WE DO NOT NEED TO TRAVEL OUT TO CROSS THE BASELINE! FIX LATER
+
 		// Backs out of dividers, giving 6 inches of extra space for the pivot
 		addSequential(new AutoDrive(0 - (DIVIDER_DEPTH + 6), 0, Robot.drivetrain));
 
@@ -62,6 +65,8 @@ public class AutoModeCenter extends CommandGroup {
 
 		// Passes baseline
 		addSequential(new AutoDrive(DIVIDER_DEPTH + 24, 0, Robot.drivetrain));
+		*/
+
 
 		/*
 		 * //METHOD 2: addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2)
