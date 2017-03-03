@@ -309,6 +309,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		} else if (newTurretEncoder - prevTurretEncoder < -180) {
 			turretEncoderTurnCounter--;
 		}
+		prevTurretEncoder = newTurretEncoder;
 		return turretEncoderTurnCounter * 360 + newTurretEncoder;
 	}
 
