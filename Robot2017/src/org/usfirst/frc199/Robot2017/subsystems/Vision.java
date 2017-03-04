@@ -10,27 +10,20 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * RoboRIO in here
  */
 public class Vision extends Subsystem implements DashboardInterface {
-
-	private final double REFLECTOR_DIST_GEAR = 5; // inches between the centers
-													// of both reflectors
-													// (horizontal)
-	private final double SHOOTER_CAM_HEIGHT = Robot.getPref("Camera Height", 0); // in
-																			// off
-																			// the
-																			// ground
-	private final double BOILER_HEIGHT = 88 - SHOOTER_CAM_HEIGHT; // in from camera
-															// bottom to top of
-															// boiler tape
-	private final double THETA = 34.25 * (Math.PI / 180); // radians from north
-															// that you can see
-															// in both
-															// directions
-	private final double SHOOTER_CAM_ANGLE = 41.91 * (Math.PI / 180); // radians of the
-																// camera's
-																// vertical
-																// field of view
-	private final double RESOLUTION_WIDTH = 640; // pixel width of image
-	private final double RESOLUTION_HEIGHT = 360; // pixel height of image
+	// inches between the centers of both reflectors (horizontal)
+	private final double REFLECTOR_DIST_GEAR = 5;
+	// inches off the ground (~21.67)
+	private final double SHOOTER_CAM_HEIGHT = Robot.getPref("Camera Height", 0); 
+	// in from camera bottom to top of boiler tape
+	private final double BOILER_HEIGHT = 88 - SHOOTER_CAM_HEIGHT; 
+	// radians from north that you can see in both directions
+	private final double THETA = 34.25 * (Math.PI / 180);
+	// radians of the camera's vertical field of view
+	private final double SHOOTER_CAM_ANGLE = 41.91 * (Math.PI / 180);
+	// pixel width of image
+	private final double RESOLUTION_WIDTH = 640; 
+	// pixel height of image
+	private final double RESOLUTION_HEIGHT = 360;
 	private double SCREEN_DEPTH = RESOLUTION_HEIGHT / Math.tan(SHOOTER_CAM_ANGLE);
 	private final double SCREEN_CENTER = RESOLUTION_WIDTH / 2;
 
