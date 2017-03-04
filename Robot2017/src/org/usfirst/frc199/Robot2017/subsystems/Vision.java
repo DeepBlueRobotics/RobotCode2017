@@ -14,24 +14,24 @@ public class Vision extends Subsystem implements DashboardInterface {
 	private final double REFLECTOR_DIST_GEAR = 5; // inches between the centers
 													// of both reflectors
 													// (horizontal)
-	private final double CAM_HEIGHT = Robot.getPref("Camera Height", 0); // in
+	private final double SHOOTER_CAM_HEIGHT = Robot.getPref("Camera Height", 0); // in
 																			// off
 																			// the
 																			// ground
-	private final double BOILER_HEIGHT = 88 - CAM_HEIGHT; // in from camera
+	private final double BOILER_HEIGHT = 88 - SHOOTER_CAM_HEIGHT; // in from camera
 															// bottom to top of
 															// boiler tape
 	private final double THETA = 34.25 * (Math.PI / 180); // radians from north
 															// that you can see
 															// in both
 															// directions
-	private final double CAM_ANGLE = 41.91 * (Math.PI / 180); // radians of the
+	private final double SHOOTER_CAM_ANGLE = 41.91 * (Math.PI / 180); // radians of the
 																// camera's
 																// vertical
 																// field of view
 	private final double RESOLUTION_WIDTH = 640; // pixel width of image
 	private final double RESOLUTION_HEIGHT = 360; // pixel height of image
-	private double SCREEN_DEPTH = RESOLUTION_HEIGHT / Math.tan(CAM_ANGLE);
+	private double SCREEN_DEPTH = RESOLUTION_HEIGHT / Math.tan(SHOOTER_CAM_ANGLE);
 	private final double SCREEN_CENTER = RESOLUTION_WIDTH / 2;
 
 	public Vision() {
