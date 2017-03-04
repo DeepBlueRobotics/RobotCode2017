@@ -47,8 +47,11 @@ public class AutoModeBoilerSide extends CommandGroup {
 		// Turns toward lift
 		addSequential(new AutoDrive(0, (0 - direction) * 60, Robot.drivetrain));
 
+		//Drives toward lift
+		addSequential(new AutoDrive(2, 0, Robot.drivetrain));
+		
 		// drives up to lift and aligns, shoots
-		addSequential(new AutoAlignGear(true));
+		//addSequential(new AutoAlignGear(true));
 
 		/*
 		 * //METHOD 2: addSequential(new

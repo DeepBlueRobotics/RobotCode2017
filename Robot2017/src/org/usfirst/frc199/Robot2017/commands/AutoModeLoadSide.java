@@ -69,8 +69,11 @@ public class AutoModeLoadSide extends CommandGroup {
 
 		addSequential(new AutoDrive(0, direction * 60, Robot.drivetrain));
 
+		// Drive Forward
+		addSequential(new AutoDrive(2, 0, Robot.drivetrain));
+		
 		// drives up to lift and aligns
-		addSequential(new AutoAlignGear(false));
+		//addSequential(new AutoAlignGear(false));
 
 		// METHOD 2:
 		/*
