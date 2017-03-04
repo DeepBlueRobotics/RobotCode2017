@@ -28,6 +28,9 @@ public class AutoModeBoilerSide extends CommandGroup {
 
 		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 91.66);
 		// in. from front end of robot to point on field
+		
+		final double LENGTH_2 = Robot.getPref("Diagonal Travel BoilerSide", 24.6);
+		// in. from front of robot to lift (after pivot)
 
 		/*
 		 * // METHOD 2 INSTANCE VARIABLES: final double ROBOT_LENGTH = 36.875;
@@ -48,7 +51,7 @@ public class AutoModeBoilerSide extends CommandGroup {
 		addSequential(new AutoDrive(0, (0 - direction) * 60, Robot.drivetrain));
 
 		//Drives toward lift
-		addSequential(new AutoDrive(2, 0, Robot.drivetrain));
+		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
 		
 		// drives up to lift and aligns, shoots
 		//addSequential(new AutoAlignGear(true));
