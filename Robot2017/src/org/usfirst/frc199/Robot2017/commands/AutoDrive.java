@@ -11,12 +11,16 @@ public class AutoDrive extends Command {
 
 	double targetDist, targetAngle;
 	DrivetrainInterface drivetrain;
+	boolean angleFinallyReached = false;
+	boolean angle = true;
 
 	public AutoDrive(double targetDist, double targetAngle, DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
 		this.targetDist = targetDist;
 		this.targetAngle = targetAngle;
 		this.drivetrain = drivetrain;
+		if(targetAngle == 0)
+			angle = false;
 	}
 
 	// Called just before this Command runs the first time
@@ -30,7 +34,27 @@ public class AutoDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		drivetrain.autoDrive();
+		//drivetrain.autoDrive();
+/**		if(!drivetrain.angleReachedTarget() && !angleFinallyReached){
+			drivetrain.updateAnglePID();
+		}
+		else if(!angleFinallyReached){
+			drivetrain.resetEncoder();
+			drivetrain.resetGyro();
+			angleFinallyReached = true;
+		}
+		else if(!drivetrain.distanceReachedTarget()){
+			drivetrain.updateDistancePID();
+		}*/
+		
+		if(angle){
+			if(!drivetrain.angleReachedTarget()){
+				drivetrain.updateAnglePID();
+			}
+		} else if(!drivetrain.distanceReachedTarget()) {
+			drivetrain.updateDistancePID();
+		}
+		
 		if (drivetrain.currentControl()) {
 			drivetrain.shiftGears();
 		}
@@ -38,7 +62,12 @@ public class AutoDrive extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-		return drivetrain.distanceReachedTarget() && drivetrain.angleReachedTarget();
+		if(angle){
+			return drivetrain.angleReachedTarget();
+		} else {
+			return drivetrain.distanceReachedTarget();
+		}
+//		return drivetrain.angleReachedTarget() && drivetrain.distanceReachedTarget();
 
 	}
 

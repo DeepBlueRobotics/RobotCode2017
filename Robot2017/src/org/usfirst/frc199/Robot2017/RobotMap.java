@@ -177,7 +177,7 @@ public class RobotMap {
 		// This used to work when
 		// LiveWindow.addSensor("Shooter", "TurretEncoder",
 		// turretTurretEncoder);
-		turretTurretEncoder.setPIDSourceType(PIDSourceType.kRate);
+//		turretTurretEncoder.setPIDSourceType(PIDSourceType.kRate);
 
 		// LiveWindow.addSensor("Climber", "WinchEncoder", winchEncoder);
 		// winchEncoder.setDistancePerPulse(1.0);

@@ -285,8 +285,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public boolean distanceReachedTarget() {
 		if(distancePID.reachedTarget()) {
-			resetEncoders();
-			resetGyro();
+//			resetEncoders();
+//			resetGyro();
 			return true;
 		} else {
 			return false;
@@ -325,7 +325,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
-		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
+		//robotDrive.arcadeDrive(anglePID.getOutput(), 0);
+		unevenArcadeDrive(0, anglePID.getOutput());
 	}
 
 	/**
@@ -335,8 +336,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public boolean angleReachedTarget() {
 		if(anglePID.reachedTarget()) {
-			resetEncoders();
-			resetGyro();
+//			resetEncoders();
+//			resetGyro();
 			return true;
 		} else {
 			return false;

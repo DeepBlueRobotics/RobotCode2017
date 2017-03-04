@@ -148,7 +148,8 @@ public class PID implements DashboardInterface {
 	 * @return True if error and rate are within acceptable tolerances
 	 */
 	public boolean reachedTarget() {
-		return Math.abs(lastError) < getPref("ErrorTolerance") && Math.abs(rate) < getPref("RateTolerance");
+//		return Math.abs(lastError) < getPref("ErrorTolerance") && Math.abs(rate) < getPref("RateTolerance");
+		return Math.abs(lastError) < 0.05 && Math.abs(rate) < 0.05;
 	}
 
 	/**
