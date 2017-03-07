@@ -1,6 +1,8 @@
 package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
@@ -27,7 +29,8 @@ public class AutoDrive extends Command {
 	public void initialize() {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
-		drivetrain.setDistanceTarget(targetDist);
+//		drivetrain.setDistanceTarget(targetDist);
+		drivetrain.unevenSetDistanceTarget(targetDist);
 		drivetrain.setAngleTarget(targetAngle);
 
 	}
@@ -47,12 +50,11 @@ public class AutoDrive extends Command {
 			drivetrain.updateDistancePID();
 		}*/
 		
-		if(angle){
-			if(!drivetrain.angleReachedTarget()){
-				drivetrain.updateAnglePID();
-			}
-		} else if(!drivetrain.distanceReachedTarget()) {
-			drivetrain.updateDistancePID();
+		if(angle && !drivetrain.angleReachedTarget()){
+			drivetrain.updateAnglePID();
+		} else if(!drivetrain.unevenDistanceReachedTarget()) {
+//			drivetrain.updateDistancePID();
+			drivetrain.unevenUpdateDistance();
 		}
 		
 		if (drivetrain.currentControl()) {
@@ -65,7 +67,8 @@ public class AutoDrive extends Command {
 		if(angle){
 			return drivetrain.angleReachedTarget();
 		} else {
-			return drivetrain.distanceReachedTarget();
+//			return drivetrain.distanceReachedTarget();
+			return drivetrain.unevenDistanceReachedTarget();
 		}
 //		return drivetrain.angleReachedTarget() && drivetrain.distanceReachedTarget();
 
@@ -79,5 +82,6 @@ public class AutoDrive extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }
