@@ -50,7 +50,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 			double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
 			double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
 			double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
-			return distanceToGear;
+			return 2 * distanceToGear;
 		} else {
 			return 0;
 		}
@@ -59,7 +59,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 	public double getAngleToGear() {
 		if (getBoolean("OH-YEAH", true)) {
 			double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
-			double pixelDisplacement = pegX - SCREEN_CENTER;
+			double pixelDisplacement = pegX - getNumber("gearCenterX", 0); // SCREEN_CENTER;
 			double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
 
 			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180) / Math.PI;

@@ -93,12 +93,17 @@ public class RobotMap {
 			drivetrainRightUSsensor = new AnalogInput(4);
 		} else {
 			drivetrainLeftMotor = new VictorSP(0);
-			drivetrainLeftMotor.setInverted(true);
+//			drivetrainLeftMotor.setInverted(true);
 			drivetrainRightMotor = new VictorSP(1);
+			
+			drivetrainRightMotor.setInverted(true);
+			
 			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
-			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
+//			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", 1));
+			drivetrainLeftEncoder.setDistancePerPulse(1);
 			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
-			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
+//			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", 1));
+			drivetrainRightEncoder.setDistancePerPulse(1);
 			// drivetrainLeftMotor.setInverted(true);
 //			drivetrainRightMotor = new VictorSP(1);
 //			drivetrainRightMotor.setInverted(true);
@@ -177,7 +182,7 @@ public class RobotMap {
 		// This used to work when
 		// LiveWindow.addSensor("Shooter", "TurretEncoder",
 		// turretTurretEncoder);
-		turretTurretEncoder.setPIDSourceType(PIDSourceType.kRate);
+//s		turretTurretEncoder.setPIDSourceType(PIDSourceType.kRate);
 
 		// LiveWindow.addSensor("Climber", "WinchEncoder", winchEncoder);
 		// winchEncoder.setDistancePerPulse(1.0);

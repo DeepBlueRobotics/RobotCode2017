@@ -274,8 +274,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
-//		robotDrive.arcadeDrive(0, -distancePID.getOutput());
-		unevenArcadeDrive(distancePID.getOutput(),0);
+		robotDrive.arcadeDrive(0, -distancePID.getOutput());
+//		unevenArcadeDrive(distancePID.getOutput(),0);
 	}
 
 	/**
