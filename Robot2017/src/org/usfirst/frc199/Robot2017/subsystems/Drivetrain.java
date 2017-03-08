@@ -223,6 +223,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public boolean unevenDistanceReachedTarget() {
 		return leftDistancePID.reachedTarget() && rightDistancePID.reachedTarget();
 	}
+	
+	public void unevenVelocityAutoDrive() {
+		leftDistancePID.update(leftEncoder.getDistance());
+		rightDistancePID.update(rightEncoder.getDistance());
+		unevenTankDrive(leftDistancePID.getOutput(), rightDistancePID.getOutput());
+	}
 
 	// shiftPiston.get().toString()
 	public boolean inHighGear() {

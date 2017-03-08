@@ -29,8 +29,8 @@ public class AutoDrive extends Command {
 	public void initialize() {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
-//		drivetrain.setDistanceTarget(targetDist);
-		drivetrain.unevenSetDistanceTarget(targetDist);
+		drivetrain.setDistanceTarget(targetDist);
+//		drivetrain.unevenSetDistanceTarget(targetDist);
 		drivetrain.setAngleTarget(targetAngle);
 
 	}
@@ -54,7 +54,9 @@ public class AutoDrive extends Command {
 			drivetrain.updateAnglePID();
 		} else if(!drivetrain.unevenDistanceReachedTarget()) {
 //			drivetrain.updateDistancePID();
-			drivetrain.unevenUpdateDistance();
+//			drivetrain.unevenUpdateDistance();
+//			drivetrain.unevenVelocityAutoDrive();
+			drivetrain.autoDrive();
 		}
 		
 		if (drivetrain.currentControl()) {
@@ -67,8 +69,8 @@ public class AutoDrive extends Command {
 		if(angle){
 			return drivetrain.angleReachedTarget();
 		} else {
-//			return drivetrain.distanceReachedTarget();
-			return drivetrain.unevenDistanceReachedTarget();
+			return drivetrain.distanceReachedTarget();
+//			return drivetrain.unevenDistanceReachedTarget();
 		}
 //		return drivetrain.angleReachedTarget() && drivetrain.distanceReachedTarget();
 
