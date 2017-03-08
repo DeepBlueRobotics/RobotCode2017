@@ -41,9 +41,9 @@ public class PID implements DashboardInterface {
 		this.name = name;
 		Robot.subsystems.add(this);
 		intervalTimer.start();
-		putNumber("kP", getPref("kP"));
-		putNumber("kI", getPref("kI"));
-		putNumber("kD", getPref("kD"));
+		putNumber("kP", getPref("kP", 0));
+		putNumber("kI", getPref("kI", 0));
+		putNumber("kD", getPref("kD", 0));
 		putNumber("TestTarget", 0);
 	}
 
@@ -73,23 +73,23 @@ public class PID implements DashboardInterface {
 	 * @param newValue - new input value in real units
 	 */
 	public void update(double newValue) {
-//		if (name.toLowerCase().contains("velocity")) {
-//			kP = getNumber("kP", 0);
-//			if (Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
-//				kI = 0;
-//			} else {
-//				kI = 1 / (Math.abs(target));
-//			}
-//
-//			putNumber("kI", kI);
-//		} else {
-			// this happens if is a distance or angle PID
-//			kP = 1 / (Math.abs(target));
-//			putNumber("kP", kP);
-//			kI = getNumber("kI", 0);
-//		}
+		if (name.toLowerCase().contains("velocity")) {
+			kP = getNumber("kP", 0);
+			if (Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
+				kI = 0;
+			} else {
+				kI = 1 / (Math.abs(target));
+			}
 
-		kP = getNumber("kP", 0);
+			putNumber("kI", kI);
+		} else {
+//			this happens if is a distance or angle PID
+			kP = 1 / (Math.abs(target));
+			putNumber("kP", kP);
+			kI = getNumber("kI", 0);
+		}
+
+//		kP = getNumber("kP", 0);
 		kI = getNumber("kI", 0);
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
@@ -152,8 +152,8 @@ public class PID implements DashboardInterface {
 	 * @return True if error and rate are within acceptable tolerances
 	 */
 	public boolean reachedTarget() {
-//		return Math.abs(lastError) < getPref("ErrorTolerance") && Math.abs(rate) < getPref("RateTolerance");
-		return Math.abs(lastError) < 0.05 && Math.abs(rate) < 0.05;
+		return Math.abs(lastError) < getPref("ErrorTolerance", 0.5) && Math.abs(rate) < getPref("RateTolerance", 0.5);
+//		return Math.abs(lastError) < 0.05 && Math.abs(rate) < 0.05;
 	}
 
 	/**
@@ -162,8 +162,8 @@ public class PID implements DashboardInterface {
 	 * @param key - The name of the preference
 	 * @return The value of the preference
 	 */
-	private double getPref(String key) {
-		return Robot.getPref(name + key, 0.0);
+	private double getPref(String key, double defaultValue) {
+		return Robot.getPref(name + key, defaultValue);
 	}
 
 	@Override

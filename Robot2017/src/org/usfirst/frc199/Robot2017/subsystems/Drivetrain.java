@@ -201,12 +201,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	public void unevenSetDistanceTarget(double distance) {
-//		leftDistancePID.setRelativeLocation(0);
+		leftDistancePID.setRelativeLocation(0);
 		leftDistancePID.setTarget(distance);
 		leftDistancePID.update(leftEncoder.getDistance());
 		
 
-//		rightDistancePID.setRelativeLocation(0);
+		rightDistancePID.setRelativeLocation(0);
 		rightDistancePID.setTarget(distance);
 		rightDistancePID.update(rightEncoder.getDistance());
 	}
@@ -301,8 +301,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
-		robotDrive.arcadeDrive(0, -distancePID.getOutput());
-//		unevenArcadeDrive(distancePID.getOutput(),0);
+//		robotDrive.arcadeDrive(0, -distancePID.getOutput());
+		unevenArcadeDrive(distancePID.getOutput(),0);
 	}
 
 	/**
