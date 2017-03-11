@@ -17,12 +17,14 @@ def findBoiler(frame, lower, upper):
 	
 	# loop over the contours
 	for c in cnts:
-		vals.append((c, cv2.contourArea(c)))
-							
+		area = cv2.contourArea(c)
+		if (area > 5 and area < 105):
+			vals.append((c, area))
+
 	vals.sort(key=lambda x: x[1], reverse=True)	
 	
 	# if there are fewer than 2 contours or the biggest two contours are still tiny, return all -1
-	if (len(vals) < 2 or (vals[1][1] < 5):
+	if (len(vals) < 2):
 		return (-1, -1)
 	else:
 		box = cv2.boundingRect(vals[0][0])
