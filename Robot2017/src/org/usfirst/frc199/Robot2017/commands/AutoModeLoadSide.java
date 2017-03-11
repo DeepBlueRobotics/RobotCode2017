@@ -25,9 +25,9 @@ public class AutoModeLoadSide extends CommandGroup {
 	 */
 	public AutoModeLoadSide(boolean alliance) {
 
-		double direction = 1;
+		double direction = -1;
 		if (alliance)
-			direction = -1;
+			direction = 1;
 
 		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 98.55); // in.
 																					// from
