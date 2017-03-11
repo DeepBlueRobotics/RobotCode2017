@@ -91,7 +91,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		double r = Math.sqrt( x*x + y*y);
 		double psi = Math.atan(x/y);
 		double d = l / Math.cos(theta);
-		double beta = Math.PI*3/4 - theta - psi;
+		double beta = Math.PI - theta - psi;
 		
 		return Math.sqrt(r*r + d*d - 2*r*d*Math.cos(beta)) - PIVOT_TO_FRONT_DISTANCE;
 	}
@@ -107,7 +107,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		double r = Math.sqrt( x*x + y*y);
 		double psi = Math.atan(x/y);
 		double d = l / Math.cos(theta);
-		double beta = Math.PI*3/4 - theta - psi;
+		double beta = Math.PI - theta - psi;
 		double D = r*r + d*d - 2*r*d*Math.cos(beta);
 		
 		return Math.toDegrees(Math.asin(d*Math.sin(beta)/D) - psi);
