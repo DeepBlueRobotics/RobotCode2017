@@ -24,19 +24,14 @@ public class AutoDrive extends Command {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
 		drivetrain.setDistanceTarget(targetDist);
-<<<<<<< HEAD
-=======
+
 //		drivetrain.unevenSetDistanceTarget(targetDist);
->>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 		drivetrain.setAngleTarget(targetAngle);
 
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-<<<<<<< HEAD
-		drivetrain.autoDrive();
-=======
 		//drivetrain.autoDrive();
 /**		if(!drivetrain.angleReachedTarget() && !angleFinallyReached){
 			drivetrain.updateAnglePID();
@@ -59,7 +54,6 @@ public class AutoDrive extends Command {
 //			drivetrain.autoDrive();
 		}
 		
->>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 		if (drivetrain.currentControl()) {
 			drivetrain.shiftGears();
 		}
@@ -67,9 +61,6 @@ public class AutoDrive extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-<<<<<<< HEAD
-		return drivetrain.distanceReachedTarget() && drivetrain.angleReachedTarget();
-=======
 		if(angle){
 			return drivetrain.angleReachedTarget();
 		} else {
@@ -77,7 +68,6 @@ public class AutoDrive extends Command {
 //			return drivetrain.unevenDistanceReachedTarget();
 		}
 //		return drivetrain.angleReachedTarget() && drivetrain.distanceReachedTarget();
->>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 
 	}
 

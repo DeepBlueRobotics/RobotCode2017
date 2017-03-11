@@ -83,13 +83,6 @@ public class PID implements DashboardInterface {
 
 			putNumber("kI", kI);
 		} else {
-<<<<<<< HEAD
-			// this happens if is a distance or angle PID
-			kP = 1 / (Math.abs(target));
-			putNumber("kP", kP);
-			kI = getNumber("kI", 0);
-		}
-=======
 //			this happens if is a distance or angle PID
 //			kP = 1 / (Math.abs(target));
 //			putNumber("kP", kP);
@@ -98,7 +91,6 @@ public class PID implements DashboardInterface {
 			kI = getNumber("kI", 0);
 		}
 
->>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;
@@ -159,12 +151,8 @@ public class PID implements DashboardInterface {
 	 * @return True if error and rate are within acceptable tolerances
 	 */
 	public boolean reachedTarget() {
-<<<<<<< HEAD
-		return Math.abs(lastError) < getPref("ErrorTolerance") && Math.abs(rate) < getPref("RateTolerance");
-=======
 		return Math.abs(lastError) < getPref("ErrorTolerance", 0.5) && Math.abs(rate) < getPref("RateTolerance", 0.5);
 //		return Math.abs(lastError) < 0.05 && Math.abs(rate) < 0.05;
->>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 	}
 
 	/**
