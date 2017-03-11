@@ -25,9 +25,9 @@ public class AutoModeLoadSide extends CommandGroup {
 	 */
 	public AutoModeLoadSide(boolean alliance) {
 
-		double direction = 1;
+		double direction = -1;
 		if (alliance)
-			direction = -1;
+			direction = 1;
 
 		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 98.55); // in.
 																					// from
@@ -69,10 +69,10 @@ public class AutoModeLoadSide extends CommandGroup {
 		addSequential(new AutoDrive(0, direction * 60, Robot.drivetrain));
 
 		// Drive Forward
-		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
+		//addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
 		
 		// drives up to lift and aligns
-		//addSequential(new AutoAlignGear(false));
+		addSequential(new AutoAlignGear(false));
 
 		// METHOD 2:
 		/*
@@ -101,10 +101,10 @@ public class AutoModeLoadSide extends CommandGroup {
 		addSequential(new AutoDrive(0, (0 - direction) * 90, Robot.drivetrain));
 
 		addSequential(new AutoDrive(0, Robot.vision.getAngleToBoiler(), Robot.drivetrain));
-		addSequential(new AutoDrive(3 - Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
+		addSequential(new AutoDrive(36 - Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
 
 		// Aims and shoots
-		addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
+		//addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
 
 	}
 }
