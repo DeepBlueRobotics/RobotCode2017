@@ -12,7 +12,7 @@ def findBoiler(frame, lower, upper):
 	cnts = cv2.findContours(mask,cv2.RETR_LIST,
 		cv2.CHAIN_APPROX_SIMPLE)[0]
 	
-	# vals contains (contour, area) of all contours
+	# vals contains (area, center x, top y) of all contours
 	vals = []
 	
 	# loop over the contours
@@ -31,7 +31,7 @@ def findBoiler(frame, lower, upper):
 				break
 
 			# if area ratio is around 1/2 and the center x values are around the same, it's a match!
-			if (vals[i][0] * (3/5) > vals[j][0] and vals[i][1] + 50 > vals[j][1] and vals[i][1] - 50 < vals[j][1]):
+			if (vals[i][0] * (3/5) > vals[j][0] and abs(vals[i][1] - vals[j][1]) < 50):
 				return (vals[i][1], vals[i][2])
 
 	return (-1, -1)
