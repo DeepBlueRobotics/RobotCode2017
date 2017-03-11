@@ -26,6 +26,7 @@ public class OI {
 	public JoystickButton autoUSAdjustButton;
 	public Joystick manipulator;
 	public JoystickButton toggleFlipper;
+	public JoystickButton endlessIntakingButton;
 
 	public OI() {
 		manipulator = new Joystick(2);
@@ -50,6 +51,8 @@ public class OI {
 
 		rightJoy = new Joystick(1);
 
+		endlessIntakingButton = new JoystickButton(rightJoy, 7);
+		endlessIntakingButton.whenPressed(new NeverEndTheIntaking(Robot.intake));
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
 		autoShootRoutineButton.whileHeld(new AutoShootRoutine());
 		gradualDriveButton = new JoystickButton(rightJoy, 1);

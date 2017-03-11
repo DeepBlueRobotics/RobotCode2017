@@ -196,6 +196,39 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		// leftMotor.set(leftDriveVelocityPID.getOutput());
 		// rightMotor.set(rightDriveVelocityPID.getOutput());
 	}
+<<<<<<< HEAD
+=======
+	
+	public void unevenSetDistanceTarget(double distance) {
+		leftDistancePID.setRelativeLocation(0);
+		leftDistancePID.setTarget(distance);
+		leftDistancePID.update(leftEncoder.getDistance());
+		
+
+		rightDistancePID.setRelativeLocation(0);
+		rightDistancePID.setTarget(distance);
+		rightDistancePID.update(rightEncoder.getDistance());
+	}
+	
+	public void unevenUpdateDistance() {
+
+		leftDistancePID.update(leftEncoder.getDistance());
+		rightDistancePID.update(rightEncoder.getDistance());
+		
+		leftMotor.set(leftDistancePID.getOutput());
+		rightMotor.set(rightDistancePID.getOutput());
+	}
+	
+	public boolean unevenDistanceReachedTarget() {
+		return leftDistancePID.reachedTarget() && rightDistancePID.reachedTarget();
+	}
+	
+	public void unevenVelocityAutoDrive() {
+		leftDistancePID.update(leftEncoder.getDistance());
+		rightDistancePID.update(rightEncoder.getDistance());
+		unevenTankDrive(leftDistancePID.getOutput(), rightDistancePID.getOutput());
+	}
+>>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 
 	// shiftPiston.get().toString()
 	public boolean inHighGear() {
@@ -274,8 +307,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
-		robotDrive.arcadeDrive(0, -distancePID.getOutput());
-//		unevenArcadeDrive(distancePID.getOutput(),0);
+//		robotDrive.arcadeDrive(0, -distancePID.getOutput());
+		unevenArcadeDrive(distancePID.getOutput(),0);
 	}
 
 	/**
@@ -326,6 +359,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
 		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
+<<<<<<< HEAD
+=======
+//		unevenArcadeDrive(0, anglePID.getOutput());
+>>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 	}
 
 	/**

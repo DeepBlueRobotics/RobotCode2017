@@ -102,9 +102,13 @@ public class RobotMap {
 //			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", 1));
 			drivetrainLeftEncoder.setDistancePerPulse(1);
 			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
+<<<<<<< HEAD
 //			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", 1));
 			drivetrainRightEncoder.setDistancePerPulse(1);
 			// drivetrainLeftMotor.setInverted(true);
+=======
+			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
+>>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 //			drivetrainRightMotor = new VictorSP(1);
 //			drivetrainRightMotor.setInverted(true);
 //			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
