@@ -8,7 +8,7 @@ import subprocess
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 ret = cap.set(3,320)
 ret = cap.set(4,180)
 while(True):
