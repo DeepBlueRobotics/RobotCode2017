@@ -84,13 +84,13 @@ public class PID implements DashboardInterface {
 			putNumber("kI", kI);
 		} else {
 //			this happens if is a distance or angle PID
-			kP = 1 / (Math.abs(target));
-			putNumber("kP", kP);
+//			kP = 1 / (Math.abs(target));
+//			putNumber("kP", kP);
+//			kI = getNumber("kI", 0);
+			kP = getNumber("kP", 0);
 			kI = getNumber("kI", 0);
 		}
 
-//		kP = getNumber("kP", 0);
-		kI = getNumber("kI", 0);
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;

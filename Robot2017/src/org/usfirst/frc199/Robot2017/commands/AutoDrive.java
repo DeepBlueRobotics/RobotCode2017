@@ -52,11 +52,11 @@ public class AutoDrive extends Command {
 		
 		if(angle && !drivetrain.angleReachedTarget()){
 			drivetrain.updateAnglePID();
-		} else if(!drivetrain.unevenDistanceReachedTarget()) {
-//			drivetrain.updateDistancePID();
+		} else if(!drivetrain.distanceReachedTarget()) {
+			drivetrain.updateDistancePID();
 //			drivetrain.unevenUpdateDistance();
 //			drivetrain.unevenVelocityAutoDrive();
-			drivetrain.autoDrive();
+//			drivetrain.autoDrive();
 		}
 		
 		if (drivetrain.currentControl()) {

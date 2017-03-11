@@ -55,7 +55,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		if (getBoolean("OH-YEAH", true)) {
 			double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
 			// calculates displacement based on the calibrated center gearCenterX
-			double pixelDisplacement = pegX - getNumber("gearCenterX"); 
+			double pixelDisplacement = pegX - getNumber("gearCenterX",0); 
 			double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
 
 			double angle = (Math.atan(pixelDisplacement / abstractDepth) * 180) / Math.PI;
