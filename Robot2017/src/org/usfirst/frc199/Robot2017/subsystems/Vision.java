@@ -24,8 +24,6 @@ public class Vision extends Subsystem implements DashboardInterface {
 	private final double SCREEN_CENTER_X = RESOLUTION_WIDTH / 2;
 	private final double SCREEN_CENTER_Y = RESOLUTION_HEIGHT / 2;
 	
-	private final double GEAR_CAM_X_FROM_PIVOT = Robot.getPref("Gear cam x distance from pivot", 0);
-	private final double GEAR_CAM_Y_FROM_PIVOT = Robot.getPref("Gear cam y distance from pivot", 0);
 	private final double PIVOT_TO_FRONT_DISTANCE = Robot.getPref("Distance from pivot point to front of robot", 0);
 
 	public Vision() {
@@ -45,6 +43,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 			double leftGearCenterX = getNumber("leftGearCenterX", 0);
 			double rightGearCenterX = getNumber("rightGearCenterX", 0);
 			double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
+//			double pixelDist = Math.abs(getPixelDistanceToGear());
 			double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
 			double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
 			return distanceToGear; 
@@ -61,10 +60,10 @@ public class Vision extends Subsystem implements DashboardInterface {
 		if (getBoolean("OH-YEAH", true)) {
 			double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
 			double pegY = (getNumber("leftGearCenterY", 0) + getNumber("rightGearCenterY", 0)) / 2;
-			double m = (getNumber("leftGearCenterY", 0) - getNumber("rightGearCenterY", 0)) / 
-					(getNumber("leftGearCenterX", 0) - getNumber("rightGearCenterX", 0));
+			double m = (getNumber("rightGearCenterY", 0) - getNumber("leftGearCenterY", 0)) / 
+					(getNumber("rightGearCenterX", 0) - getNumber("leftGearCenterX", 0));
 	
-			return Math.abs(pegX + m*pegY - m*SCREEN_CENTER_Y - SCREEN_CENTER_X) / Math.sqrt(m*m + 1);
+			return ( -pegX/m + pegY - SCREEN_CENTER_Y + SCREEN_CENTER_X/m ) / Math.sqrt(1/(m*m) + 1);
 		} else {
 			return 0;
 		}
@@ -74,7 +73,10 @@ public class Vision extends Subsystem implements DashboardInterface {
 	 * @return calculated angle from camera's line of sight to gear lift
 	 */
 	public double getCameraAngleToGear() {
-		double pixelDisplacement = getPixelDistanceToGear();
+//		double pixelDisplacement = getPixelDistanceToGear();
+
+		double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
+		double pixelDisplacement = pegX - SCREEN_CENTER_X;
 		double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
 		
 		return Math.atan(pixelDisplacement / abstractDepth);
@@ -86,12 +88,12 @@ public class Vision extends Subsystem implements DashboardInterface {
 	public double getDistanceToGear() {
 		double l = getCameraDistanceToGearPlane();
 		double theta = getCameraAngleToGear();
-		double x = GEAR_CAM_X_FROM_PIVOT;
-		double y = GEAR_CAM_Y_FROM_PIVOT;
+		double x = Robot.getPref("Gear cam x distance from pivot", 0);
+		double y = Robot.getPref("Gear cam y distance from pivot", 0);
 		double r = Math.sqrt( x*x + y*y);
 		double psi = Math.atan(x/y);
 		double d = l / Math.cos(theta);
-		double beta = Math.PI*3/4 - theta - psi;
+		double beta = Math.PI - theta - psi;
 		
 		return Math.sqrt(r*r + d*d - 2*r*d*Math.cos(beta)) - PIVOT_TO_FRONT_DISTANCE;
 	}
@@ -102,13 +104,13 @@ public class Vision extends Subsystem implements DashboardInterface {
 	public double getAngleToGear() {
 		double l = getCameraDistanceToGearPlane();
 		double theta = getCameraAngleToGear();
-		double x = GEAR_CAM_X_FROM_PIVOT;
-		double y = GEAR_CAM_Y_FROM_PIVOT;
+		double x = Robot.getPref("Gear cam x distance from pivot", 0);
+		double y = Robot.getPref("Gear cam y distance from pivot", 0);
 		double r = Math.sqrt( x*x + y*y);
 		double psi = Math.atan(x/y);
 		double d = l / Math.cos(theta);
-		double beta = Math.PI*3/4 - theta - psi;
-		double D = r*r + d*d - 2*r*d*Math.cos(beta);
+		double beta = Math.PI - theta - psi;
+		double D = Math.sqrt( r*r + d*d - 2*r*d*Math.cos(beta));
 		
 		return Math.toDegrees(Math.asin(d*Math.sin(beta)/D) - psi);
 	}
@@ -141,6 +143,8 @@ public class Vision extends Subsystem implements DashboardInterface {
 
 	@Override
 	public void displayData() {
+		putNumber("Camera Distance to Gear Plane", getCameraDistanceToGearPlane());
+		putNumber("Camera Angle to Gear", getCameraAngleToGear());
 		putNumber("Distance to Gear", getDistanceToGear());
 		putNumber("Angle to Gear", getAngleToGear());
 		putNumber("Distance to Boiler", getDistanceToBoiler());
