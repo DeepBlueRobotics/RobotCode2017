@@ -101,10 +101,10 @@ public class AutoModeLoadSide extends CommandGroup {
 		addSequential(new AutoDrive(0, (0 - direction) * 90, Robot.drivetrain));
 
 		addSequential(new AutoDrive(0, Robot.vision.getAngleToBoiler(), Robot.drivetrain));
-		addSequential(new AutoDrive(3 - Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
+		addSequential(new AutoDrive(36 - Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
 
 		// Aims and shoots
-		addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
+		//addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
 
 	}
 }
