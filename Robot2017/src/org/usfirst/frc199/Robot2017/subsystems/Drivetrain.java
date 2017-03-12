@@ -196,7 +196,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		// leftMotor.set(leftDriveVelocityPID.getOutput());
 		// rightMotor.set(rightDriveVelocityPID.getOutput());
 	}
-
+<<<<<<< HEAD
+=======
 	
 	public void unevenSetDistanceTarget(double distance) {
 		leftDistancePID.setRelativeLocation(0);
@@ -227,6 +228,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		rightDistancePID.update(rightEncoder.getDistance());
 		unevenTankDrive(leftDistancePID.getOutput(), rightDistancePID.getOutput());
 	}
+>>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 
 	// shiftPiston.get().toString()
 	public boolean inHighGear() {
@@ -357,8 +359,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
 		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
-
+<<<<<<< HEAD
+=======
 //		unevenArcadeDrive(0, anglePID.getOutput());
+>>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 	}
 
 	/**
