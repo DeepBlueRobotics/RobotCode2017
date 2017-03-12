@@ -16,7 +16,6 @@ def findBoiler(frame, lower, upper):
 	vals = []
 	
 	# loop over the contours
-<<<<<<< HEAD
         for c in cnts:
                 vals.append((c, cv2.contourArea(c)))
 							
@@ -24,17 +23,6 @@ def findBoiler(frame, lower, upper):
 	
 	# if the biggest two contours are still tiny, return all -1 
 	if (len(vals) < 2): # no tape found
-=======
-	for c in cnts:
-		area = cv2.contourArea(c)
-		if (area > 5 and area < 105):
-			vals.append((c, area))
-
-	vals.sort(key=lambda x: x[1], reverse=True)	
-	
-	# if there are fewer than 2 contours or the biggest two contours are still tiny, return all -1
-	if (len(vals) < 2):
->>>>>>> a0dc76e1da27491723489b4c765017d1afa592db
 		return (-1, -1)
 	elif (vals[1][1] < 5):
                 return (-1, -1)

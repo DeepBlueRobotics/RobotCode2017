@@ -22,9 +22,9 @@ public class AutoModeBoilerSide extends CommandGroup {
 	 */
 	public AutoModeBoilerSide(boolean alliance) {
 
-		double direction = -1;
+		double direction = 1;
 		if (alliance)
-			direction = 1;
+			direction = -1;
 
 		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 91.66);
 		// in. from front end of robot to point on field
@@ -51,10 +51,10 @@ public class AutoModeBoilerSide extends CommandGroup {
 		addSequential(new AutoDrive(0, (0 - direction) * 60, Robot.drivetrain));
 
 		//Drives toward lift
-		//addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
+		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
 		
 		// drives up to lift and aligns, shoots
-		addSequential(new AutoAlignGear(false));
+		//addSequential(new AutoAlignGear(true));
 
 		/*
 		 * //METHOD 2: addSequential(new

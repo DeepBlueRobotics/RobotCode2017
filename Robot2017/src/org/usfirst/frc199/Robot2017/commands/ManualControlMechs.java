@@ -20,9 +20,6 @@ public class ManualControlMechs extends Command {
 		this.shooter = shooter;
 		this.climber = climber;
 		this.intake = intake;
-		requires(Robot.shooter);
-		requires(Robot.climber);
-		requires(Robot.intake);
 	}
 
 	// Called just before this Command runs the first time

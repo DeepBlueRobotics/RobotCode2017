@@ -30,9 +30,9 @@ public class AutoModeCenter extends CommandGroup {
 		// in. dividers protrude from the airship toward alliance wall (approx.)
 		final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07);
 		// in. from corner to corner of airship; Drives to lift and aligns
-		//addSequential(new AutoDrive(75, 0, Robot.drivetrain));
+		addSequential(new AutoDrive(75, 0, Robot.drivetrain));
 		
-		addSequential(new AutoAlignGear(false));
+		//addSequential(new AutoAlignGear(true));
 
 		/**
 		 * WE DO NOT NEED TO TRAVEL OUT TO CROSS THE BASELINE! FIX LATER
