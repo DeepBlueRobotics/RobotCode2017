@@ -43,7 +43,7 @@ public class OI {
 		intakeButton = new JoystickButton(manipulator, 7);
 		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
-		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
+		toggleIntakeButton.whenPressed(new ToggleIntake(false, false, Robot.intake));
 		autoUSAdjustButton = new JoystickButton(manipulator, 1);
 		autoUSAdjustButton.whenPressed(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
 				Robot.drivetrain.getUSTargetAngle(), Robot.drivetrain));

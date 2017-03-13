@@ -12,11 +12,15 @@ import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 public class ToggleIntake extends Command {
 	IntakeInterface intake;
 	boolean firstTime = true;
+	boolean giveDirection = false;
+	boolean down = true;
 	Timer tim = new Timer();
 
-	public ToggleIntake(IntakeInterface intake) {
+	public ToggleIntake(boolean giveDirection, boolean down, IntakeInterface intake) {
 		requires(Robot.intake);
 		this.intake = intake;
+		this.giveDirection = giveDirection;
+		this.down = down;
 	}
 
 	// Called just before this Command runs the first time
@@ -28,7 +32,7 @@ public class ToggleIntake extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		if (firstTime) {
-			intake.toggleIntake();
+			intake.toggleIntake(giveDirection, down);
 			firstTime = false;
 		}
 	}
