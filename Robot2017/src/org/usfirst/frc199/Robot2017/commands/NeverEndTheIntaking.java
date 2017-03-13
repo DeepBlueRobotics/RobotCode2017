@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class NeverEndTheIntaking extends Command {
 
 	Timer tim;
-	boolean beenHereB4 = false;
 	boolean intaking = false;
 	IntakeInterface intake;
 
@@ -26,23 +25,21 @@ public class NeverEndTheIntaking extends Command {
 	protected void initialize() {
 		tim.reset();
 		tim.start();
-		beenHereB4 = false;
 		intaking = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		//This toggle the intake once, and after 1 sec, stops the toggle motor and starts intaking
-		if (!beenHereB4) {
-			beenHereB4 = true;
+
+		if(tim.get() <= 1) {
 			intake.toggleIntake(true, true);
-		}
-		if (tim.get() > 1) {
-			if (intaking) {
-				intake.controlledIntake(false);
-			} else {
+		} else {
+			if(!intaking) {
 				intaking = true;
-				intake.setIntakePistonNeutral();
+				intake.stopIntake();
+			} else {
+				intake.controlledIntake(false);
 			}
 		}
 		
