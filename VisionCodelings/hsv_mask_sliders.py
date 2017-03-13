@@ -27,9 +27,9 @@ cv2.createTrackbar('US','sliders',dupper[1],255,nothing)
 cv2.createTrackbar('LV','sliders',dlower[2],255,nothing)
 cv2.createTrackbar('UV','sliders',dupper[2],255,nothing)
 
-cap = cv2.VideoCapture(1)
-# ret = cap.set(3,320)
-# ret = cap.set(4,180)
+cap = cv2.VideoCapture(0)
+ret = cap.set(3,320)
+ret = cap.set(4,180)
 
 
 while(1):

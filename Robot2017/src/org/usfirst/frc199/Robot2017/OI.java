@@ -26,7 +26,6 @@ public class OI {
 	public JoystickButton autoUSAdjustButton;
 	public Joystick manipulator;
 	public JoystickButton toggleFlipper;
-	public JoystickButton endlessIntakingButton;
 
 	public OI() {
 		manipulator = new Joystick(2);
@@ -44,15 +43,13 @@ public class OI {
 		intakeButton = new JoystickButton(manipulator, 7);
 		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 3);
-		toggleIntakeButton.whenPressed(new ToggleIntake(Robot.intake));
+		toggleIntakeButton.whenPressed(new ToggleIntake(false, false, Robot.intake));
 		autoUSAdjustButton = new JoystickButton(manipulator, 1);
 		autoUSAdjustButton.whenPressed(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
 				Robot.drivetrain.getUSTargetAngle(), Robot.drivetrain));
 
 		rightJoy = new Joystick(1);
 
-		endlessIntakingButton = new JoystickButton(rightJoy, 7);
-		endlessIntakingButton.whenPressed(new NeverEndTheIntaking(Robot.intake));
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
 		autoShootRoutineButton.whileHeld(new AutoShootRoutine());
 		gradualDriveButton = new JoystickButton(rightJoy, 1);

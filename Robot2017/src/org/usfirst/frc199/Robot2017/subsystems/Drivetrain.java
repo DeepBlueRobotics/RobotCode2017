@@ -68,9 +68,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID leftDriveVelocityPID = new PID("LeftDriveVelocity");
 	private PID rightDriveVelocityPID = new PID("RightDriveVelocity");
 	public boolean shiftedHigh = true;
-	
-	private PID leftDistancePID = new PID("LeftDriveDistance");
-	private PID rightDistancePID = new PID("RightDriveDistance");
 
 	public Drivetrain() {
 		super();
@@ -199,36 +196,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		// leftMotor.set(leftDriveVelocityPID.getOutput());
 		// rightMotor.set(rightDriveVelocityPID.getOutput());
 	}
-	
-	public void unevenSetDistanceTarget(double distance) {
-		leftDistancePID.setRelativeLocation(0);
-		leftDistancePID.setTarget(distance);
-		leftDistancePID.update(leftEncoder.getDistance());
-		
-
-		rightDistancePID.setRelativeLocation(0);
-		rightDistancePID.setTarget(distance);
-		rightDistancePID.update(rightEncoder.getDistance());
-	}
-	
-	public void unevenUpdateDistance() {
-
-		leftDistancePID.update(leftEncoder.getDistance());
-		rightDistancePID.update(rightEncoder.getDistance());
-		
-		leftMotor.set(leftDistancePID.getOutput());
-		rightMotor.set(rightDistancePID.getOutput());
-	}
-	
-	public boolean unevenDistanceReachedTarget() {
-		return leftDistancePID.reachedTarget() && rightDistancePID.reachedTarget();
-	}
-	
-	public void unevenVelocityAutoDrive() {
-		leftDistancePID.update(leftEncoder.getDistance());
-		rightDistancePID.update(rightEncoder.getDistance());
-		unevenTankDrive(leftDistancePID.getOutput(), rightDistancePID.getOutput());
-	}
 
 	// shiftPiston.get().toString()
 	public boolean inHighGear() {
@@ -307,8 +274,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
-//		robotDrive.arcadeDrive(0, -distancePID.getOutput());
-		unevenArcadeDrive(distancePID.getOutput(),0);
+		robotDrive.arcadeDrive(0, -distancePID.getOutput());
+//		unevenArcadeDrive(distancePID.getOutput(),0);
 	}
 
 	/**
@@ -318,8 +285,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public boolean distanceReachedTarget() {
 		if(distancePID.reachedTarget()) {
-//			resetEncoders();
-//			resetGyro();
+			resetEncoders();
+			resetGyro();
 			return true;
 		} else {
 			return false;
@@ -359,7 +326,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
 		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
-//		unevenArcadeDrive(0, anglePID.getOutput());
 	}
 
 	/**
@@ -369,8 +335,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public boolean angleReachedTarget() {
 		if(anglePID.reachedTarget()) {
-//			resetEncoders();
-//			resetGyro();
+			resetEncoders();
+			resetGyro();
 			return true;
 		} else {
 			return false;
@@ -736,7 +702,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Right PID error: ", rightDriveVelocityPID.getError());
 		putNumber("Left PID target: ", leftDriveVelocityPID.getTarget());
 		putNumber("Right PID target: ", rightDriveVelocityPID.getTarget());
-		putBoolean("Uneven distance PIDs reachedTarget", unevenDistanceReachedTarget());
 		
 		/**
 		putNumber("Distance PID error", distancePID.getError());

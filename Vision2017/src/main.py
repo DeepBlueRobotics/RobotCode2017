@@ -26,9 +26,7 @@ gearCap = cv2.VideoCapture(1)
 log = open("/tmp/vision.log", 'w')
 
 # Gear Tape values
-
 gearFailCounter = 0
-
 
 
 """ Exposure script """ 

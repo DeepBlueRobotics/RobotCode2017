@@ -11,10 +11,10 @@ public class ToggleIntakeTest {
 	public void test() {
 		IntakeInterface mockIntake = mock(IntakeInterface.class);
 
-		ToggleIntake testCommand = new ToggleIntake(mockIntake);
+		ToggleIntake testCommand = new ToggleIntake(false, false, mockIntake);
 
 		testCommand.execute();
-		verify(mockIntake).toggleIntake();
+		verify(mockIntake).toggleIntake(false, false);
 
 		testCommand.end();
 		verify(mockIntake).setIntakePistonNeutral();

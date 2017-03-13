@@ -100,11 +100,6 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 */
 	public boolean distanceReachedTarget();
 
-	public void unevenSetDistanceTarget(double distance);
-	public void unevenUpdateDistance();
-	public boolean unevenDistanceReachedTarget();
-	public void unevenVelocityAutoDrive();
-	
 	/**
 	 * @return the angle that the robot turned relative to the gyro's last reset
 	 */
