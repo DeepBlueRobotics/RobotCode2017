@@ -13,7 +13,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 	// in from camera bottom to top of boiler tape
 	private final double BOILER_HEIGHT = 88 - SHOOTER_CAM_HEIGHT; 
 	// radians from north that you can see in both directions
-	private final double THETA = Math.toRadians(34.25);
+	private final double THETA = Math.toRadians(29.85);
 	// radians of the camera's vertical field of view
 	private final double SHOOTER_CAM_ANGLE = Math.toRadians(41.91);
 	// pixel width of image
@@ -42,7 +42,9 @@ public class Vision extends Subsystem implements DashboardInterface {
 		if (getBoolean("OH-YEAH", true)) {
 			double leftGearCenterX = getNumber("leftGearCenterX", 0);
 			double rightGearCenterX = getNumber("rightGearCenterX", 0);
-			double pixelDist = Math.abs(rightGearCenterX - leftGearCenterX);
+			double leftGearCenterY = getNumber("leftGearCenterY", 0);
+			double rightGearCenterY = getNumber("rightGearCenterY", 0);
+			double pixelDist = Math.sqrt(Math.pow(rightGearCenterX - leftGearCenterX, 2) + Math.pow(rightGearCenterY - leftGearCenterY, 2));
 //			double pixelDist = Math.abs(getPixelDistanceToGear());
 			double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
 			double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
@@ -63,7 +65,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 			double m = (getNumber("rightGearCenterY", 0) - getNumber("leftGearCenterY", 0)) / 
 					(getNumber("rightGearCenterX", 0) - getNumber("leftGearCenterX", 0));
 	
-			return ( -pegX/m + pegY - SCREEN_CENTER_Y + SCREEN_CENTER_X/m ) / Math.sqrt(1/(m*m) + 1);
+			return ( pegX + m*pegY - m*SCREEN_CENTER_Y + SCREEN_CENTER_X ) / (m*m + 1);
 		} else {
 			return 0;
 		}

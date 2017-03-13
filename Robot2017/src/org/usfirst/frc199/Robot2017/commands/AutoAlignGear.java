@@ -20,7 +20,9 @@ public class AutoAlignGear extends CommandGroup {
 		addSequential(new WriteToNT("Vision/gearRunning", true));
 		addSequential(new AutoDelay(-1, Robot.intake));
 		addSequential(new AutoDelay(0.25, Robot.intake));
-		addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear(), Robot.drivetrain));
+//		addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear(), Robot.drivetrain));
+		addSequential(new AutoDrive(0, Robot.vision.getAngleToGear(), Robot.drivetrain));
+		addSequential(new AutoDrive(Robot.vision.getDistanceToGear(), 0, Robot.drivetrain));
 		if (shoot) {
 			addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(), 6.9, Robot.shooter));
 		}
