@@ -25,7 +25,7 @@ log = open("/tmp/vision.log", 'w')
 # Gear Tape values
 gearFailCounter = 0
 
-""" Exposure script """ 
+""" Exposure script """
 # shooter camera
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
@@ -59,7 +59,7 @@ while(True):
 		ret, shooterFrame = shooterCap.read()
 		# Run boiler identification script
 		centers = boiler_identify.findBoiler(shooterFrame, np.array([48, 175, 100]), np.array([100, 255, 200]))
-		
+
 		nt.write("Vision", "boilerFound", centers[0] != -1)
 		if (centers[0] != -1):
 			nt.write("Vision", "boilerX", centers[0])
@@ -83,12 +83,12 @@ while(True):
 		nt.write("Vision", "leftGearCenterY", ly)
 		nt.write("Vision", "rightGearCenterX", rx)
 		nt.write("Vision", "rightGearCenterY", ry)
-		
+
 		nt.write("Vision", "leftGearBottomY", lb)
 		nt.write("Vision", "leftGearTopY", lt)
 		nt.write("Vision", "rightGearBottomY", rb)
 		nt.write("Vision", "rightGearTopY", rt)
-		
-		nt.write("Vision", "OH-YEAH", success)
+
+		nt.write("Vision", "OH-YEAH", lx != -1)
 	else:
 		gearCap.release()

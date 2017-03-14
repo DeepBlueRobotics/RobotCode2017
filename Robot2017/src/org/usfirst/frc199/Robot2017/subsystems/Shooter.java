@@ -297,20 +297,28 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Gets the turret encoder value by updating the turn counter. Only works if
-	 * encoder turns less than 180 degrees each sampling
+	 * Gets the turret angle using the turret encoder value by updating the turn counter. 
+	 * Only works ifencoder turns less than 180 degrees each sampling. 
 	 * 
 	 * @return the turret encoder value
 	 */
+	/*
+	 * Summary of what this function does: the encoder (basically a
+	 * potentiometer) will be spinning a lot, but it can only measure angles up
+	 * to 360. When you inevitably pass 360, it will go back to zero. This
+	 * function keeps track to see when it passes 360 and keeps a counter.
+	 */
 	public double getTurretEncoder() {
-		double newTurretEncoder = turretEncoder.get()*360;
+		double newTurretEncoder = turretEncoder.get() * 360;
+		// If angle goes up by more than 180 in one interval, it passed 360
 		if (newTurretEncoder - prevTurretEncoder > 180) {
-			turretEncoderTurnCounter++;
-		} else if (newTurretEncoder - prevTurretEncoder < -180) {
 			turretEncoderTurnCounter--;
+		// If it goes down by more than 180, it passed 360 the other direction
+		} else if (newTurretEncoder - prevTurretEncoder < -180) {
+			turretEncoderTurnCounter++;
 		}
 		prevTurretEncoder = newTurretEncoder;
-		return turretEncoderTurnCounter * 360 + newTurretEncoder;
+		return (turretEncoderTurnCounter * 360 + newTurretEncoder) / encoderAngleRatio;
 	}
 
 	/**
