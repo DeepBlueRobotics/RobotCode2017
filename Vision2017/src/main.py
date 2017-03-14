@@ -89,6 +89,6 @@ while(True):
 		nt.write("Vision", "rightGearBottomY", rb)
 		nt.write("Vision", "rightGearTopY", rt)
 
-		nt.write("Vision", "OH-YEAH", lx != -1)
+		nt.write("Vision", "OH-YEAH", success)
 	else:
 		gearCap.release()
