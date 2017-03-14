@@ -303,7 +303,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @return the turret encoder value
 	 */
 	public double getTurretEncoder() {
-		double newTurretEncoder = turretEncoder.get();
+		double newTurretEncoder = turretEncoder.get()*360;
 		if (newTurretEncoder - prevTurretEncoder > 180) {
 			turretEncoderTurnCounter++;
 		} else if (newTurretEncoder - prevTurretEncoder < -180) {
