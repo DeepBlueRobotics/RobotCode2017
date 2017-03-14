@@ -28,23 +28,19 @@ gearFailCounter = 0
 """ Exposure script """ 
 # shooter camera
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-	"uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # gear camera
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-	"uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # alt shooter camera
 subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-	"uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # alt gear camera
 subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-	"uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
 
 log.write("log works.\n")
 nt.write("Vision", "OH-YEAH", False)
@@ -80,7 +76,7 @@ while(True):
 
 		ret, gearFrame = gearCap.read()
 		# Run gear mark identification
-		lx, ly, rx, ry, lb, lt, rb, rt = lift_marks_identify.findTape(
+		lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
 			gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
 
 		nt.write("Vision", "leftGearCenterX", lx)
@@ -93,6 +89,6 @@ while(True):
 		nt.write("Vision", "rightGearBottomY", rb)
 		nt.write("Vision", "rightGearTopY", rt)
 		
-		nt.write("Vision", "OH-YEAH", lx != -1)
+		nt.write("Vision", "OH-YEAH", success)
 	else:
 		gearCap.release()
