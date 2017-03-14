@@ -57,7 +57,8 @@ public class PID implements DashboardInterface {
 		reset = true;
 		output = 0.0;
 	}
-
+	
+	
 	public void setTarget(double value, boolean reset) {
 		target = value;
 		if (reset) {
@@ -65,6 +66,11 @@ public class PID implements DashboardInterface {
 			output = 0.0;
 			totalError = 0.0;
 		}
+	}
+	
+	public void setTargetNotTotError(double value){
+		target = value;
+		output = 0.0;
 	}
 
 	/**

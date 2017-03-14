@@ -7,19 +7,17 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 /**
  *
  */
-public class AutoDrive extends Command {
+public class AutoDriveForGear extends Command {
 
 	double targetDist, targetAngle;
 	DrivetrainInterface drivetrain;
-	boolean angle;
+	boolean angleDone = false;
 
-	public AutoDrive(double targetDist, double targetAngle, DrivetrainInterface drivetrain) {
+	public AutoDriveForGear(DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
-		this.targetDist = targetDist;
-		this.targetAngle = targetAngle;
+		this.targetDist = Robot.vision.getDistanceToGear();
+		this.targetAngle = Robot.vision.getAngleToGear();
 		this.drivetrain = drivetrain;
-		if(targetAngle == 0)
-			angle = false;
 	}
 
 	// Called just before this Command runs the first time
@@ -33,10 +31,27 @@ public class AutoDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(angle && !drivetrain.angleReachedTarget())
+		//update targets with new/current vision values
+		//reset encoders/gyro w/o reseting totalError
+		if(!drivetrain.angleReachedTarget()){
+			targetAngle = Robot.vision.getAngleToGear();
+			drivetrain.getAnglePID().setTargetNotTotError(targetAngle);
+			drivetrain.resetGyro();
 			drivetrain.updateAnglePID();
-		else if(!drivetrain.distanceReachedTarget())
+		} else if(drivetrain.angleReachedTarget()){
+			angleDone = true;
+		} else if(angleDone && !drivetrain.distanceReachedTarget()){
+			targetDist = Robot.vision.getDistanceToGear();
+			drivetrain.getDistancePID().setTargetNotTotError(targetDist);
+			drivetrain.resetEncoder();
 			drivetrain.updateDistancePID();
+		}
+		
+//		if(!drivetrain.angleReachedTarget())
+//			drivetrain.updateAnglePID();
+//		else if(!drivetrain.distanceReachedTarget())
+//			drivetrain.updateDistancePID();
+		
 		if (drivetrain.currentControl()) {
 			drivetrain.shiftGears();
 		}
@@ -44,10 +59,8 @@ public class AutoDrive extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-		if(angle)
-			return drivetrain.angleReachedTarget();
-		else return drivetrain.distanceReachedTarget();
-
+		//don't need to check if angle reached target bc dist will only be reached once angle is
+		return drivetrain.distanceReachedTarget();
 	}
 
 	// Called once after isFinished returns true

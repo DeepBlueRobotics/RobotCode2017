@@ -12,6 +12,8 @@ public interface PIDInterface {
 	 * @param value - The target value in real units
 	 */
 	public void setTarget(double value);
+	
+	public void setTargetNotTotError(double value);
 
 	/**
 	 * Updates state based on a new input value
