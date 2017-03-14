@@ -77,33 +77,22 @@ while(True):
 		gearCap.open(1)
 		gearCap.set(3, 640)
 		gearCap.set(4, 360)
-		if gearFailCounter < 10:
-			nt.write("Vision", "gearVisionRunning", True)
 
-			ret, gearFrame = gearCap.read()
-			# Run gear mark identification
-			lx, ly, rx, ry, success = lift_marks_identify.findTape(
-				gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
+		ret, gearFrame = gearCap.read()
+		# Run gear mark identification
+		lx, ly, rx, ry, lb, lt, rb, rt = lift_marks_identify.findTape(
+			gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
 
-			if success:
-				nt.write("Vision", "leftGearCenterX", lx)
-				nt.write("Vision", "leftGearCenterY", ly)
-				nt.write("Vision", "rightGearCenterX", rx)
-				nt.write("Vision", "rightGearCenterY", ry)
-
-				nt.write("Vision", "OH-YEAH", True)
-
-				nt.write("Vision", "gearVisionRunning", False)
-
-				gearFailCounter = 10
-			else:
-				gearFailCounter += 1
-				nt.write("Vision", "OH-YEAH", False)
-		elif not nt.get("Vision", "OH-YEAH", False):
-			nt.write("Vision", "gearVisionRunning", False)
-			gearFailCounter = 0
+		nt.write("Vision", "leftGearCenterX", lx)
+		nt.write("Vision", "leftGearCenterY", ly)
+		nt.write("Vision", "rightGearCenterX", rx)
+		nt.write("Vision", "rightGearCenterY", ry)
+		
+		nt.write("Vision", "leftGearBottomY", lb)
+		nt.write("Vision", "leftGearTopY", lt)
+		nt.write("Vision", "rightGearBottomY", rb)
+		nt.write("Vision", "rightGearTopY", rt)
+		
+		nt.write("Vision", "OH-YEAH", lx != -1)
 	else:
-		nt.write("Vision", "gearVisionRunning", False)
-		nt.write("Vision", "OH-YEAH", False)
-		gearFailCounter = 0
 		gearCap.release()
