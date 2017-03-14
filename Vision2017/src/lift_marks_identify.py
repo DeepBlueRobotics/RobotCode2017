@@ -1,7 +1,7 @@
 '''
 Returns the left and right gear tapes' (l & r) center-x (cx) and -y (cy), tops (t), bottoms (b), 
 and the boolean if successful in the order of:
-    lcx, lcy, rcx, rcy, lb,  lt, rb, rt, success
+	lcx, lcy, rcx, rcy, lb,  lt, rb, rt, success
 Returns -1 for all and False for success if not successful at finding the tapes.
 '''
 
@@ -10,12 +10,12 @@ import cv2
 import operator
 
 def findTape(frame, lower, upper):
-    # rotates image
-    image_center = tuple(np.array(frame.shape)/2)
-    M = cv2.getRotationMatrix2D(image_center, 180, 1.0)
-    frame = cv2.warpAffine(frame, M, frame.shape,flags=cv2.INTER_LINEAR)
+	# rotates image
+	image_center = tuple(np.array(frame.shape)/2)
+	M = cv2.getRotationMatrix2D(image_center, 180, 1.0)
+	frame = cv2.warpAffine(frame, M, frame.shape,flags=cv2.INTER_LINEAR)
 
-    # filters image
+	# filters image
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 	mask = cv2.inRange(hsv, lower, upper)
 	cnts, hierarchy = cv2.findContours(mask.copy(), cv2.RETR_LIST,
@@ -23,7 +23,7 @@ def findTape(frame, lower, upper):
 	
 	cnts2 = []
 
-    # puts all the contours that have 4 verticies and an area more than 100 in cnts2
+	# puts all the contours that have 4 verticies and an area more than 100 in cnts2
 	for c in cnts:
 		epsilon = 0.05 * cv2.arcLength(c, True)
 		c = cv2.approxPolyDP(c, epsilon, True)
@@ -37,7 +37,7 @@ def findTape(frame, lower, upper):
 	if cnts2 != None:
 		cnts2.sort(key=operator.itemgetter(0), reverse=True)
 
-    # narrows down contours to final matching pair and returns them if found
+	# narrows down contours to final matching pair and returns them if found
 	for i in range(0, len(cnts2) - 1):
 		for j in range(i + 1, len(cnts2)):
 			if (cnts2[i][0] / 2) < cnts2[j][0]:
@@ -58,19 +58,19 @@ def findTape(frame, lower, upper):
 					iBox = cv2.boundingRect(cnts2[i][1])
 					jBox = cv2.boundingRect(cnts2[j][1])
 
-                    boti = iBox[1] + ibox[3]
+					boti = iBox[1] + ibox[3]
 					topi = ibox[1]
 
-                    botj = jbox[1] + jbox[3]
-                    topj = jbox[1]
+					botj = jbox[1] + jbox[3]
+					topj = jbox[1]
 
 					if centerXi < centerXj:
 						return centerXi, centerYi, centerXj, centerYi, \
-                            boti, topi, botj, topj, True
+							boti, topi, botj, topj, True
 					else:
-                        return centerXj, centerYj, centerXi, centerYi, \
-                            botj, topj, boti, topi, True
+						return centerXj, centerYj, centerXi, centerYi, \
+							botj, topj, boti, topi, True
 				break
 
-    # returns this if no countours found
+	# returns this if no countours found
 	return -1, -1, -1, -1, -1, -1, -1, -1, False
