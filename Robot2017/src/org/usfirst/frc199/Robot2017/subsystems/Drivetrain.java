@@ -233,6 +233,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * command finishes.
 	 */
 	public void stopDrive() {
+		unevenArcadeDrive(0, 0);
 		arcadeDrive(0, 0);
 	}
 
@@ -427,7 +428,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateRightSpeedPID() {
 		rightDriveVelocityPID.update(rightEncoder.getRate());
-		SmartDashboard.putNumber("Sending to right motor", rightMotor.getRaw());
+		SmartDashboard.putNumber("Sending to right motor", rightMotor.get());
 		rightMotor.set(rightDriveVelocityPID.getOutput());
 	}
 

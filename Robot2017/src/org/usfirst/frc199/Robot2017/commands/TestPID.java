@@ -51,8 +51,9 @@ public class TestPID extends Command {
 				drivetrain.setDistanceTarget(target);
 				break;
 			case DRIVEANGLE:
-				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
 				drivetrain.resetGyro();
+				drivetrain.stopDrive();
+				target = SmartDashboard.getNumber("PID/DriveAngle/TestTarget" , 0);
 				drivetrain.setAngleTarget(target);
 				break;
 			case SHOOTER:
