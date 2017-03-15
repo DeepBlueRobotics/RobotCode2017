@@ -53,11 +53,11 @@ def findTape(frame, lower, upper):
 					iBox = cv2.boundingRect(cnts2[i][1])
 					jBox = cv2.boundingRect(cnts2[j][1])
 
-					boti = 360 - ibox[1]
-					topi = 360 - ibox[1] - ibox[3]
+					boti = 360 - iBox[1]
+					topi = 360 - iBox[1] - iBox[3]
 
-					botj = 360 - jbox[1]
-					topj = 360 - jbox[1] - jbox[3]
+					botj = 360 - jBox[1]
+					topj = 360 - jBox[1] - jBox[3]
 
 					if centerXi < centerXj:
 						return centerXi, centerYi, centerXj, centerYi, \
