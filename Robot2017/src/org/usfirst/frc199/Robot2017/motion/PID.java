@@ -97,11 +97,16 @@ public class PID implements DashboardInterface {
 		error = target - input;
 		interval = intervalTimer.get();
 		intervalTimer.reset();
-		output = kP * error;
+		if (name.toLowerCase().contains("velocity"))
+			output += interval * kP * error;
+		else output = kP * error;
 		if (interval > 0.0 && interval < 1.0 && !reset) {
 			totalError += error * interval;
 			rate = (error - lastError) / interval;
-			output += kI * totalError + kD * rate;
+			double addToOutput = kI * totalError + kD * rate;
+			if(name.toLowerCase().contains("velocity"))
+				output += interval * addToOutput;
+			else output += addToOutput;
 		} else {
 			reset = false;
 			totalError = 0;

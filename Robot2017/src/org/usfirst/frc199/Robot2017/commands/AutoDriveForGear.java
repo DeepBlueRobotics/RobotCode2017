@@ -30,7 +30,7 @@ public class AutoDriveForGear extends Command {
 		this.targetDist = Robot.vision.getDistanceToGear();
 		this.targetAngle = Robot.vision.getAngleToGear();
 		drivetrain.setDistanceTarget(Robot.vision.getDistanceToGear());
-		drivetrain.setAngleTarget( Robot.vision.getAngleToGear());
+		drivetrain.setAngleTarget(Robot.vision.getAngleToGear());
 		tim.start();
 		tim.reset();
 
