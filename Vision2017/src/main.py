@@ -19,7 +19,7 @@ nt = NTClient()
 shooterCap = cv2.VideoCapture(0)
 gearCap = cv2.VideoCapture(1)
 
-log = open("/tmp/vision.log", 'w')
+#log = open("/tmp/vision.log", 'w')
 
 # Gear Tape values
 gearFailCounter = 0
@@ -44,7 +44,7 @@ subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call(
     "uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
 
-log.write("log works.\n")
+#log.write("log works.\n")
 nt.write("Vision", "OH-YEAH", False)
 nt.write("Vision", "gearRunning", False)
 nt.write("Vision", "shooterRunning", False)
@@ -52,7 +52,7 @@ nt.write("Vision", "shooterRunning", False)
 while (True):
     """ boiler tape identification code """
     if nt.getShooter():
-        log.write("shooter running\n")
+        #log.write("shooter running\n")
         shooterCap.open(0)
         shooterCap.set(3, 640)
         shooterCap.set(4, 360)
@@ -72,7 +72,7 @@ while (True):
         shooterCap.release()
     """ gear tape identification code """
     if nt.getGear():
-        log.write("gear running\n")
+        #log.write("gear running\n")
 
         gearCap.open(1)
         gearCap.set(3, 640)
@@ -85,17 +85,22 @@ while (True):
 
         nt.write("Vision", "gearVisionRunning", True)
 
-        nt.write("Vision", "leftGearCenterX", lx)
-        nt.write("Vision", "leftGearCenterY", ly)
-        nt.write("Vision", "rightGearCenterX", rx)
-        nt.write("Vision", "rightGearCenterY", ry)
 
-        nt.write("Vision", "leftGearBottomY", lb)
-        nt.write("Vision", "leftGearTopY", lt)
-        nt.write("Vision", "rightGearBottomY", rb)
-        nt.write("Vision", "rightGearTopY", rt)
+        if (success):
+            nt.write("Vision", "leftGearCenterX", lx)
+            nt.write("Vision", "leftGearCenterY", ly)
+            nt.write("Vision", "rightGearCenterX", rx)
+            nt.write("Vision", "rightGearCenterY", ry)
 
-        nt.write("Vision", "OH-YEAH", success)
+            nt.write("Vision", "leftGearBottomY", lb)
+            nt.write("Vision", "leftGearTopY", lt)
+            nt.write("Vision", "rightGearBottomY", rb)
+            nt.write("Vision", "rightGearTopY", rt)
+            
+            nt.write("Vision", "OH-YEAH", success)
+
+        
     else:
         nt.write("Vision", "gearVisionRunning", False)
+        nt.write("Vision", "OH-YEAH", False)
         gearCap.release()
