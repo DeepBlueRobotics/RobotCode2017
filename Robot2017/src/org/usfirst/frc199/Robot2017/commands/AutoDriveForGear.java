@@ -38,41 +38,48 @@ public class AutoDriveForGear extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		//update targets with new/current vision values
-		//reset encoders/gyro w/o reseting totalError
-		if(!angleDone){
-			angleDone = drivetrain.angleReachedTarget();
-			drivetrain.updateAnglePID();
-			drivetrain.resetEncoder();
-		} else if(!drivetrain.distanceReachedTarget()){
-			drivetrain.updateDistancePID();
-		}
-		
-		if(tim.get() > noResetPeriod) {
-			if(targetDist != Robot.vision.getDistanceToGear()){
-				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+		// update targets with new/current vision values
+		// reset encoders/gyro w/o reseting totalError
+		if (Robot.vision.foundGearTape()) {
+			if (!angleDone) {
+				angleDone = drivetrain.angleReachedTarget();
+				drivetrain.updateAnglePID();
 				drivetrain.resetEncoder();
+			} else if (!drivetrain.distanceReachedTarget()) {
+				drivetrain.updateDistancePID();
 			}
-			if(targetAngle != Robot.vision.getAngleToGear()){
-				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-				drivetrain.resetGyro();
+
+			if (tim.get() > noResetPeriod) {
+				if (targetDist != Robot.vision.getDistanceToGear()) {
+					drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+					drivetrain.resetEncoder();
+					targetDist = Robot.vision.getDistanceToGear();
+				}
+				if (targetAngle != Robot.vision.getAngleToGear()) {
+					drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+					drivetrain.resetGyro();
+					targetAngle = Robot.vision.getAngleToGear();
+				}
+				// if (this.targetDist != Robot.vision.getDistanceToGear() &&
+				// this.targetAngle != Robot.vision.getAngleToGear()) {
+				// this.targetDist = Robot.vision.getDistanceToGear();
+				// this.targetAngle = Robot.vision.getAngleToGear();
+				// drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+				// drivetrain.resetGyro();
+				// drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+				// drivetrain.resetEncoder();
+				// }
+				tim.reset();
 			}
-//			if (this.targetDist != Robot.vision.getDistanceToGear() && this.targetAngle != Robot.vision.getAngleToGear()) {
-//				this.targetDist = Robot.vision.getDistanceToGear();
-//				this.targetAngle = Robot.vision.getAngleToGear();
-//				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-//				drivetrain.resetGyro();
-//				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-//				drivetrain.resetEncoder();
-//			}
-			tim.reset();
+		} else {
+			
 		}
-		
-//		if(!drivetrain.angleReachedTarget())
-//			drivetrain.updateAnglePID();
-//		else if(!drivetrain.distanceReachedTarget())
-//			drivetrain.updateDistancePID();
-		
+
+		// if(!drivetrain.angleReachedTarget())
+		// drivetrain.updateAnglePID();
+		// else if(!drivetrain.distanceReachedTarget())
+		// drivetrain.updateDistancePID();
+
 		if (drivetrain.currentControl()) {
 			drivetrain.shiftGears();
 		}
@@ -80,7 +87,8 @@ public class AutoDriveForGear extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-		//don't need to check if angle reached target bc dist will only be reached once angle is
+		// don't need to check if angle reached target bc dist will only be
+		// reached once angle is
 		return drivetrain.distanceReachedTarget();
 	}
 
