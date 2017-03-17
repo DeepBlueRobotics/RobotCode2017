@@ -1,5 +1,6 @@
 package org.usfirst.frc199.Robot2017;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -38,6 +39,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
+		CameraServer.getInstance().startAutomaticCapture();
 		drivetrain = new Drivetrain();
 		intake = new Intake();
 		shooter = new Shooter();
