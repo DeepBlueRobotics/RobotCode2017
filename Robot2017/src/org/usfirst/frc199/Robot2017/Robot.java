@@ -60,6 +60,9 @@ public class Robot extends IterativeRobot {
 				s.putString("~TYPE~", "SubSystem");
 			}
 		}
+		
+		drivetrain.shiftLow();
+		
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putBoolean("Vision/gearRunning", false);
 		SmartDashboard.putBoolean("Vision/shooterRunning", false);

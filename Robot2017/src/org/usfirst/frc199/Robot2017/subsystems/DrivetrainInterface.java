@@ -306,7 +306,17 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 * Resets the encoders to return zero at that point
 	 */
 	public void resetEncoder();
-
+	
+	/**
+	 * Checks if robot is in high gear
+	 */
+	public boolean inHighGear();
+	
+	/**
+	 * Shifts the piston in robotInit to make sure it's shifted low
+	 */
+	public void shiftLow();
+	
 	/**
 	 * Resets the gyro to return zero at that point
 	 */

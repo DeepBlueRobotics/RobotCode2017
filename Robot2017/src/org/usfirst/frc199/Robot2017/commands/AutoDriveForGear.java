@@ -2,6 +2,8 @@ package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
@@ -14,6 +16,7 @@ public class AutoDriveForGear extends Command {
 	boolean angleDone = false;
 	Timer tim = new Timer();
 	double noResetPeriod = Robot.getPref("AlignGear vision update period", 0.02);
+	double targetDist, targetAngle;
 
 	public AutoDriveForGear(DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
@@ -24,8 +27,10 @@ public class AutoDriveForGear extends Command {
 	public void initialize() {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
+		this.targetDist = Robot.vision.getDistanceToGear();
+		this.targetAngle = Robot.vision.getAngleToGear();
 		drivetrain.setDistanceTarget(Robot.vision.getDistanceToGear());
-		drivetrain.setAngleTarget( Robot.vision.getAngleToGear());
+		drivetrain.setAngleTarget(Robot.vision.getAngleToGear());
 		tim.start();
 		tim.reset();
 
@@ -44,10 +49,23 @@ public class AutoDriveForGear extends Command {
 		}
 		
 		if(tim.get() > noResetPeriod) {
-			drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-			drivetrain.resetGyro();
-			drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-			drivetrain.resetEncoder();
+			if(targetDist != Robot.vision.getDistanceToGear()){
+				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+				drivetrain.resetEncoder();
+			}
+			if(targetAngle != Robot.vision.getAngleToGear()){
+				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+				drivetrain.resetGyro();
+			}
+//			if (this.targetDist != Robot.vision.getDistanceToGear() && this.targetAngle != Robot.vision.getAngleToGear()) {
+//				this.targetDist = Robot.vision.getDistanceToGear();
+//				this.targetAngle = Robot.vision.getAngleToGear();
+//				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+//				drivetrain.resetGyro();
+//				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+//				drivetrain.resetEncoder();
+//			}
+			tim.reset();
 		}
 		
 //		if(!drivetrain.angleReachedTarget())
@@ -71,6 +89,7 @@ public class AutoDriveForGear extends Command {
 		drivetrain.stopDrive();
 		tim.reset();
 		tim.stop();
+		SmartDashboard.putBoolean("Vision/gearRunning", false);
 	}
 
 	// Called when another command which requires one or more of the same

@@ -37,7 +37,7 @@ public class AutoDelay extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		if (time == -1) {
-			return SmartDashboard.getBoolean("Vision/gearVisionRunning", false);
+			return SmartDashboard.getBoolean("Vision/OH-YEAH", false);
 		} else if (time == 0) {
 			return intake.gearLifted(true) && SmartDashboard.getBoolean("Vision/OH-YEAH", false);
 		} else {

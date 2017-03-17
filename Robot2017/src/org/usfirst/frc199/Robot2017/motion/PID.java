@@ -70,7 +70,6 @@ public class PID implements DashboardInterface {
 	
 	public void setTargetNotTotError(double value){
 		target = value;
-		output = 0.0;
 	}
 
 	/**
@@ -79,29 +78,35 @@ public class PID implements DashboardInterface {
 	 * @param newValue - new input value in real units
 	 */
 	public void update(double newValue) {
-		if (name.toLowerCase().contains("velocity")) {
-			if (Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
-				kI = 0;
-			} else {
-				kI = 1 / (Math.abs(target));
-			}
-
-			putNumber("kI", kI);
-		} else {
-			// this happens if is a distance or angle PID
-			kI = getNumber("kI", 0);
-		}
+//		if (name.toLowerCase().contains("velocity")) {
+//			if (Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
+//				kI = 0;
+//			} else {
+//				kI = 1 / (Math.abs(target));
+//			}
+//
+//			putNumber("kI", kI);
+//		} else {
+//			// this happens if is a distance or angle PID
+//			kI = getNumber("kI", 0);
+//		}
+		kI = getNumber("kI", 0);
 		kP = getNumber("kP", 0);
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;
 		interval = intervalTimer.get();
 		intervalTimer.reset();
-		output = kP * error;
+		if (name.toLowerCase().contains("velocity"))
+			output += interval * kP * error;
+		else output = kP * error;
 		if (interval > 0.0 && interval < 1.0 && !reset) {
 			totalError += error * interval;
 			rate = (error - lastError) / interval;
-			output += kI * totalError + kD * rate;
+			double addToOutput = kI * totalError + kD * rate;
+			if(name.toLowerCase().contains("velocity"))
+				output += interval * addToOutput;
+			else output += addToOutput;
 		} else {
 			reset = false;
 			totalError = 0;

@@ -25,7 +25,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	private boolean AItriggered = false;
 	private Timer tim = new Timer();
-	private boolean intakeIsDown = true;
+	private boolean intakeIsDown = false;
 	private boolean flipperIsUp = false;
 
 	public Intake() {
@@ -59,8 +59,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 		if (isBackwards) {
 			intakeMotor.set(-1);
 		} else {
-			intakeMotor
-					.set((Robot.getPref("intakeDirection", 1)) * (0.67 * Robot.drivetrain.getAverageMotors() + 0.33));
+			intakeMotor.set((Robot.getPref("intakeDirection", 1)) * (0.5 * Robot.drivetrain.getAverageMotors() + 0.8));
 		}
 	}
 
@@ -91,20 +90,20 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void toggleIntake(boolean giveDirection, boolean down) {
 		if(giveDirection) {
 			if(down && !intakeIsDown) {
-				pivotPiston.set(DoubleSolenoid.Value.kReverse);
+				pivotPiston.set(DoubleSolenoid.Value.kForward);
 				intakeIsDown = true;
 			} else if(!down && intakeIsDown) {
-				pivotPiston.set(DoubleSolenoid.Value.kForward);
+				pivotPiston.set(DoubleSolenoid.Value.kReverse);
 				intakeIsDown = false;
 			}
 		} else {
 			if (!intakeIsDown) {
 				// shifts to intake up
-				pivotPiston.set(DoubleSolenoid.Value.kReverse);
+				pivotPiston.set(DoubleSolenoid.Value.kForward);
 				intakeIsDown = true;
 			} else {
 				// shifts to intake down
-				pivotPiston.set(DoubleSolenoid.Value.kForward);
+				pivotPiston.set(DoubleSolenoid.Value.kReverse);
 				intakeIsDown = false;
 			}
 		}
@@ -189,6 +188,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putNumber("Intake current draw", pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 2)));
 		putNumber("Sending to intake", getIntake());
 		putString("Intake piston status", pivotPiston.get().toString());
+		putBoolean("Intake is down", intakeIsDown);
 		putBoolean("Gear has been lifted", gearLifted(false));
 		putNumber("Peg sensor reading", AI.getVoltage());
 		putBoolean("Peg sensor has triggered", AItriggered);

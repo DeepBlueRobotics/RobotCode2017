@@ -23,6 +23,7 @@ public class OI {
 	public JoystickButton feedInButton;
 	public JoystickButton feedOutButton;
 	public JoystickButton toggleIntakeButton;
+	public JoystickButton toggleAndRunIntakeButton;
 	public JoystickButton autoUSAdjustButton;
 	public Joystick manipulator;
 	public JoystickButton toggleFlipper;
@@ -30,20 +31,24 @@ public class OI {
 	public OI() {
 		manipulator = new Joystick(2);
 
-		feedOutButton = new JoystickButton(manipulator, 8);
-		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1), Robot.shooter));
-		feedInButton = new JoystickButton(manipulator, 6);
-		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
-		winchButton = new JoystickButton(manipulator, 2);
+//		feedOutButton = new JoystickButton(manipulator, 8);
+//		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1), Robot.shooter));
+//		feedInButton = new JoystickButton(manipulator, 6);
+//		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
+		winchButton = new JoystickButton(manipulator, 1);
 		winchButton.whileHeld(new Climb(Robot.climber));
-		shootOutButton = new JoystickButton(manipulator, 4);
+		shootOutButton = new JoystickButton(manipulator, 6);
 		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter, 0));
-		outputButton = new JoystickButton(manipulator, 5);
-		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
-		intakeButton = new JoystickButton(manipulator, 7);
-		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
-		toggleIntakeButton = new JoystickButton(manipulator, 3);
+//		outputButton = new JoystickButton(manipulator, 7);
+//		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
+//		intakeButton = new JoystickButton(manipulator, 5);
+//		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
+		toggleIntakeButton = new JoystickButton(manipulator, 2);
 		toggleIntakeButton.whenPressed(new ToggleIntake(false, false, Robot.intake));
+		toggleAndRunIntakeButton = new JoystickButton(manipulator, 3);
+		toggleAndRunIntakeButton.whenPressed(new NeverEndTheIntaking(Robot.intake));
+		toggleFlipper = new JoystickButton(manipulator, 4);
+		toggleFlipper.whenPressed(new ToggleIntakeRamp(Robot.intake));
 		autoUSAdjustButton = new JoystickButton(manipulator, 1);
 		autoUSAdjustButton.whenPressed(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
 				Robot.drivetrain.getUSTargetAngle(), Robot.drivetrain));
@@ -56,8 +61,6 @@ public class OI {
 		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
 		shiftGearsButton = new JoystickButton(rightJoy, 2);
 		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
-		toggleFlipper = new JoystickButton(rightJoy, 5);
-		toggleFlipper.whenPressed(new ToggleIntakeRamp(Robot.intake));
 
 		leftJoy = new Joystick(0);
 

@@ -233,6 +233,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * command finishes.
 	 */
 	public void stopDrive() {
+		unevenArcadeDrive(0, 0);
 		arcadeDrive(0, 0);
 	}
 
@@ -325,8 +326,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
-//		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
-		unevenArcadeDrive(0, anglePID.getOutput());
+		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
+//		unevenArcadeDrive(0, anglePID.getOutput());
 	}
 
 	/**
@@ -427,7 +428,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateRightSpeedPID() {
 		rightDriveVelocityPID.update(rightEncoder.getRate());
-		SmartDashboard.putNumber("Sending to right motor", rightMotor.getRaw());
+		SmartDashboard.putNumber("Sending to right motor", rightMotor.get());
 		rightMotor.set(rightDriveVelocityPID.getOutput());
 	}
 
@@ -655,6 +656,14 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void resetGyro() {
 		gyro.reset();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.usfirst.frc199.Robot2017.DashboardInterface#displayData()
+	 */
+	public void shiftLow(){
+		shiftPiston.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	@Override
