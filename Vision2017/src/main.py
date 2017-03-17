@@ -52,7 +52,7 @@ nt.write("Vision", "shooterRunning", False)
 while (True):
     """ boiler tape identification code """
     if nt.getShooter():
-        if (shooterCap.isOpened()):
+        if (not shooterCap.isOpened()):
             #log.write("shooter running\n")
             shooterCap.open(0)
             shooterCap.set(3, 640)
@@ -70,11 +70,11 @@ while (True):
             nt.write("Vision", "boilerY", centers[1])
     else:
         nt.write("Vision", "shooterVisionRunning", False)
-        if (!shooterCap.isOpened()):
+        if (shooterCap.isOpened()):
             shooterCap.release()
     """ gear tape identification code """
     if nt.getGear():
-        if (gearCap.isOpened()):
+        if (not gearCap.isOpened()):
             #log.write("gear running\n")
             gearCap.open(1)
             gearCap.set(3, 640)
@@ -104,5 +104,5 @@ while (True):
     else:
         nt.write("Vision", "gearVisionRunning", False)
         nt.write("Vision", "OH-YEAH", False)
-        if (!gearCap.isOpened()):
+        if (gearCap.isOpened()):
             gearCap.release()
