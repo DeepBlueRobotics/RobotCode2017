@@ -74,10 +74,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Vision/shooterRunning", false);
 		new Thread(() -> {
             UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-            camera.setResolution(640, 480);
+            camera.setResolution(1080, 720);
             
             CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
+            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 1080, 720);
             
             Mat source = new Mat();
             Mat output = new Mat();
