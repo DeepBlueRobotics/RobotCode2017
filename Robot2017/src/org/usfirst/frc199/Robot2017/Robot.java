@@ -2,6 +2,7 @@ package org.usfirst.frc199.Robot2017;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -31,6 +32,8 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Climber climber;
 	public static Vision vision;
+	
+	Timer tim = new Timer();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -112,10 +115,15 @@ public class Robot extends IterativeRobot {
 
 		// Update all subsystem SmartDashboard values during autonomous
 		new DisplayDashboardData().start();
+		
+    	tim.reset();
+    	tim.start();
 	}
 
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+    	SmartDashboard.putNumber("interval", tim.get());
+    	tim.reset();
 	}
 
 	public void teleopInit() {
@@ -128,10 +136,15 @@ public class Robot extends IterativeRobot {
 
 		// Update all subsystem SmartDashboard values during teleop
 		new DisplayDashboardData().start();
+		
+    	tim.reset();
+    	tim.start();
 	}
 
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+    	SmartDashboard.putNumber("interval", tim.get());
+    	tim.reset();
 
 	}
 

@@ -44,7 +44,8 @@ public class AutoDriveForGear extends Command {
 			angleDone = drivetrain.angleReachedTarget();
 			drivetrain.updateAnglePID();
 			drivetrain.resetEncoder();
-		} else if(!drivetrain.distanceReachedTarget()){
+//		} else if(!drivetrain.distanceReachedTarget()){
+		} else {
 			drivetrain.updateDistancePID();
 		}
 		
