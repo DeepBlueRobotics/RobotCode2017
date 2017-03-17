@@ -72,7 +72,7 @@ public class AutoDriveForGear extends Command {
 				tim.reset();
 			}
 		} else {
-			
+			// TODO: do angle PID so it curves and then drive PID constantly backwards until a set position
 		}
 
 		// if(!drivetrain.angleReachedTarget())
