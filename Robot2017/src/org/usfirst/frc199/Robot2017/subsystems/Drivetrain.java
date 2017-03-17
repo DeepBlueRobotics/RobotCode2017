@@ -631,6 +631,14 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void resetGyro() {
 		gyro.reset();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.usfirst.frc199.Robot2017.DashboardInterface#displayData()
+	 */
+	public void shiftLow(){
+		shiftPiston.set(DoubleSolenoid.Value.kReverse);
+	}
 
 	@Override
 	public void displayData() {
