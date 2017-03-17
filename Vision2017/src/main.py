@@ -52,10 +52,11 @@ nt.write("Vision", "shooterRunning", False)
 while (True):
     """ boiler tape identification code """
     if nt.getShooter():
-        #log.write("shooter running\n")
-        shooterCap.open(0)
-        shooterCap.set(3, 640)
-        shooterCap.set(4, 360)
+        if (shooterCap.isOpened()):
+            #log.write("shooter running\n")
+            shooterCap.open(0)
+            shooterCap.set(3, 640)
+            shooterCap.set(4, 360)
         ret, shooterFrame = shooterCap.read()
         # Run boiler identification script
         centers = boiler_identify.findBoiler(
@@ -69,14 +70,15 @@ while (True):
             nt.write("Vision", "boilerY", centers[1])
     else:
         nt.write("Vision", "shooterVisionRunning", False)
-        shooterCap.release()
+        if (!shooterCap.isOpened()):
+            shooterCap.release()
     """ gear tape identification code """
     if nt.getGear():
-        #log.write("gear running\n")
-
-        gearCap.open(1)
-        gearCap.set(3, 640)
-        gearCap.set(4, 360)
+        if (gearCap.isOpened()):
+            #log.write("gear running\n")
+            gearCap.open(1)
+            gearCap.set(3, 640)
+            gearCap.set(4, 360)
 
         ret, gearFrame = gearCap.read()
         # Run gear mark identification
@@ -84,7 +86,6 @@ while (True):
             gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
 
         nt.write("Vision", "gearVisionRunning", True)
-
 
         if (success):
             nt.write("Vision", "leftGearCenterX", lx)
@@ -96,11 +97,12 @@ while (True):
             nt.write("Vision", "leftGearTopY", lt)
             nt.write("Vision", "rightGearBottomY", rb)
             nt.write("Vision", "rightGearTopY", rt)
-            
+
             nt.write("Vision", "OH-YEAH", success)
 
-        
+
     else:
         nt.write("Vision", "gearVisionRunning", False)
         nt.write("Vision", "OH-YEAH", False)
-        gearCap.release()
+        if (!gearCap.isOpened()):
+            gearCap.release()
