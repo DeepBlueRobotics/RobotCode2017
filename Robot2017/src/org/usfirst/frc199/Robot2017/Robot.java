@@ -1,8 +1,12 @@
 package org.usfirst.frc199.Robot2017;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -10,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc199.Robot2017.DashboardInterface;
 import org.usfirst.frc199.Robot2017.commands.*;
 import org.usfirst.frc199.Robot2017.subsystems.*;
@@ -32,6 +38,8 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Climber climber;
 	public static Vision vision;
+	
+	Timer tim = new Timer();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -39,7 +47,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		CameraServer.getInstance().startAutomaticCapture();
 		drivetrain = new Drivetrain();
 		intake = new Intake();
 		shooter = new Shooter();
@@ -68,6 +75,22 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putBoolean("Vision/gearRunning", false);
 		SmartDashboard.putBoolean("Vision/shooterRunning", false);
+		new Thread(() -> {
+            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+            camera.setResolution(1080, 720);
+            
+            CvSink cvSink = CameraServer.getInstance().getVideo();
+            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 1080, 720);
+            
+            Mat source = new Mat();
+            Mat output = new Mat();
+            
+            while(!Thread.interrupted()) {
+                cvSink.grabFrame(source);
+                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+                outputStream.putFrame(output);
+            }
+        }).start();
 	}
 
 	/**
@@ -117,10 +140,15 @@ public class Robot extends IterativeRobot {
 
 		// Update all subsystem SmartDashboard values during autonomous
 		new DisplayDashboardData().start();
+		
+    	tim.reset();
+    	tim.start();
 	}
 
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+    	SmartDashboard.putNumber("interval", tim.get());
+    	tim.reset();
 	}
 
 	public void teleopInit() {
@@ -133,10 +161,15 @@ public class Robot extends IterativeRobot {
 
 		// Update all subsystem SmartDashboard values during teleop
 		new DisplayDashboardData().start();
+		
+    	tim.reset();
+    	tim.start();
 	}
 
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+    	SmartDashboard.putNumber("interval", tim.get());
+    	tim.reset();
 
 	}
 

@@ -136,6 +136,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		} else if (currentDrive == DriveTypes.DRIFT_ARCADE) {
 			double turnValue = Robot.oi.leftJoy.getX();
 			double speedValue = -Robot.oi.rightJoy.getY();
+			speedValue = speedValue*speedValue;
 
 			if (Math.abs(speedValue) < Robot.getPref("Arcade deadband", .1)) {
 				speedValue = 0;
@@ -163,17 +164,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void unevenArcadeDrive(double speedJoy, double turnJoy) {
 		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
 		if(shiftedHigh) ratio = Robot.getPref("highGearSpeedRatio", 175);
-		//not sure if the way I calculated each target works properly...
 		setRightSpeedTarget(ratio*(speedJoy - turnJoy));
 		setLeftSpeedTarget(ratio*(speedJoy + turnJoy));
-//		rightDriveVelocityPID.update(rightEncoder.getRate());
-//		leftDriveVelocityPID.update(leftEncoder.getRate());
-		updateRightSpeedPID();
-		updateLeftSpeedPID();
-		// not sure if right value needs to be negative or not (from copied
-		// unevenTankDrive)
-		// robotDrive.tankDrive(leftDriveVelocityPID.getOutput(),
-		// rightDriveVelocityPID.getOutput());
+		updateBothSpeedPID();
 	}
 
 	/**
@@ -185,19 +178,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		if(shiftedHigh) ratio = Robot.getPref("highGearSpeedRatio", 175);
 		setRightSpeedTarget(ratio*rightJoy);
 		setLeftSpeedTarget(ratio*leftJoy);
-//		rightDriveVelocityPID.update(rightEncoder.getRate());
-//		leftDriveVelocityPID.update(leftEncoder.getRate());
-		updateRightSpeedPID();
-		updateLeftSpeedPID();
-		// not sure if right value needs to be negative or not; it was b4 I
-		// changed stuff just now
-		// robotDrive.tankDrive(leftDriveVelocityPID.getOutput(),
-		// rightDriveVelocityPID.getOutput());
-		// leftMotor.set(leftDriveVelocityPID.getOutput());
-		// rightMotor.set(rightDriveVelocityPID.getOutput());
+		updateBothSpeedPID();
 	}
 
-	// shiftPiston.get().toString()
 	public boolean inHighGear() {
 		return shiftPiston.get().toString().equals("kReverse");
 	}
@@ -275,7 +258,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
-//		robotDrive.arcadeDrive(0, -distancePID.getOutput());
 		unevenArcadeDrive(distancePID.getOutput(), 0);
 	}
 
@@ -285,13 +267,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return Whether distance target has been reached
 	 */
 	public boolean distanceReachedTarget() {
-		if(distancePID.reachedTarget()) {
-//			resetEncoders();
-//			resetGyro();
-			return true;
-		} else {
-			return false;
-		}
+		return distancePID.reachedTarget();
 	}
 
 	/**
@@ -326,8 +302,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
-		robotDrive.arcadeDrive(anglePID.getOutput(), 0);
-//		unevenArcadeDrive(0, anglePID.getOutput());
+		unevenArcadeDrive(0, anglePID.getOutput());
 	}
 
 	/**
@@ -336,13 +311,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @return Whether angle target has been reached
 	 */
 	public boolean angleReachedTarget() {
-		if(anglePID.reachedTarget()) {
-//			resetEncoders();
-//			resetGyro();
-			return true;
-		} else {
-			return false;
-		}
+		return anglePID.reachedTarget();
 	}
 
 	// NEW PIDS START HERE!!!
@@ -371,7 +340,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void setLeftSpeedTarget(double targetSpeed) {
 		leftDriveVelocityPID.setTarget(targetSpeed, false);
-//		leftDriveVelocityPID.setRelativeLocation(0);
 		leftDriveVelocityPID.update(leftEncoder.getRate());
 	}
 
@@ -380,8 +348,16 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateLeftSpeedPID() {
 		leftDriveVelocityPID.update(leftEncoder.getRate());
-		SmartDashboard.putNumber("Sending to left motor", leftMotor.get());
 		leftMotor.set(leftDriveVelocityPID.getOutput());
+	}
+	
+	public void updateBothSpeedPID() { 
+
+		leftDriveVelocityPID.update(leftEncoder.getRate());
+
+		rightDriveVelocityPID.update(rightEncoder.getRate());
+
+		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), -rightDriveVelocityPID.getOutput());
 	}
 
 	/**
@@ -419,7 +395,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void setRightSpeedTarget(double targetSpeed) {
 		rightDriveVelocityPID.setTarget(targetSpeed, false);
-//		rightDriveVelocityPID.setRelativeLocation(0);
 		rightDriveVelocityPID.update(rightEncoder.getRate());
 	}
 
@@ -428,7 +403,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void updateRightSpeedPID() {
 		rightDriveVelocityPID.update(rightEncoder.getRate());
-		SmartDashboard.putNumber("Sending to right motor", rightMotor.get());
 		rightMotor.set(rightDriveVelocityPID.getOutput());
 	}
 
@@ -672,16 +646,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		
 		putNumber("Left Joystick Y", Robot.oi.leftJoy.getY());
 		putNumber("Right Joystick Y", Robot.oi.rightJoy.getY());
+		
 		putNumber("Left Distance", leftEncoder.getDistance());
 		putNumber("Right Distance", rightEncoder.getDistance());
-		
-		putNumber("Left Encoder", leftEncoder.get());
-		putNumber("Right Encoder", rightEncoder.get());
-		
 		putNumber("Average Distance", getDistance());
-		SmartDashboard.putNumber("Left Distance", leftEncoder.getDistance());
-		SmartDashboard.putNumber("Right Distance", rightEncoder.getDistance());
-		SmartDashboard.putNumber("Average Distance", getDistance());
+		
 		putNumber("Acceleration", (getVelocity() - prevEncoderRate) / (Timer.getFPGATimestamp() - prevTime));
 		putNumber("Angular acceleration",
 				(getAngularVelocity() - prevGyroRate) / (Timer.getFPGATimestamp() - prevTime));
@@ -696,33 +665,14 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
 		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
-		putNumber("Sending to left motor", leftMotor.get());
-		putNumber("Sending to right motor", rightMotor.get());
-		putNumber("Joystick left horizontal", Robot.oi.leftJoy.getAxis(AxisType.kX));
+		putNumber("Sending to left motor", leftMotor.getRaw());
+		putNumber("Sending to right motor", rightMotor.getRaw());
 		putString("Current drive", currentDrive.toString());
 		putNumber("Right US Voltage", rightUSsensor.getVoltage());
 		putNumber("Left US Voltage", leftUSsensor.getVoltage());
 		putNumber("Avg US Voltage", (getUSVoltage(true) + getUSVoltage(false)) / 2);
 		putNumber("US Dist to Drive", getUSDistToDrive());
 		putNumber("US Angle", getUSTargetAngle());
-		SmartDashboard.putNumber("Left PID out: ", leftDriveVelocityPID.getOutput());
-		SmartDashboard.putNumber("Right PID out: ", rightDriveVelocityPID.getOutput());
-
-		putNumber("Left PID error: ", leftDriveVelocityPID.getError());
-		putNumber("Right PID error: ", rightDriveVelocityPID.getError());
-		putNumber("Left PID target: ", leftDriveVelocityPID.getTarget());
-		putNumber("Right PID target: ", rightDriveVelocityPID.getTarget());
-		
-		/**
-		putNumber("Distance PID error", distancePID.getError());
-		putNumber("Distance PID output", distancePID.getOutput());
-		putNumber("Distance PID target", distancePID.getTarget());
-		putString("Shift piston status", shiftPiston.get().toString());
-		**/
-		
-		putNumber("Angle PID error", anglePID.getError());
-		putNumber("Angle PID output", anglePID.getOutput());
-		putNumber("Angle PID target", anglePID.getTarget());
 
 		prevEncoderRate = getVelocity();
 		prevGyroRate = getAngularVelocity();

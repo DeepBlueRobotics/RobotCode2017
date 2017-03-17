@@ -21,7 +21,6 @@ public class PID implements DashboardInterface {
 								// SmartDashboard
 
 	// Current state:
-	private Timer intervalTimer = new Timer(); // Keeps track of loop frequency
 	private double input; // Current input value
 	private double error; // Current error value
 	private double lastError; // Previous error value
@@ -40,7 +39,6 @@ public class PID implements DashboardInterface {
 	public PID(String name) {
 		this.name = name;
 		Robot.subsystems.add(this);
-		intervalTimer.start();
 		putNumber("kP", getPref("kP", 0));
 		putNumber("kI", getPref("kI", 0));
 		putNumber("kD", getPref("kD", 0));
@@ -95,8 +93,7 @@ public class PID implements DashboardInterface {
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;
-		interval = intervalTimer.get();
-		intervalTimer.reset();
+		interval = SmartDashboard.getNumber("interval");
 		if (name.toLowerCase().contains("velocity"))
 			output += interval * kP * error;
 		else output = kP * error;
@@ -104,8 +101,12 @@ public class PID implements DashboardInterface {
 			totalError += error * interval;
 			rate = (error - lastError) / interval;
 			double addToOutput = kI * totalError + kD * rate;
-			if(name.toLowerCase().contains("velocity"))
+			if(name.toLowerCase().contains("velocity")){
+
 				output += interval * addToOutput;
+				if(output > 1) output = 1;
+				else if(output < -1) output = -1;
+			}
 			else output += addToOutput;
 		} else {
 			reset = false;
