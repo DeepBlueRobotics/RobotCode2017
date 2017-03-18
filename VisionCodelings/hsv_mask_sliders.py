@@ -11,6 +11,9 @@ def nothing(x):
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell = True)
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell = True)
 
+subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell = True)
+subprocess.call("uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell = True)
+
 black = np.zeros((1,1,3), np.uint8)
 
 dlower = np.array([65, 175, 70])
@@ -27,7 +30,7 @@ cv2.createTrackbar('US','sliders',dupper[1],255,nothing)
 cv2.createTrackbar('LV','sliders',dlower[2],255,nothing)
 cv2.createTrackbar('UV','sliders',dupper[2],255,nothing)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 ret = cap.set(3,320)
 ret = cap.set(4,180)
 
