@@ -49,13 +49,13 @@ public class AutoShoot2 extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		shooter.updateShooterPID(shooter.getShooterSpeed2());
-		if (!shooter.shooterMotorStalled2()) {
-			shooter.runShootMotor2(shooter.getShooterPIDOutput());
-		}
-		if (Math.abs(shooter.getShooterSpeed2() - target) <= Robot.getPref("speedErrorConstant", .05) * target) {
-			shooter.runFeederMotor(1);
-		}
+//		shooter.updateShooterPID(shooter.getShooterSpeed2());
+//		if (!shooter.shooterMotorStalled2()) {
+//			shooter.runShootMotor2(shooter.getShooterPIDOutput());
+//		}
+//		if (Math.abs(shooter.getShooterSpeed2() - target) <= Robot.getPref("speedErrorConstant", .05) * target) {
+//			shooter.runFeederMotor(1);
+//		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

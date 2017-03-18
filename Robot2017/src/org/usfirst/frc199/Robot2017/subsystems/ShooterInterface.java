@@ -14,29 +14,11 @@ public interface ShooterInterface extends DashboardInterface {
 	public void runFeederMotor(double speed);
 
 	/**
-	 * Sets the shooter motor's speed (from -1.0 to 1.0). For PID AutoShoot
-	 * (AutoShoot2)
-	 * 
-	 * @param rate - speed to give the shooter motor
-	 */
-	public void runShootMotor2(double speed);
-
-	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0). For CANTalon AutoShoot
 	 * 
 	 * @param rate - speed to give the shooter motor
 	 */
 	public void runShootMotor(double speed);
-
-	/**
-	 * This method checks if 1)shootMotor is set to a high value 2)encoder is
-	 * saying the shooter isn't moving 3)getPref is saying the shooterEncoder
-	 * works For PID AutoShoot (AutoShoot2)
-	 * 
-	 * @return return whether shooter motor is deemed stalled, however, if it is
-	 *         it automatically sets it to 0
-	 */
-	public boolean shooterMotorStalled2();
 
 	/**
 	 * This method checks if 1)shootMotor is set to a high value 2)encoder is
@@ -47,14 +29,6 @@ public interface ShooterInterface extends DashboardInterface {
 	 *         it automatically sets it to 0
 	 */
 	public boolean shooterMotorStalled();
-
-	/**
-	 * Returns the current speed of the shooter wheel. For PID AutoShoot
-	 * (AutoShoot2)
-	 * 
-	 * @return shooter speed in inches per second
-	 */
-	public double getShooterSpeed2();
 
 	/**
 	 * Returns the current speed of the shooter wheel. For CANTalon AutoShoot
