@@ -13,17 +13,18 @@ def findTape(frame, lower, upper):
 	# filters image
 	hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 	mask = cv2.inRange(hsv, lower, upper)
-	cnts, hierarchy = cv2.findContours(mask.copy(), cv2.RETR_LIST,
-							cv2.CHAIN_APPROX_SIMPLE)
+	cnts, hierarchy = cv2.findContours(mask.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
 	cnts2 = []
 
 	# puts all the contours that have 4 verticies and an area more than 100 in cnts2
 	for c in cnts:
-        area = cv2.contourArea(c)
+		area = cv2.contourArea(c)
+
 		if (area > 100):
 			epsilon = 0.05 * cv2.arcLength(c, True)
 			cPoly = cv2.approxPolyDP(c, epsilon, True)
+
 			if (len(cPoly) == 4 and cv2.isContourConvex(cPoly)):
 				cnts2.append((area, cPoly))
 

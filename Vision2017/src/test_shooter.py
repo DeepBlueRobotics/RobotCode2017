@@ -33,18 +33,18 @@ lower = np.array([69, 99, 52])
 upper = np.array([85, 255, 133])
 
 while(True):
-    # capture frame-by-frame
-    ret, frame = cap.read()
-    
-    # get point [x, y]
-    point = boiler_identify.findBoiler(frame, lower, upper)
-    
-    # draw stuff
-    cv2.circle(frame, (point[0], point[1]), 2, (255,0,255))
-    print point
-    cv2.imshow('frame',frame)
-    if cv2.waitKey(1) == 27:
-        break
+	# capture frame-by-frame
+	ret, frame = cap.read()
+	
+	# get point [x, y]
+	point = boiler_identify.findBoiler(frame, lower, upper)
+	
+	# draw stuff
+	cv2.circle(frame, (point[0], point[1]), 2, (255,0,255))
+	print point
+	cv2.imshow('frame',frame)
+	if cv2.waitKey(1) == 27:
+		break
 
 # When everything done, release the capture
 cap.release()
