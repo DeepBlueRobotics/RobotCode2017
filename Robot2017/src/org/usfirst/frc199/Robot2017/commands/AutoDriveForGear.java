@@ -43,6 +43,7 @@ public class AutoDriveForGear extends Command {
 		
 		drivetrain.setDistanceTarget(targetDist);
 		drivetrain.setAngleTarget(targetAngle);
+		SmartDashboard.putBoolean("Vision/OH-YEAH", false);
 		tim.start();
 		tim.reset();
 		angleDone = false;
@@ -67,11 +68,16 @@ public class AutoDriveForGear extends Command {
 			stopAndRecheck = false;
 			// I DO reset targetAngle here even tho does reset in if statement below just in case
 			//that if statement isn't entered bc vision = SLOW
-			drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-			drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-			drivetrain.resetEncoder();
-			drivetrain.resetGyro();
-			commandCanBeDone = true;
+//			drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+//			drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+			if (SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
+				
+				drivetrain.setDistanceTarget(Robot.vision.getDistanceToGear());
+				drivetrain.setAngleTarget(Robot.vision.getAngleToGear());
+				drivetrain.resetEncoder();
+				drivetrain.resetGyro();
+				commandCanBeDone = true;
+			} 
 		}
 		
 		if(tim.get() > noResetPeriod) {
