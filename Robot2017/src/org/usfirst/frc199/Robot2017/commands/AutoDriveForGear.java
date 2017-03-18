@@ -32,7 +32,7 @@ public class AutoDriveForGear extends Command {
 		targetDist = Robot.vision.getDistanceToGear();
 		targetAngle = Robot.vision.getAngleToGear();
 		
-		if(targetDist > 24){
+		if(targetDist > 25){
 			targetDist = targetDist - 24;
 			stopAndRecheck = true;
 			commandCanBeDone = false;
@@ -47,7 +47,7 @@ public class AutoDriveForGear extends Command {
 		tim.reset();
 		angleDone = false;
 		
-		tapeNotFound = false;
+		tapeNotFound = true;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -58,50 +58,32 @@ public class AutoDriveForGear extends Command {
 			angleDone = drivetrain.angleReachedTarget();
 			drivetrain.updateAnglePID();
 			drivetrain.resetEncoder();
-		} else if (tapeNotFound) {
-			if (drivetrain.getDistance() < 24) {
-				drivetrain.arcadeDrive(-0.1, 0);
-			}
 		} else {
 			drivetrain.updateDistancePID();
 		}
-			
-		if (Robot.vision.foundGearTape()) {
-			if (tapeNotFound) {
-				angleDone = false;
-				tapeNotFound = false;
-				drivetrain.resetEncoder();
-				drivetrain.resetGyro();
-				tim.reset();
-			}
 
-			if(stopAndRecheck && drivetrain.distanceReachedTarget()){
-				angleDone = false;
-				stopAndRecheck = false;
-				// I DO reset targetAngle here even tho does reset in if statement below just in case
-				//that if statement isn't entered bc vision = SLOW
-				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-				drivetrain.resetEncoder();
-				drivetrain.resetGyro();
-				commandCanBeDone = true;
-			}
-			
-			if(tim.get() > noResetPeriod) {
+		if(stopAndRecheck && drivetrain.distanceReachedTarget()){
+			angleDone = false;
+			stopAndRecheck = false;
+			// I DO reset targetAngle here even tho does reset in if statement below just in case
+			//that if statement isn't entered bc vision = SLOW
+			drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+			drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+			drivetrain.resetEncoder();
+			drivetrain.resetGyro();
+			commandCanBeDone = true;
+		}
+		
+		if(tim.get() > noResetPeriod) {
 //				if(targetDist != Robot.vision.getDistanceToGear()){
 //					drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
 //					drivetrain.resetEncoder();
 //				}
-				if(targetAngle != Robot.vision.getAngleToGear()){
-					drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-					drivetrain.resetGyro();
-				}
-				tim.reset();
-			}
-		} else if (tim.get() > 3 && !tapeNotFound){
-			tapeNotFound = true;
-			angleDone = false;
-			drivetrain.setAngleTarget(-30);
+//			if(targetAngle != Robot.vision.getAngleToGear()){
+//				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+//				drivetrain.resetGyro();
+//			}
+			tim.reset();
 		}
 		
 		//if(!drivetrain.angleReachedTarget())

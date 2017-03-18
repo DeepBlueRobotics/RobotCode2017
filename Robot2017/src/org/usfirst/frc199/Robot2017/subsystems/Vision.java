@@ -182,16 +182,4 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("Angle to Boiler", getAngleToBoiler());
 
 	}
-
-	/**
-	 * @return whether the code has found the gear tape yet, shown by if the values are -1 or not
-	 */
-	public boolean foundGearTape() {
-		for (String key : gearVisionKeys) {
-			if (getNumber(key, 0) != -1) {
-				return true;
-			}
-		}
-		return false;
-	}
 }

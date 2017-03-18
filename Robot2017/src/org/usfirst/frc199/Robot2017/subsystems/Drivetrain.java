@@ -665,6 +665,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Sending to right motor", rightMotor.getRaw());
 		putString("Current drive", currentDrive.toString());
 		putNumber("Right US Voltage", rightUSsensor.getVoltage());
+		putNumber("Left US Dist", convertVoltsToInches(getUSVoltage(true)));
 		putNumber("Left US Voltage", leftUSsensor.getVoltage());
 		putNumber("Avg US Voltage", (getUSVoltage(true) + getUSVoltage(false)) / 2);
 		putNumber("US Dist to Drive", getUSDistToDrive());
