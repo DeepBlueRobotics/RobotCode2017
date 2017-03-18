@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Vision extends Subsystem implements DashboardInterface {
 	// inches between the centers of both reflectors (horizontal)
-	private final double REFLECTOR_DIST_GEAR = 4; //8.5
+	private final double REFLECTOR_DIST_GEAR = 8.5; //8.5
 	// inches off the ground (~21.67)
 	private final double SHOOTER_CAM_HEIGHT = Robot.getPref("Camera Height", 0); 
 	// in from camera bottom to top of boiler tape

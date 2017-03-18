@@ -104,8 +104,9 @@ public class PID implements DashboardInterface {
 			if(name.toLowerCase().contains("velocity")){
 
 				output += interval * addToOutput;
-				if(output > 1) output = 1;
-				else if(output < -1) output = -1;
+				double limit = Robot.getPref("Velocity Limit", 1);
+				if(output > limit) output = limit;
+				else if(output < -limit) output = -limit;
 			}
 			else output += addToOutput;
 		} else {

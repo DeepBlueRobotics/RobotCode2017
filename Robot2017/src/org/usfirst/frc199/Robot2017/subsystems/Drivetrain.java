@@ -136,7 +136,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		} else if (currentDrive == DriveTypes.DRIFT_ARCADE) {
 			double turnValue = Robot.oi.leftJoy.getX();
 			double speedValue = -Robot.oi.rightJoy.getY();
-			speedValue = speedValue*speedValue;
+			speedValue = speedValue*Math.abs(speedValue);
+			turnValue = turnValue*Math.abs(turnValue);
 
 			if (Math.abs(speedValue) < Robot.getPref("Arcade deadband", .1)) {
 				speedValue = 0;
@@ -226,11 +227,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public double getDistance() {
 		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
-	}
-
-	public void resetEncoders() {
-		rightEncoder.reset();
-		leftEncoder.reset();
 	}
 
 	/**
