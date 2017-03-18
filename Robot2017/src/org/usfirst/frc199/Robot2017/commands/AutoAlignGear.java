@@ -22,7 +22,7 @@ public class AutoAlignGear extends CommandGroup {
 		if (shoot) {
 			addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(), 6.9, Robot.shooter));
 		}
-		addSequential(new AutoDelay(0, Robot.intake));
+		addSequential(new AutoDelay(0, Robot.intake, Robot.drivetrain));
 		addSequential(new RunShooter(0, Robot.shooter, 0.1));
 
 		addSequential(new WriteToNT("Vision/gearRunning", false));
