@@ -8,7 +8,8 @@ import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
 /**
- *
+ * Drives the robot towards the gear in autonomous. While it is looking for gear, turns 
+ * right and goes back until found.
  */
 public class AutoDriveForGear extends Command {
 
@@ -17,6 +18,7 @@ public class AutoDriveForGear extends Command {
 	Timer tim = new Timer();
 	double noResetPeriod = Robot.getPref("AlignGear vision update period", 0.02);
 	double targetDist, targetAngle;
+	boolean tapeNotFound = false;
 
 	public AutoDriveForGear(DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
@@ -38,42 +40,50 @@ public class AutoDriveForGear extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		//update targets with new/current vision values
-		//reset encoders/gyro w/o reseting totalError
+		// update targets with new/current vision values
+		// reset encoders/gyro w/o reseting totalError
 		if(!angleDone){
 			angleDone = drivetrain.angleReachedTarget();
 			drivetrain.updateAnglePID();
 			drivetrain.resetEncoder();
-//		} else if(!drivetrain.distanceReachedTarget()){
+		} else if (tapeNotFound) {
+			if (drivetrain.getDistance() < 24) {
+				drivetrain.arcadeDrive(0.1, 0);
+			}
 		} else {
 			drivetrain.updateDistancePID();
 		}
-		
-		if(tim.get() > noResetPeriod) {
-			if(targetDist != Robot.vision.getDistanceToGear()){
-				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+			
+		if (Robot.vision.foundGearTape()) {
+			if (tapeNotFound) {
+				angleDone = false;
+				tapeNotFound = false;
 				drivetrain.resetEncoder();
-			}
-			if(targetAngle != Robot.vision.getAngleToGear()){
-				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
 				drivetrain.resetGyro();
+				tim.reset();
 			}
-//			if (this.targetDist != Robot.vision.getDistanceToGear() && this.targetAngle != Robot.vision.getAngleToGear()) {
-//				this.targetDist = Robot.vision.getDistanceToGear();
-//				this.targetAngle = Robot.vision.getAngleToGear();
-//				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-//				drivetrain.resetGyro();
-//				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-//				drivetrain.resetEncoder();
-//			}
-			tim.reset();
+			if(tim.get() > noResetPeriod) {
+				if(targetDist != Robot.vision.getDistanceToGear()){
+					drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+					drivetrain.resetEncoder();
+				}
+				if(targetAngle != Robot.vision.getAngleToGear()){
+					drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+					drivetrain.resetGyro();
+				}
+				tim.reset();
+			}
+		} else if (tim.get() > 3 && !tapeNotFound){
+			tapeNotFound = true;
+			angleDone = false;
+			drivetrain.setAngleTarget(-30);
 		}
-		
-//		if(!drivetrain.angleReachedTarget())
-//			drivetrain.updateAnglePID();
-//		else if(!drivetrain.distanceReachedTarget())
-//			drivetrain.updateDistancePID();
-		
+
+		// if(!drivetrain.angleReachedTarget())
+		// drivetrain.updateAnglePID();
+		// else if(!drivetrain.distanceReachedTarget())
+		// drivetrain.updateDistancePID();
+
 		if (drivetrain.currentControl()) {
 			drivetrain.shiftGears();
 		}
@@ -81,7 +91,8 @@ public class AutoDriveForGear extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
-		//don't need to check if angle reached target bc dist will only be reached once angle is
+		// don't need to check if angle reached target bc dist will only be
+		// reached once angle is
 		return drivetrain.distanceReachedTarget();
 	}
 

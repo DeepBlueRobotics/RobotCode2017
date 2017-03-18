@@ -5,6 +5,7 @@ Run boiler identification on loop and put to SmartDashboard if shooter command r
 Run gear mark identification only ~three times and put to SmartDashboard if gear command run
 Set the right ports for cams
 '''
+
 """ Imports and Inits """
 from access_nt import NTClient  # have similar lines to import the boiler identifier and gear identifier class
 import cv2
@@ -23,31 +24,29 @@ gearCap = cv2.VideoCapture(1)
 
 # Gear Tape values
 gearFailCounter = 0
+
 """ Exposure script """
 # shooter camera
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-    "uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # gear camera
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-    "uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # alt shooter camera
 subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-    "uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
 
 # alt gear camera
 subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call(
-    "uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
+subprocess.call("uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
 
 #log.write("log works.\n")
 nt.write("Vision", "OH-YEAH", False)
 nt.write("Vision", "gearRunning", False)
 nt.write("Vision", "shooterRunning", False)
+
 """ Main Loop """
 while (True):
     """ boiler tape identification code """
@@ -98,7 +97,6 @@ while (True):
             nt.write("Vision", "rightGearTopY", rt)
 
             nt.write("Vision", "OH-YEAH", success)
-
 
     else:
         nt.write("Vision", "gearVisionRunning", False)

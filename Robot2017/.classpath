@@ -20,8 +20,16 @@
 	<classpathentry kind="lib" path="libs/jars/mockito-all-1.10.19.jar"/>
 	<classpathentry kind="lib" path="libs/CTRLib.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/junit.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/mockito-all-1.10.19.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/cscore-sources.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/cscore.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/NetworkTables-sources.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/NetworkTables.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/opencv-sources.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/opencv.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/SmartDashboard.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/WPILib-sources.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/WPILib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
