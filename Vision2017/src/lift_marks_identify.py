@@ -20,13 +20,11 @@ def findTape(frame, lower, upper):
 
 	# puts all the contours that have 4 verticies and an area more than 100 in cnts2
 	for c in cnts:
-		epsilon = 0.05 * cv2.arcLength(c, True)
-		c = cv2.approxPolyDP(c, epsilon, True)
-
-		area = cv2.contourArea(c)
-
-		if (len(c) == 4 and area > 100 and cv2.isContourConvex(c)):
-			cnts2.append((area, c))
+		if (cv2.contourArea(c) > 100):
+			epsilon = 0.05 * cv2.arcLength(c, True)
+			cPoly = cv2.approxPolyDP(c, epsilon, True)
+			if (len(cPoly) == 4 and cv2.isContourConvex(cPoly)):
+				cnts2.append((area, cPoly))
 
 	# sorts contours by largest to smallest area
 	if cnts2 != None:

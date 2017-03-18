@@ -30,6 +30,11 @@ public class Vision extends Subsystem implements DashboardInterface {
 
  	private final double PIVOT_TO_FRONT_DISTANCE = Robot.getPref("Distance from pivot point to front of robot", 0);
 
+ 	private final String[] gearVisionKeys = {
+ 		"leftGearCenterX", "leftGearCenterY", "rightGearCenterX", "rightGearCenterY", 
+ 		"leftGearBottomY", "leftGearTopY", "rightGearBottomY", "rightGearTopY"
+ 	};
+
 	public Vision() {
 		super();
 		putString("~TYPE~", "Vision");
@@ -178,4 +183,15 @@ public class Vision extends Subsystem implements DashboardInterface {
 
 	}
 
+	/**
+	 * @return whether the code has found the gear tape yet, shown by if the values are -1 or not
+	 */
+	public boolean foundGearTape() {
+		for (String key : gearVisionKeys) {
+			if (getNumber(key, 0) != -1) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

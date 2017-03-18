@@ -8,7 +8,8 @@ import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
 /**
- *
+ * Drives the robot towards the gear in autonomous. While it is looking for gear, turns 
+ * right and goes back until found.
  */
 public class AutoDriveForGear extends Command {
 
@@ -17,9 +18,9 @@ public class AutoDriveForGear extends Command {
 	Timer tim = new Timer();
 	double noResetPeriod = Robot.getPref("AlignGear vision update period", 0.02);
 	double targetDist, targetAngle;
-	boolean stopAndRecheck, commandCanBeDone;
-
-	public AutoDriveForGear(DrivetrainInterface drivetrain) {
+	boolean stopAndRecheck, commandCanBeDone, tapeNotFound;
+	
+	public AutoDriveForGear(DrivetrainInterface drivetrain){
 		requires(Robot.drivetrain);
 		this.drivetrain = drivetrain;
 	}
@@ -45,50 +46,74 @@ public class AutoDriveForGear extends Command {
 		tim.start();
 		tim.reset();
 		angleDone = false;
+		
+		tapeNotFound = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
+		// update targets with new/current vision values
+		// reset encoders/gyro w/o reseting totalError
 		if(!angleDone){
 			angleDone = drivetrain.angleReachedTarget();
 			drivetrain.updateAnglePID();
 			drivetrain.resetEncoder();
-//		} else if(!drivetrain.distanceReachedTarget()){
+		} else if (tapeNotFound) {
+			if (drivetrain.getDistance() < 24) {
+				drivetrain.arcadeDrive(-0.1, 0);
+			}
 		} else {
 			drivetrain.updateDistancePID();
 		}
-		
-		if(stopAndRecheck && drivetrain.distanceReachedTarget()){
-			angleDone = false;
-			stopAndRecheck = false;
-			// I DO reset targetAngle here even tho does reset in if statement below just in case
-			//that if statement isn't entered bc vision = SLOW
-			drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-			drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-			drivetrain.resetEncoder();
-			drivetrain.resetGyro();
-			commandCanBeDone = true;
-		}
-		
-		if(tim.get() > noResetPeriod) {
-//			if(targetDist != Robot.vision.getDistanceToGear()){
-//				targetDist = Robot.vision.getDistanceToGear();
-//				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-//				drivetrain.resetEncoder();
-//			}
-			if(targetAngle != Robot.vision.getAngleToGear()){
-				targetAngle = Robot.vision.getAngleToGear();
-				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+			
+		if (Robot.vision.foundGearTape()) {
+			if (tapeNotFound) {
+				angleDone = false;
+				tapeNotFound = false;
+				drivetrain.resetEncoder();
 				drivetrain.resetGyro();
+				tim.reset();
 			}
-			tim.reset();
+
+			if(stopAndRecheck && drivetrain.distanceReachedTarget()){
+				angleDone = false;
+				stopAndRecheck = false;
+				// I DO reset targetAngle here even tho does reset in if statement below just in case
+				//that if statement isn't entered bc vision = SLOW
+				drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+				drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+				drivetrain.resetEncoder();
+				drivetrain.resetGyro();
+				commandCanBeDone = true;
+			}
+			
+			if(tim.get() > noResetPeriod) {
+//				if(targetDist != Robot.vision.getDistanceToGear()){
+//					drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
+//					drivetrain.resetEncoder();
+//				}
+				if(targetAngle != Robot.vision.getAngleToGear()){
+					drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
+					drivetrain.resetGyro();
+				}
+				tim.reset();
+			}
+		} else if (tim.get() > 3 && !tapeNotFound){
+			tapeNotFound = true;
+			angleDone = false;
+			drivetrain.setAngleTarget(-30);
 		}
 		
-		if (drivetrain.currentControl()) {
+		//if(!drivetrain.angleReachedTarget())
+		// drivetrain.updateAnglePID();
+		// else if(!drivetrain.distanceReachedTarget())
+		// drivetrain.updateDistancePID();
+		if(drivetrain.currentControl()){
 			drivetrain.shiftGears();
 		}
 	}
-
+		
+	
 	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
 		//don't need to check if angle reached target bc dist will only be reached once angle is
