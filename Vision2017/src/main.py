@@ -85,7 +85,7 @@ while (True):
 			# lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
 			# 	gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
 			lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
-			 	gearFrame, np.array([65, 0, 70]), np.array([100, 255, 200]))
+			 	gearFrame, np.array([65, 1, 70]), np.array([100, 255, 200]))
 
 			nt.write("Vision", "gearCodeRunning", True)
 
