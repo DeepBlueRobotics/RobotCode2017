@@ -13,21 +13,12 @@ import cv2
 import lift_marks_identify
 import subprocess
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 ret = cap.set(3,640)
 ret = cap.set(4,360)
 
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure, Auto\" 1", shell=True)
 subprocess.call("uvcdynctrl -d video1 -s \"Exposure (Absolute)\" 5", shell=True)
-
-subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call("uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell=True)
-
-subprocess.call("uvcdynctrl -d video3 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call("uvcdynctrl -d video3 -s \"Exposure (Absolute)\" 5", shell=True)
-
-subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
-subprocess.call("uvcdynctrl -d video0 -s \"Exposure (Absolute)\" 5", shell=True)
 
 lower = np.array([69, 99, 52])
 upper = np.array([85, 255, 133])
