@@ -16,16 +16,13 @@ public class AutoAlignGear extends CommandGroup {
 	public AutoAlignGear(boolean shoot) {
 		addSequential(new ToggleIntake(true, true, Robot.intake));
 		addSequential(new WriteToNT("Vision/gearRunning", true));
-		addSequential(new AutoDelay(-1, Robot.intake));
-		addSequential(new AutoDelay(0.25, Robot.intake));
+		addSequential(new AutoDelay(-1, Robot.intake, Robot.drivetrain));
 		addSequential(new AutoDriveForGear(Robot.drivetrain));
 		if (shoot) {
 			addParallel(new AutoShoot(Robot.vision.getDistanceToBoiler(), 6.9, Robot.shooter));
 		}
 		addSequential(new AutoDelay(0, Robot.intake, Robot.drivetrain));
 		addSequential(new RunShooter(0, Robot.shooter, 0.1));
-
-		addSequential(new WriteToNT("Vision/gearRunning", false));
 	}
 	
 	public void end() {

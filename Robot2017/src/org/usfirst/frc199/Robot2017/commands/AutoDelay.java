@@ -17,13 +17,15 @@ public class AutoDelay extends Command {
 	boolean angleDone = false;
 
 	/**
-	 * can use either time limit or the end condition of gear being lifted for
-	 * this command
-	 * if using time limit, just enter the time
-	 * if using end condition, enter 0 for time
+	 * Delays an autonomous process either for a specified amount of time, 
+	 * until the gear has been lifted from the intake, or 
+	 * until a vision target has been found
 	 * 
-	 * @param  time   the amount of time in seconds that you want the command to delay for
-	 * @param  intake simply our intake system
+	 * If delaying for vision, command will turn drivetrain to aid with finding target
+	 * 
+	 * @param  time - the amount of time in seconds that you want the command to delay for
+	 * @param  intake - our intake system
+	 * @param drivetrain - our drivetrain system
 	 */
 	public AutoDelay(double time, IntakeInterface intake, DrivetrainInterface drivetrain) {
 		this.time = time;
@@ -65,7 +67,10 @@ public class AutoDelay extends Command {
 	/**
 	 * Make this return true when this Command no longer needs to run execute()
 	 * 
-	 * @return no idea ask Ana
+	 * @return if the specified time parameter is -1, return true if gear marks have been found
+	 * @return if the specified time parameter is 0, return true if the peg has passed through 
+	 * 		the gear mechanism, and we are running a vision process
+	 * @return else return true after the specified amount of time has passed
 	 */
 	protected boolean isFinished() {
 		if (time == -1) {
@@ -79,18 +84,18 @@ public class AutoDelay extends Command {
 
 	/**
 	 * Called once after isFinished returns true.
-	 *
-	 * Currently does nothing.
 	 */
 	protected void end() {
+		if (time == -1) {
+			drivetrain.stopDrive();
+		}
 	}
 
 	/**
 	 * Called when another command which requires one or more of the same
 	 * subsystems is scheduled to run. 
-	 *
-	 * Currently does nothing.
 	 */
 	protected void interrupted() {
+		end();
 	}
 }

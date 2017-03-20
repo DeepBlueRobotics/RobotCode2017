@@ -5,13 +5,11 @@ import org.usfirst.frc199.Robot2017.Robot;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- * TODO: (Ana T.) Write all methods that process target info passed to the
- * RoboRIO in here
- */
 public class Vision extends Subsystem implements DashboardInterface {
 	// inches between the centers of both reflectors (horizontal)
 	private final double REFLECTOR_DIST_GEAR = 8.5; //8.5
+	//degrees of offset of gear cam if not facing straight forward
+	private final double GEAR_CAM_OFFSET = Robot.getPref("Gear cam angle offset", 0);
 	// inches off the ground (~21.67)
 	private final double SHOOTER_CAM_HEIGHT = Robot.getPref("Camera Height", 0); 
 	// in from camera bottom to top of boiler tape
@@ -19,7 +17,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 	// radians from north that you can see in both directions
 	private final double THETA = Math.toRadians(29.85);
 	// radians of the camera's vertical field of view
-	private final double SHOOTER_CAM_ANGLE = Math.toRadians(41.91);
+	private final double SHOOTER_CAM_ANGLE = Math.toRadians(35.78);
 	// pixel width of image
 	private final double RESOLUTION_WIDTH = 640; 
 	// pixel height of image
@@ -54,7 +52,6 @@ public class Vision extends Subsystem implements DashboardInterface {
   			double leftGearCenterY = getNumber("leftGearCenterY", 0);
  			double rightGearCenterY = getNumber("rightGearCenterY", 0);
 			double pixelDist = Math.sqrt(Math.pow(rightGearCenterX - leftGearCenterX, 2) + Math.pow(rightGearCenterY - leftGearCenterY, 2));
-  //			double pixelDist = Math.abs(getPixelDistanceToGear());
   			double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
   			double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
  			return distanceToGear; 
@@ -100,7 +97,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 
  		if (getBoolean("OH-YEAH", true)) {
 	 		double l = getCameraDistanceToGearPlane();
-	 		double theta = getCameraAngleToGear();
+	 		double theta = getCameraAngleToGear() + Math.toRadians(GEAR_CAM_OFFSET);
 	 		double x = Robot.getPref("Gear cam x distance from pivot", 0);
 	 		double y = Robot.getPref("Gear cam y distance from pivot", 0);
 	 		double r = Math.sqrt( x*x + y*y);
@@ -120,7 +117,7 @@ public class Vision extends Subsystem implements DashboardInterface {
  	 */
  	public double getAngleToGear() {
  		if (getBoolean("OH-YEAH", true)) {
-	 		double l = getCameraDistanceToGearPlane();
+	 		double l = getCameraDistanceToGearPlane() + Math.toRadians(GEAR_CAM_OFFSET);
 	 		double theta = getCameraAngleToGear();
 	 		double x = Robot.getPref("Gear cam x distance from pivot", 0);
 	 		double y = Robot.getPref("Gear cam y distance from pivot", 0);
@@ -137,17 +134,60 @@ public class Vision extends Subsystem implements DashboardInterface {
 		}
  	}
 	
-	public double getParallacticDistance(double d1, double d2, double dBetween) {
+	public double getParallacticDistanceToGear() {
+		double d1 = getDistanceToSingleGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) );
+		double d2 = getDistanceToSingleGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) );
+		double dBetween = REFLECTOR_DIST_GEAR;
 		double a = ( d2*d2 - d1*d1 - dBetween*dBetween) / (2 * dBetween);
 		return Math.sqrt(d1*d1 - a*a);
 	}
 	
-	public double getDistanceToGearMark(double yLow, double yHigh) {
-		
-		
-		return 0;
+	
+	public double getDistanceToSingleGearMark(double yLow, double yHigh) {
+		double pixelDist = Math.abs(yLow - yHigh);
+		double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
+		double distanceToMark = (fieldOfView / 2) / (Math.tan(THETA));
+		return distanceToMark;
 	}
 	
+	public boolean alignedButHorizontallyOffset() {
+		return ( Math.abs(getAngleToGear()) < 0.6 ) && 
+				(Math.abs(getParallacticDistanceToGear()) > Math.abs(getCameraDistanceToGearPlane() + 1) );
+	}
+	
+	public double angleToTurnIfHorizontallyOffset() {
+		double parDist = getParallacticDistanceToGear();
+		double camDist = getCameraDistanceToGearPlane();
+		
+		double theta =  Math.atan(parDist / (2*Math.sqrt(parDist*parDist - camDist*camDist)));
+		return Math.toDegrees(directionToTurnIfHorizontallyOffset() * (Math.PI/2 - theta));
+	}
+	
+	public double angleToTurnBackIfHorizontallyOffset() {
+		double parDist = getParallacticDistanceToGear();
+		double camDist = getCameraDistanceToGearPlane();
+		double theta =  Math.toRadians( Math.atan(parDist / ( 2*Math.sqrt(parDist*parDist - camDist*camDist) )) );
+		double angle = -directionToTurnIfHorizontallyOffset() * (theta + 
+				Math.acos(getCameraDistanceToGearPlane()/getParallacticDistanceToGear()));
+		
+		return Math.toDegrees(angle);
+	}
+	
+	public double distanceToTravelIfHorizontallyOffset() {
+		double parDist = getParallacticDistanceToGear();
+		double camDist = getCameraDistanceToGearPlane();
+		
+		double theta =  Math.atan(parDist / (2*Math.sqrt(parDist*parDist - camDist*camDist)));
+		return getParallacticDistanceToGear() / (2*Math.sin(theta));
+	}
+	
+	public double directionToTurnIfHorizontallyOffset() {
+		double d1 = getDistanceToSingleGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) );
+		double d2 = getDistanceToSingleGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) );
+		
+		if (d1 > d2) return 1;
+		else return -1;
+	}
 	
 
 	public double getDistanceToBoiler() {
@@ -180,6 +220,9 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("Angle to Gear", getAngleToGear());
 		putNumber("Distance to Boiler", getDistanceToBoiler());
 		putNumber("Angle to Boiler", getAngleToBoiler());
+		putBoolean("Is aligned but horizontally offset", alignedButHorizontallyOffset());
+		putNumber("Angle to turn if horizontally offset", angleToTurnIfHorizontallyOffset());
+		
 
 	}
 }

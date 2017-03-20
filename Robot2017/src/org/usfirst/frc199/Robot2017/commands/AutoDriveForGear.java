@@ -18,7 +18,12 @@ public class AutoDriveForGear extends Command {
 	Timer tim = new Timer();
 	double noResetPeriod = Robot.getPref("AlignGear vision update period", 0.02);
 	double targetDist, targetAngle;
-	boolean stopAndRecheck, commandCanBeDone, tapeNotFound;
+	
+	// Conditionals for rechecking alignment
+	boolean stopAndRecheck, commandCanBeDone;
+	
+	// Conditionals for realigning horizontally from a bird's eye view
+	boolean turn1Done, realignDistanceDone, turn2Done, realign;
 	
 	public AutoDriveForGear(DrivetrainInterface drivetrain){
 		requires(Robot.drivetrain);
@@ -29,11 +34,12 @@ public class AutoDriveForGear extends Command {
 	public void initialize() {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
-		targetDist = Robot.vision.getDistanceToGear();
-		targetAngle = Robot.vision.getAngleToGear();
 		
-		if(targetDist > 25){
-			targetDist = targetDist - 24;
+		drivetrain.setDistanceTarget(Robot.vision.getDistanceToGear());
+		drivetrain.setAngleTarget(Robot.vision.getAngleToGear());
+		
+		if(targetDist > 36){
+			targetDist = targetDist - 35;
 			stopAndRecheck = true;
 			commandCanBeDone = false;
 		} else {
@@ -41,43 +47,50 @@ public class AutoDriveForGear extends Command {
 			commandCanBeDone = true;
 		}
 		
-		drivetrain.setDistanceTarget(targetDist);
-		drivetrain.setAngleTarget(targetAngle);
-		SmartDashboard.putBoolean("Vision/OH-YEAH", false);
+		turn1Done = false; realignDistanceDone = false; turn2Done = false; realign = false;
 		tim.start();
 		tim.reset();
 		angleDone = false;
-		
-		tapeNotFound = true;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
+		
+		realign = angleDone && Robot.vision.alignedButHorizontallyOffset();
+		
 		// update targets with new/current vision values
 		// reset encoders/gyro w/o reseting totalError
-		if(!angleDone){
-			angleDone = drivetrain.angleReachedTarget();
-			drivetrain.updateAnglePID();
-			drivetrain.resetEncoder();
-		} else {
-			drivetrain.updateDistancePID();
-		}
-
-		if(stopAndRecheck && drivetrain.distanceReachedTarget()){
+		if (!realign) {
+			if(!angleDone){
+				angleDone = drivetrain.angleReachedTarget();
+				drivetrain.updateAnglePID();
+				drivetrain.resetEncoder();
+			} else {
+				resetTarget(Robot.vision.getDistanceToGear(), 0);
+				drivetrain.updateDistancePID();
+				if (drivetrain.distanceReachedTarget()) SmartDashboard.putBoolean("Vision/OH-YEAH", false);
+			}
+		} else if (realign){
+			if(!turn1Done) {
+				resetTarget(0, Robot.vision.angleToTurnIfHorizontallyOffset());
+				drivetrain.updateAnglePID();
+				turn1Done = drivetrain.angleReachedTarget();
+			} else if (!realignDistanceDone) {
+				resetTarget(Robot.vision.distanceToTravelIfHorizontallyOffset(), 0);
+				drivetrain.updateDistancePID();
+				realignDistanceDone = drivetrain.distanceReachedTarget();
+			} else if(!turn2Done) {
+				resetTarget(0, Robot.vision.angleToTurnBackIfHorizontallyOffset());
+				drivetrain.updateAnglePID();
+				turn2Done = drivetrain.angleReachedTarget();
+				commandCanBeDone = turn2Done;
+				realign = !turn2Done;
+			} 
+		} else if(stopAndRecheck && SmartDashboard.getBoolean("Vision/OH-YEAH", false)){
+			resetTarget(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear());
 			angleDone = false;
 			stopAndRecheck = false;
-			// I DO reset targetAngle here even tho does reset in if statement below just in case
-			//that if statement isn't entered bc vision = SLOW
-//			drivetrain.getAnglePID().setTargetNotTotError(Robot.vision.getAngleToGear());
-//			drivetrain.getDistancePID().setTargetNotTotError(Robot.vision.getDistanceToGear());
-			if (SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
-				
-				drivetrain.setDistanceTarget(Robot.vision.getDistanceToGear());
-				drivetrain.setAngleTarget(Robot.vision.getAngleToGear());
-				drivetrain.resetEncoder();
-				drivetrain.resetGyro();
-				commandCanBeDone = true;
-			} 
+			commandCanBeDone = true;
 		}
 		
 		if(tim.get() > noResetPeriod) {
@@ -92,10 +105,6 @@ public class AutoDriveForGear extends Command {
 			tim.reset();
 		}
 		
-		//if(!drivetrain.angleReachedTarget())
-		// drivetrain.updateAnglePID();
-		// else if(!drivetrain.distanceReachedTarget())
-		// drivetrain.updateDistancePID();
 		if(drivetrain.currentControl()){
 			drivetrain.shiftGears();
 		}
@@ -120,5 +129,20 @@ public class AutoDriveForGear extends Command {
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		end();
+	}
+	
+	private void resetTarget(double dist, double angle) {
+		if(drivetrain.distanceReachedTarget()) {
+			commandCanBeDone = false;
+			drivetrain.resetEncoder();
+			drivetrain.setDistanceTarget(dist);
+			if(angle == 0) drivetrain.setAngleTarget(0);
+		}
+		if(drivetrain.angleReachedTarget()) {
+			commandCanBeDone = false;
+			drivetrain.resetGyro();
+			drivetrain.setAngleTarget(angle);
+			if(dist == 0) drivetrain.setDistanceTarget(0);
+		}
 	}
 }
