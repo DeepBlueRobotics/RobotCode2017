@@ -113,7 +113,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	public void runShootMotor(double speed) {
 		double targetSpeed = speed;
 		shootMotorAndEnc.setP(1 / targetSpeed);
-		shootMotorAndEnc.set(targetSpeed);
+		shootMotorAndEnc.set(targetSpeed * 1500);
 	}
 
 	/**

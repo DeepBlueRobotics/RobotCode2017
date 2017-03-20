@@ -220,6 +220,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("Angle to Gear", getAngleToGear());
 		putNumber("Distance to Boiler", getDistanceToBoiler());
 		putNumber("Angle to Boiler", getAngleToBoiler());
+		putNumber("Gear camera angle to target", getCameraAngleToGear());
 		putBoolean("Is aligned but horizontally offset", alignedButHorizontallyOffset());
 		putNumber("Angle to turn if horizontally offset", angleToTurnIfHorizontallyOffset());
 		

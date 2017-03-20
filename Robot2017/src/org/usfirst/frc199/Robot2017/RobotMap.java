@@ -41,7 +41,7 @@ public class RobotMap {
 	public static SpeedController intakeIntakeMotor;
 	public static SpeedController shooterFeedMotor;
 	public static CANTalon shooterShootMotorAndEncoder;
-	private static final int CANTalonIDNum = 0;
+	private static final int CANTalonIDNum = (int)Robot.getPref("CAN SHooter Device ID", 1);
 	private final static double shootFGain = 0.374;
 	public static SpeedController turretTurnMotor;
 	public static Potentiometer turretTurretEncoder;
