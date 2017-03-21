@@ -40,6 +40,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private final double turretDiam = 7.71;
 	
 	private final SpeedController feedMotor = RobotMap.shooterFeedMotor;
+	private final SpeedController floorBeltMotor = RobotMap.shooterFloorBeltMotor;
 	private final CANTalon shootMotorAndEnc = RobotMap.shooterShootMotorAndEncoder;
 	private final SpeedController turretMotor = RobotMap.turretTurnMotor;
 	private final Potentiometer turretEncoder = RobotMap.turretTurretEncoder;
@@ -103,6 +104,14 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 */
 	public void runFeederMotor(double speed) {
 		feedMotor.set(speed);
+	}
+	
+	/**
+	 * Sets the floor belt motor's speed (from -1.0 to 1.0)
+	 * @param speed - speed to give the feeder motor
+	 */
+	public void runFloorBeltMotor(double speed){
+		floorBeltMotor.set(speed);
 	}
 
 	/**
