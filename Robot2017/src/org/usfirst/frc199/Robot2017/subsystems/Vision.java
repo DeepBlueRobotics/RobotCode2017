@@ -140,8 +140,8 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("d1", d1);
 		putNumber("d2", d2);
 		double dBetween = REFLECTOR_DIST_GEAR;
-		double a = ( d2*d2 - d1*d1 - dBetween*dBetween) / (2 * dBetween);
-		return Math.sqrt(d1*d1 - a*a);
+		// From https://en.wikipedia.org/wiki/Median_(geometry)#Formulas_involving_the_medians.27_lengths
+		return Math.sqrt(2*d1*d1+2*d2*d2-dBetween*dBetween)/2;
 	}
 	
 	

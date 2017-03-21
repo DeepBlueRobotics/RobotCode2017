@@ -5,6 +5,7 @@ logging.basicConfig(level=logging.DEBUG)
 debug = False
 shooterRunning = False
 gearRunning = False
+values = {}
 
 
 def connectionListener(connected, info):
@@ -30,6 +31,8 @@ class NTClient:
 			if debug:
 				print key
 				print self.gearRunning
+		if key[:25] == '/SmartDashboard/HSVrange/':
+			self.values[key[25:]] = value
 			
 		 
 	def changeSubTable(self, subtable):
@@ -54,6 +57,13 @@ class NTClient:
 		self.nt = NetworkTables.getTable("SmartDashboard/" + subtable)
 		return self.nt.getValue(key, defaultValue=None)
 		self.nt = NetworkTables.getTable("/SmartDashboard/Vision")
+
+	# works, I hope ;)
+	def getHSV(self, key, defaultValue):
+		if key in self.values:
+			return self.values[key]
+		else:
+			return defaultValue
 
 	def getGear(self):
 		return self.gearRunning
