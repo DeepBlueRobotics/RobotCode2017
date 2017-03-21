@@ -20,6 +20,21 @@ nt = NTClient()
 shooterCap = cv2.VideoCapture(0)
 gearCap = cv2.VideoCapture(1)
 
+# HSV ranges - getting
+shooterLowHSV = np.array(nt.get("HSVrange", "ShooterLowHue", 48), 
+						nt.get("HSVrange", "ShooterLowSat", 175), 
+						nt.get("HSVrange", "ShooterLowVal", 100))
+shooterHighHSV = np.array(nt.get("HSVrange", "ShooterHighHue", 100), 
+						nt.get("HSVrange", "ShooterHighSat", 255), 
+						nt.get("HSVrange", "ShooterHighVal",200))
+
+gearLowHSV = np.array(nt.get("HSVrange", "GearLowHue", 65), 
+						nt.get("HSVrange", "GearLowSat", 175), 
+						nt.get("HSVrange", "GearLowVal", 70))
+gearHighHSV = np.array(nt.get("HSVrange", "GearHighHue", 100), 
+						nt.get("HSVrange", "GearHighSat", 255), 
+						nt.get("HSVrange", "GearHighVal",200))
+
 #log = open("/tmp/vision.log", 'w')
 
 # Gear Tape values
@@ -60,7 +75,7 @@ while (True):
 			ret, shooterFrame = shooterCap.read()
 			# Run boiler identification script
 			centers = boiler_identify.findBoiler(
-				shooterFrame, np.array([48, 175, 100]), np.array([100, 255, 200]))
+				shooterFrame, shooterLowHSV, shooterHighHSV)
 
 			nt.write("Vision", "shooterCodeRunning", True)
 
@@ -85,7 +100,7 @@ while (True):
 			# lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
 			# 	gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
 			lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
-			 	gearFrame, np.array([65, 0, 70]), np.array([100, 255, 200]))
+			 	gearFrame, gearLowHSV, gearHighHSV)
 
 			nt.write("Vision", "gearCodeRunning", True)
 
