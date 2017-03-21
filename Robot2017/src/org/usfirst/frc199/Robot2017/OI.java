@@ -32,7 +32,7 @@ public class OI {
 		manipulator = new Joystick(2);
 
 //		feedOutButton = new JoystickButton(manipulator, 8);
-//		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1), Robot.shooter));
+		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1), Robot.shooter));
 //		feedInButton = new JoystickButton(manipulator, 6);
 //		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 1);

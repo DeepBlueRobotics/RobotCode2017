@@ -33,7 +33,8 @@ public class RunFeeder extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		shooter.runFeederMotor(speed);
+		shooter.runFeederMotor(.5);
+		shooter.runFloorBeltMotor(.5);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -44,11 +45,13 @@ public class RunFeeder extends Command {
 	// Called once after isFinished returns true
 	public void end() {
 		shooter.runFeederMotor(0);
+		shooter.runFloorBeltMotor(0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		shooter.runFeederMotor(0);
+		shooter.runFloorBeltMotor(0);
 	}
 }

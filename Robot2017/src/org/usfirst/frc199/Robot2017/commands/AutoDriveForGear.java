@@ -35,17 +35,20 @@ public class AutoDriveForGear extends Command {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
 		
-		drivetrain.setDistanceTarget(Robot.vision.getDistanceToGear());
+		targetDist = Robot.vision.getDistanceToGear();
+		
 		drivetrain.setAngleTarget(Robot.vision.getAngleToGear());
 		
-		if(targetDist > 36){
-			targetDist = targetDist - 35;
+		if(targetDist > 30){
+			targetDist = targetDist - 29;
 			stopAndRecheck = true;
 			commandCanBeDone = false;
 		} else {
 			stopAndRecheck = false;
 			commandCanBeDone = true;
 		}
+		
+		drivetrain.setDistanceTarget(targetDist);
 		
 		turn1Done = false; realignDistanceDone = false; turn2Done = false; realign = false;
 		tim.start();
@@ -68,25 +71,29 @@ public class AutoDriveForGear extends Command {
 			} else {
 				resetTarget(Robot.vision.getDistanceToGear(), 0);
 				drivetrain.updateDistancePID();
-				if (drivetrain.distanceReachedTarget()) SmartDashboard.putBoolean("Vision/OH-YEAH", false);
+//				if (drivetrain.distanceReachedTarget()) SmartDashboard.putBoolean("Vision/OH-YEAH", false);
 			}
-		} else if (realign){
-			if(!turn1Done) {
-				resetTarget(0, Robot.vision.angleToTurnIfHorizontallyOffset());
-				drivetrain.updateAnglePID();
-				turn1Done = drivetrain.angleReachedTarget();
-			} else if (!realignDistanceDone) {
-				resetTarget(Robot.vision.distanceToTravelIfHorizontallyOffset(), 0);
-				drivetrain.updateDistancePID();
-				realignDistanceDone = drivetrain.distanceReachedTarget();
-			} else if(!turn2Done) {
-				resetTarget(0, Robot.vision.angleToTurnBackIfHorizontallyOffset());
-				drivetrain.updateAnglePID();
-				turn2Done = drivetrain.angleReachedTarget();
-				commandCanBeDone = turn2Done;
-				realign = !turn2Done;
-			} 
-		} else if(stopAndRecheck && SmartDashboard.getBoolean("Vision/OH-YEAH", false)){
+		} 
+		
+//		else if (realign){
+//			if(!turn1Done) {
+//				resetTarget(0, Robot.vision.angleToTurnIfHorizontallyOffset());
+//				drivetrain.updateAnglePID();
+//				turn1Done = drivetrain.angleReachedTarget();
+//			} else if (!realignDistanceDone) {
+//				resetTarget(Robot.vision.distanceToTravelIfHorizontallyOffset(), 0);
+//				drivetrain.updateDistancePID();
+//				realignDistanceDone = drivetrain.distanceReachedTarget();
+//			} else if(!turn2Done) {
+//				resetTarget(0, Robot.vision.angleToTurnBackIfHorizontallyOffset());
+//				drivetrain.updateAnglePID();
+//				turn2Done = drivetrain.angleReachedTarget();
+//				commandCanBeDone = turn2Done;
+//				realign = !turn2Done;
+//			} 
+//		}
+		
+		if(stopAndRecheck && SmartDashboard.getBoolean("Vision/OH-YEAH", false) && drivetrain.distanceReachedTarget()){
 			resetTarget(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear());
 			angleDone = false;
 			stopAndRecheck = false;

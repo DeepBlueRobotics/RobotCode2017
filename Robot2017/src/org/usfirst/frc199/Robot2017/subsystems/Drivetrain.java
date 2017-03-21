@@ -633,7 +633,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @see org.usfirst.frc199.Robot2017.DashboardInterface#displayData()
 	 */
 	public void shiftLow(){
-		shiftPiston.set(DoubleSolenoid.Value.kReverse);
+		shiftPiston.set(DoubleSolenoid.Value.kForward);
 	}
 
 	@Override

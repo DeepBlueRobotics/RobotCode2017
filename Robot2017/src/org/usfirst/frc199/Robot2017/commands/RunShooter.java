@@ -42,6 +42,10 @@ public class RunShooter extends Command {
 		if (!shooter.shooterMotorStalled()) {
 			shooter.runShootMotor(speed);
 		}
+		if(tim.get() >= 1.5){
+			shooter.runFeederMotor(.5);
+			shooter.runFloorBeltMotor(.5);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -56,11 +60,15 @@ public class RunShooter extends Command {
 	// Called once after isFinished returns true
 	public void end() {
 		shooter.runShootMotor(0);
+		shooter.runFeederMotor(0);
+		shooter.runFloorBeltMotor(0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		shooter.runShootMotor(0);
+		shooter.runFeederMotor(0);
+		shooter.runFloorBeltMotor(0);
 	}
 }

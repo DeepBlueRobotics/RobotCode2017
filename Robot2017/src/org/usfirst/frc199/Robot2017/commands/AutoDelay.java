@@ -53,7 +53,7 @@ public class AutoDelay extends Command {
 	 * Called repeatedly when this Command is scheduled to run
 	 */
 	protected void execute() {
-		if (time == -1 && tim.get() > 3 && !SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
+		if (time == -1 && tim.get() > 4 && !SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
 			if (!angleDone) {
 				angleDone = drivetrain.angleReachedTarget();
 				drivetrain.updateAnglePID();

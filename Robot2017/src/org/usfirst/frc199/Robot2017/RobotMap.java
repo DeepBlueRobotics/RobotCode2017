@@ -40,6 +40,7 @@ public class RobotMap {
 	public static DoubleSolenoid intakePivotPiston;
 	public static SpeedController intakeIntakeMotor;
 	public static SpeedController shooterFeedMotor;
+	public static SpeedController shooterFloorBeltMotor;
 	public static CANTalon shooterShootMotorAndEncoder;
 	private static final int CANTalonIDNum = (int)Robot.getPref("CAN SHooter Device ID", 1);
 	private final static double shootFGain = 0.374;
@@ -71,6 +72,7 @@ public class RobotMap {
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
 			intakeIntakeMotor = new VictorSP(2);
 			shooterFeedMotor = new VictorSP(4);
+			shooterFloorBeltMotor = new VictorSP(5);
 			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			// multiplies value 0 to 1 by 360 to get degrees
