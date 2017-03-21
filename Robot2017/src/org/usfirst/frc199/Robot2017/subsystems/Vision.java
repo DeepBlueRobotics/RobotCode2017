@@ -138,8 +138,8 @@ public class Vision extends Subsystem implements DashboardInterface {
 		double d1 = getDistanceToSingleGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) );
 		double d2 = getDistanceToSingleGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) );
 		double dBetween = REFLECTOR_DIST_GEAR;
-		double a = ( d2*d2 - d1*d1 - dBetween*dBetween) / (2 * dBetween);
-		return Math.sqrt(d1*d1 - a*a);
+		// From https://en.wikipedia.org/wiki/Median_(geometry)#Formulas_involving_the_medians.27_lengths
+		return Math.sqrt(2*d1*d1+2*d2*d2-dBetween*dBetween)/2;
 	}
 	
 	
