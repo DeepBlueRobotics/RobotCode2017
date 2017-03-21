@@ -11,7 +11,7 @@ public class AutoDrive extends Command {
 
 	double targetDist, targetAngle;
 	DrivetrainInterface drivetrain;
-	boolean angle;
+	boolean angle, angleDone;
 
 	public AutoDrive(double targetDist, double targetAngle, DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
@@ -20,6 +20,8 @@ public class AutoDrive extends Command {
 		this.drivetrain = drivetrain;
 		if(targetAngle == 0)
 			angle = false;
+		else angle = true;
+		angleDone = false;
 	}
 
 	// Called just before this Command runs the first time
@@ -33,10 +35,13 @@ public class AutoDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
-		if(angle && !drivetrain.angleReachedTarget())
+		if(angle && !angleDone) {
+			angleDone = drivetrain.angleReachedTarget();
 			drivetrain.updateAnglePID();
-		else if(!drivetrain.distanceReachedTarget())
+			drivetrain.resetEncoder();
+		} else if(!drivetrain.distanceReachedTarget())
 			drivetrain.updateDistancePID();
+		
 		if (drivetrain.currentControl()) {
 			drivetrain.shiftGears();
 		}

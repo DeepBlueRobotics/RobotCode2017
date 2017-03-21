@@ -101,12 +101,15 @@ public class PID implements DashboardInterface {
 			totalError += error * interval;
 			rate = (error - lastError) / interval;
 			double addToOutput = kI * totalError + kD * rate;
-			if(name.toLowerCase().contains("velocity")){
+			//&& SmartDashboard.getBoolean("Vision/OH-YEAH", false)
+			if(name.toLowerCase().contains("velocity") ){
 
 				output += interval * addToOutput;
 				double limit = Robot.getPref("Velocity Limit", 1);
 				if(output > limit) output = limit;
 				else if(output < -limit) output = -limit;
+//			}else if(name.toLowerCase().contains("velocity")){
+//				output += interval * addToOutput;
 			}
 			else output += addToOutput;
 		} else {

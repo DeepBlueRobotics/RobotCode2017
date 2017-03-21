@@ -92,7 +92,11 @@ public class Intake extends Subsystem implements IntakeInterface {
 			if(down && !intakeIsDown) {
 				pivotPiston.set(DoubleSolenoid.Value.kForward);
 				intakeIsDown = true;
-			} else if(!down && intakeIsDown) {
+			} else if(!down) {
+				pivotPiston.set(DoubleSolenoid.Value.kReverse);
+				intakeIsDown = false;
+			} else {
+
 				pivotPiston.set(DoubleSolenoid.Value.kReverse);
 				intakeIsDown = false;
 			}

@@ -73,23 +73,25 @@ public class AutoDriveForGear extends Command {
 				drivetrain.updateDistancePID();
 //				if (drivetrain.distanceReachedTarget()) SmartDashboard.putBoolean("Vision/OH-YEAH", false);
 			}
-		} else if (realign){
-			if(!turn1Done) {
-				resetTarget(0, Robot.vision.angleToTurnIfHorizontallyOffset());
-				drivetrain.updateAnglePID();
-				turn1Done = drivetrain.angleReachedTarget();
-			} else if (!realignDistanceDone) {
-				resetTarget(Robot.vision.distanceToTravelIfHorizontallyOffset(), 0);
-				drivetrain.updateDistancePID();
-				realignDistanceDone = drivetrain.distanceReachedTarget();
-			} else if(!turn2Done) {
-				resetTarget(0, Robot.vision.angleToTurnBackIfHorizontallyOffset());
-				drivetrain.updateAnglePID();
-				turn2Done = drivetrain.angleReachedTarget();
-				commandCanBeDone = turn2Done;
-				realign = !turn2Done;
-			} 
-		}
+		} 
+		
+//		else if (realign){
+//			if(!turn1Done) {
+//				resetTarget(0, Robot.vision.angleToTurnIfHorizontallyOffset());
+//				drivetrain.updateAnglePID();
+//				turn1Done = drivetrain.angleReachedTarget();
+//			} else if (!realignDistanceDone) {
+//				resetTarget(Robot.vision.distanceToTravelIfHorizontallyOffset(), 0);
+//				drivetrain.updateDistancePID();
+//				realignDistanceDone = drivetrain.distanceReachedTarget();
+//			} else if(!turn2Done) {
+//				resetTarget(0, Robot.vision.angleToTurnBackIfHorizontallyOffset());
+//				drivetrain.updateAnglePID();
+//				turn2Done = drivetrain.angleReachedTarget();
+//				commandCanBeDone = turn2Done;
+//				realign = !turn2Done;
+//			} 
+//		}
 		
 		if(stopAndRecheck && SmartDashboard.getBoolean("Vision/OH-YEAH", false) && drivetrain.distanceReachedTarget()){
 			resetTarget(Robot.vision.getDistanceToGear(), Robot.vision.getAngleToGear());
