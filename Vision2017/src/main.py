@@ -22,19 +22,27 @@ gearCap = cv2.VideoCapture(1)
 
 try:
 	# HSV ranges - getting
-	shooterLowHSV = np.array(nt.get("HSVrange", "ShooterLowHue", 48), 
-							nt.get("HSVrange", "ShooterLowSat", 175), 
-							nt.get("HSVrange", "ShooterLowVal", 100))
-	shooterHighHSV = np.array(nt.get("HSVrange", "ShooterHighHue", 100), 
-							nt.get("HSVrange", "ShooterHighSat", 255), 
-							nt.get("HSVrange", "ShooterHighVal",200))
+	shooterLowHSV = np.array(
+		nt.getHSV("ShooterLowHue", 48), 
+		nt.getHSV("ShooterLowSat", 175), 
+		nt.getHSV("ShooterLowVal", 100)
+	)
+	shooterHighHSV = np.array(
+		nt.getHSV("ShooterHighHue", 100), 
+		nt.getHSV("ShooterHighSat", 255), 
+		nt.getHSV("ShooterHighVal",200)
+	)
 
-	gearLowHSV = np.array(nt.get("HSVrange", "GearLowHue", 65), 
-							nt.get("HSVrange", "GearLowSat", 175), 
-							nt.get("HSVrange", "GearLowVal", 70))
-	gearHighHSV = np.array(nt.get("HSVrange", "GearHighHue", 100), 
-							nt.get("HSVrange", "GearHighSat", 255), 
-							nt.get("HSVrange", "GearHighVal",200))
+	gearLowHSV = np.array(
+		nt.getHSV("GearLowHue", 65), 
+		nt.getHSV("GearLowSat", 175), 
+		nt.getHSV("GearLowVal", 70)
+	)
+	gearHighHSV = np.array(
+		nt.getHSV("GearHighHue", 100), 
+		nt.getHSV("GearHighSat", 255), 
+		nt.getHSV("GearHighVal",200)
+	)
 except Exception as e:
 	nt.write("Vision", "pythonError", str(e))
 
