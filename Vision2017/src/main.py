@@ -13,6 +13,9 @@ import subprocess
 import numpy as np
 import boiler_identify
 import lift_marks_identify
+import time
+
+oneTime = True
 
 nt = NTClient()
 
@@ -21,20 +24,27 @@ shooterCap = cv2.VideoCapture(0)
 gearCap = cv2.VideoCapture(1)
 
 # HSV ranges - getting
-shooterLowHSV = np.array(nt.get("HSVrange", "ShooterLowHue", 48), 
-						nt.get("HSVrange", "ShooterLowSat", 175), 
+try:
+		shooterLowHSV = np.array(nt.get("HSVrange", "ShooterLowHue", 48), 
+							nt.get("HSVrange", "ShooterLowSat", 175), 
 						nt.get("HSVrange", "ShooterLowVal", 100))
-shooterHighHSV = np.array(nt.get("HSVrange", "ShooterHighHue", 100), 
+		shooterHighHSV = np.array(nt.get("HSVrange", "ShooterHighHue", 100), 
 						nt.get("HSVrange", "ShooterHighSat", 255), 
 						nt.get("HSVrange", "ShooterHighVal",200))
 
-gearLowHSV = np.array(nt.get("HSVrange", "GearLowHue", 65), 
+		gearLowHSV = np.array(nt.get("HSVrange", "GearLowHue", 65), 
 						nt.get("HSVrange", "GearLowSat", 175), 
 						nt.get("HSVrange", "GearLowVal", 70))
-gearHighHSV = np.array(nt.get("HSVrange", "GearHighHue", 100), 
+		gearHighHSV = np.array(nt.get("HSVrange", "GearHighHue", 100), 
 						nt.get("HSVrange", "GearHighSat", 255), 
 						nt.get("HSVrange", "GearHighVal",200))
-
+except Exception as e:
+		nt.write("Vision", "pythonError", str(e))
+		shooterLowHSV = np.array((48,175,100))
+		shooterHighHSV = np.array((100,255,200))
+		gearLowHSV = np.array((65,175,100))
+		gearHighHSV = np.array((100,255,200))
+		
 #log = open("/tmp/vision.log", 'w')
 
 # Gear Tape values
@@ -97,10 +107,10 @@ while (True):
 
 			ret, gearFrame = gearCap.read()
 			# Run gear mark identification
-			# lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
-			# 	gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
 			lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
-			 	gearFrame, gearLowHSV, gearHighHSV)
+							gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]))
+			#lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
+			# 	gearFrame, gearLowHSV, gearHighHSV)
 
 			nt.write("Vision", "gearCodeRunning", True)
 
@@ -116,11 +126,15 @@ while (True):
 				nt.write("Vision", "rightGearTopY", rt)
 
 				nt.write("Vision", "OH-YEAH", success)
+			#elif oneTime:
+				#cv2.imwrite("/home/pi/Documents/RobotCode2017/RobotCode2017/img" + str(time.time()) + ".ppm", gearFrame)
+				#oneTime = False
 
 		else:
 			nt.write("Vision", "gearCodeRunning", False)
 			nt.write("Vision", "OH-YEAH", False)
-			if (gearCap.isOpened()):
-				gearCap.release()
+			oneTime = True
+			#if (gearCap.isOpened()):
+				#gearCap.release()
 	except Exception as e:
 		nt.write("Vision", "pythonError", str(e))
