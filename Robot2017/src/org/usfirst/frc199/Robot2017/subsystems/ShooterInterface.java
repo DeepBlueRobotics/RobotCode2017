@@ -12,6 +12,12 @@ public interface ShooterInterface extends DashboardInterface {
 	 * @param rate - speed to give the feeder motor
 	 */
 	public void runFeederMotor(double speed);
+	
+	/**
+	 * Sets the floor belt motor's speed (from -1.0 to 1.0)
+	 * @param speed - speed to give the feeder motor
+	 */
+	public void runFloorBeltMotor(double speed);
 
 	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0). For CANTalon AutoShoot
