@@ -32,14 +32,31 @@ public class AutoDeliverGear extends CommandGroup {
     	WaypointAndHeading w = new WaypointAndHeading();
     	
     	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	
+    	//finds waypoint
     	addSequential(new SetWaypointAndHeadingToAlignWithPeg(w));
+    	
+    	//turns to waypoint
     	addSequential(new TurnToWaypoint(w,drivetrain));
+    	
+    	//drives to waypoint
     	addSequential(new DriveToWaypoint(w,drivetrain));
+    	
+    	//turns to heading
     	addSequential(new TurnToHeading(w,drivetrain));
+    	
+    	//finds peg
     	addSequential(new SetWaypointToPeg(w));
+    	
+    	//turns towards the peg
     	addSequential(new TurnToWaypoint(w,drivetrain));
+    	
+    	//drives to the peg
     	addSequential(new DriveToWaypoint(w,drivetrain));
+    	
+    	//waits for gear to be removed
     	addSequential(new AutoWaitForGearRemoval(intake));
     	
+    	//TODO: add functionality for shooting
     }
 }
