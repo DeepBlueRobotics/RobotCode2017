@@ -15,10 +15,10 @@ def findBoiler(frame, lower, upper):
 	vals = []
 
 	# loop over the contours
-		for c in cnts:
-			area = cv2.contourArea(c)
-			if (area > 5 && area < 105):
-				vals.append((c, area))
+	for c in cnts:
+		area = cv2.contourArea(c)
+		if (area > 5 and area < 105):
+			vals.append((c, area))
 
 	vals.sort(key=lambda x: x[1], reverse=True)
 
