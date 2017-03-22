@@ -2,6 +2,7 @@ package org.usfirst.frc199.Robot2017.commands;
 
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
+import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class AutoDeliverGear extends CommandGroup {
 
-    public AutoDeliverGear(DrivetrainInterface drivetrain) {
+    public AutoDeliverGear(DrivetrainInterface drivetrain, IntakeInterface intake) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -38,6 +39,7 @@ public class AutoDeliverGear extends CommandGroup {
     	addSequential(new SetWaypointToPeg(w));
     	addSequential(new TurnToWaypoint(w,drivetrain));
     	addSequential(new DriveToWaypoint(w,drivetrain));
+    	addSequential(new AutoWaitForGearRemoval(intake));
     	
     }
 }
