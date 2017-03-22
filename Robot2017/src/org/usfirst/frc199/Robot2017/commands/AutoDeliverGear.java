@@ -31,7 +31,7 @@ public class AutoDeliverGear extends CommandGroup {
     	
     	WaypointAndHeading w = new WaypointAndHeading();
     	
-    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addSequential(new ToggleIntake(true, false, intake));
     	addSequential(new SetWaypointAndHeadingToAlignWithPeg(w));
     	addSequential(new TurnToWaypoint(w,drivetrain));
     	addSequential(new DriveToWaypoint(w,drivetrain));

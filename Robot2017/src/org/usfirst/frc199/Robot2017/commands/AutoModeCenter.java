@@ -33,7 +33,7 @@ public class AutoModeCenter extends CommandGroup {
 		addSequential(new ToggleIntake(true, false, Robot.intake));
 		addSequential(new ToggleIntake(true, false, Robot.intake));
 		addSequential(new AutoDrive(51, 0, Robot.drivetrain));
-		addSequential(new AutoDrive(0,15,Robot.drivetrain));
+		addSequential(new AutoDrive(0,10,Robot.drivetrain));
 		
 		addSequential(new AutoAlignGear(false));
 

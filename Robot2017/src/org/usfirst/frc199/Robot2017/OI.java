@@ -69,6 +69,9 @@ public class OI {
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
 		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
 
+//		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
+//		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
+		
 		// For use by Manual Control Widget
 		SmartDashboard.putData("ManualControl/Command",
 				new ManualControlMechs(Robot.intake, Robot.shooter, Robot.climber));

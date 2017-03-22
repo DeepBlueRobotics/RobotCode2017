@@ -15,6 +15,7 @@ public class AutoWaitForGearRemoval extends Command {
     public AutoWaitForGearRemoval(IntakeInterface intake) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	this.intake = intake;
     }
 
     // Called just before this Command runs the first time

@@ -58,7 +58,7 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     }
     
     private void storeWaypointAndHeading(WaypointAndHeading w, double[] leftTarget, double[] rightTarget) {
-    	double[] lift = {leftTarget[0] + rightTarget[0] / 2, leftTarget[1] + rightTarget[1] / 2};
+    	double[] lift = {(leftTarget[0] + rightTarget[0]) / 2, (leftTarget[1] + rightTarget[1]) / 2};
     	double d = getTargetDistanceFromLift();
     	double[] vector = {rightTarget[1]-leftTarget[1], -rightTarget[0]+leftTarget[0]};
     	double magnitude = Math.sqrt(Math.pow(leftTarget[1]-rightTarget[1],2)+Math.pow(leftTarget[0]-rightTarget[0],2));
