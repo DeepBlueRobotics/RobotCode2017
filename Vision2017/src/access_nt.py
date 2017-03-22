@@ -12,13 +12,14 @@ def connectionListener(connected, info):
 	print(info, '; Connected=%s' %connected)
 
 class NTClient:
-	def __init__(self): 
+	def __init__(self):
 		NetworkTables.initialize(server='roboRIO-199-FRC.local')
 		self.nt = NetworkTables.getTable("SmartDashboard/Vision")
 		self.gearRunning = False
 		self.shooterRunning = False
+		self.values = {}
 		NetworkTables.addGlobalListener(self.valueChanged)
-		
+
 	def valueChanged(self, key, value, isnew):
 		"""Used by the GlobalListener to change desired values, if change in them detected"""
 		if key == '/SmartDashboard/Vision/shooterRunning' and not isnew:
@@ -33,13 +34,13 @@ class NTClient:
 				print self.gearRunning
 		if key[:25] == '/SmartDashboard/HSVrange/':
 			self.values[key[25:]] = value
-			
-		 
+
+
 	def changeSubTable(self, subtable):
 		"""Specify the subtable the client should now refer to"""
 		self.nt = NetworkTables.getTable("SmartDashboard/" + subtable)
-	
-	
+
+
 	def write(self, subtable, key, value):
 		"""Specify a subtable that you want to write a value to, the key of the value, and the value"""
 		self.nt = NetworkTables.getTable("SmartDashboard/" + subtable)
@@ -50,7 +51,7 @@ class NTClient:
 		if type(value) == type(""):
 			self.nt.putString(key, value)
 		self.nt = NetworkTables.getTable("SmartDashboard/Vision")
-				
+
 	#Does not work for unknown reason, use getGear() and getShooter() instead
 	def get(self, subtable, key, defaultValue):
 		"""Specify a subtable that you want to retrieve a value from, the key of the value, and the value"""
@@ -69,5 +70,3 @@ class NTClient:
 		return self.gearRunning
 	def getShooter(self):
 		return self.shooterRunning
-			
-	
