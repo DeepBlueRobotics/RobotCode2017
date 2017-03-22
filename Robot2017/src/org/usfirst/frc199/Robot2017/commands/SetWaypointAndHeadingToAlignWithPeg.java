@@ -43,6 +43,7 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     	double[] leftTarget = Robot.vision.leftMarkCoords;
     	double[] rightTarget = Robot.vision.rightMarkCoords;
     	storeWaypointAndHeading(w, leftTarget, rightTarget);
+    	SmartDashboard.putBoolean("Vision/gearRunning", false);
     	
     }
 
