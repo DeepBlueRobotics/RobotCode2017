@@ -27,6 +27,10 @@ public class Vision extends Subsystem implements DashboardInterface {
 	private final double SCREEN_CENTER_Y = RESOLUTION_HEIGHT / 2;
 
  	private final double PIVOT_TO_FRONT_DISTANCE = Robot.getPref("Distance from pivot point to front of robot", 0);
+ 	
+ 	public double[] leftMarkCoords = new double[2];
+ 	public double[] rightMarkCoords = new double[2];
+ 	public double[] centerMarkCoords = new double[2];
 
  	private final String[] gearVisionKeys = {
  		"leftGearCenterX", "leftGearCenterY", "rightGearCenterX", "rightGearCenterY", 
@@ -83,11 +87,12 @@ public class Vision extends Subsystem implements DashboardInterface {
  	public double getCameraAngleToGear() {
  //		double pixelDisplacement = getPixelDistanceToGear();
  
- 		double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
- 		double pixelDisplacement = pegX - SCREEN_CENTER_X;
- 		double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
+// 		double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
+// 		double pixelDisplacement = pegX - SCREEN_CENTER_X;
+// 		double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
  		
- 		return Math.atan(pixelDisplacement / abstractDepth) +  Math.toRadians(GEAR_CAM_OFFSET);
+// 		return Math.atan(pixelDisplacement / abstractDepth) +  Math.toRadians(GEAR_CAM_OFFSET);
+ 		return 0;
  	}
  	
  	/**
@@ -133,10 +138,20 @@ public class Vision extends Subsystem implements DashboardInterface {
 			return 0;
 		}
  	}
+ 	
+ 	public double getXFromPivotPoint(double camDist, double camAng) {
+ 		double camX = camDist * Math.sin(Math.toRadians(camAng));
+ 		return camX + Robot.getPref("Gear cam x distance from pivot", 0);
+ 	}
+ 	
+ 	public double getYFromPivotPoint(double camDist, double camAng) {
+ 		double camY = camDist * Math.cos(Math.toRadians(camAng));
+ 		return camY + Robot.getPref("Gear cam y distance from pivot", 0);
+ 	}
 	
 	public double getParallacticDistanceToGear() {
-		double d1 = getDistanceToSingleGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) );
-		double d2 = getDistanceToSingleGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) );
+		double d1 = getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) );
+		double d2 = getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) );
 		putNumber("d1", d1);
 		putNumber("d2", d2);
 		double dBetween = REFLECTOR_DIST_GEAR;
@@ -145,11 +160,19 @@ public class Vision extends Subsystem implements DashboardInterface {
 	}
 	
 	
-	public double getDistanceToSingleGearMark(double yLow, double yHigh) {
+	public double getCamDistToGearMark(double yLow, double yHigh) {
 		double pixelDist = Math.abs(yLow - yHigh);
 		double fieldOfView = (5 * RESOLUTION_WIDTH) / pixelDist;
 		double distanceToMark = (fieldOfView / 2) / (Math.tan(THETA));
 		return distanceToMark;
+	}
+	
+	public double getCamAngToGearMark(double xHigh, double xLow) {
+		double xPos = (xHigh + xLow)/2;
+ 		double pixelDisplacement = xPos - SCREEN_CENTER_X;
+ 		double abstractDepth = SCREEN_CENTER_X / Math.tan(THETA);
+ 		
+ 		return Math.atan(pixelDisplacement / abstractDepth) +  Math.toRadians(GEAR_CAM_OFFSET);
 	}
 	
 	public boolean alignedButHorizontallyOffset() {
@@ -184,8 +207,8 @@ public class Vision extends Subsystem implements DashboardInterface {
 	}
 	
 	public double directionToTurnIfHorizontallyOffset() {
-		double d1 = getDistanceToSingleGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) );
-		double d2 = getDistanceToSingleGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) );
+		double d1 = getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) );
+		double d2 = getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) );
 		
 		if (d1 > d2) return 1;
 		else return -1;
@@ -227,6 +250,16 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("Angle to turn if horizontally offset", angleToTurnIfHorizontallyOffset());
 		putNumber("Par distance to gear", getParallacticDistanceToGear());
 		
-
+		leftMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) ), 
+				getCamAngToGearMark(getNumber("leftGearBottomX", 0), getNumber("leftGearTopX", 0)));
+		rightMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) ), 
+				getCamAngToGearMark(getNumber("rightGearBottomX", 0), getNumber("rightGearTopX", 0)));
+		leftMarkCoords[1] = getYFromPivotPoint(getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) ), 
+				getCamAngToGearMark(getNumber("leftGearBottomX", 0), getNumber("leftGearTopX", 0)));
+		rightMarkCoords[1] = getYFromPivotPoint(getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) ), 
+				getCamAngToGearMark(getNumber("rightGearBottomX", 0), getNumber("rightGearTopX", 0)));
+		
+		
+		
 	}
 }
