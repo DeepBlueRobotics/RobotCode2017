@@ -42,7 +42,7 @@ public class AutoDelay extends Command {
 			drivetrain.resetEncoder();
 			drivetrain.resetGyro();
 			drivetrain.setDistanceTarget(-18);
-			drivetrain.setAngleTarget(-15);
+			drivetrain.setAngleTarget(10);
 		}
 
 		tim.start();

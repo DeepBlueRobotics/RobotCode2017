@@ -14,7 +14,7 @@ public class AutoAlignGear extends CommandGroup {
 	 * @param shoot - whether to shoot or not
 	 */
 	public AutoAlignGear(boolean shoot) {
-		addSequential(new ToggleIntake(true, true, Robot.intake));
+		addSequential(new ToggleIntake(true, false, Robot.intake));
 		addSequential(new WriteToNT("Vision/gearRunning", true));
 		addSequential(new AutoDelay(-1, Robot.intake, Robot.drivetrain));
 		addSequential(new AutoDriveForGear(Robot.drivetrain));

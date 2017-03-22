@@ -42,6 +42,9 @@ public interface IntakeInterface extends DashboardInterface {
 	 */
 	public void toggleIntake(boolean giveDirection, boolean down);
 
+	public void lowerIntake();
+	public void raiseIntake();
+	
 	/**
 	 * Sets the pivot piston to neutral
 	 */
