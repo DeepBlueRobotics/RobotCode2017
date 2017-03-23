@@ -1,6 +1,8 @@
 package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+
+import org.usfirst.frc199.Robot2017.Log;
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
@@ -23,6 +25,8 @@ public class TurnToHeading extends Command {
 	public void initialize() {
 		
 		drivetrain.setAngleTarget(targetAngle);
+		Log.debug(this.getClass().toString()+ ".initialize called drivetrain.setAngleTarget(" + targetAngle + ")");
+		
 
 	}
 

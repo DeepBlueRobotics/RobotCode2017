@@ -1,5 +1,6 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Log;
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
@@ -39,9 +40,12 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Log.debug("SetWaypointAndHeadingToAlignWithPeg.end() called");
     	Robot.vision.updateGearCoordinates();
     	double[] leftTarget = Robot.vision.leftMarkCoords;
+    	Log.debug("leftTarget: " + " (" + leftTarget[0] + ", " + leftTarget[1] + ")");
     	double[] rightTarget = Robot.vision.rightMarkCoords;
+    	Log.debug("rightTarget: " + " (" + rightTarget[0] + ", " + rightTarget[1] + ")");
     	storeWaypointAndHeading(w, leftTarget, rightTarget);
     	SmartDashboard.putBoolean("Vision/gearRunning", false);
     	
@@ -64,8 +68,11 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     	double magnitude = Math.sqrt(Math.pow(leftTarget[1]-rightTarget[1],2)+Math.pow(leftTarget[0]-rightTarget[0],2));
     	double[] p = {lift[0] + (d * vector[0]) / magnitude, lift[1] + (d * vector[1]) / magnitude};
     	w.distanceToWaypoint = Math.sqrt(Math.pow(p[0], 2)+Math.pow(p[1],2));
+    	Log.debug("distanceToWaypoint set to " + w.distanceToWaypoint);
     	w.headingToWaypoint = Math.toDegrees(Math.atan(p[0]/p[1]));
+    	Log.debug("headingToWaypoint set to " + w.headingToWaypoint);
     	w.newHeadingAtWaypoint = Math.toDegrees(Math.atan(vector[0]/vector[1]));
+    	Log.debug("newHeadingAtWaypoint set to " + w.newHeadingAtWaypoint);
     }
     
 }
