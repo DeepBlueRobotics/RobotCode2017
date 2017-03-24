@@ -10,20 +10,20 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
  *
  */
 public class TurnToHeading extends Command {
-
+	WaypointAndHeading w;
 	double targetAngle;
 	DrivetrainInterface drivetrain;
 
 	public TurnToHeading(WaypointAndHeading w, DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
-		this.targetAngle = w.newHeadingAtWaypoint;
 		this.drivetrain = drivetrain;
-		
+		this.w = w;
+
 	}
 
 	// Called just before this Command runs the first time
 	public void initialize() {
-		
+		targetAngle = w.newHeadingAtWaypoint;	
 		drivetrain.setAngleTarget(targetAngle);
 		Log.debug(this.getClass().toString()+ ".initialize called drivetrain.setAngleTarget(" + targetAngle + ")");
 		
