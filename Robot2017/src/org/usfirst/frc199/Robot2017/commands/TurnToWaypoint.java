@@ -12,13 +12,11 @@ public class TurnToWaypoint extends TurnToHeading {
 
 	public TurnToWaypoint(WaypointAndHeading w, DrivetrainInterface drivetrain) {
 		super(w,drivetrain);
-		
+		this.targetAngle = w.headingToWaypoint;
 	}
 
 	// Called just before this Command runs the first time
 	public void initialize() {
-		
-		this.targetAngle = w.headingToWaypoint;
 		drivetrain.resetGyro();
 		super.initialize();
 
