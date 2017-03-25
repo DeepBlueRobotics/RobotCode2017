@@ -14,6 +14,7 @@ public class OI {
 	public JoystickButton shiftGearsButton;
 	public JoystickButton gradualDriveButton;
 	public JoystickButton autoShootRoutineButton;
+	public JoystickButton takePicButton;
 	public Joystick rightJoy;
 	public JoystickButton intakeButton;
 	public JoystickButton outputButton;
@@ -37,12 +38,12 @@ public class OI {
 //		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 1);
 		winchButton.whileHeld(new Climb(Robot.climber));
-		shootOutButton = new JoystickButton(manipulator, 6);
+		shootOutButton = new JoystickButton(manipulator, 5);
 		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter, 0));
 //		outputButton = new JoystickButton(manipulator, 7);
 //		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
-//		intakeButton = new JoystickButton(manipulator, 5);
-//		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
+		intakeButton = new JoystickButton(manipulator, 6);
+		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 2);
 		toggleIntakeButton.whenPressed(new ToggleIntake(false, false, Robot.intake));
 		toggleAndRunIntakeButton = new JoystickButton(manipulator, 3);
@@ -61,13 +62,17 @@ public class OI {
 		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
 		shiftGearsButton = new JoystickButton(rightJoy, 2);
 		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
+		takePicButton = new JoystickButton(rightJoy, 10);
+		takePicButton.whileHeld(new WriteToNT("SmartDashboard/Vision/takePicture", true));
+		takePicButton.whenReleased(new WriteToNT("SmartDashboard/Vision/takePicture", false));
 
 		leftJoy = new Joystick(0);
 
 		switchDriveButton = new JoystickButton(leftJoy, 4);
 		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
-		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
+//		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
+		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 
 //		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
 //		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));

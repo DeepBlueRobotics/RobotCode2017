@@ -70,17 +70,19 @@ public class Robot extends IterativeRobot {
 			}
 		}
 		
-		drivetrain.shiftLow();
+//		drivetrain.shiftLow();
 		
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putBoolean("Vision/gearRunning", false);
 		SmartDashboard.putBoolean("Vision/shooterRunning", false);
+		SmartDashboard.putString("Log Level At Startup","DEBUG");
+		
 		new Thread(() -> {
             UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-            camera.setResolution(1080, 720);
+            camera.setResolution(270, 180);
             
             CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 1080, 720);
+            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 270, 180);
             
             Mat source = new Mat();
             Mat output = new Mat();
@@ -120,14 +122,16 @@ public class Robot extends IterativeRobot {
 			if (blueAlliance) {
 				autonomousCommand = new AutoModeLoadSide(blueAlliance);
 			} else {
-				autonomousCommand = new AutoModeBoilerSide(!blueAlliance);
+				autonomousCommand = new AutoModeBoilerSide(blueAlliance);
 			}
 			break;
 		case "Center":
 			autonomousCommand = new AutoModeCenter(blueAlliance);
 			break;
 		case "Dead reckoning":
-			autonomousCommand = new AutoModeBasic(Robot.getPref("Dead Reckoning Duration", 2.5));
+			autonomousCommand = new AutoModeBasic(Robot.getPref("Dead Reckoning Duration", 2));
+//			autonomousCommand = new AutoDrive(75, 0, Robot.drivetrain);
+//			autonomousCommand = null;
 			break;
 		default:
 			autonomousCommand = null;
@@ -140,15 +144,16 @@ public class Robot extends IterativeRobot {
 
 		// Update all subsystem SmartDashboard values during autonomous
 		new DisplayDashboardData().start();
+//		new ToggleDrivetrainShift().start;
 		
     	tim.reset();
     	tim.start();
 	}
 
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
     	SmartDashboard.putNumber("interval", tim.get());
     	tim.reset();
+		Scheduler.getInstance().run();
 	}
 
 	public void teleopInit() {
@@ -167,9 +172,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
     	SmartDashboard.putNumber("interval", tim.get());
     	tim.reset();
+		Scheduler.getInstance().run();
 
 	}
 

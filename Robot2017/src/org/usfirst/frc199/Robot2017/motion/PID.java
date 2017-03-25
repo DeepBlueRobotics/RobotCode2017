@@ -93,7 +93,7 @@ public class PID implements DashboardInterface {
 		kD = getNumber("kD", 0);
 		input = newValue - offset;
 		error = target - input;
-		interval = SmartDashboard.getNumber("interval");
+		interval = SmartDashboard.getNumber("interval", 0);
 		if (name.toLowerCase().contains("velocity"))
 			output += interval * kP * error;
 		else output = kP * error;

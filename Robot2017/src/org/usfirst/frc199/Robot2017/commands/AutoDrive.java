@@ -30,6 +30,7 @@ public class AutoDrive extends Command {
 		drivetrain.resetGyro();
 		drivetrain.setDistanceTarget(targetDist);
 		drivetrain.setAngleTarget(targetAngle);
+		drivetrain.shiftLow();
 
 	}
 
@@ -58,6 +59,7 @@ public class AutoDrive extends Command {
 	// Called once after isFinished returns true
 	public void end() {
 		drivetrain.stopDrive();
+		drivetrain.setShifterNeutral();
 	}
 
 	// Called when another command which requires one or more of the same

@@ -151,7 +151,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 //	 		return Math.toDegrees(Math.asin(d*Math.sin(beta)/D) - psi);
  			double xGear = getXFromPivotPoint(getCameraDistanceToGearPlane(), getCameraAngleToGear());
  			double yGear = getYFromPivotPoint(getCameraDistanceToGearPlane(), getCameraAngleToGear());
- 			return Math.toRadians(Math.atan(xGear/yGear));
+ 			return Math.toDegrees(Math.atan(xGear/yGear));
 
 		} else {
 			return 0;
