@@ -46,6 +46,7 @@ try:
 		nt.getHSV("GearHighSat", 255), 
 		nt.getHSV("GearHighVal",200)
 	)
+
 except Exception as e:
 		nt.write("Vision", "pythonError", str(e))
 		shooterLowHSV = np.array((48,175,100))
