@@ -372,14 +372,14 @@ public class Shooter extends Subsystem implements ShooterInterface {
 		// all angles are in radians
 		//
 		// components of servoDistance
-		double servoBottomX = 2.930586;
-		double servoBottomY = 2.1351762;
+		double servoBottomX = Robot.getPref("ServoBottomX", 2.930586);
+		double servoBottomY = Robot.getPref("ServoBottomY", 2.1351762);
 		// target angle for angle servo/hood-hood pivot-servo-body
 		double targetServoAngle = Math.atan(servoBottomY / servoBottomX) - targetShootAngle + Math.PI / 2;
 		// distance from hood-body pivot to servo-hood pivot
 		double hoodHeight = Math.sqrt(servoBottomX * servoBottomX + servoBottomY * servoBottomY);
 		// distance from hood-body pivot to servo-body pivot
-		double servoDistance = 3.6258839;
+		double servoDistance = Robot.getPref("ServoDistance", 3.6258839);
 		// length the servo should be, from servo-body servo to servo-hood
 		// servo
 		double servoHeight = Math.sqrt(
