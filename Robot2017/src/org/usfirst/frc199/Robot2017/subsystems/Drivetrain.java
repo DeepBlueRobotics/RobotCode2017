@@ -240,6 +240,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	/**
 	 * Sets the distance for PID target
+	 * precondition: MUST reset encoders AND gyro
 	 * 
 	 * @param targetDistance - the target distance being set to PID
 	 */
@@ -247,14 +248,19 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		distancePID.setRelativeLocation(0);
 		distancePID.setTarget(targetDistance);
 		distancePID.update(getDistance());
+		anglePID.setRelativeLocation(0);
+		anglePID.setTarget(0);
+		anglePID.update(getAngle());
 	}
 
 	/**
 	 * Updates and tests/runs distancePID
+	 * Incorporates anglePID to account for not driving straight
 	 */
 	public void updateDistancePID() {
 		distancePID.update(getDistance());
-		unevenArcadeDrive(distancePID.getOutput(), 0);
+		anglePID.update(getAngle());
+		unevenArcadeDrive(distancePID.getOutput(), anglePID.getOutput());
 	}
 
 	/**
