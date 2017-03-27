@@ -44,6 +44,12 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 * target speed based on speed to joystick ratios
 	 */
 	public void unevenArcadeDrive(double speedJoy, double turnJoy);
+	
+	/**
+	 * Accounts for drift when in arcade drive. Sets each motor's respective target speed
+	 * @param speedInchesPerSec speed in inches per second
+	 */
+	public void specialUnevenArcadeDrive(double speedInchesPerSec);
 
 	/**
 	 * Accounts for drift when in tank drive Sets each motor's respective target

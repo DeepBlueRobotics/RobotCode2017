@@ -14,22 +14,28 @@ public class DriveBackwardsGearDelivery extends Command {
 	private Timer tim = new Timer();
 	private double duration;
 	private DrivetrainInterface drivetrain;
-	public DriveBackwardsGearDelivery(double theDuration, DrivetrainInterface theDrivetrain) {
+	private double speed;
+	
+	public DriveBackwardsGearDelivery(double theDuration, double spdInchesPerSec, DrivetrainInterface theDrivetrain) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.drivetrain);
 		duration = theDuration;
 		drivetrain = theDrivetrain;
+		speed = spdInchesPerSec;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		tim.reset();
 		tim.start();
+		drivetrain.resetEncoder();
+		drivetrain.resetGyro();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		drivetrain.specialUnevenArcadeDrive(speed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

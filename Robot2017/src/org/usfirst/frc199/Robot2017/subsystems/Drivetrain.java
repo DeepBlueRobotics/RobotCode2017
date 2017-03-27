@@ -159,7 +159,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * Accounts for drift when in arcade drive Sets each motor's respective
+	 * Accounts for drift when in arcade drive. Sets each motor's respective
 	 * target speed based on speed to joystick ratios
 	 */
 	public void unevenArcadeDrive(double speedJoy, double turnJoy) {
@@ -167,6 +167,17 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		if(shiftedHigh) ratio = Robot.getPref("highGearSpeedRatio", 175);
 		setRightSpeedTarget(ratio*(speedJoy - turnJoy));
 		setLeftSpeedTarget(ratio*(speedJoy + turnJoy));
+		updateBothSpeedPID();
+	}
+	
+	/**
+	 * Accounts for drift when in arcade drive. Sets each motor's respective target speed
+	 * Incorporates anglePID too to make sure it drives straight
+	 * @param speedInchesPerSec speed in inches per second
+	 */
+	public void specialUnevenArcadeDrive(double speedInchesPerSec){
+		setRightSpeedTarget(speedInchesPerSec);
+		setLeftSpeedTarget(speedInchesPerSec);
 		updateBothSpeedPID();
 	}
 
