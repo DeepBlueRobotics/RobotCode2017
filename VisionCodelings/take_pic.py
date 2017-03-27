@@ -10,7 +10,7 @@ subprocess.call("uvcdynctrl -d video2 -s \"Exposure, Auto\" 1", shell = True)
 subprocess.call("uvcdynctrl -d video2 -s \"Exposure (Absolute)\" 5", shell = True)
 cap = cv2.VideoCapture(1)
 
-cap.open(1)
+cap.open(0)
 
 ret, frame = cap.read()
 
