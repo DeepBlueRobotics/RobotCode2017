@@ -60,7 +60,13 @@ public class AutoModeLoadSide extends CommandGroup {
 		 * vertically from front of lift to the peg final double ROBOT_LENGTH =
 		 * Robot.getPref("Robot Length", 0);
 		 */
-
+		
+//		//uncomment this paragraph below when intake put back on
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, false, Robot.intake));
 		// METHOD 1
 		// Drives to hexagon
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
@@ -83,25 +89,25 @@ public class AutoModeLoadSide extends CommandGroup {
 
 		// METHOD 1:
 		// backs up
-		addSequential(new AutoDrive(0 - LENGTH_2, 0, Robot.drivetrain));
-
-		// Turns away from lift
-		addSequential(new AutoDrive(0, (0 - direction) * 60, Robot.drivetrain));
-
-		// backs up
-		addSequential(new AutoDrive(6 - LENGTH_1, 0, Robot.drivetrain));
-
-		/*
-		 * // Method 2 addSequential(new
-		 * FollowTrajectory((0-direction)*ROBOT_CENTER_TO_PEG, LEFT *
-		 * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), LEFT* 60));
-		 */
-
-		// turns away from boiler, aligns and drives backward towards it
-		addSequential(new AutoDrive(0, (0 - direction) * 90, Robot.drivetrain));
-
-		addSequential(new AutoDrive(0, Robot.vision.getAngleToBoiler(), Robot.drivetrain));
-		addSequential(new AutoDrive(36 - Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
+//		addSequential(new AutoDrive(0 - LENGTH_2, 0, Robot.drivetrain));
+//
+//		// Turns away from lift
+//		addSequential(new AutoDrive(0, (0 - direction) * 60, Robot.drivetrain));
+//
+//		// backs up
+//		addSequential(new AutoDrive(6 - LENGTH_1, 0, Robot.drivetrain));
+//
+//		/*
+//		 * // Method 2 addSequential(new
+//		 * FollowTrajectory((0-direction)*ROBOT_CENTER_TO_PEG, LEFT *
+//		 * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), LEFT* 60));
+//		 */
+//
+//		// turns away from boiler, aligns and drives backward towards it
+//		addSequential(new AutoDrive(0, (0 - direction) * 90, Robot.drivetrain));
+//
+//		addSequential(new AutoDrive(0, Robot.vision.getAngleToBoiler(), Robot.drivetrain));
+//		addSequential(new AutoDrive(36 - Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
 
 		// Aims and shoots
 //		addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));

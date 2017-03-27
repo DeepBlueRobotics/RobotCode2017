@@ -634,6 +634,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void shiftLow(){
 		shiftPiston.set(DoubleSolenoid.Value.kForward);
+		shiftedHigh = false;
+	}
+	
+	public void shiftHigh(){
+		shiftPiston.set(DoubleSolenoid.Value.kReverse);
+		shiftedHigh = true;
 	}
 
 	@Override

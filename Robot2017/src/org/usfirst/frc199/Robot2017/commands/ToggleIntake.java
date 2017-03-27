@@ -15,7 +15,11 @@ public class ToggleIntake extends Command {
 	boolean giveDirection = false;
 	boolean down = true;
 	Timer tim = new Timer();
-
+	
+	/**
+	 * @param giveDirection you want a specific direction to be set, not just toggle to whatever
+	 * @param down you want the intake to go down (only used when giveDirection true)
+	 * */
 	public ToggleIntake(boolean giveDirection, boolean down, IntakeInterface intake) {
 		requires(Robot.intake);
 		this.intake = intake;
@@ -32,7 +36,12 @@ public class ToggleIntake extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		if (firstTime) {
-			intake.toggleIntake(giveDirection, down);
+			if(giveDirection) {
+				if(down) intake.lowerIntake();
+				else intake.raiseIntake();
+			} else {
+				intake.toggleIntake(giveDirection, down);
+			}
 			firstTime = false;
 		}
 	}

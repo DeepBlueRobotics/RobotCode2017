@@ -71,6 +71,7 @@ public class RobotMap {
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
 			intakeIntakeMotor = new VictorSP(2);
+			intakeIntakeMotor.setInverted(true);
 			shooterFeedMotor = new VictorSP(4);
 			shooterFloorBeltMotor = new VictorSP(5);
 			hoodServo = new Servo(9);

@@ -30,12 +30,18 @@ public class AutoModeCenter extends CommandGroup {
 		// in. dividers protrude from the airship toward alliance wall (approx.)
 		final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07);
 		// in. from corner to corner of airship; Drives to lift and aligns
-		addSequential(new ToggleIntake(true, false, Robot.intake));
-		addSequential(new ToggleIntake(true, false, Robot.intake));
-		addSequential(new AutoDrive(51, 0, Robot.drivetrain));
-		addSequential(new AutoDrive(0,15,Robot.drivetrain));
 		
-		addSequential(new AutoAlignGear(false));
+		//IMPORTANT: this paragraph is the correct code to be uncommented when intake is put back on
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, false, Robot.intake));
+
+		addSequential(new AutoDrive(78, 0, Robot.drivetrain));
+//		addSequential(new AutoDrive(0,10,Robot.drivetrain));
+		
+//		addSequential(new AutoAlignGear(false));
 
 		/**
 		 * WE DO NOT NEED TO TRAVEL OUT TO CROSS THE BASELINE! FIX LATER

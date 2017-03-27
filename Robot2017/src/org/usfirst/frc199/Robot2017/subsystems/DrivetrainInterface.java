@@ -317,6 +317,8 @@ public interface DrivetrainInterface extends DashboardInterface {
 	 */
 	public void shiftLow();
 	
+	public void shiftHigh();
+	
 	/**
 	 * Resets the gyro to return zero at that point
 	 */
