@@ -60,12 +60,13 @@ public class AutoModeLoadSide extends CommandGroup {
 		 * vertically from front of lift to the peg final double ROBOT_LENGTH =
 		 * Robot.getPref("Robot Length", 0);
 		 */
-
-		addSequential(new ToggleIntake(true, true, Robot.intake));
-		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
-		addSequential(new ToggleIntake(true, true, Robot.intake));
-		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
-		addSequential(new ToggleIntake(true, false, Robot.intake));
+		
+//		//uncomment this paragraph below when intake put back on
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, false, Robot.intake));
 		// METHOD 1
 		// Drives to hexagon
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));

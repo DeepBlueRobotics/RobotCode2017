@@ -43,12 +43,19 @@ public class OI {
 //		outputButton = new JoystickButton(manipulator, 7);
 //		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
 		intakeButton = new JoystickButton(manipulator, 6);
-		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
+		
+		//uncomment this line below when intake put back on
+//		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
 		toggleIntakeButton = new JoystickButton(manipulator, 2);
-		toggleIntakeButton.whenPressed(new ToggleIntake(false, false, Robot.intake));
+		
+		//uncomment this line below when intake put back on
+//		toggleIntakeButton.whenPressed(new ToggleIntake(false, false, Robot.intake));
 		toggleAndRunIntakeButton = new JoystickButton(manipulator, 3);
-		toggleAndRunIntakeButton.whenPressed(new NeverEndTheIntaking(Robot.intake));
+		
+		//uncomment this line below when intake put back on
+//		toggleAndRunIntakeButton.whenPressed(new NeverEndTheIntaking(Robot.intake));
 		toggleFlipper = new JoystickButton(manipulator, 4);
+		
 		toggleFlipper.whenPressed(new ToggleIntakeRamp(Robot.intake));
 		autoUSAdjustButton = new JoystickButton(manipulator, 8);
 		autoUSAdjustButton.whenPressed(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
@@ -71,8 +78,10 @@ public class OI {
 		switchDriveButton = new JoystickButton(leftJoy, 4);
 		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
-//		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
-		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
+		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
+		
+		//uncomment this line below when intake put back on
+//		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 
 //		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
 //		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));

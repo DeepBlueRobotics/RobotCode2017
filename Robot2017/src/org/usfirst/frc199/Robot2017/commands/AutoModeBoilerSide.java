@@ -42,6 +42,13 @@ public class AutoModeBoilerSide extends CommandGroup {
 		 * Robot.getPref("Lift Corner to Peg (vertical) BoilerSide", 17.647);
 		 * //in vertically from front of lift to the peg
 		 */
+		
+		//uncomment this paragraph below when intake put back on
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, true, Robot.intake));
+//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
+//		addSequential(new ToggleIntake(true, false, Robot.intake));
 
 		// METHOD 1:
 		// Drives to airlift
