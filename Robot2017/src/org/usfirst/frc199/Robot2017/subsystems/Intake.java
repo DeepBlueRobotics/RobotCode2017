@@ -27,6 +27,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private Timer tim = new Timer();
 	private boolean intakeIsDown = false;
 	private boolean flipperIsUp = false;
+	private final SpeedController gearRoller = RobotMap.gearRoller;
 
 	public Intake() {
 		super();
@@ -81,7 +82,14 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void stopIntake() {
 		intakeMotor.set(0);
 	}
+	/**
+	 * Runs the gearRoller a certain direction
+	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
+	 */
 
+	public void runRoller(int speed) {
+		gearRoller.set(speed);
+	}
 	/**
 	 * Moves the intake up if it is down, and vice versa
 	 * @param giveDirection - indicate false if not a simple toggle, but a directional set

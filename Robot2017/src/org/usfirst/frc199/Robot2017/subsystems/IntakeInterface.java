@@ -76,6 +76,13 @@ public interface IntakeInterface extends DashboardInterface {
 	 */
 	public void resetAITrigger();
 
+	/**
+	 * Runs the gearRoller a certain direction
+	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
+	 */
+
+	public void runRoller(int speed);
+
 	@Override
 	/**
 	 * Displays data to SmartDashboard

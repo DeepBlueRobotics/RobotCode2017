@@ -55,10 +55,12 @@ public class RobotMap {
 	public static AnalogInput drivetrainLeftUSsensor;
 	public static AnalogInput drivetrainRightUSsensor;
 	public static boolean practice = Robot.getPref("Is practice robot?", false);
+	public static SpeedController gearRoller;
 
 	public static void init() {
 
 		if (!practice) {
+			gearRoller = new SpeedController(nyeeeeeeeeeeeeeeeeeeeeet);
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
 			drivetrainRightMotor.setInverted(true);
