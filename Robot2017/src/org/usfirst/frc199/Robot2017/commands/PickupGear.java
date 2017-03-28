@@ -1,5 +1,7 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -20,5 +22,9 @@ public class PickupGear extends CommandGroup {
          * 		stop roller, set to brake
          * 		actuate up
          * */
+    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addSequential(new RunGearRoller(1, Robot.intake));
+    	addSequential(new ToggleIntake(false, true, Robot.intake));
+    	addParallel(new FlashLED(Robot.intake));
     }
 }
