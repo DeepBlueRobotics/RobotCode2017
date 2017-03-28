@@ -74,6 +74,8 @@ public interface IntakeInterface extends DashboardInterface {
 	 * @return if the gear has been lifted or not
 	 */
 	public boolean gearLifted(boolean isTriggered);
+	
+	public boolean getSwitch();
 
 	/**
 	 * Resets the light sensor trigger value

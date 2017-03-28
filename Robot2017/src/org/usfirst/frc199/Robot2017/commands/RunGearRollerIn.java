@@ -1,18 +1,22 @@
 package org.usfirst.frc199.Robot2017.commands;
 
+import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class RunGearRoller extends Command {
+public class RunGearRollerIn extends Command {
 	
 	private IntakeInterface intake;
+	private Timer tim;
 	private double speed;
+	private boolean gearInOnce;
 	
-    public RunGearRoller(double speed, IntakeInterface intake) {
+    public RunGearRollerIn(double speed, IntakeInterface intake) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.intake = intake;
@@ -21,15 +25,24 @@ public class RunGearRoller extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	tim = new Timer();
+    	gearInOnce = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	intake.runRoller(speed);
+    	if(intake.getSwitch() && !gearInOnce){
+        	tim.start();
+        	gearInOnce = true;
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        if(gearInOnce){
+        	return intake.getSwitch() && tim.get() > Robot.getPref("Make sure gear is in delay time", 2);
+        }
         return false;
     }
 
