@@ -30,6 +30,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private boolean flipperIsUp = false;
 	private final SpeedController gearRoller = RobotMap.gearRoller;
 	private final DigitalInput gearIntakeSwitch = RobotMap.gearIntakeSwitch;
+	private final DoubleSolenoid flashLED = RobotMap.flashingGearLED;
 
 	public Intake() {
 		super();
@@ -37,6 +38,14 @@ public class Intake extends Subsystem implements IntakeInterface {
 	}
 
 	public void initDefaultCommand() {
+	}
+	
+	public void LEDOn(){
+		flashLED.set(DoubleSolenoid.Value.kForward);
+	}
+	
+	public void LEDOff(){
+		flashLED.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	/**
@@ -89,7 +98,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
 	 */
 
-	public void runRoller(int speed) {
+	public void runRoller(double speed) {
 		gearRoller.set(speed);
 	}
 	

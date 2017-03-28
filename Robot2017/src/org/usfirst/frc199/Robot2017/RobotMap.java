@@ -38,6 +38,7 @@ public class RobotMap {
 	public static Compressor drivetrainCompressor;
 	public static DoubleSolenoid drivetrainShiftPiston;
 	public static DoubleSolenoid intakePivotPiston;
+	public static DoubleSolenoid flashingGearLED;
 	public static SpeedController intakeIntakeMotor;
 	public static SpeedController shooterFeedMotor;
 	public static SpeedController shooterFloorBeltMotor;
@@ -74,6 +75,7 @@ public class RobotMap {
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
+			flashingGearLED = new DoubleSolenoid(6, 7);
 			intakeIntakeMotor = new VictorSP(2);
 			intakeIntakeMotor.setInverted(true);
 			shooterFeedMotor = new VictorSP(4);
@@ -102,6 +104,7 @@ public class RobotMap {
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
+			flashingGearLED = new DoubleSolenoid(6, 7);
 			intakeIntakeMotor = new VictorSP(2);
 			shooterFeedMotor = new VictorSP(4);
 			hoodServo = new Servo(9);
