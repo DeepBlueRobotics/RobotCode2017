@@ -55,12 +55,13 @@ public class RobotMap {
 	public static AnalogInput drivetrainLeftUSsensor;
 	public static AnalogInput drivetrainRightUSsensor;
 	public static boolean practice = Robot.getPref("Is practice robot?", false);
-	public static SpeedController gearRoller;
+	public static VictorSP gearRoller;
+	public static DigitalInput gearIntakeSwitch;
 
 	public static void init() {
 
 		if (!practice) {
-			gearRoller = new SpeedController(nyeeeeeeeeeeeeeeeeeeeeet);
+			gearRoller = new VictorSP(-1); // port number?
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
 			drivetrainRightMotor.setInverted(true);
@@ -86,6 +87,7 @@ public class RobotMap {
 			flipperFlapper = new DoubleSolenoid(0, 4, 5);
 			drivetrainLeftUSsensor = new AnalogInput(3);
 			drivetrainRightUSsensor = new AnalogInput(4);
+			gearIntakeSwitch = new DigitalInput(-1); // port number?
 		} else {
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
