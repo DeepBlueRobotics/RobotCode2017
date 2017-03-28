@@ -18,13 +18,10 @@ public class AutoModeBoilerSide extends CommandGroup {
 	/***
 	 * Commands for autonomous starting at left
 	 * 
-	 * @param alliance true for red, false for blue
+	 * @param alliance true for blue, false for red
 	 */
 	public AutoModeBoilerSide(boolean alliance) {
 
-		double direction = 1;
-		if (alliance)
-			direction = -1;
 
 		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 91.66);
 		// in. from front end of robot to point on field
@@ -55,7 +52,11 @@ public class AutoModeBoilerSide extends CommandGroup {
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
 
 		// Turns toward lift
-		addSequential(new AutoDrive(0, (direction) * 60, Robot.drivetrain));
+		if(alliance)
+			addSequential(new AutoDrive(0, 60, Robot.drivetrain));
+		else
+			addSequential(new AutoDrive(0, -60, Robot.drivetrain));
+	
 
 		//Drives toward lift
 		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));

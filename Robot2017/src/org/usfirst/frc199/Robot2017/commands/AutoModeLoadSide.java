@@ -25,10 +25,6 @@ public class AutoModeLoadSide extends CommandGroup {
 	 */
 	public AutoModeLoadSide(boolean alliance) {
 
-		double direction = 1;
-		if (alliance)
-			direction = -1;
-
 		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 98.55); // in.
 																					// from
 																					// front
@@ -72,7 +68,11 @@ public class AutoModeLoadSide extends CommandGroup {
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
 
 		// Turns toward lift
-		addSequential(new AutoDrive(0, direction * 60, Robot.drivetrain));
+//		addSequential(new AutoDrive(0, direction * 60, Robot.drivetrain));
+		if(alliance)
+			addSequential(new AutoDrive(0, -60, Robot.drivetrain));
+		else
+			addSequential(new AutoDrive(0, 60, Robot.drivetrain));
 
 		// Drive Forward
 		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));

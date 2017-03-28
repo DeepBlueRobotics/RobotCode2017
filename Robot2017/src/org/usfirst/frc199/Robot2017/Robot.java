@@ -114,8 +114,10 @@ public class Robot extends IterativeRobot {
 		case "Left":
 			if (blueAlliance) {
 				autonomousCommand = new AutoModeBoilerSide(blueAlliance);
+//				autonomousCommand = new AutoModeBoilerSide(!blueAlliance);
 			} else {
-				autonomousCommand = new AutoModeLoadSide(!blueAlliance);
+				autonomousCommand = new AutoModeLoadSide(blueAlliance);
+//				autonomousCommand = new AutoModeLoadSide(blueAlliance);
 			}
 			break;
 		case "Right":

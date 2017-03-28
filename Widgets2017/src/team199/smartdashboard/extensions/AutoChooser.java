@@ -34,7 +34,7 @@ public class AutoChooser extends StaticWidget {
     private final JLabel redLbl = new JLabel("Red");
     private final JButton saveBtn = new JButton("Save");
     private ITable prefs;
-    private boolean blue;
+    private boolean blue = true;
 	private final Color deepblue = new Color(0, 1, 99);
 
     @Override
@@ -112,9 +112,9 @@ public class AutoChooser extends StaticWidget {
         String key = autoBox.getSelectedItem() + "";
         autoBox.removeAllItems();
         autoBox.addItem("Choose auto mode...");
-        autoBox.addItem("Left");
+        autoBox.addItem("Boiler");
         autoBox.addItem("Center");
-        autoBox.addItem("Right");
+        autoBox.addItem("Load");
         autoBox.addItem("Dead reckoning");
         autoBox.setSelectedItem(key);
         repaint();
@@ -122,6 +122,18 @@ public class AutoChooser extends StaticWidget {
     
     private void updateTable() {
         String autoLocationValue = autoBox.getSelectedItem() + "";
+        if(autoLocationValue.equals("Boiler")){
+        	if(blue)
+        		autoLocationValue = "Left";
+        	else
+        		autoLocationValue = "Right";
+        }
+        else if(autoLocationValue.equals("Load")){
+        	if(blue)
+        		autoLocationValue = "Right";
+        	else
+        		autoLocationValue = "Left";
+        }
         prefs.putString("Auto location", autoLocationValue);
         prefs.putBoolean("Blue", blue);
     }
