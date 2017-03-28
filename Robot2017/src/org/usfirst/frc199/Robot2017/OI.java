@@ -85,7 +85,7 @@ public class OI {
 		//uncomment this line below when intake put back on
 //		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 
-		intakeGearButton = new JoystickButton(leftJoy, 2);
+		intakeGearButton = new JoystickButton(leftJoy, 3);
 		intakeGearButton.whenPressed(new PickupGear());
 		
 //		when the below gets reincorporated, change button cause already used >:)
