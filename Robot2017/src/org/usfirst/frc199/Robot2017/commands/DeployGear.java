@@ -23,6 +23,9 @@ public class DeployGear extends CommandGroup {
          * 	flash LED
          * 	actuate up
          * */
-    	addParallel(new FlashLED(Robot.intake));
+    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addParallel(new RunGearRollerOut(Robot.intake));
+    	addParallel(new DriveBackwardsGearDelivery(0.6, Robot.getPref("backOutSpeed", 2), Robot.drivetrain));
+    	addSequential(new FlashLED(Robot.intake));
     }
 }

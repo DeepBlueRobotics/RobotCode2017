@@ -27,8 +27,8 @@ public class DriveBackwardsGearDelivery extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		tim.start();
 		tim.reset();
+		tim.start();
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
 	}
