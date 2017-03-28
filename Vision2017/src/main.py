@@ -83,6 +83,14 @@ nt.write("Vision", "shooterRunning", False)
 """ Main Loop """
 while (True):
 	try:
+                if nt.getTakePicture() && oneTime:
+                        gearCap.open()
+                        ret, pictureFrame = gearCap.capture()
+			cv2.imwrite("/home/pi/Documents/RobotCode2017/RobotCode2017/img" + str(time.time()) + ".ppm", pictureFrame)
+                        gearCap.close()
+			oneTime = False
+		else:
+                        oneTime = True
 		""" boiler tape identification code """
 		if nt.getShooter():
 			if (not shooterCap.isOpened()):
@@ -134,9 +142,6 @@ while (True):
 				nt.write("Vision", "rightGearTopY", rt)
 
 				nt.write("Vision", "OH-YEAH", success)
-			#elif oneTime:
-				#cv2.imwrite("/home/pi/Documents/RobotCode2017/RobotCode2017/img" + str(time.time()) + ".ppm", gearFrame)
-				#oneTime = False
 
 		else:
 			nt.write("Vision", "gearCodeRunning", False)
