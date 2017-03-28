@@ -23,11 +23,12 @@ public class OI {
 	public JoystickButton winchButton;
 	public JoystickButton feedInButton;
 	public JoystickButton feedOutButton;
-	public JoystickButton toggleIntakeButton;
+	public JoystickButton deployGearButton;
 	public JoystickButton toggleAndRunIntakeButton;
 	public JoystickButton autoUSAdjustButton;
 	public Joystick manipulator;
 	public JoystickButton toggleFlipper;
+	public JoystickButton intakeGearButton;
 
 	public OI() {
 		manipulator = new Joystick(2);
@@ -46,10 +47,11 @@ public class OI {
 		
 		//uncomment this line below when intake put back on
 //		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
-		toggleIntakeButton = new JoystickButton(manipulator, 2);
+		
+		deployGearButton = new JoystickButton(manipulator, 2);
+		deployGearButton.whenPressed(new DeployGear());
 		
 		//uncomment this line below when intake put back on
-//		toggleIntakeButton.whenPressed(new ToggleIntake(false, false, Robot.intake));
 		toggleAndRunIntakeButton = new JoystickButton(manipulator, 3);
 		
 		//uncomment this line below when intake put back on
@@ -83,6 +85,10 @@ public class OI {
 		//uncomment this line below when intake put back on
 //		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 
+		intakeGearButton = new JoystickButton(leftJoy, 2);
+		intakeGearButton.whenPressed(new PickupGear());
+		
+//		when the below gets reincorporated, change button cause already used >:)
 //		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
 //		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 		
