@@ -13,7 +13,7 @@ import subprocess
 import numpy as np
 import boiler_identify
 import lift_marks_identify
-import time
+# import time
 
 oneTime = True
 
@@ -46,8 +46,9 @@ try:
 		nt.getHSV("GearHighSat", 255), 
 		nt.getHSV("GearHighVal",200)
 	)
+
 except Exception as e:
-		nt.write("Vision", "pythonError", str(e))
+		nt.write("Vision", "pythonError", "Error at HSV value initialization: {}".format(str(e)))
 		shooterLowHSV = np.array((48,175,100))
 		shooterHighHSV = np.array((100,255,200))
 		gearLowHSV = np.array((65,175,100))
@@ -150,4 +151,4 @@ while (True):
 			#if (gearCap.isOpened()):
 				#gearCap.release()
 	except Exception as e:
-		nt.write("Vision", "pythonError", str(e))
+		nt.write("Vision", "pythonError", "Error in main loop: {}".format(str(e)))

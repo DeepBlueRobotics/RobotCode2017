@@ -43,21 +43,21 @@ def findTape(frame, lower, upper):
 					return -1, -1, -1, -1, -1, -1, -1, -1, False
 				else:
 					# centroid stuff
-					centerXi = 640 - int(Mi["m10"] / Mi["m00"])
-					centerYi = 360 - int(Mi["m01"] / Mi["m00"])
+					centerXi = int(Mi["m10"] / Mi["m00"])
+					centerYi = int(Mi["m01"] / Mi["m00"])
 
-					centerXj = 640 - int(Mj["m10"] / Mj["m00"])
-					centerYj = 360 - int(Mj["m01"] / Mj["m00"])
+					centerXj = int(Mj["m10"] / Mj["m00"])
+					centerYj = int(Mj["m01"] / Mj["m00"])
 
 					# x, y, w, h
 					iBox = cv2.boundingRect(cnts2[i][1])
 					jBox = cv2.boundingRect(cnts2[j][1])
 
-					boti = 360 - iBox[1]
-					topi = 360 - iBox[1] - iBox[3]
+					topi = iBox[1]
+					boti = iBox[1] + iBox[3]
 
-					botj = 360 - jBox[1]
-					topj = 360 - jBox[1] - jBox[3]
+					topj = jBox[1]
+					botj = jBox[1] + jBox[3]
 
 					if centerXi < centerXj:
 						return centerXi, centerYi, centerXj, centerYi, \

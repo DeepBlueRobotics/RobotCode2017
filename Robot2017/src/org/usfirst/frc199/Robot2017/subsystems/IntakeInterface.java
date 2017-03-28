@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public interface IntakeInterface extends DashboardInterface {
 
 	public void initDefaultCommand();
+	
+	public void LEDOn();
+	
+	public void LEDOff();
 
 	/**
 	 * Returns the current value of the intakeMotor
@@ -75,6 +79,13 @@ public interface IntakeInterface extends DashboardInterface {
 	 * Resets the light sensor trigger value
 	 */
 	public void resetAITrigger();
+
+	/**
+	 * Runs the gearRoller a certain direction
+	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
+	 */
+
+	public void runRoller(double speed);
 
 	@Override
 	/**

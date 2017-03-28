@@ -6,6 +6,7 @@ import org.usfirst.frc199.Robot2017.RobotMap;
 import org.usfirst.frc199.Robot2017.commands.*;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -27,6 +28,9 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private Timer tim = new Timer();
 	private boolean intakeIsDown = false;
 	private boolean flipperIsUp = false;
+	private final SpeedController gearRoller = RobotMap.gearRoller;
+	private final DigitalInput gearIntakeSwitch = RobotMap.gearIntakeSwitch;
+	private final DoubleSolenoid flashLED = RobotMap.flashingGearLED;
 
 	public Intake() {
 		super();
@@ -34,6 +38,14 @@ public class Intake extends Subsystem implements IntakeInterface {
 	}
 
 	public void initDefaultCommand() {
+	}
+	
+	public void LEDOn(){
+		flashLED.set(DoubleSolenoid.Value.kForward);
+	}
+	
+	public void LEDOff(){
+		flashLED.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	/**
@@ -81,7 +93,23 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void stopIntake() {
 		intakeMotor.set(0);
 	}
+	/**
+	 * Runs the gearRoller a certain direction
+	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
+	 */
 
+	public void runRoller(double speed) {
+		gearRoller.set(speed);
+	}
+	
+	/**
+	 * Gets if the gear is in the gear intake, pushing either switch
+	 * @return if the gear intake limit switches are pushed
+	 */
+	public boolean getSwitch() {
+		return gearIntakeSwitch.get();
+	}
+	
 	/**
 	 * Moves the intake up if it is down, and vice versa
 	 * @param giveDirection - indicate false if not a simple toggle, but a directional set
