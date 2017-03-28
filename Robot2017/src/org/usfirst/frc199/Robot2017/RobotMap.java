@@ -42,7 +42,7 @@ public class RobotMap {
 	public static SpeedController shooterFeedMotor;
 	public static SpeedController shooterFloorBeltMotor;
 	public static CANTalon shooterShootMotorAndEncoder;
-	private static final int CANTalonIDNum = (int)Robot.getPref("CAN SHooter Device ID", 1);
+	private static final int CANTalonIDNum = (int) Robot.getPref("CAN SHooter Device ID", 1);
 	private final static double shootFGain = 0.374;
 	public static SpeedController turretTurnMotor;
 	public static Potentiometer turretTurretEncoder;
@@ -55,13 +55,14 @@ public class RobotMap {
 	public static AnalogInput drivetrainLeftUSsensor;
 	public static AnalogInput drivetrainRightUSsensor;
 	public static boolean practice = Robot.getPref("Is practice robot?", false);
-	public static VictorSP gearRoller;
+	public static SpeedController gearRoller;
 	public static DigitalInput gearIntakeSwitch;
 
 	public static void init() {
 
 		if (!practice) {
-			gearRoller = new VictorSP(-1); // port number?
+			gearRoller = new VictorSP(-1); // port number? and motor type? eric
+											// said "winny spinny"
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
 			drivetrainRightMotor.setInverted(true);
@@ -92,10 +93,10 @@ public class RobotMap {
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
 			drivetrainRightMotor.setInverted(true);
-			
-			drivetrainLeftEncoder = new Encoder(0,1, false, EncodingType.k4X);
+
+			drivetrainLeftEncoder = new Encoder(0, 1, false, EncodingType.k4X);
 			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
-			drivetrainRightEncoder = new Encoder(3,2, false, EncodingType.k4X);
+			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
 			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
