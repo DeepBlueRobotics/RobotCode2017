@@ -90,7 +90,7 @@ public class RobotMap {
 			flipperFlapper = new DoubleSolenoid(0, 4, 5);
 			drivetrainLeftUSsensor = new AnalogInput(3);
 			drivetrainRightUSsensor = new AnalogInput(4);
-			gearIntakeSwitch = new DigitalInput(-1); // port number?
+			gearIntakeSwitch = new DigitalInput(5); // port number?
 		} else {
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);
@@ -116,6 +116,8 @@ public class RobotMap {
 			flipperFlapper = new DoubleSolenoid(0, 4, 5);
 			drivetrainLeftUSsensor = new AnalogInput(3);
 			drivetrainRightUSsensor = new AnalogInput(4);
+
+			gearIntakeSwitch = new DigitalInput(5); // port number?
 		}
 
 		LiveWindow.addActuator("Drivetrain", "LeftMotor", (VictorSP) drivetrainLeftMotor);

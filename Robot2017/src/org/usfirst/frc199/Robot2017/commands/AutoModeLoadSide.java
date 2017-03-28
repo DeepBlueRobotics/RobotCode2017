@@ -5,7 +5,7 @@ import org.usfirst.frc199.Robot2017.Robot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * This is to be used if starting on the load side, with back left corner of
+ * This is to be used if starting on the load side, with center of
  * robot at the inside (closest to center-field) corner of tape
  * 
  * 

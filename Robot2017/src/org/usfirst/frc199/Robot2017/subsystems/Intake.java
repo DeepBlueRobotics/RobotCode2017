@@ -38,14 +38,16 @@ public class Intake extends Subsystem implements IntakeInterface {
 	}
 
 	public void initDefaultCommand() {
+		setDefaultCommand(new FlashLED(Robot.intake));
 	}
 	
 	public void LEDOn(){
-		flashLED.set(DoubleSolenoid.Value.kForward);
+		if(gearIntakeSwitch.get()) flashLED.set(DoubleSolenoid.Value.kOff);
+		else LEDOff();
 	}
 	
 	public void LEDOff(){
-		flashLED.set(DoubleSolenoid.Value.kReverse);
+		flashLED.set(DoubleSolenoid.Value.kForward);
 	}
 
 	/**

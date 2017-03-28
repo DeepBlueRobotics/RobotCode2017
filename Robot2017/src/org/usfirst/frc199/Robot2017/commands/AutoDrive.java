@@ -30,7 +30,7 @@ public class AutoDrive extends Command {
 		drivetrain.resetGyro();
 		drivetrain.setDistanceTarget(targetDist);
 		drivetrain.setAngleTarget(targetAngle);
-		drivetrain.shiftLow();
+//		drivetrain.shiftLow();
 
 	}
 

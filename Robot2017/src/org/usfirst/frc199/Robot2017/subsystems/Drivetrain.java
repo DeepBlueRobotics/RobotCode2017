@@ -680,8 +680,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Left DT Signal", leftMotor.get());
 		putNumber("Right DT Signal", rightMotor.get());
 
-		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
-		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
+//		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
+//		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
 		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
 		putNumber("Sending to left motor", leftMotor.getRaw());

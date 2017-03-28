@@ -85,12 +85,12 @@ public class Vision extends Subsystem implements DashboardInterface {
  	 * @return calculated angle from camera's line of sight to gear lift
  	 */
  	public double getCameraAngleToGear() {
- //		double pixelDisplacement = getPixelDistanceToGear();
+//		double pixelDisplacement = getPixelDistanceToGear();
  
 // 		double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
 // 		double pixelDisplacement = pegX - SCREEN_CENTER_X;
 // 		double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
- 		
+// 		
 // 		return Math.atan(pixelDisplacement / abstractDepth) +  Math.toRadians(GEAR_CAM_OFFSET);
  		
  		double leftCamDist = getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0)); 
@@ -98,13 +98,13 @@ public class Vision extends Subsystem implements DashboardInterface {
  		double rightCamDist = getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0)); 
 		double rightCamAng = getCamAngToGearMark(getNumber("rightGearBottomX", 0), getNumber("rightGearTopX", 0));
  		
- 		double camX1 = leftCamDist * Math.sin(Math.toRadians(leftCamAng));
- 		double camY1 = leftCamDist * Math.cos(Math.toRadians(leftCamAng));
+ 		double camX1 = leftCamDist * Math.sin(leftCamAng);
+ 		double camY1 = leftCamDist * Math.cos(leftCamAng);
 
- 		double camX2 = rightCamDist * Math.sin(Math.toRadians(rightCamAng));
- 		double camY2 = rightCamDist * Math.cos(Math.toRadians(rightCamAng));
+ 		double camX2 = rightCamDist * Math.sin(rightCamAng);
+ 		double camY2 = rightCamDist * Math.cos(rightCamAng);
  		
- 		return Math.atan( (camX1 + camX2)/2 / (camY1 + camY2)/2 );
+ 		return Math.atan( (camX1 + camX2)/2 / ((camY1 + camY2)/2) );
  	}
  	
  	/**
@@ -159,12 +159,12 @@ public class Vision extends Subsystem implements DashboardInterface {
  	}
  	
  	public double getXFromPivotPoint(double camDist, double camAng) {
- 		double camX = camDist * Math.sin(Math.toRadians(camAng));
+ 		double camX = camDist * Math.sin(camAng);
  		return camX + Robot.getPref("Gear cam x distance from pivot", 0);
  	}
  	
  	public double getYFromPivotPoint(double camDist, double camAng) {
- 		double camY = camDist * Math.cos(Math.toRadians(camAng));
+ 		double camY = camDist * Math.cos(camAng);
  		return camY + Robot.getPref("Gear cam y distance from pivot", 0);
  	}
 	
@@ -268,6 +268,11 @@ public class Vision extends Subsystem implements DashboardInterface {
 		rightMarkCoords[1] = getYFromPivotPoint(getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) ), 
 				getCamAngToGearMark(getNumber("rightGearBottomX", 0), getNumber("rightGearTopX", 0)));
 		
+		putNumber("leftX", leftMarkCoords[0]);
+		putNumber("leftY", leftMarkCoords[1]);
+		putNumber("rightX", rightMarkCoords[0]);
+		putNumber("rightY", rightMarkCoords[1]);
+		
 	}
 	
 	@Override
@@ -276,11 +281,12 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("Angle to Gear", getAngleToGear());
 		putNumber("Distance to Boiler", getDistanceToBoiler());
 		putNumber("Angle to Boiler", getAngleToBoiler());
-		putNumber("Gear camera angle to target", getCameraAngleToGear());
+		putNumber("Gear camera angle to target", Math.toDegrees(getCameraAngleToGear()));
 		putBoolean("Is aligned but horizontally offset", alignedButHorizontallyOffset());
 		putNumber("Angle to turn if horizontally offset", angleToTurnIfHorizontallyOffset());
 		putNumber("Par distance to gear", getParallacticDistanceToGear());
-		
+		putNumber("Cam ang to left gear mark", getCamAngToGearMark(getNumber("leftGearBottomX", 0), getNumber("leftGearTopX", 0)));
+		putNumber("Cam ang to right gear mark", getCamAngToGearMark(getNumber("rightGearBottomX", 0), getNumber("rightGearTopX", 0)));
 		updateGearCoordinates();
 		
 		
