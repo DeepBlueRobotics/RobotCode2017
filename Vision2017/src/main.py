@@ -26,24 +26,24 @@ gearCap = cv2.VideoCapture(1)
 try:
 	# HSV ranges - getting
 	shooterLowHSV = np.array(
-		nt.getHSV("ShooterLowHue", 48), 
-		nt.getHSV("ShooterLowSat", 175), 
+		nt.getHSV("ShooterLowHue", 48),
+		nt.getHSV("ShooterLowSat", 175),
 		nt.getHSV("ShooterLowVal", 100)
 	)
 	shooterHighHSV = np.array(
-		nt.getHSV("ShooterHighHue", 100), 
-		nt.getHSV("ShooterHighSat", 255), 
+		nt.getHSV("ShooterHighHue", 100),
+		nt.getHSV("ShooterHighSat", 255),
 		nt.getHSV("ShooterHighVal",200)
 	)
 
 	gearLowHSV = np.array(
-		nt.getHSV("GearLowHue", 65), 
-		nt.getHSV("GearLowSat", 175), 
+		nt.getHSV("GearLowHue", 65),
+		nt.getHSV("GearLowSat", 175),
 		nt.getHSV("GearLowVal", 70)
 	)
 	gearHighHSV = np.array(
-		nt.getHSV("GearHighHue", 100), 
-		nt.getHSV("GearHighSat", 255), 
+		nt.getHSV("GearHighHue", 100),
+		nt.getHSV("GearHighSat", 255),
 		nt.getHSV("GearHighVal",200)
 	)
 
@@ -53,7 +53,7 @@ except Exception as e:
 		shooterHighHSV = np.array((100,255,200))
 		gearLowHSV = np.array((65,175,100))
 		gearHighHSV = np.array((100,255,200))
-		
+
 #log = open("/tmp/vision.log", 'w')
 
 # Gear Tape values
@@ -84,14 +84,14 @@ nt.write("Vision", "shooterRunning", False)
 """ Main Loop """
 while (True):
 	try:
-                if nt.getTakePicture() and oneTime:
-                        gearCap.open()
-                        ret, pictureFrame = gearCap.capture()
+		if nt.getTakePicture() and oneTime:
+			gearCap.open()
+			ret, pictureFrame = gearCap.capture()
 			cv2.imwrite("/home/pi/Documents/RobotCode2017/RobotCode2017/img" + str(time.time()) + ".ppm", pictureFrame)
-                        gearCap.close()
+			gearCap.close()
 			oneTime = False
 		else:
-                        oneTime = True
+			oneTime = True
 		""" boiler tape identification code """
 		if nt.getShooter():
 			if (not shooterCap.isOpened()):

@@ -34,10 +34,10 @@ class NTClient:
 				print key
 				print self.gearRunning
 		if key == '/SmartDashboard/Vision/takePicture' and not isnew:
-                        self.takePicture = value
-                        if debug:
-                                print key
-                                print self.takePicture
+			self.takePicture = value
+			if debug:
+				print key
+				print self.takePicture
 		if key[:25] == '/SmartDashboard/HSVrange/':
 			self.values[key[25:]] = value
 
@@ -77,4 +77,4 @@ class NTClient:
 	def getShooter(self):
 		return self.shooterRunning
 	def getTakePicture(self):
-                return self.takePicture
+		return self.takePicture
