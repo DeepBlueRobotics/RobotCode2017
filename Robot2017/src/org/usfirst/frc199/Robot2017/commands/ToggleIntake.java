@@ -40,7 +40,7 @@ public class ToggleIntake extends Command {
 				if(down) intake.lowerIntake();
 				else intake.raiseIntake();
 			} else {
-				intake.toggleIntake(giveDirection, down);
+				intake.toggleIntake();
 			}
 			firstTime = false;
 		}

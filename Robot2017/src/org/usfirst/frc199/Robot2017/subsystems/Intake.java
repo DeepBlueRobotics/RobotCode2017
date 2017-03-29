@@ -114,35 +114,15 @@ public class Intake extends Subsystem implements IntakeInterface {
 	
 	/**
 	 * Moves the intake up if it is down, and vice versa
-	 * @param giveDirection - indicate false if not a simple toggle, but a directional set
-	 * @param down - indicate true if intending to actuate intake downward, false if not, disregard otherwise
 	 */
-	public void toggleIntake(boolean giveDirection, boolean down) {
-		if(giveDirection) {
-			if(down && !intakeIsDown) {
-				pivotPiston.set(DoubleSolenoid.Value.kForward);
-				intakeIsDown = true;
-			} else if(!down) {
-				pivotPiston.set(DoubleSolenoid.Value.kReverse);
-				intakeIsDown = false;
-			} else {
-
-				pivotPiston.set(DoubleSolenoid.Value.kReverse);
-				intakeIsDown = false;
-			}
+	public void toggleIntake() {
+		if(!intakeIsDown) {
+			pivotPiston.set(DoubleSolenoid.Value.kForward);
 		} else {
-			if (!intakeIsDown) {
-				// shifts to intake up
-				pivotPiston.set(DoubleSolenoid.Value.kReverse);
-				intakeIsDown = true;
-//				Robot.drivetrain.shiftLow();
-			} else {
-				// shifts to intake down
-				pivotPiston.set(DoubleSolenoid.Value.kForward);
-				intakeIsDown = false;
-//				Robot.drivetrain.shiftHigh();
-			}
+			pivotPiston.set(DoubleSolenoid.Value.kReverse);
 		}
+		
+		intakeIsDown = !intakeIsDown;
 	}
 	
 	public void raiseIntake() {

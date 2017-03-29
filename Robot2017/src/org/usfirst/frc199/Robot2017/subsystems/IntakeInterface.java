@@ -44,7 +44,7 @@ public interface IntakeInterface extends DashboardInterface {
 	/**
 	 * Moves the intake up if it is down, and vice versa
 	 */
-	public void toggleIntake(boolean giveDirection, boolean down);
+	public void toggleIntake();
 
 	public void lowerIntake();
 	public void raiseIntake();
