@@ -62,7 +62,7 @@ public class RobotMap {
 	public static void init() {
 
 		if (!practice) {
-			gearRoller = new VictorSP(-1); // port number? and motor type? eric
+			// gearRoller = new VictorSP(-1); // port number? and motor type? eric
 											// said "winny spinny"
 			drivetrainLeftMotor = new VictorSP(0);
 			drivetrainRightMotor = new VictorSP(1);

@@ -84,7 +84,7 @@ nt.write("Vision", "shooterRunning", False)
 """ Main Loop """
 while (True):
 	try:
-                if nt.getTakePicture() && oneTime:
+                if nt.getTakePicture() and oneTime:
                         gearCap.open()
                         ret, pictureFrame = gearCap.capture()
 			cv2.imwrite("/home/pi/Documents/RobotCode2017/RobotCode2017/img" + str(time.time()) + ".ppm", pictureFrame)
