@@ -77,22 +77,22 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Vision/shooterRunning", false);
 		SmartDashboard.putString("Log Level At Startup","DEBUG");
 		
-		new Thread(() -> {
-            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-            camera.setResolution(270, 180);
-            
-            CvSink cvSink = CameraServer.getInstance().getVideo();
-            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 270, 180);
-            
-            Mat source = new Mat();
-            Mat output = new Mat();
-            
-            while(!Thread.interrupted()) {
-                cvSink.grabFrame(source);
-                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-                outputStream.putFrame(output);
-            }
-        }).start();
+//		new Thread(() -> {
+//            UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+//            camera.setResolution(270, 180);
+//            
+//            CvSink cvSink = CameraServer.getInstance().getVideo();
+//            CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 270, 180);
+//            
+//            Mat source = new Mat();
+//            Mat output = new Mat();
+//            
+//            while(!Thread.interrupted()) {
+//                cvSink.grabFrame(source);
+//                Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+//                outputStream.putFrame(output);
+//            }
+//        }).start();
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 
 		// Update all subsystem SmartDashboard values during teleop
-		new DisplayDashboardData().start();
+//		new DisplayDashboardData().start();
 		
     	tim.reset();
     	tim.start();

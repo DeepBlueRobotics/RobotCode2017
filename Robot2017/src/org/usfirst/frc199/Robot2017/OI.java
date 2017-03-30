@@ -80,10 +80,10 @@ public class OI {
 		switchDriveButton = new JoystickButton(leftJoy, 4);
 		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
-		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
+//		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
 		
 		//uncomment this line below when intake put back on
-//		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
+		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 
 		intakeGearButton = new JoystickButton(leftJoy, 3);
 		intakeGearButton.whenPressed(new PickupGear());

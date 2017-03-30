@@ -38,12 +38,12 @@ public class AutoDelay extends Command {
 	 * drivetrain things if time is set to -1
 	 */
 	protected void initialize() {
-		if (time == -1) {
-			drivetrain.resetEncoder();
-			drivetrain.resetGyro();
-			drivetrain.setDistanceTarget(-18);
-			drivetrain.setAngleTarget(10);
-		}
+//		if (time == -1) {
+//			drivetrain.resetEncoder();
+//			drivetrain.resetGyro();
+//			drivetrain.setDistanceTarget(-18);
+//			drivetrain.setAngleTarget(10);
+//		}
 
 		tim.start();
 		tim.reset();
@@ -53,15 +53,15 @@ public class AutoDelay extends Command {
 	 * Called repeatedly when this Command is scheduled to run
 	 */
 	protected void execute() {
-		if (time == -1 && tim.get() > 4 && !SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
-			if (!angleDone) {
-				angleDone = drivetrain.angleReachedTarget();
-				drivetrain.updateAnglePID();
-				drivetrain.resetEncoder();
-			} else {
-				drivetrain.updateDistancePID();
-			}
-		}
+//		if (time == -1 && tim.get() > 4 && !SmartDashboard.getBoolean("Vision/OH-YEAH", false)) {
+//			if (!angleDone) {
+//				angleDone = drivetrain.angleReachedTarget();
+//				drivetrain.updateAnglePID();
+//				drivetrain.resetEncoder();
+//			} else {
+//				drivetrain.updateDistancePID();
+//			}
+//		}
 	}
 
 	/**
