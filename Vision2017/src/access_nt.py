@@ -18,6 +18,7 @@ class NTClient:
 		self.nt = NetworkTables.getTable("SmartDashboard/Vision")
 		self.gearRunning = False
 		self.shooterRunning = False
+		self.takePicture = False
 		self.values = {}
 		NetworkTables.addGlobalListener(self.valueChanged)
 
@@ -54,8 +55,10 @@ class NTClient:
 			self.nt.putBoolean(key, value)
 		if type(value) == int or type(value) == float:
 			self.nt.putNumber(key, value)
-		if type(value) == type(""):
+		if type(value) == str:
 			self.nt.putString(key, value)
+		if type(value) == list:
+			self.nt.putNumberArray(key, value)
 		self.nt = NetworkTables.getTable("SmartDashboard/Vision")
 
 	#Does not work for unknown reason, use getGear() and getShooter() instead

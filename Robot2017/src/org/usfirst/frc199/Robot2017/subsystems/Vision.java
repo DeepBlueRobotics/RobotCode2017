@@ -280,17 +280,11 @@ public class Vision extends Subsystem implements DashboardInterface {
 		}
 	}
 
-	public void updateGearCoordinates() {
-		leftMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) ), 
-				getCamAngToGearMark(getNumber("leftGearCenterX", 0)));
-		rightMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) ), 
-				getCamAngToGearMark(getNumber("rightGearCenterX", 0)));
-//		leftMarkCoords[1] = getYFromPivotPoint(getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) ), 
-//				getCamAngToGearMark(getNumber("leftGearCenterX", 0)));
-//		rightMarkCoords[1] = getYFromPivotPoint(getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) ), 
-//				getCamAngToGearMark(getNumber("rightGearCenterX", 0)));
-//		double leftAng = getCamAngToGearMark(getNumber("leftGearCenterX", 0));
-//		double rightAng = getCamAngToGearMark(getNumber("rightGearCenterX", 0));
+	public void updateGearCoordinates(double[] gearValues) {
+		leftMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(gearValues[4], gearValues[5]), 
+				getCamAngToGearMark(gearValues[0]));
+		rightMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(gearValues[6], gearValues[7]), 
+				getCamAngToGearMark(gearValues[2]));
 		leftMarkCoords[1] = getCameraDistanceToGearPlane() + Robot.getPref("Gear cam y distance from pivot", 0);
 		rightMarkCoords[1] = getCameraDistanceToGearPlane() + Robot.getPref("Gear cam y distance from pivot", 0);
 		
@@ -300,6 +294,28 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("rightY", rightMarkCoords[1]);
 		
 	}
+	
+//switch back to this one if the above doesn't work
+//	public void updateGearCoordinates() {
+//		leftMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) ), 
+//				getCamAngToGearMark(getNumber("leftGearCenterX", 0)));
+//		rightMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) ), 
+//				getCamAngToGearMark(getNumber("rightGearCenterX", 0)));
+////		leftMarkCoords[1] = getYFromPivotPoint(getCamDistToGearMark(getNumber("leftGearBottomY", 0), getNumber("leftGearTopY", 0) ), 
+////				getCamAngToGearMark(getNumber("leftGearCenterX", 0)));
+////		rightMarkCoords[1] = getYFromPivotPoint(getCamDistToGearMark(getNumber("rightGearBottomY", 0), getNumber("rightGearTopY", 0) ), 
+////				getCamAngToGearMark(getNumber("rightGearCenterX", 0)));
+////		double leftAng = getCamAngToGearMark(getNumber("leftGearCenterX", 0));
+////		double rightAng = getCamAngToGearMark(getNumber("rightGearCenterX", 0));
+//		leftMarkCoords[1] = getCameraDistanceToGearPlane() + Robot.getPref("Gear cam y distance from pivot", 0);
+//		rightMarkCoords[1] = getCameraDistanceToGearPlane() + Robot.getPref("Gear cam y distance from pivot", 0);
+//		
+//		putNumber("leftX", leftMarkCoords[0]);
+//		putNumber("leftY", leftMarkCoords[1]);
+//		putNumber("rightX", rightMarkCoords[0]);
+//		putNumber("rightY", rightMarkCoords[1]);
+//		
+//	}
 	
 	@Override
 	public void displayData() {
@@ -313,7 +329,7 @@ public class Vision extends Subsystem implements DashboardInterface {
 		putNumber("Par distance to gear", getParallacticDistanceToGear());
 		putNumber("Cam ang to left gear mark", getCamAngToGearMark(getNumber("leftGearCenterX", 0)));
 		putNumber("Cam ang to right gear mark", getCamAngToGearMark(getNumber("rightGearCenterX", 0)));
-		updateGearCoordinates();
+//		updateGearCoordinates();
 		
 		
 	}

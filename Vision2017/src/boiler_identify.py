@@ -1,7 +1,7 @@
 '''
 Finds the centers of the lower and upper pieces of tape on the boiler.
-Returns (x, y) of the center of the top of the bounding box of the top
-tape, but (-1, -1) if no tape found.
+Returns (x, y, True) of the center of the top of the bounding box of the top
+tape, but (-1, -1, False) if no tape found.
 '''
 import cv2
 import numpy as np
@@ -24,8 +24,8 @@ def findBoiler(frame, lower, upper):
 
 	# if the biggest two contours are still tiny, return all -1
 	if (len(vals) < 2):
-		return (-1, -1)
+		return (-1, -1, False)
 	else:
 		box = cv2.boundingRect(vals[0][0])
 		# x + width/2, y
-		return (box[0] + box[2]/2, box[1])
+		return (box[0] + box[2]/2, box[1], True)

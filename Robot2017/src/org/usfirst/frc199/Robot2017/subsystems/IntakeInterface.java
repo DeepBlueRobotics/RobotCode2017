@@ -42,9 +42,14 @@ public interface IntakeInterface extends DashboardInterface {
 	public void stopIntake();
 
 	/**
-	 * Moves the intake up if it is down, and vice versa
+	 * Moves the intake up if it is down, and vice versa, or moves intake in
+	 * specified direction
+	 * 
+	 * @param giveDirection - Is intake direction given? If not, just toggle.
+	 * @param down - If giveDirection, should the intake go down? If not
+	 *            giveDirection, doesn't matter
 	 */
-	public void toggleIntake();
+	public void toggleIntake(boolean giveDirection, boolean down);
 
 	public void lowerIntake();
 	public void raiseIntake();
