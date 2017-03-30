@@ -12,17 +12,19 @@ public class DriveToWaypoint extends Command {
 
 	double targetDist;
 	DrivetrainInterface drivetrain;
+	WaypointAndHeading w;
 
 	public DriveToWaypoint(WaypointAndHeading w, DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
-		this.targetDist = w.distanceToWaypoint;
+		this.w = w;
 		this.drivetrain = drivetrain;
 	}
 
 	// Called just before this Command runs the first time
 	public void initialize() {
 		drivetrain.resetEncoder();
-		drivetrain.setDistanceTarget(targetDist);
+		drivetrain.resetGyro();
+		drivetrain.setDistanceTarget( w.distanceToWaypoint);
 
 	}
 
@@ -30,9 +32,9 @@ public class DriveToWaypoint extends Command {
 	public void execute() {
 		drivetrain.updateDistancePID();
 		
-		if (drivetrain.currentControl()) {
-			drivetrain.shiftGears();
-		}
+//		if (drivetrain.currentControl()) {
+//			drivetrain.shiftGears();
+//		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -11,7 +11,7 @@ public class WaypointAndHeading {
 
 	 double distanceToWaypoint; //inches
 	 double headingToWaypoint; //degrees
-	 double newHeadingAtWaypoint; //degrees
+	 double angleAtWaypoint; //degrees
 	
 	/**
 	 * 

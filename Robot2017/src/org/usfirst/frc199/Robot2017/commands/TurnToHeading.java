@@ -11,7 +11,6 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
  */
 public class TurnToHeading extends Command {
 	WaypointAndHeading w;
-	double targetAngle;
 	DrivetrainInterface drivetrain;
 
 	public TurnToHeading(WaypointAndHeading w, DrivetrainInterface drivetrain) {
@@ -23,9 +22,9 @@ public class TurnToHeading extends Command {
 
 	// Called just before this Command runs the first time
 	public void initialize() {
-		targetAngle = w.newHeadingAtWaypoint;	
-		drivetrain.setAngleTarget(targetAngle);
-		Log.debug(this.getClass().toString()+ ".initialize called drivetrain.setAngleTarget(" + targetAngle + ")");
+		drivetrain.resetGyro();
+		drivetrain.setAngleTarget(getTargetAngle());
+		Log.debug(this.getClass().toString()+ ".initialize called drivetrain.setAngleTarget(" + getTargetAngle() + ")");
 		
 
 	}
@@ -35,9 +34,9 @@ public class TurnToHeading extends Command {
 		
 		drivetrain.updateAnglePID();
 		
-		if (drivetrain.currentControl()) {
-			drivetrain.shiftGears();
-		}
+//		if (drivetrain.currentControl()) {
+//			drivetrain.shiftGears();
+//		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -56,5 +55,9 @@ public class TurnToHeading extends Command {
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		end();
+	}
+	
+	public double getTargetAngle() {
+		return w.angleAtWaypoint;
 	}
 }
