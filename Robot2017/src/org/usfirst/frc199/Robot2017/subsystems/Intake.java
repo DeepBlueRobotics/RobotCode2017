@@ -40,13 +40,15 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void initDefaultCommand() {
 		setDefaultCommand(new FlashLED(Robot.intake));
 	}
-	
-	public void LEDOn(){
-		if(gearIntakeSwitch.get()) flashLED.set(DoubleSolenoid.Value.kOff);
-		else LEDOff();
+
+	public void LEDOn() {
+		if (gearIntakeSwitch.get())
+			flashLED.set(DoubleSolenoid.Value.kOff);
+		else
+			LEDOff();
 	}
-	
-	public void LEDOff(){
+
+	public void LEDOff() {
 		flashLED.set(DoubleSolenoid.Value.kForward);
 	}
 
@@ -95,41 +97,57 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void stopIntake() {
 		intakeMotor.set(0);
 	}
+
 	/**
 	 * Runs the gearRoller a certain direction
+	 * 
 	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
 	 */
 
 	public void runRoller(double speed) {
 		gearRoller.set(speed);
 	}
-	
+
 	/**
 	 * Gets if the gear is in the gear intake, pushing either switch
+	 * 
 	 * @return if the gear intake limit switches are pushed
 	 */
 	public boolean getSwitch() {
 		return gearIntakeSwitch.get();
 	}
-	
+
 	/**
-	 * Moves the intake up if it is down, and vice versa
+	 * Moves the intake up if it is down, and vice versa, or moves intake in
+	 * specified direction
+	 * 
+	 * @param giveDirection - Is intake direction given? If not, just toggle.
+	 * @param down - If giveDirection, should the intake go down? If not
+	 *            giveDirection, doesn't matter
 	 */
-	public void toggleIntake() {
-		if(!intakeIsDown) {
-			pivotPiston.set(DoubleSolenoid.Value.kForward);
-		} else {
-			pivotPiston.set(DoubleSolenoid.Value.kReverse);
+	public void toggleIntake(boolean giveDirection, boolean down) {
+		if (giveDirection) {
+			if (down) {
+				pivotPiston.set(DoubleSolenoid.Value.kForward);
+			} else {
+				pivotPiston.set(DoubleSolenoid.Value.kReverse);
+			}
+			intakeIsDown = down;
+		} else { 
+			if (!intakeIsDown) {
+				pivotPiston.set(DoubleSolenoid.Value.kForward);
+			} else {
+				pivotPiston.set(DoubleSolenoid.Value.kReverse);
+			}
+			intakeIsDown = !intakeIsDown;
 		}
-		
-		intakeIsDown = !intakeIsDown;
 	}
-	
+
 	public void raiseIntake() {
 		pivotPiston.set(DoubleSolenoid.Value.kForward);
 		intakeIsDown = false;
 	}
-	
+
 	public void lowerIntake() {
 		pivotPiston.set(DoubleSolenoid.Value.kReverse);
 		intakeIsDown = true;

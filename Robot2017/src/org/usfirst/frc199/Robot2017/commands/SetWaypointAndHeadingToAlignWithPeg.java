@@ -14,9 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SetWaypointAndHeadingToAlignWithPeg extends Command {
 	
 	private WaypointAndHeading w;
-	Timer tim = new Timer();
-	boolean timerStarted = false;
-	
+//	Timer tim = new Timer();
+//	boolean timerStarted = false;
+	private double[] gearValues = new double[9];
+	private double[] defaultValues = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	
     public SetWaypointAndHeadingToAlignWithPeg(WaypointAndHeading w) {
     	this.w = w;
@@ -27,30 +28,33 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	SmartDashboard.putBoolean("Vision/gearRunning", true);
-    	Robot.vision.updateGearCoordinates();
-    	tim.reset();
-    	tim.stop();
-    	timerStarted =false;
+    	Robot.vision.updateGearCoordinates(gearValues);
+//    	tim.reset();
+//    	tim.stop();
+//    	timerStarted =false;
+    	Robot.sd.delete("Vision/gearValues");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-	
+    	
+    	gearValues = Robot.sd.getNumberArray("Vision/gearValues", defaultValues);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if (SmartDashboard.getBoolean("Vision/OH-YEAH", false) && !timerStarted) {
-    		timerStarted = true;
-    		tim.start();
-    	}
-    	return(tim.get() > 0.25);
+    	return gearValues[8] == 1;
+//    	if (SmartDashboard.getBoolean("Vision/OH-YEAH", false) && !timerStarted) {
+//    		timerStarted = true;
+//    		tim.start();
+//    	}
+//    	return(tim.get() > 0.25);
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	Log.debug("SetWaypointAndHeadingToAlignWithPeg.end() called");
-    	Robot.vision.updateGearCoordinates();
+    	Robot.vision.updateGearCoordinates(gearValues);
     	double[] leftTarget = Robot.vision.leftMarkCoords;
     	Log.debug("leftTarget: " + " (" + leftTarget[0] + ", " + leftTarget[1] + ")");
     	double[] rightTarget = Robot.vision.rightMarkCoords;
@@ -94,5 +98,5 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     	w.angleAtWaypoint = Math.toDegrees(Math.atan2(-vector[0],-vector[1]))-w.headingToWaypoint;
     	Log.debug("newHeadingAtWaypoint set to " + w.angleAtWaypoint);
     }
-    
+
 }

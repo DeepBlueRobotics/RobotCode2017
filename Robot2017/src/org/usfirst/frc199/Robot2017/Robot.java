@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Climber climber;
 	public static Vision vision;
+	public static SmartDashboard sd;// = new SmartDashboard();
 	
 	Timer tim = new Timer();
 
@@ -93,6 +94,7 @@ public class Robot extends IterativeRobot {
 //                outputStream.putFrame(output);
 //            }
 //        }).start();
+		sd = new SmartDashboard();
 	}
 
 	/**

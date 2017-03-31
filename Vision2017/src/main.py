@@ -56,9 +56,6 @@ except Exception as e:
 
 #log = open("/tmp/vision.log", 'w')
 
-# Gear Tape values
-gearFailCounter = 0
-
 """ Exposure script """
 # shooter camera
 subprocess.call("uvcdynctrl -d video0 -s \"Exposure, Auto\" 1", shell=True)
@@ -101,15 +98,17 @@ while (True):
 				shooterCap.set(4, 360)
 			ret, shooterFrame = shooterCap.read()
 			# Run boiler identification script
-			centers = boiler_identify.findBoiler(
+			shooterValues = boiler_identify.findBoiler(
 				shooterFrame, shooterLowHSV, shooterHighHSV)
 
 			nt.write("Vision", "shooterCodeRunning", True)
 
-			nt.write("Vision", "boilerFound", centers[0] != -1)
-			if (centers[0] != -1):
-				nt.write("Vision", "boilerX", centers[0])
-				nt.write("Vision", "boilerY", centers[1])
+			nt.write("Vision", "boilerFound", shooterValues[2])
+			if (centers[2]):
+				nt.write("Vision", "shooterValues", shooterValues)
+
+				nt.write("Vision", "boilerX", shooterValues[0])
+				nt.write("Vision", "boilerY", shooterValues[1])
 		else:
 			nt.write("Vision", "shooterCodeRunning", False)
 			if (shooterCap.isOpened()):
@@ -126,12 +125,15 @@ while (True):
 			# Run gear mark identification
 			lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
 							gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]), nt)
+			gearValues = lx, ly, rx, ry, lb, lt, rb, rt, (int)(success)
 			#lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
 			# 	gearFrame, gearLowHSV, gearHighHSV)
 
 			nt.write("Vision", "gearCodeRunning", True)
 
 			if (success):
+				nt.write("Vision", "gearValues", gearValues)
+
 				nt.write("Vision", "leftGearCenterX", lx)
 				nt.write("Vision", "leftGearCenterY", ly)
 				nt.write("Vision", "rightGearCenterX", rx)
@@ -143,6 +145,7 @@ while (True):
 				nt.write("Vision", "rightGearTopY", rt)
 
 				nt.write("Vision", "OH-YEAH", success)
+
 
 		else:
 			nt.write("Vision", "gearCodeRunning", False)
