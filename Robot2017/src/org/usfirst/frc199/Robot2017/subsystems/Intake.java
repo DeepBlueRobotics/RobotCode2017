@@ -212,7 +212,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void displayData() {
 		putString("Flap piston status", flipperFlapper.get().toString());
 		putNumber("Intake current draw", pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 2)));
-		putNumber("Sending to intake", getIntake());
+//		putNumber("Sending to intake", getIntake());
 		putString("Intake piston status", pivotPiston.get().toString());
 		putBoolean("Intake is down", intakeIsDown);
 		putBoolean("Gear has been lifted", gearLifted(false));

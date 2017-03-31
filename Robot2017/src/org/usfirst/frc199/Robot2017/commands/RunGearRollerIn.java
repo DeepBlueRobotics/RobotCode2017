@@ -21,6 +21,7 @@ public class RunGearRollerIn extends Command {
         // eg. requires(chassis);
     	this.intake = intake;
     	this.speed = speed;
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
@@ -31,8 +32,8 @@ public class RunGearRollerIn extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	intake.runRoller(speed);
-    	if(intake.getSwitch() && !gearInOnce){
+    	if(intake.getSwitch()) intake.runRoller(speed);
+    	if(!intake.getSwitch() && !gearInOnce){
         	tim.start();
         	gearInOnce = true;
         }
@@ -40,15 +41,18 @@ public class RunGearRollerIn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(gearInOnce){
-        	return intake.getSwitch() && tim.get() > Robot.getPref("Make sure gear is in delay time", 2);
-        }
-        return false;
+//        if(gearInOnce){
+//        	return !intake.getSwitch() && tim.get() > Robot.getPref("Make sure gear is in delay time", 2);
+
+//        }
+//        return false;
+    	return !intake.getSwitch();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	intake.runRoller(0);
+//    	intake.raiseIntake();
     }
 
     // Called when another command which requires one or more of the same

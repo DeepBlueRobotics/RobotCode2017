@@ -76,8 +76,11 @@ public class RobotMap {
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
 			flashingGearLED = new DoubleSolenoid(6, 7);
-			intakeIntakeMotor = new VictorSP(2);
-			intakeIntakeMotor.setInverted(true);
+//			intakeIntakeMotor = new VictorSP(2);
+//			intakeIntakeMotor.setInverted(true);
+			gearRoller = new VictorSP(2);
+			gearRoller.setInverted(true);
+			
 			shooterFeedMotor = new VictorSP(4);
 			shooterFloorBeltMotor = new VictorSP(5);
 			hoodServo = new Servo(9);
@@ -105,7 +108,9 @@ public class RobotMap {
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
 			flashingGearLED = new DoubleSolenoid(6, 7);
-			intakeIntakeMotor = new VictorSP(2);
+//			intakeIntakeMotor = new VictorSP(2);
+			gearRoller = new VictorSP(2);
+			gearRoller.setInverted(true);
 			shooterFeedMotor = new VictorSP(4);
 			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
@@ -142,7 +147,7 @@ public class RobotMap {
 
 		LiveWindow.addActuator("Intake", "PivotPiston", intakePivotPiston);
 
-		LiveWindow.addActuator("Intake", "IntakeMotor", (VictorSP) intakeIntakeMotor);
+//		LiveWindow.addActuator("Intake", "IntakeMotor", (VictorSP) intakeIntakeMotor);
 
 		LiveWindow.addActuator("Shooter", "FeedMotor", (VictorSP) shooterFeedMotor);
 

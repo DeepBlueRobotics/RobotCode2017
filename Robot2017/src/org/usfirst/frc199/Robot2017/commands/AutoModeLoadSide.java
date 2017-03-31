@@ -19,32 +19,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoModeLoadSide extends CommandGroup {
 
 	/***
-	 * Commands for autonomous starting at left
-	 * 
+/	 * 
 	 * @param alliance true for blue, false for red
 	 */
 	public AutoModeLoadSide(boolean alliance) {
 
-		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 98.55); // in.
-																					// from
-																					// front
-																					// end
-																					// of
-																					// robot
-																					// to
-																					// point
-																					// on
-																					// field
+//		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 98.55);
+		//in from front end of robot to point on field
 
-		final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 11); // in.
-																				// from
-																				// front
-																				// of
-																				// robot
-																				// to
-																				// lift
-																				// (after
-																				// pivot)
+//		final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 11);
+		//in from front end of robot to lift (after pivot)
+		
+		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 121) - (Robot.getPref("Robot length", 39) -
+								Robot.getPref("Distance from pivot point to front of robot", 19.5));
+
+		final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 15) - (Robot.getPref("Robot length", 39) -
+								Robot.getPref("Distance from pivot point to front of robot", 19.5));
 
 		/*
 		 * METHOD 2 INSTANCE VARIABLES: final double DIST_TO_LIFT =
@@ -57,12 +47,14 @@ public class AutoModeLoadSide extends CommandGroup {
 		 * Robot.getPref("Robot Length", 0);
 		 */
 		
-//		//uncomment this paragraph below when intake put back on
+		//uncomment this paragraph below when intake put back on
 //		addSequential(new ToggleIntake(true, true, Robot.intake));
 //		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
 //		addSequential(new ToggleIntake(true, true, Robot.intake));
 //		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
 //		addSequential(new ToggleIntake(true, false, Robot.intake));
+		addSequential(new ToggleIntakeRamp(Robot.intake));
+		
 		// METHOD 1
 		// Drives to hexagon
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
@@ -111,6 +103,8 @@ public class AutoModeLoadSide extends CommandGroup {
 
 		// Aims and shoots
 //		addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
+		
+		addSequential(new DeployGear());
 
 	}
 }

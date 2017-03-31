@@ -33,7 +33,7 @@ public class NeverEndTheIntaking extends Command {
 		//This toggle the intake once, and after 1 sec, stops the toggle motor and starts intaking
 
 		if(tim.get() <= 1) {
-			intake.toggleIntake(true, false);
+			intake.toggleIntake();
 		} else {
 			if(!intaking) {
 				intaking = true;

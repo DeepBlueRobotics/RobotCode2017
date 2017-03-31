@@ -131,8 +131,8 @@ public class Robot extends IterativeRobot {
 			autonomousCommand = new AutoModeCenter(blueAlliance);
 			break;
 		case "Dead reckoning":
-			autonomousCommand = new AutoModeBasic(Robot.getPref("Dead Reckoning Duration", 2));
-//			autonomousCommand = new AutoDrive(75, 0, Robot.drivetrain);
+//			autonomousCommand = new AutoModeBasic();
+			autonomousCommand = new AutoDrive(75, 0, Robot.drivetrain);
 //			autonomousCommand = null;
 			break;
 		default:
@@ -167,7 +167,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 
 		// Update all subsystem SmartDashboard values during teleop
-//		new DisplayDashboardData().start();
+		new DisplayDashboardData().start();
 		
     	tim.reset();
     	tim.start();

@@ -22,9 +22,14 @@ public class PickupGear extends CommandGroup {
          * 		stop roller, set to brake
          * 		actuate up
          * */
-    	addSequential(new ToggleIntake(true, true, Robot.intake));
-    	addSequential(new RunGearRollerIn(1, Robot.intake));
-    	addSequential(new ToggleIntake(false, true, Robot.intake));
     	addParallel(new FlashLED(Robot.intake));
+    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addSequential(new RunGearRollerIn(-.5, Robot.intake));
+    	addSequential(new ToggleIntake(true, false, Robot.intake));
     }
+    
+//    protected boolean isFinished() {
+//    	return !Robot.intake.getSwitch();
+//    }
 }

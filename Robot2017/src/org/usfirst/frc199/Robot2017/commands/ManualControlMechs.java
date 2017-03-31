@@ -38,7 +38,7 @@ public class ManualControlMechs extends Command {
 	public void manualSwitch(String system, double speed) {
 		switch (system.toLowerCase()) {
 		case "intake":
-			this.intake.runIntake(speed);
+			this.intake.runRoller(speed);
 			break;
 		case "feeder":
 			this.shooter.runFeederMotor(speed);

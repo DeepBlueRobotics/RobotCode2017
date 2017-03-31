@@ -37,8 +37,15 @@ public class AutoModeCenter extends CommandGroup {
 //		addSequential(new ToggleIntake(true, true, Robot.intake));
 //		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
 //		addSequential(new ToggleIntake(true, false, Robot.intake));
+		addSequential(new ToggleIntakeRamp(Robot.intake));
 
 		addSequential(new AutoDrive(78, 0, Robot.drivetrain));
+		
+//		final double LENGTH = Robot.getPref("Distance; center to wall", 110.5) - Robot.getPref("Robot length", 39);
+//		addSequential(new AutoDrive(LENGTH, 0, Robot.drivetrain));
+		
+		//new measurement below???
+//		addSequential(new AutoDrive(71.5, 0, Robot.drivetrain));
 //		addSequential(new AutoDrive(0,10,Robot.drivetrain));
 		
 //		addSequential(new AutoAlignGear(false));
@@ -68,6 +75,8 @@ public class AutoModeCenter extends CommandGroup {
 		 * //METHOD 2: addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2)
 		 * + 36, (AIRSHIP_DIAGONAL / 2) + 36, direction*90));
 		 */
+		
+		addSequential(new DeployGear());
 
 	}
 

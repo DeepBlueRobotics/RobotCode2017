@@ -39,28 +39,30 @@ public class OI {
 //		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 1);
 		winchButton.whileHeld(new Climb(Robot.climber));
-		shootOutButton = new JoystickButton(manipulator, 5);
-		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter, 0));
+//		shootOutButton = new JoystickButton(manipulator, 5);
+//		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter, 0));
 //		outputButton = new JoystickButton(manipulator, 7);
 //		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
 		intakeButton = new JoystickButton(manipulator, 6);
 		
 		//uncomment this line below when intake put back on
 //		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
+
+		intakeGearButton = new JoystickButton(manipulator, 2);
+		intakeGearButton.whenPressed(new PickupGear());
 		
-		deployGearButton = new JoystickButton(manipulator, 2);
-		deployGearButton.whenPressed(new DeployGear());
-		
-		//uncomment this line below when intake put back on
 		toggleAndRunIntakeButton = new JoystickButton(manipulator, 3);
+		toggleAndRunIntakeButton.whenPressed(new ToggleIntake(false, true, Robot.intake));
 		
-		//uncomment this line below when intake put back on
-//		toggleAndRunIntakeButton.whenPressed(new NeverEndTheIntaking(Robot.intake));
-		toggleFlipper = new JoystickButton(manipulator, 4);
+		deployGearButton = new JoystickButton(manipulator, 4);
+		deployGearButton.whileHeld(new DeployGear());
 		
+		//uncomment this line below when static gear intake put back on
+		toggleFlipper = new JoystickButton(manipulator, 5);
 		toggleFlipper.whenPressed(new ToggleIntakeRamp(Robot.intake));
+		
 		autoUSAdjustButton = new JoystickButton(manipulator, 8);
-		autoUSAdjustButton.whenPressed(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
+		autoUSAdjustButton.whileHeld(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
 				Robot.drivetrain.getUSTargetAngle(), Robot.drivetrain));
 
 		rightJoy = new Joystick(1);
@@ -85,8 +87,6 @@ public class OI {
 		//uncomment this line below when intake put back on
 		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 
-		intakeGearButton = new JoystickButton(leftJoy, 3);
-		intakeGearButton.whenPressed(new PickupGear());
 		
 //		when the below gets reincorporated, change button cause already used >:)
 //		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);

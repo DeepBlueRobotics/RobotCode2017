@@ -16,18 +16,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoModeBoilerSide extends CommandGroup {
 
 	/***
-	 * Commands for autonomous starting at left
 	 * 
 	 * @param alliance true for blue, false for red
 	 */
 	public AutoModeBoilerSide(boolean alliance) {
-
-
-		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 80.66);
+		
+//		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 80.66);
 		// in. from front end of robot to point on field
 		
-		final double LENGTH_2 = Robot.getPref("Diagonal Travel BoilerSide", 24.6);
+		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 107) - (Robot.getPref("Robot length", 39) -
+								Robot.getPref("Distance from pivot point to front of robot", 19.5));
+		
+//		final double LENGTH_2 = Robot.getPref("Diagonal Travel BoilerSide", 24.6);
 		// in. from front of robot to lift (after pivot)
+		
+		final double LENGTH_2 = Robot.getPref("Diagonal Travel BoilerSide", 47.5) - (Robot.getPref("Robot length", 39) -
+								Robot.getPref("Distance from pivot point to front of robot", 19.5));
 
 		/*
 		 * // METHOD 2 INSTANCE VARIABLES: final double ROBOT_LENGTH = 36.875;
@@ -46,6 +50,7 @@ public class AutoModeBoilerSide extends CommandGroup {
 //		addSequential(new ToggleIntake(true, true, Robot.intake));
 //		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
 //		addSequential(new ToggleIntake(true, false, Robot.intake));
+		addSequential(new ToggleIntakeRamp(Robot.intake));
 
 		// METHOD 1:
 		// Drives to airlift
@@ -59,7 +64,7 @@ public class AutoModeBoilerSide extends CommandGroup {
 	
 
 		//Drives toward lift
-		addSequential(new AutoDrive(LENGTH_2-3, 0, Robot.drivetrain));
+		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
 		
 		// drives up to lift and aligns, shoots
 //		addSequential(new AutoAlignGear(false));
@@ -70,6 +75,7 @@ public class AutoModeBoilerSide extends CommandGroup {
 		 * ROBOT_LENGTH + LIFT_TO_PEG, LEFT*60)); addSequential(new
 		 * AutoAlignGear(true));
 		 */
+		addSequential(new DeployGear());
 
 	}
 }
