@@ -396,9 +396,11 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	@Override
 	public void displayData() {
 		putBoolean("Shooter motor stalled", shooterMotorStalled);
-		// putNumber("Shoot encoder rate", shootEncoder.getRate());
+		putNumber("Shoot encoder rate", shootMotorAndEnc.getEncVelocity());
 		putNumber("Shooter PID output", getShooterPIDOutput());
 		putNumber("Turret encoder value", turretEncoder.get());
 		putNumber("Hood servo value", hoodServo.get());
+		putNumber("Manipulator x: ", Robot.oi.manipulator.getX());
+		putNumber("Turret set to: ", turretMotor.get());
 	}
 }

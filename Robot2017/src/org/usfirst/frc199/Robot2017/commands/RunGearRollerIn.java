@@ -41,12 +41,11 @@ public class RunGearRollerIn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-//        if(gearInOnce){
-//        	return !intake.getSwitch() && tim.get() > Robot.getPref("Make sure gear is in delay time", 2);
-
-//        }
-//        return false;
-    	return !intake.getSwitch();
+        if(gearInOnce){
+        	return !intake.getSwitch() && tim.get() > Robot.getPref("Make sure gear is in delay time", 2);
+        }
+        return false;
+//    	return !intake.getSwitch();
     }
 
     // Called once after isFinished returns true

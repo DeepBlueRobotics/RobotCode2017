@@ -12,7 +12,7 @@ public class ToggleIntakeRampTest {
 	@Test
 	public void test() {
 		IntakeInterface intake = mock(IntakeInterface.class);
-		ToggleIntakeRamp myCommand = new ToggleIntakeRamp(intake);
+		ToggleIntakeRamp myCommand = new ToggleIntakeRamp(false, false, intake);
 
 		myCommand.execute();
 		verify(intake).toggleFlipperFlapper();

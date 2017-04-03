@@ -15,9 +15,10 @@ public class OI {
 	public JoystickButton gradualDriveButton;
 	public JoystickButton autoShootRoutineButton;
 	public JoystickButton takePicButton;
+	public JoystickButton intakeUpButton;
 	public Joystick rightJoy;
 	public JoystickButton intakeButton;
-	public JoystickButton outputButton;
+	public JoystickButton turnTurretButton;
 	public JoystickButton shootOutButton;
 	public JoystickButton winchInButton;
 	public JoystickButton winchButton;
@@ -39,11 +40,13 @@ public class OI {
 //		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 1);
 		winchButton.whileHeld(new Climb(Robot.climber));
-//		shootOutButton = new JoystickButton(manipulator, 5);
-//		shootOutButton.whileHeld(new RunShooter(Robot.getPref("shooterDirection", 1), Robot.shooter, 0));
+		shootOutButton = new JoystickButton(manipulator, 6);
+		shootOutButton.whileHeld(new RunShooter(manipulator.getY(), Robot.shooter, 0));
+		turnTurretButton = new JoystickButton(manipulator, 8);
+		turnTurretButton.whileHeld(new TurnTurret(manipulator.getX(), Robot.shooter));
 //		outputButton = new JoystickButton(manipulator, 7);
 //		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
-		intakeButton = new JoystickButton(manipulator, 6);
+//		intakeButton = new JoystickButton(manipulator, 6);
 		
 		//uncomment this line below when intake put back on
 //		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
@@ -59,11 +62,11 @@ public class OI {
 		
 		//uncomment this line below when static gear intake put back on
 		toggleFlipper = new JoystickButton(manipulator, 5);
-		toggleFlipper.whenPressed(new ToggleIntakeRamp(Robot.intake));
+		toggleFlipper.whenPressed(new ToggleIntakeRamp(false, false, Robot.intake));
 		
-		autoUSAdjustButton = new JoystickButton(manipulator, 8);
-		autoUSAdjustButton.whileHeld(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
-				Robot.drivetrain.getUSTargetAngle(), Robot.drivetrain));
+//		autoUSAdjustButton = new JoystickButton(manipulator, 8);
+//		autoUSAdjustButton.whileHeld(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
+//				Robot.drivetrain.getUSTargetAngle(), Robot.drivetrain));
 
 		rightJoy = new Joystick(1);
 
@@ -76,6 +79,8 @@ public class OI {
 		takePicButton = new JoystickButton(rightJoy, 10);
 		takePicButton.whileHeld(new WriteToNT("SmartDashboard/Vision/takePicture", true));
 		takePicButton.whenReleased(new WriteToNT("SmartDashboard/Vision/takePicture", false));
+		intakeUpButton = new JoystickButton(rightJoy, 1);
+		toggleAndRunIntakeButton.whenPressed(new ToggleIntake(true, false, Robot.intake));
 
 		leftJoy = new Joystick(0);
 

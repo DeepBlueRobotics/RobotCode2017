@@ -62,12 +62,13 @@ public class ManualControlMechs extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		String system = SmartDashboard.getString("Manual Control Mech");
+		String system = SmartDashboard.getString("ManualControl/Manual Control Mech");
 		manualSwitch(system, 0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }

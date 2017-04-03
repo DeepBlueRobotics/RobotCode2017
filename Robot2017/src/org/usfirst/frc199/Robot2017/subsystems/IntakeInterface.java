@@ -50,6 +50,7 @@ public interface IntakeInterface extends DashboardInterface {
 	 *            giveDirection, doesn't matter
 	 */
 	public void toggleIntake(boolean giveDirection, boolean down);
+	public void toggleIntake();
 
 	public void lowerIntake();
 	public void raiseIntake();
@@ -69,7 +70,10 @@ public interface IntakeInterface extends DashboardInterface {
 	 * backwards
 	 */
 	public void toggleFlipperFlapper();
+	
+	public void raiseFlipperFlapper();
 
+	public void lowerFlipperFlapper();
 	/**
 	 * Sets the flipperFlapper to neutral
 	 */

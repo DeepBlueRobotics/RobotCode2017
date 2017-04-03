@@ -13,12 +13,16 @@ public class ToggleIntakeRamp extends Command {
 	IntakeInterface intake;
 	boolean firstTime = true;
 	Timer tim = new Timer();
+	boolean giveDirection;
+	boolean extend;
 
-	public ToggleIntakeRamp(IntakeInterface intake) {
+	public ToggleIntakeRamp(boolean giveDirection, boolean extend, IntakeInterface intake) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		this.intake = intake;
 		requires(Robot.intake);
+		this.giveDirection = giveDirection;
+		this.extend = extend;
 	}
 
 	// Called just before this Command runs the first time
@@ -29,9 +33,18 @@ public class ToggleIntakeRamp extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
+//		if (firstTime) {
+//			intake.toggleFlipperFlapper();
+//			firstTime = false;
+//		}
 		if (firstTime) {
-			intake.toggleFlipperFlapper();
-			firstTime = false;
+			if(giveDirection) {
+				if(extend) intake.lowerFlipperFlapper();
+				else intake.raiseFlipperFlapper();
+			} else {
+				intake.toggleFlipperFlapper();
+			}
+			firstTime = !firstTime;
 		}
 	}
 

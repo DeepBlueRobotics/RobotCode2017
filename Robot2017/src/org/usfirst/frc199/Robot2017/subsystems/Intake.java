@@ -135,12 +135,21 @@ public class Intake extends Subsystem implements IntakeInterface {
 			intakeIsDown = down;
 		} else { 
 			if (!intakeIsDown) {
-				pivotPiston.set(DoubleSolenoid.Value.kForward);
-			} else {
 				pivotPiston.set(DoubleSolenoid.Value.kReverse);
+			} else {
+				pivotPiston.set(DoubleSolenoid.Value.kForward);
 			}
 			intakeIsDown = !intakeIsDown;
 		}
+	}
+	
+	public void toggleIntake() {
+		if (!intakeIsDown) {
+			pivotPiston.set(DoubleSolenoid.Value.kReverse);
+		} else {
+			pivotPiston.set(DoubleSolenoid.Value.kForward);
+		}
+		intakeIsDown = !intakeIsDown;
 	}
 
 	public void raiseIntake() {
@@ -181,6 +190,18 @@ public class Intake extends Subsystem implements IntakeInterface {
 			flipperFlapper.set(DoubleSolenoid.Value.kForward);
 			flipperIsUp = false;
 		}
+	}
+	
+	public void raiseFlipperFlapper() {
+		//extend dead stop
+		flipperFlapper.set(DoubleSolenoid.Value.kReverse);
+		flipperIsUp = true;
+	}
+
+	public void lowerFlipperFlapper() {
+		//retract dead stop
+		flipperFlapper.set(DoubleSolenoid.Value.kForward);
+		flipperIsUp = false;
 	}
 
 	/**

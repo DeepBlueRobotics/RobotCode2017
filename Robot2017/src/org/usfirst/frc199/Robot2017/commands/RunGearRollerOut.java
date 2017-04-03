@@ -35,7 +35,7 @@ public class RunGearRollerOut extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return tim.get() > 1;
+        return tim.get() > 2;
     }
 
     // Called once after isFinished returns true

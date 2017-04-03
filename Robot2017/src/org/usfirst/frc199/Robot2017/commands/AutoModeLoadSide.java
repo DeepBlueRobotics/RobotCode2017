@@ -30,11 +30,19 @@ public class AutoModeLoadSide extends CommandGroup {
 //		final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 11);
 		//in from front end of robot to lift (after pivot)
 		
-		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 121) - (Robot.getPref("Robot length", 39) -
-								Robot.getPref("Distance from pivot point to front of robot", 19.5));
+		double forward;
+		if (alliance) forward = Robot.getPref("Auto Blue Load Forward", 110);
+		else forward = Robot.getPref("Auto Red Load Forward", 116);
+		
+		double diagonal;
+		if (alliance) diagonal = Robot.getPref("Auto Blue Load Diagonal", 50);
+		else diagonal = Robot.getPref("Auto Red Load Diagonal", 50);
+		
+		final double LENGTH_1 = forward - (Robot.getPref("Robot length", 39) -
+				Robot.getPref("Distance from pivot point to front of robot", 19.5));
 
-		final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 15) - (Robot.getPref("Robot length", 39) -
-								Robot.getPref("Distance from pivot point to front of robot", 19.5));
+		final double LENGTH_2 = diagonal - (Robot.getPref("Robot length", 39) -
+				Robot.getPref("Distance from pivot point to front of robot", 19.5));
 
 		/*
 		 * METHOD 2 INSTANCE VARIABLES: final double DIST_TO_LIFT =
@@ -53,7 +61,8 @@ public class AutoModeLoadSide extends CommandGroup {
 //		addSequential(new ToggleIntake(true, true, Robot.intake));
 //		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
 //		addSequential(new ToggleIntake(true, false, Robot.intake));
-		addSequential(new ToggleIntakeRamp(Robot.intake));
+		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
+		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
 		
 		// METHOD 1
 		// Drives to hexagon
@@ -105,6 +114,7 @@ public class AutoModeLoadSide extends CommandGroup {
 //		addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
 		
 		addSequential(new DeployGear());
+		addSequential(new DeployGearEnding());
 
 	}
 }

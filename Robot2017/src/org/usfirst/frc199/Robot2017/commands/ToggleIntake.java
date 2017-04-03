@@ -36,8 +36,13 @@ public class ToggleIntake extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		if (firstTime) {
-			intake.toggleIntake(giveDirection, down);
-			firstTime = false;
+			if(giveDirection) {
+				if(down) intake.lowerIntake();
+				else intake.raiseIntake();
+			} else {
+				intake.toggleIntake();
+			}
+			firstTime = !firstTime;
 		}
 	}
 

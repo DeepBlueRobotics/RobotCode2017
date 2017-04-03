@@ -24,13 +24,20 @@ public class AutoModeBoilerSide extends CommandGroup {
 //		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 80.66);
 		// in. from front end of robot to point on field
 		
-		final double LENGTH_1 = Robot.getPref("Forward Travel BoilerSide", 107) - (Robot.getPref("Robot length", 39) -
-								Robot.getPref("Distance from pivot point to front of robot", 19.5));
-		
 //		final double LENGTH_2 = Robot.getPref("Diagonal Travel BoilerSide", 24.6);
 		// in. from front of robot to lift (after pivot)
+		double forward;
+		if (alliance) forward = Robot.getPref("Auto Blue Boiler Forward", 121);
+		else forward = Robot.getPref("Auto Red Boiler Forward", 121);
 		
-		final double LENGTH_2 = Robot.getPref("Diagonal Travel BoilerSide", 47.5) - (Robot.getPref("Robot length", 39) -
+		double diagonal;
+		if (alliance) diagonal = Robot.getPref("Auto Blue Boiler Diagonal", 15);
+		else diagonal = Robot.getPref("Auto Red Boiler Diagonal", 15);
+		
+		final double LENGTH_1 = forward - (Robot.getPref("Robot length", 39) -
+								Robot.getPref("Distance from pivot point to front of robot", 19.5));
+
+		final double LENGTH_2 = diagonal - (Robot.getPref("Robot length", 39) -
 								Robot.getPref("Distance from pivot point to front of robot", 19.5));
 
 		/*
@@ -50,7 +57,8 @@ public class AutoModeBoilerSide extends CommandGroup {
 //		addSequential(new ToggleIntake(true, true, Robot.intake));
 //		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
 //		addSequential(new ToggleIntake(true, false, Robot.intake));
-		addSequential(new ToggleIntakeRamp(Robot.intake));
+		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
+		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
 
 		// METHOD 1:
 		// Drives to airlift
@@ -76,6 +84,7 @@ public class AutoModeBoilerSide extends CommandGroup {
 		 * AutoAlignGear(true));
 		 */
 		addSequential(new DeployGear());
+		addSequential(new DeployGearEnding());
 
 	}
 }

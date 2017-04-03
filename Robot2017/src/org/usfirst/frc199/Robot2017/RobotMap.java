@@ -43,7 +43,7 @@ public class RobotMap {
 	public static SpeedController shooterFeedMotor;
 	public static SpeedController shooterFloorBeltMotor;
 	public static CANTalon shooterShootMotorAndEncoder;
-	private static final int CANTalonIDNum = (int) Robot.getPref("CAN SHooter Device ID", 1);
+	private static final int CANTalonIDNum = (int) Robot.getPref("CAN Shooter Device ID", 1);
 	private final static double shootFGain = 0.374;
 	public static SpeedController turretTurnMotor;
 	public static Potentiometer turretTurretEncoder;
@@ -71,7 +71,7 @@ public class RobotMap {
 			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0522));
 			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0522));
-			drivetrainGyro = new AnalogGyro(0);
+//			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
@@ -86,7 +86,7 @@ public class RobotMap {
 			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			// multiplies value 0 to 1 by 360 to get degrees
-			turretTurretEncoder = new AnalogPotentiometer(6, 360, 0);
+			turretTurretEncoder = new AnalogPotentiometer(0, 360, 0);
 			climberWinchMotor = new VictorSP(8);
 			climberWinchMotor.setInverted(true);
 			driverAI = new AnalogInput(2);
@@ -103,7 +103,7 @@ public class RobotMap {
 			drivetrainLeftEncoder.setDistancePerPulse(Robot.getPref("leftEncoderRatio", .0525));
 			drivetrainRightEncoder = new Encoder(3, 2, false, EncodingType.k4X);
 			drivetrainRightEncoder.setDistancePerPulse(Robot.getPref("rightEncoderRatio", .0525));
-			drivetrainGyro = new AnalogGyro(0);
+//			drivetrainGyro = new AnalogGyro(0);
 			drivetrainCompressor = new Compressor(0);
 			drivetrainShiftPiston = new DoubleSolenoid(0, 0, 1);
 			intakePivotPiston = new DoubleSolenoid(0, 2, 3);
@@ -140,8 +140,8 @@ public class RobotMap {
 		LiveWindow.addSensor("Drivetrain", "RightEncoder", drivetrainRightEncoder);
 		drivetrainRightEncoder.setPIDSourceType(PIDSourceType.kRate);
 
-		LiveWindow.addSensor("Drivetrain", "Gyro", drivetrainGyro);
-		drivetrainGyro.setSensitivity(0.007);
+//		LiveWindow.addSensor("Drivetrain", "Gyro", drivetrainGyro);
+//		drivetrainGyro.setSensitivity(0.007);
 
 		LiveWindow.addActuator("Drivetrain", "ShiftPiston", drivetrainShiftPiston);
 

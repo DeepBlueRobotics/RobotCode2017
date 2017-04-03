@@ -25,15 +25,12 @@ public class DeployGear extends CommandGroup {
          * */
     	addParallel(new FlashLED(Robot.intake));
 //    	addParallel(new DriveBackwardsGearDelivery(0.6, Robot.getPref("backOutSpeed", 1), Robot.drivetrain));
-    	addParallel(new RunGearRollerOut(Robot.intake), .5);
-    	addSequential(new AutoDelay(.15, Robot.intake, Robot.drivetrain));
-    	addSequential(new ToggleIntake(true, true, Robot.intake));
-    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addParallel(new RunGearRollerOut(Robot.intake));
     	addSequential(new AutoDelay(.2, Robot.intake, Robot.drivetrain));
-    	addSequential(new DriveBackwardsGearDelivery(0.6, -.7, Robot.drivetrain));
-    	addSequential(new ToggleIntake(true, false, Robot.intake));
-    	addSequential(new AutoDelay(.1, Robot.intake, Robot.drivetrain));
-    	addSequential(new DriveBackwardsGearDelivery(0.6, .7, Robot.drivetrain));
+    	addParallel(new AutoDrive(-12, 0, Robot.drivetrain));
+    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addSequential(new ToggleIntake(true, true, Robot.intake));
+    	addSequential(new AutoDelay(.3, Robot.intake, Robot.drivetrain));
     }
     
 }
