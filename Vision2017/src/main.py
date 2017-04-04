@@ -125,7 +125,7 @@ while (True):
 			# Run gear mark identification
 			lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
 							gearFrame, np.array([65, 175, 70]), np.array([100, 255, 200]), nt)
-			gearValues = lx, ly, rx, ry, lb, lt, rb, rt, (int)(success)
+			gearValues = [lx, ly, rx, ry, lb, lt, rb, rt, (int)(success)]
 			#lx, ly, rx, ry, lb, lt, rb, rt, success = lift_marks_identify.findTape(
 			# 	gearFrame, gearLowHSV, gearHighHSV)
 
