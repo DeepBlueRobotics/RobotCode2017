@@ -55,6 +55,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private int turretEncoderTurnCounter = 0;
 	private double prevTurretEncoder = 0;
 	private double prevHoodEncoder = 0;
+	private double offset = 0;
 
 	double[][] distances = new double[48][45];
 
@@ -252,11 +253,12 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	/**
-	 * Resets turret encoder
+	 * Resets turret encoder to call the current position zero. Uses offset.
 	 */
 	public void resetTurretEncoder() {
-		turretEncoderTurnCounter = 0;
-		prevTurretEncoder = 0;
+		// turretEncoderTurnCounter = 0;
+		// prevTurretEncoder = 0;
+		offset = turretEncoder.get();
 	}
 
 	/**
@@ -281,7 +283,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 			turretEncoderTurnCounter++;
 		}
 		prevTurretEncoder = newTurretEncoder;
-		return (turretEncoderTurnCounter * 360 + newTurretEncoder) / encoderAngleRatio;
+		return (turretEncoderTurnCounter * 360 + newTurretEncoder) / encoderAngleRatio - offset;
 	}
 
 	/**
