@@ -25,8 +25,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter extends Subsystem implements ShooterInterface {
 	double targetAngle = Robot.getPref("targetAngle", 0); // angle that the ball
 															// hits the boiler
-	double height = Robot.getPref("relativeHeightOfBoiler", 0);
-	double encoderAngleRatio = Robot.getPref("encoderAngleRatio", 0);
+	double height = Robot.getPref("relativeHeightOfBoiler", 10);
+	double encoderAngleRatio = Robot.getPref("encoderAngleRatio", 1);
 
 	private final double gravity = 9.81;
 	private final double mass = 0.074;
@@ -46,8 +46,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private final Potentiometer turretEncoder = RobotMap.turretTurretEncoder;
 	private final Servo hoodServo = RobotMap.hoodServo;
 
-	private PID ShooterPID = new PID("ShooterPID");
-	private PID TurretPID = new PID("TurretPID");
+	private PID shooterPID = new PID("ShooterPID");
+	private PID turretPID = new PID("TurretPID");
 
 	private double prevShooterEncoder = 0;
 	private boolean shooterMotorStalled = false;
@@ -163,7 +163,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @param targetRate - target speed for shooter motor PID
 	 */
 	public void setShooterPIDTarget(double targetRate) {
-		ShooterPID.setTarget(targetRate);
+		shooterPID.setTarget(targetRate);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @return speed for motor
 	 */
 	public double getShooterPIDOutput() {
-		return ShooterPID.getOutput();
+		return shooterPID.getOutput();
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @param updateValue current shooter motor encoder speed
 	 */
 	public void updateShooterPID(double updateValue) {
-		ShooterPID.update(updateValue);
+		shooterPID.update(updateValue);
 	}
 
 	/**
@@ -198,9 +198,9 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target) {
-		ShooterPID.setTarget(target);
-		ShooterPID.update(getShooterSpeed());
-		return ShooterPID.getOutput();
+		shooterPID.setTarget(target);
+		shooterPID.update(getShooterSpeed());
+		return shooterPID.getOutput();
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * Resets turret encoder to call the current position zero. Uses offset.
 	 */
 	public void resetTurretEncoder() {
-		// turretEncoderTurnCounter = 0;
+		 turretEncoderTurnCounter = 0;
 		// prevTurretEncoder = 0;
 		offset = turretEncoder.get();
 	}
@@ -303,7 +303,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @param targetRate - target speed for turret motor PID
 	 */
 	public void setTurretPIDTarget(double target) {
-		TurretPID.setTarget(target);
+		turretPID.setTarget(target);
 	}
 
 	/**
@@ -312,7 +312,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @return speed for motor
 	 */
 	public double getTurretPIDOutput() {
-		return TurretPID.getOutput();
+		return turretPID.getOutput();
 	}
 
 	/**
@@ -321,7 +321,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @param updateValue current turret motor encoder speed
 	 */
 	public void updateTurretPID(double updateValue) {
-		TurretPID.update(updateValue);
+		turretPID.update(updateValue);
 	}
 
 	/**
@@ -330,7 +330,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * @return turret PID target is reached or not
 	 */
 	public boolean turretPIDTargetReached() {
-		return TurretPID.reachedTarget();
+		return turretPID.reachedTarget();
 	}
 
 	/**

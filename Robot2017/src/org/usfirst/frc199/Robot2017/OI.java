@@ -30,6 +30,8 @@ public class OI {
 	public Joystick manipulator;
 	public JoystickButton toggleFlipper;
 	public JoystickButton intakeGearButton;
+	public JoystickButton shootFromHopperButton;
+	public JoystickButton shootFromAirshipButton;
 
 	public OI() {
 		manipulator = new Joystick(2);
@@ -84,6 +86,10 @@ public class OI {
 
 		leftJoy = new Joystick(0);
 
+		shootFromHopperButton = new JoystickButton(leftJoy, 3);
+		shootFromHopperButton.whenPressed(new SetTurretToShootingFromHopper(Robot.shooter));
+		shootFromAirshipButton = new JoystickButton(leftJoy, 5);
+		shootFromAirshipButton.whenPressed(new SetTurretToShootingFromLift(Robot.shooter));
 		switchDriveButton = new JoystickButton(leftJoy, 4);
 		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
@@ -119,6 +125,7 @@ public class OI {
 
 		// For Trajectory Following Testing
 		SmartDashboard.putData("FollowTrajectory", new FollowTrajectory());
+		SmartDashboard.putData("setTurretToZero", new SetTurretToZero(Robot.shooter));
 
 	}
 
