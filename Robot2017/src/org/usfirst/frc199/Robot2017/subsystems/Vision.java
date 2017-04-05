@@ -33,10 +33,13 @@ public class Vision extends Subsystem implements DashboardInterface {
  	public double[] rightMarkCoords = new double[2];
  	public double[] centerMarkCoords = new double[2];
 
+
  	private final String[] gearVisionKeys = {
  		"leftGearCenterX", "leftGearCenterY", "rightGearCenterX", "rightGearCenterY", 
  		"leftGearBottomY", "leftGearTopY", "rightGearBottomY", "rightGearTopY"
  	};
+
+ 	private double[] defaultGearValues = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
 	public Vision() {
 		super();
@@ -51,11 +54,13 @@ public class Vision extends Subsystem implements DashboardInterface {
  	 * @return distance from camera to the plane perpendicular to its line of sight, on which the gear lift lies
  	 */
  	public double getCameraDistanceToGearPlane() {
-  		if (getBoolean("OH-YEAH", true)) {
-  			double leftGearCenterX = getNumber("leftGearCenterX", 0);
-  			double rightGearCenterX = getNumber("rightGearCenterX", 0);
-  			double leftGearCenterY = getNumber("leftGearCenterY", 0);
- 			double rightGearCenterY = getNumber("rightGearCenterY", 0);
+ 		double[] gearValues = getNumArray("gearValues", defaultGearValues);
+
+  		if (gearValues[8] == 1) {
+  			double leftGearCenterX = gearValues[0];
+  			double leftGearCenterY = gearValues[1];
+  			double rightGearCenterX = gearValues[2];
+ 			double rightGearCenterY = gearValues[3];
 			double pixelDist = Math.sqrt(Math.pow(rightGearCenterX - leftGearCenterX, 2) + Math.pow(rightGearCenterY - leftGearCenterY, 2));
   			double fieldOfView = (REFLECTOR_DIST_GEAR * RESOLUTION_WIDTH) / pixelDist;
   			double distanceToGear = (fieldOfView / 2) / (Math.tan(THETA));
@@ -280,7 +285,9 @@ public class Vision extends Subsystem implements DashboardInterface {
 		}
 	}
 
-	public void updateGearCoordinates(double[] gearValues) {
+	public void updateGearCoordinates() {
+		double[] gearValues = getNumArray("gearValues", defaultGearValues);
+
 		leftMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(gearValues[4], gearValues[5]), 
 				getCamAngToGearMark(gearValues[0]));
 		rightMarkCoords[0] = getXFromPivotPoint(getCamDistToGearMark(gearValues[6], gearValues[7]), 

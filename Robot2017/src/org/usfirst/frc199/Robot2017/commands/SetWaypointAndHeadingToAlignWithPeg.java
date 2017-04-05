@@ -28,7 +28,7 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	SmartDashboard.putBoolean("Vision/gearRunning", true);
-    	Robot.vision.updateGearCoordinates(gearValues);
+    	Robot.vision.updateGearCoordinates();
 //    	tim.reset();
 //    	tim.stop();
 //    	timerStarted =false;
@@ -54,7 +54,7 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Log.debug("SetWaypointAndHeadingToAlignWithPeg.end() called");
-    	Robot.vision.updateGearCoordinates(gearValues);
+    	Robot.vision.updateGearCoordinates();
     	double[] leftTarget = Robot.vision.leftMarkCoords;
     	Log.debug("leftTarget: " + " (" + leftTarget[0] + ", " + leftTarget[1] + ")");
     	double[] rightTarget = Robot.vision.rightMarkCoords;

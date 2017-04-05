@@ -59,6 +59,10 @@ public interface DashboardInterface {
 		return SmartDashboard.getString(getKey(key), defaultValue);
 	}
 
+	default double[] getNumArray(String key, double[] defaultValue) {
+		return Robot.sd.getNumberArray(getKey(key), defaultValue);
+	}
+
 	/**
 	 * Converts the specified display key into one with its subsystem name
 	 * appended as a prefix, to be compatible with the Subsystem widget on
