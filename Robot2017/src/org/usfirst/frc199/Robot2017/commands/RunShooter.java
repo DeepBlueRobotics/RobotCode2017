@@ -42,6 +42,8 @@ public class RunShooter extends Command {
 			shooter.runFeederMotor(.5);
 			shooter.runFloorBeltMotor(.5);
 		}
+		
+		shooter.runTurretMotor(Robot.oi.manipulator.getX());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -56,6 +58,7 @@ public class RunShooter extends Command {
 	// Called once after isFinished returns true
 	public void end() {
 		shooter.runShootMotor(0);
+		shooter.runTurretMotor(0);
 		shooter.runFeederMotor(0);
 		shooter.runFloorBeltMotor(0);
 	}
@@ -63,8 +66,6 @@ public class RunShooter extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		shooter.runShootMotor(0);
-		shooter.runFeederMotor(0);
-		shooter.runFloorBeltMotor(0);
+		end();
 	}
 }
