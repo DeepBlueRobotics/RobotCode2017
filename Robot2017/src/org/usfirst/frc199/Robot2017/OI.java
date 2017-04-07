@@ -43,7 +43,7 @@ public class OI {
 		winchButton = new JoystickButton(manipulator, 1);
 		winchButton.whileHeld(new Climb(Robot.climber));
 		shootOutButton = new JoystickButton(manipulator, 6);
-		shootOutButton.whileHeld(new RunShooter(manipulator.getY(), Robot.shooter, 0));
+		shootOutButton.whileHeld(new RunShooter(Robot.shooter, 0));
 		turnTurretButton = new JoystickButton(manipulator, 8);
 		turnTurretButton.whileHeld(new TurnTurret(manipulator.getX(), Robot.shooter));
 //		outputButton = new JoystickButton(manipulator, 7);

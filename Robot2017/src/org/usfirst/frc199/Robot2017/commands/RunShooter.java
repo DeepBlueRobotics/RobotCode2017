@@ -9,13 +9,12 @@ import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
  *
  */
 public class RunShooter extends Command {
-	double speed;
+	double speed = 0;
 	ShooterInterface shooter;
 	double duration;
 	Timer tim = new Timer();
 
-	public RunShooter(double speed, ShooterInterface shooter, double time) {
-		this.speed = speed;
+	public RunShooter(ShooterInterface shooter, double time) {
 		this.shooter = shooter;
 		duration = time;
 		requires(Robot.shooter);
@@ -31,7 +30,13 @@ public class RunShooter extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 //		if (!shooter.shooterMotorStalled()) {
-		shooter.runShootMotor(Robot.oi.manipulator.getY());
+		if (Robot.oi.manipulator.getRawButton(7)) {
+			speed -= 0.02;
+		}
+		if (Robot.oi.manipulator.getRawButton(5)) {
+			speed += 0.02;
+		}
+		shooter.runShootMotor(speed);
 //		}
 		if(tim.get() >= 1.5){
 			shooter.runFeederMotor(.5);

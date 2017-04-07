@@ -96,6 +96,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	public void initDefaultCommand() {
+		setDefaultCommand(new RunShooter(Robot.shooter, 0));
 	}
 
 	/**
@@ -274,7 +275,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * function keeps track to see when it passes 360 and keeps a counter.
 	 */
 	public double getTurretEncoder() {
-		double newTurretEncoder = turretEncoder.get() * 360;
+		double newTurretEncoder = turretEncoder.get();
 		// If angle goes up by more than 180 in one interval, it passed 360
 		if (newTurretEncoder - prevTurretEncoder > 180) {
 			turretEncoderTurnCounter--;
