@@ -96,7 +96,6 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new RunShooter(Robot.shooter, 0));
 	}
 
 	/**
