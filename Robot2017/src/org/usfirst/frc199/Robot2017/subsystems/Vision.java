@@ -106,8 +106,10 @@ public class Vision extends Subsystem implements DashboardInterface {
  	 * @return calculated angle from camera's line of sight to gear lift
  	 */
  	public double getCameraAngleToGear() {
- 
- 		double pegX = (getNumber("leftGearCenterX", 0) + getNumber("rightGearCenterX", 0)) / 2;
+ 		double[] gearValues = getNumArray("gearValues", defaultGearValues);
+		double leftGearCenterX = gearValues[0];
+		double rightGearCenterX = gearValues[2];
+ 		double pegX = (leftGearCenterX + rightGearCenterX) / 2;
  		double pixelDisplacement = pegX - SCREEN_CENTER_X;
  		double abstractDepth = (RESOLUTION_WIDTH / 2) / Math.tan(THETA);
  		
@@ -289,8 +291,8 @@ public class Vision extends Subsystem implements DashboardInterface {
 		
 		leftMarkCoords[1] = getCameraDistanceToGearPlane() + Robot.getPref("Gear cam y distance from pivot", 0);
 		rightMarkCoords[1] = getCameraDistanceToGearPlane() + Robot.getPref("Gear cam y distance from pivot", 0);
-		leftMarkCoords[0] = Math.tan(getAngleToGear())*leftMarkCoords[1];
-		rightMarkCoords[0] = Math.tan(getAngleToGear())*rightMarkCoords[1];
+		leftMarkCoords[0] = Math.tan(Math.toRadians(getAngleToGear()))*leftMarkCoords[1] - 4;
+		rightMarkCoords[0] = Math.tan(Math.toRadians(getAngleToGear()))*rightMarkCoords[1] + 4;
 		
 		putNumber("leftX", leftMarkCoords[0]);
 		putNumber("leftY", leftMarkCoords[1]);

@@ -40,7 +40,7 @@ public class RunShooter extends Command {
 //		}
 		if(tim.get() >= 1.5){
 			shooter.runFeederMotor(.5);
-			shooter.runFloorBeltMotor(.5);
+			//shooter.runFloorBeltMotor(.5);
 		}
 		
 		shooter.runTurretMotor(Robot.oi.manipulator.getX());
@@ -60,7 +60,7 @@ public class RunShooter extends Command {
 		shooter.runShootMotor(0);
 		shooter.runTurretMotor(0);
 		shooter.runFeederMotor(0);
-		shooter.runFloorBeltMotor(0);
+		//shooter.runFloorBeltMotor(0);
 	}
 
 	// Called when another command which requires one or more of the same

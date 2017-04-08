@@ -63,8 +63,8 @@ public class OI {
 		deployGearButton.whileHeld(new DeployGear());
 		
 		//uncomment this line below when static gear intake put back on
-		toggleFlipper = new JoystickButton(manipulator, 5);
-		toggleFlipper.whenPressed(new ToggleIntakeRamp(false, false, Robot.intake));
+		//toggleFlipper = new JoystickButton(manipulator, 5);
+		//toggleFlipper.whenPressed(new ToggleIntakeRamp(false, false, Robot.intake));
 		
 //		autoUSAdjustButton = new JoystickButton(manipulator, 8);
 //		autoUSAdjustButton.whileHeld(new AutoDrive(Robot.drivetrain.getUSDistToDrive(),
@@ -88,8 +88,8 @@ public class OI {
 
 		shootFromHopperButton = new JoystickButton(leftJoy, 3);
 		shootFromHopperButton.whenPressed(new SetTurretToShootingFromHopper(Robot.shooter));
-		shootFromAirshipButton = new JoystickButton(leftJoy, 5);
-		shootFromAirshipButton.whenPressed(new SetTurretToShootingFromLift(Robot.shooter));
+		//shootFromAirshipButton = new JoystickButton(leftJoy, 5);
+		//shootFromAirshipButton.whenPressed(new SetTurretToShootingFromLift(Robot.shooter));
 		switchDriveButton = new JoystickButton(leftJoy, 4);
 		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);

@@ -169,7 +169,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 
 		// Update all subsystem SmartDashboard values during teleop
-		new DisplayDashboardData().start();
+//		new DisplayDashboardData().start();
 		
     	tim.reset();
     	tim.start();

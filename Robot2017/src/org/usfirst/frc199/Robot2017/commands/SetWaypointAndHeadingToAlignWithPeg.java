@@ -75,19 +75,23 @@ public class SetWaypointAndHeadingToAlignWithPeg extends Command {
     }
     
     private void storeWaypointAndHeading(WaypointAndHeading w, double[] leftTarget, double[] rightTarget) {
-    	
-    	double[] lift = {(leftTarget[0] + rightTarget[0]) / 2, (leftTarget[1] + rightTarget[1]) / 2};
+
+		double yDist = Robot.vision.getCameraDistanceToGearPlane() + Robot.getPref("Gear cam y distance from pivot", 0);
+		double xDist  = Math.tan(Math.toRadians(Robot.vision.getAngleToGear()))*yDist;
+//    	double[] lift = {(leftTarget[0] + rightTarget[0]) / 2, (leftTarget[1] + rightTarget[1]) / 2};
+		double[] lift = {xDist, yDist};
 //    	Log.debug("Left target x: " + leftTarget[0] + "Left target y " + leftTarget[1]);
 //    	Log.debug("Right target x: " + rightTarget[0] + "Right target y " + rightTarget[1]);
 
     	Log.debug("Lift X: " + lift[0] + " Lift Y: " + lift[1]);
     	double d = getTargetDistanceFromLift();
 //    	double[] vector = {rightTarget[1]-leftTarget[1], -rightTarget[0]+leftTarget[0]};
-    	double[] vector = {0, -rightTarget[0]+leftTarget[0]};
+    	double[] vector = {0, -8};
     	
     	//Log.debug("Vector: <" + vector[0] + ", " + vector[1] + ">");
     	
-    	double magnitude = Math.sqrt(Math.pow(leftTarget[1]-rightTarget[1],2)+Math.pow(leftTarget[0]-rightTarget[0],2));
+//    	double magnitude = Math.sqrt(Math.pow(leftTarget[1]-rightTarget[1],2)+Math.pow(leftTarget[0]-rightTarget[0],2));
+    	double magnitude = 8;
     	Log.debug("Expanded Direction Vector: <" + (vector[0] * d / magnitude) + ", " + (vector[1] * d / magnitude) + ">");
     	double[] p = {lift[0] + (d * vector[0]) / magnitude, lift[1] + (d * vector[1]) / magnitude};
     	Log.debug("x and y coordinates of waypoint: " + p[0] + ", " + p[1]);
