@@ -147,7 +147,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.start();
 
 		// Update all subsystem SmartDashboard values during autonomous
-		new DisplayDashboardData().start();
+//		new DisplayDashboardData().start();
 //		new ToggleDrivetrainShift().start;
 		
     	tim.reset();
@@ -169,7 +169,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 
 		// Update all subsystem SmartDashboard values during teleop
-//		new DisplayDashboardData().start();
+		new DisplayDashboardData().start();
 		
     	tim.reset();
     	tim.start();
@@ -179,7 +179,6 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("interval", tim.get());
     	tim.reset();
 		Scheduler.getInstance().run();
-
 	}
 
 	public void testPeriodic() {

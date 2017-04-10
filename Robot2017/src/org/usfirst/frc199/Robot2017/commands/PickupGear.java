@@ -25,7 +25,7 @@ public class PickupGear extends CommandGroup {
     	addParallel(new FlashLED(Robot.intake));
     	addSequential(new ToggleIntake(true, true, Robot.intake));
     	addSequential(new ToggleIntake(true, true, Robot.intake));
-    	addSequential(new RunGearRollerIn(-.5, Robot.intake));
+    	addSequential(new RunGearRollerIn(.9, Robot.intake));
     	addSequential(new ToggleIntake(true, false, Robot.intake));
     }
     

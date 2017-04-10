@@ -98,6 +98,11 @@ public interface IntakeInterface extends DashboardInterface {
 
 	public void runRoller(double speed);
 
+	/**
+	 * Detects gear presence by current draw measurements.
+	 */
+	public boolean haveGear();
+	
 	@Override
 	/**
 	 * Displays data to SmartDashboard

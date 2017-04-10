@@ -82,7 +82,7 @@ public class OI {
 		takePicButton.whileHeld(new WriteToNT("SmartDashboard/Vision/takePicture", true));
 		takePicButton.whenReleased(new WriteToNT("SmartDashboard/Vision/takePicture", false));
 		intakeUpButton = new JoystickButton(rightJoy, 1);
-		toggleAndRunIntakeButton.whenPressed(new ToggleIntake(true, false, Robot.intake));
+		//toggleAndRunIntakeButton.whenPressed(new ToggleIntake(true, true, Robot.intake));
 
 		leftJoy = new Joystick(0);
 

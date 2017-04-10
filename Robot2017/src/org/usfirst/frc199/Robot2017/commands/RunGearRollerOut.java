@@ -30,7 +30,8 @@ public class RunGearRollerOut extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	intake.runRoller(0.6*Robot.getPref("RollerOutMultiplier", 1));
+    	if(!intake.intakeIsDown()) intake.lowerIntake();
+    	intake.runRoller(-0.2/* *Robot.getPref("RollerOutMultiplier", 1)*/);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -46,6 +47,7 @@ public class RunGearRollerOut extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	// Removed to avoid interference from ToggleIntake
     	intake.runRoller(0);
     }
 }

@@ -26,11 +26,13 @@ public class Intake extends Subsystem implements IntakeInterface {
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
 	private boolean AItriggered = false;
 	private Timer tim = new Timer();
+	private Timer gearStartupTimer = new Timer();
 	private boolean intakeIsDown = false;
 	private boolean flipperIsUp = false;
 	private final SpeedController gearRoller = RobotMap.gearRoller;
 	private final DigitalInput gearIntakeSwitch = RobotMap.gearIntakeSwitch;
 	private final DoubleSolenoid flashLED = RobotMap.flashingGearLED;
+	private double maxCurrent = 0;
 
 	public Intake() {
 		super();
@@ -66,6 +68,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 */
 	public void runIntake(double speed) {
 		intakeMotor.set(speed);
+		
 	}
 
 	/**
@@ -105,6 +108,9 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 */
 
 	public void runRoller(double speed) {
+		gearStartupTimer.reset();
+		gearStartupTimer.start();
+		if(Math.abs(speed) > 0.1) maxCurrent = 0;
 		gearRoller.set(speed);
 	}
 
@@ -128,28 +134,29 @@ public class Intake extends Subsystem implements IntakeInterface {
 	public void toggleIntake(boolean giveDirection, boolean down) {
 		if (giveDirection) {
 			if (down) {
-				pivotPiston.set(DoubleSolenoid.Value.kForward);
-			} else {
 				pivotPiston.set(DoubleSolenoid.Value.kReverse);
+			} else {
+				pivotPiston.set(DoubleSolenoid.Value.kForward);
 			}
 			intakeIsDown = down;
 		} else { 
-			if (!intakeIsDown) {
-				pivotPiston.set(DoubleSolenoid.Value.kReverse);
-			} else {
+			if (intakeIsDown) {
 				pivotPiston.set(DoubleSolenoid.Value.kForward);
+			} else {
+				pivotPiston.set(DoubleSolenoid.Value.kReverse);
 			}
 			intakeIsDown = !intakeIsDown;
 		}
 	}
 	
 	public void toggleIntake() {
-		if (!intakeIsDown) {
-			pivotPiston.set(DoubleSolenoid.Value.kReverse);
-		} else {
-			pivotPiston.set(DoubleSolenoid.Value.kForward);
-		}
-		intakeIsDown = !intakeIsDown;
+		toggleIntake(false, false);
+//		if (!intakeIsDown) {
+//			pivotPiston.set(DoubleSolenoid.Value.kReverse);
+//		} else {
+//			pivotPiston.set(DoubleSolenoid.Value.kForward);
+//		}
+//		intakeIsDown = !intakeIsDown;
 	}
 
 	public void raiseIntake() {
@@ -237,7 +244,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 		// }
 	}
 
-	/**
+	/*
 	 * Resets the light sensor trigger value
 	 */
 	public void resetAITrigger() {
@@ -255,7 +262,18 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putString("Intake piston status", pivotPiston.get().toString());
 		putBoolean("Intake is down", intakeIsDown);
 		putBoolean("Gear has been lifted", gearLifted(false));
+		putBoolean("Gear current test", haveGear());
 		putNumber("Peg sensor reading", AI.getVoltage());
 		putBoolean("Peg sensor has triggered", AItriggered);
+		putNumber("Intake current draw", pdp.getCurrent(2));
+		if(pdp.getCurrent(2) > maxCurrent && gearStartupTimer.get() > 0.75) maxCurrent = pdp.getCurrent(2);
+		putNumber("Intake max current", maxCurrent);
+		putNumber("Gear timer", gearStartupTimer.get());
+		putNumber("Roller output", gearRoller.get());
+	}
+
+	@Override
+	public boolean haveGear() {
+		return (pdp.getCurrent(2) > 33.0) && gearStartupTimer.get() > 0.75;
 	}
 }

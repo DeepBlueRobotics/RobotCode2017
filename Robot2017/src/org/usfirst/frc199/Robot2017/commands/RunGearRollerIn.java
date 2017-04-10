@@ -15,6 +15,7 @@ public class RunGearRollerIn extends Command {
 	private Timer tim;
 	private double speed;
 	private boolean gearInOnce;
+	private boolean intakeRollerStarted;
 	
     public RunGearRollerIn(double speed, IntakeInterface intake) {
         // Use requires() here to declare subsystem dependencies
@@ -28,12 +29,16 @@ public class RunGearRollerIn extends Command {
     protected void initialize() {
     	tim = new Timer();
     	gearInOnce = false;
+    	intakeRollerStarted = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(intake.getSwitch()) intake.runRoller(speed);
-    	if(!intake.getSwitch() && !gearInOnce){
+    	if(!intake.haveGear() && !intakeRollerStarted) {
+    		intake.runRoller(speed);
+    		intakeRollerStarted = true;
+    	}
+    	else if(!gearInOnce){
         	tim.start();
         	gearInOnce = true;
         }
@@ -41,10 +46,11 @@ public class RunGearRollerIn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(gearInOnce){
+  /*      if(gearInOnce){
         	return !intake.getSwitch() && tim.get() > Robot.getPref("Make sure gear is in delay time", 2);
         }
-        return false;
+        return false; */
+    	return intake.haveGear();
 //    	return !intake.getSwitch();
     }
 
