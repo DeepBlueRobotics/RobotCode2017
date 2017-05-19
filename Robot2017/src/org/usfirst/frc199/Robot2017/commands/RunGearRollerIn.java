@@ -5,6 +5,7 @@ import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -42,6 +43,7 @@ public class RunGearRollerIn extends Command {
         	tim.start();
         	gearInOnce = true;
         }
+    	SmartDashboard.putBoolean("runningGearRoller", true);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -57,12 +59,15 @@ public class RunGearRollerIn extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	intake.runRoller(0);
+  
+    	
+    	SmartDashboard.putBoolean("runningGearRoller", false);
 //    	intake.raiseIntake();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	intake.runRoller(0);
+    	end();
     }
 }

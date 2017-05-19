@@ -23,9 +23,13 @@ public class PickupGear extends CommandGroup {
          * 		actuate up
          * */
     	addParallel(new FlashLED(Robot.intake));
+    	if (Robot.drivetrain.inHighGear()) {
+        	addSequential(new ToggleDrivetrainShift(Robot.drivetrain));
+    	}
     	addSequential(new ToggleIntake(true, true, Robot.intake));
     	addSequential(new ToggleIntake(true, true, Robot.intake));
     	addSequential(new RunGearRollerIn(.9, Robot.intake));
+    	addSequential(new ToggleDrivetrainShift(Robot.drivetrain));
     	addSequential(new ToggleIntake(true, false, Robot.intake));
     }
     

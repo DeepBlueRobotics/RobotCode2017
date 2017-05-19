@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -118,6 +119,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		currentSpeed = Robot.oi.rightJoy.getY();
 		currentTurn = Robot.oi.leftJoy.getX();
 		if (currentDrive == DriveTypes.ARCADE) {
+			if(SmartDashboard.getBoolean("runningGearRoller", false)
+					&& Math.abs(currentSpeed) > Robot.getPref("gearLimitSpeed", .23)) {
+				currentSpeed =  Math.signum(currentSpeed)*Robot.getPref("gearLimitSpeed", .23);
+			}
+
+			SmartDashboard.putNumber("currentSpeed", currentSpeed);
 			arcadeDrive(currentTurn, currentSpeed);
 		} else if (currentDrive == DriveTypes.TANK) {
 			robotDrive.tankDrive(-Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
@@ -684,6 +691,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 //		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
 		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
+		SmartDashboard.putBoolean("isTrue", currentSpeed > Robot.getPref("gearLimitSpeed", .23));
 		putNumber("Sending to left motor", leftMotor.getRaw());
 		putNumber("Sending to right motor", rightMotor.getRaw());
 		putString("Current drive", currentDrive.toString());

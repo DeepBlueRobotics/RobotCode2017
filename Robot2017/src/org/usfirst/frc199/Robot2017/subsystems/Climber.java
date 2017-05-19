@@ -50,7 +50,7 @@ public class Climber extends Subsystem implements ClimberInterface {
 	 * @param speed - the speed that you want the winch to run on -1 -> 1
 	 */
 	public void runClimber(double speed) {
-		winchMotor.set(Math.abs(speed));
+		winchMotor.set(speed);
 	}
 
 	public double getClimber() {

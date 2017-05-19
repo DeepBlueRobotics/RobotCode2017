@@ -32,6 +32,7 @@ public class OI {
 	public JoystickButton intakeGearButton;
 	public JoystickButton shootFromHopperButton;
 	public JoystickButton shootFromAirshipButton;
+	public JoystickButton backwardsClimbCauseSomeonePutItOnBackwards;
 
 	public OI() {
 		manipulator = new Joystick(2);
@@ -41,7 +42,7 @@ public class OI {
 //		feedInButton = new JoystickButton(manipulator, 6);
 //		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
 		winchButton = new JoystickButton(manipulator, 1);
-		winchButton.whileHeld(new Climb(Robot.climber));
+		winchButton.whileHeld(new Climb(Robot.climber, 1));
 		shootOutButton = new JoystickButton(manipulator, 6);
 		shootOutButton.whileHeld(new RunShooter(Robot.shooter, 0));
 		turnTurretButton = new JoystickButton(manipulator, 8);
@@ -60,8 +61,10 @@ public class OI {
 		toggleAndRunIntakeButton.whenPressed(new ToggleIntake(false, true, Robot.intake));
 		
 		deployGearButton = new JoystickButton(manipulator, 4);
-		deployGearButton.whileHeld(new DeployGear());
+		deployGearButton.whenPressed(new DeployGear());
 		
+		backwardsClimbCauseSomeonePutItOnBackwards = new JoystickButton(manipulator, 5);
+		backwardsClimbCauseSomeonePutItOnBackwards.whileHeld(new Climb(Robot.climber, -1));
 		//uncomment this line below when static gear intake put back on
 		//toggleFlipper = new JoystickButton(manipulator, 5);
 		//toggleFlipper.whenPressed(new ToggleIntakeRamp(false, false, Robot.intake));

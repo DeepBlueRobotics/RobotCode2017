@@ -44,7 +44,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	}
 
 	public void LEDOn() {
-		if (gearIntakeSwitch.get())
+		if (!haveGear())
 			flashLED.set(DoubleSolenoid.Value.kOff);
 		else
 			LEDOff();
@@ -87,7 +87,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * than allowed
 	 */
 	public boolean intakeCurrentOverflow() {
-		int channel = (int) (Robot.getPref("Intake PDP channel", 2));
+		int channel = (int) (Robot.getPref("Intake PDP channel", 1));
 		double current = pdp.getCurrent(channel);
 		if (current >= Robot.getPref("maxIntakeCurrent", 40))
 			return true;
@@ -256,6 +256,10 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * Displays data to SmartDashboard
 	 */
 	public void displayData() {
+		if(pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > Robot.getPref("gearInCurrent", 38)) {
+			SmartDashboard.putBoolean("iCanHazGear", true);
+		}
+
 		putString("Flap piston status", flipperFlapper.get().toString());
 		putNumber("Intake current draw", pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 2)));
 //		putNumber("Sending to intake", getIntake());
@@ -266,14 +270,16 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putNumber("Peg sensor reading", AI.getVoltage());
 		putBoolean("Peg sensor has triggered", AItriggered);
 		putNumber("Intake current draw", pdp.getCurrent(2));
-		if(pdp.getCurrent(2) > maxCurrent && gearStartupTimer.get() > 0.75) maxCurrent = pdp.getCurrent(2);
-		putNumber("Intake max current", maxCurrent);
+		if(pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > maxCurrent && gearStartupTimer.get() > 0.75) 
+			maxCurrent = pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1));
+		SmartDashboard.putNumber("Intake max current", maxCurrent);
 		putNumber("Gear timer", gearStartupTimer.get());
 		putNumber("Roller output", gearRoller.get());
 	}
 
 	@Override
 	public boolean haveGear() {
-		return (pdp.getCurrent(2) > 33.0) && gearStartupTimer.get() > 0.75;
+		return pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > Robot.getPref("gearInCurrent", 38) 
+				&& gearStartupTimer.get() > 0.75;
 	}
 }

@@ -12,7 +12,7 @@ public class ClimbTest {
 	public void test() {
 		ClimberInterface climber = mock(ClimberInterface.class);
 
-		Climb climbCommand = new Climb(climber);
+		Climb climbCommand = new Climb(climber, 1);
 
 		climbCommand.initialize();
 

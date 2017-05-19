@@ -57,8 +57,8 @@ public class AutoModeBoilerSide extends CommandGroup {
 //		addSequential(new ToggleIntake(true, true, Robot.intake));
 //		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
 //		addSequential(new ToggleIntake(true, false, Robot.intake));
-		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
-		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
+//		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
+//		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
 
 		// METHOD 1:
 		// Drives to airlift

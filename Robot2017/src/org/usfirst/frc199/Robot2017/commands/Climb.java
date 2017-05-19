@@ -1,6 +1,8 @@
 package org.usfirst.frc199.Robot2017.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.ClimberInterface;
 
@@ -8,15 +10,19 @@ public class Climb extends Command {
 
 	boolean isStopped = false;
 	ClimberInterface climber;
+	boolean backwards;
+	double speed;
 
-	public Climb(ClimberInterface climber) {
+	public Climb(ClimberInterface climber, double speed) {
 		this.climber = climber;
 		requires(Robot.climber);
+		this.speed = speed;
 	}
 
 	// Called just before this Command runs the first time
 	public void initialize() {
 		// climber.encoderReset();
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -41,9 +47,10 @@ public class Climb extends Command {
 		// }
 
 		if (!climber.checkMotorDraw()) {
-			climber.runClimber(Robot.getPref("defaultClimberSpeed", 1));
-		} else if (climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
-			climber.runClimber(climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
+			climber.runClimber(speed);
+//		} 
+//		else if (climber.getClimber() > Robot.getPref("climberSlowStep", 0.005)) {
+//			climber.runClimber(climber.getClimber() - Robot.getPref("climberSlowStep", 0.005));
 		} else {
 			climber.stopWinch();
 		}
