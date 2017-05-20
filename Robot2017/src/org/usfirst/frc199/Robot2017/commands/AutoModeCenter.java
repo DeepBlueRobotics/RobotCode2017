@@ -11,71 +11,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * out and drives away from the boiler, turns toward the center of the field and
  * drives forward
  * 
+ * FUNCTIONAL
  */
 public class AutoModeCenter extends CommandGroup {
 
-	/***
-	 * Commands for autonomous starting at center
-	 * 
-	 * @param alliance
-	 *            true for red, false for blue
+	/**
+	 * @param alliance - true for red, false for blue
 	 */
-	public AutoModeCenter(boolean alliance) {
-
-		double direction = 1;
-		if (alliance)
-			direction = -1;
-
-		final double DIVIDER_DEPTH = Robot.getPref("DividerDepth", 21.5);
-		// in. dividers protrude from the airship toward alliance wall (approx.)
-		final double AIRSHIP_DIAGONAL = Robot.getPref("AirshipDiagonal", 80.07);
-		// in. from corner to corner of airship; Drives to lift and aligns
-		
-		//IMPORTANT: this paragraph is the correct code to be uncommented when intake is put back on
-//		addSequential(new ToggleIntake(true, true, Robot.intake));
-//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
-//		addSequential(new ToggleIntake(true, true, Robot.intake));
-//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
-//		addSequential(new ToggleIntake(true, false, Robot.intake));
-//		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
-//		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
+	public AutoModeCenter(boolean alliance) {		
 
 		addSequential(new AutoDrive(78, 0, Robot.drivetrain));
-		
-//		final double LENGTH = Robot.getPref("Distance; center to wall", 110.5) - Robot.getPref("Robot length", 39);
-//		addSequential(new AutoDrive(LENGTH, 0, Robot.drivetrain));
-		
-		//new measurement below???
-//		addSequential(new AutoDrive(71.5, 0, Robot.drivetrain));
-//		addSequential(new AutoDrive(0,10,Robot.drivetrain));
-		
-//		addSequential(new AutoAlignGear(false));
-
-		/**
-		 * WE DO NOT NEED TO TRAVEL OUT TO CROSS THE BASELINE! FIX LATER
-		 * 
-		 * // Backs out of dividers, giving 6 inches of extra space for the
-		 * pivot addSequential(new AutoDrive(0 - (DIVIDER_DEPTH + 6), 0,
-		 * Robot.drivetrain));
-		 * 
-		 * // Turns away from boiler addSequential(new AutoDrive(0, (0 -
-		 * direction) * 90, Robot.drivetrain));
-		 * 
-		 * // METHOD 1: // Drives past airship addSequential(new
-		 * AutoDrive((AIRSHIP_DIAGONAL / 2) + 36, 0, Robot.drivetrain));
-		 * 
-		 * // Turns toward center of field
-		 * 
-		 * addSequential(new AutoDrive(0, direction * 90, Robot.drivetrain));
-		 * 
-		 * // Passes baseline addSequential(new AutoDrive(DIVIDER_DEPTH + 24, 0,
-		 * Robot.drivetrain));
-		 */
-
-		/*
-		 * //METHOD 2: addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2)
-		 * + 36, (AIRSHIP_DIAGONAL / 2) + 36, direction*90));
-		 */
 		
 		addSequential(new DeployGear());
 		addSequential(new DeployGearEnding());

@@ -6,7 +6,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * First version of a top-level command group for autonomously approaching any lift 
+ * and delivering a gear with vision. Vision implementation found in AutoDriveForGear()
+ * 
+ * NOT FUNCTIONAL
  */
 public class AutoAlignGear extends CommandGroup {
 
@@ -30,8 +33,6 @@ public class AutoAlignGear extends CommandGroup {
 		SmartDashboard.putBoolean("Vision/gearRunning", false);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
 	protected void interrupted() {
 		end();
 	}

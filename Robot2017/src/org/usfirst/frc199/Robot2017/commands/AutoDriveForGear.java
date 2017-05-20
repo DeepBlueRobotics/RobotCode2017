@@ -10,6 +10,8 @@ import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 /**
  * Drives the robot towards the gear in autonomous. While it is looking for gear, turns 
  * right and goes back until found.
+ * 
+ * NOT FUNCTIONAL
  */
 public class AutoDriveForGear extends Command {
 
@@ -30,7 +32,6 @@ public class AutoDriveForGear extends Command {
 		this.drivetrain = drivetrain;
 	}
 
-	// Called just before this Command runs the first time
 	public void initialize() {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
@@ -56,7 +57,6 @@ public class AutoDriveForGear extends Command {
 		angleDone = false;
 	}
 
-	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		
 		realign = angleDone && Robot.vision.alignedButHorizontallyOffset();
@@ -71,9 +71,13 @@ public class AutoDriveForGear extends Command {
 			} else {
 				resetTarget(Robot.vision.getDistanceToGear(), 0);
 				drivetrain.updateDistancePID();
-//				if (drivetrain.distanceReachedTarget()) SmartDashboard.putBoolean("Vision/OH-YEAH", false);
 			}
 		} 
+		
+		/**
+		 * Commented out section below attempted to implemented logic for monitoring 
+		 * different stages of realigning so the robot is perpendicular with the lift
+		 */
 		
 //		else if (realign){
 //			if(!turn1Done) {
@@ -118,13 +122,11 @@ public class AutoDriveForGear extends Command {
 	}
 		
 	
-	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
 		//don't need to check if angle reached target bc dist will only be reached once angle is
 		return commandCanBeDone && drivetrain.distanceReachedTarget();
 	}
 
-	// Called once after isFinished returns true
 	public void end() {
 		drivetrain.stopDrive();
 		tim.reset();
@@ -132,8 +134,6 @@ public class AutoDriveForGear extends Command {
 		SmartDashboard.putBoolean("Vision/gearRunning", false);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
 	protected void interrupted() {
 		end();
 	}

@@ -7,33 +7,17 @@ import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * Second version of a top-level command group for autonomously approaching any lift 
+ * and delivering a gear with vision. Most important chunk can be found in 
+ * SetWaypointAndHeadingToAlignWithPeg(). 
+ * 
+ * NOT FUNCTIONAL
  */
 public class AutoDeliverGear extends CommandGroup {
 
     public AutoDeliverGear(DrivetrainInterface drivetrain, IntakeInterface intake) {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
     	
     	WaypointAndHeading w = new WaypointAndHeading();
-    	
-//    	addSequential(new ToggleIntake(true, false, intake));
-//
-//    	addSequential(new ToggleIntake(true, true, Robot.intake));
     	
     	//finds waypoint
     	addSequential(new SetWaypointAndHeadingToAlignWithPeg(w));
@@ -47,6 +31,11 @@ public class AutoDeliverGear extends CommandGroup {
     	//turns to heading
     	addSequential(new TurnToHeading(w,drivetrain));
     	
+    	/**
+    	 * The three lines commented out below are theoretically not necessary 
+    	 * if it is assumed the lift is being approached having started out relatively perpendicular to it. 
+    	 */
+    	
     	//finds peg
 //    	addSequential(new SetWaypointToPeg(w));
     	
@@ -56,9 +45,6 @@ public class AutoDeliverGear extends CommandGroup {
     	//drives to the peg
 //    	addSequential(new DriveToWaypoint(w,drivetrain));
     	addSequential(new AutoDrive(Robot.getPref("StandoffDistance", 44), 0, Robot.drivetrain));
-    	
-    	//waits for gear to be removed
-    	addSequential(new AutoWaitForGearRemoval(intake));
     	
     	//TODO: add functionality for shooting
     }

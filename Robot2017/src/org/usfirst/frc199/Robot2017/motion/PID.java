@@ -76,18 +76,6 @@ public class PID implements DashboardInterface {
 	 * @param newValue - new input value in real units
 	 */
 	public void update(double newValue) {
-//		if (name.toLowerCase().contains("velocity")) {
-//			if (Math.abs(target) <= Robot.getPref("Velocity PID deadband", .03)) {
-//				kI = 0;
-//			} else {
-//				kI = 1 / (Math.abs(target));
-//			}
-//
-//			putNumber("kI", kI);
-//		} else {
-//			// this happens if is a distance or angle PID
-//			kI = getNumber("kI", 0);
-//		}
 		kI = getNumber("kI", 0);
 		kP = getNumber("kP", 0);
 		kD = getNumber("kD", 0);
@@ -101,15 +89,12 @@ public class PID implements DashboardInterface {
 			totalError += error * interval;
 			rate = (error - lastError) / interval;
 			double addToOutput = kI * totalError + kD * rate;
-			//&& SmartDashboard.getBoolean("Vision/OH-YEAH", false)
 			if(name.toLowerCase().contains("velocity") ){
 
 				output += interval * addToOutput;
 				double limit = Robot.getPref("Velocity Limit", 1);
 				if(output > limit) output = limit;
 				else if(output < -limit) output = -limit;
-//			}else if(name.toLowerCase().contains("velocity")){
-//				output += interval * addToOutput;
 			}
 			else output += addToOutput;
 		} else {
