@@ -17,10 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Climber extends Subsystem implements ClimberInterface {
 
 	private final SpeedController winchMotor = RobotMap.climberWinchMotor;
-	// private final AnalogInput plateLimit = RobotMap.climberPlateIRSensor;
-	// private final Encoder winchEncoder = RobotMap.winchEncoder;
 	private final PowerDistributionPanel pdp = RobotMap.pdp;
-	public boolean AIEnabled = false;
 
 	public Climber() {
 		super();
@@ -31,44 +28,24 @@ public class Climber extends Subsystem implements ClimberInterface {
 
 	}
 
-	// /**
-	// *
-	// * @return - returns the value of AIEnabled
-	// */
-	// public boolean getAIEnabled() {
-	// return AIEnabled;
-	// }
-	// /**
-	// * this method sets the value of AIEnabled
-	// */
-	// public void setAIEnabled(boolean value) {
-	// AIEnabled = value;
-	// }
 	/**
-	 * This method uses the winch to let the robot climb
-	 * 
-	 * @param speed - the speed that you want the winch to run on -1 -> 1
+	 * Uses the winch to let the robot climb.
+	 * @param the speed that you want the winch to run on between -1 and 1
 	 */
 	public void runClimber(double speed) {
 		winchMotor.set(speed);
 	}
 
+	/**
+	 * @return the speed of the climber motor between -1 and 1
+	 */
 	public double getClimber() {
 		return winchMotor.get();
 	}
 
-	// /**
-	// * This method returns whether the plate is sensing being touched
-	// *
-	// * @return
-	// */
-	// public boolean returnPlate() {
-	// if (plateLimit.getVoltage() < 0.102 && AIEnabled) {
-	// return true;
-	// }
-	// return false;
-	// }
-
+	/**
+	 * @return if the climber motor current is above the max current
+	 */
 	public boolean checkMotorDraw() {
 		int channel = (int) (Robot.getPref("climber channel", 1));
 		double current = pdp.getCurrent(channel);
@@ -79,27 +56,17 @@ public class Climber extends Subsystem implements ClimberInterface {
 	}
 
 	/**
-	 * This method stops the winch
+	 * Stops the winch
 	 */
 	public void stopWinch() {
 		winchMotor.set(0);
 	}
-	// public void encoderReset() {
-	// winchEncoder.reset();
-	// }
-	// public double getEncoder() {
-	// //TODO: anyone, set distance per pulse to inches per pulse
-	// return winchEncoder.getDistance();
-	// }
 
 	@Override
 	/**
-	 * This method displays data to SmartDashboard
+	 * Displays climber motor data to SmartDashboard
 	 */
 	public void displayData() {
-		// SmartDashboard.putBoolean("plateLimit", plateLimit.get());
-		// putNumber("Encoder", getEncoder());
-		// putBoolean("TouchingPlate", returnPlate());
 		putNumber("Winch set speed", getClimber());
 		putNumber("Winch current draw", pdp.getCurrent((int) Robot.getPref("climber channel", 1)));
 	}
