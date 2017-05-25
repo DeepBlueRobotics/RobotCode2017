@@ -41,12 +41,12 @@ public class OI {
 //		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1), Robot.shooter));
 //		feedInButton = new JoystickButton(manipulator, 6);
 //		feedInButton.whileHeld(new RunFeeder(-Robot.getPref("feederDirection", 1), Robot.shooter));
-		winchButton = new JoystickButton(manipulator, 1);
-		winchButton.whileHeld(new Climb(Robot.climber, 1));
-		shootOutButton = new JoystickButton(manipulator, 6);
-		shootOutButton.whileHeld(new RunShooter(Robot.shooter, 0));
-		turnTurretButton = new JoystickButton(manipulator, 8);
-		turnTurretButton.whileHeld(new TurnTurret(manipulator.getX(), Robot.shooter));
+//		winchButton = new JoystickButton(manipulator, 1); /**blue button*/
+//		winchButton.whileHeld(new Climb(Robot.climber, 1));
+//		shootOutButton = new JoystickButton(manipulator, 6); /**top button (idk left or right)*/
+//		shootOutButton.whileHeld(new RunShooter(Robot.shooter, 0));
+//		turnTurretButton = new JoystickButton(manipulator, 8); /**bottom button (idk left or right)*/
+//		turnTurretButton.whileHeld(new TurnTurret(manipulator.getX(), Robot.shooter));
 //		outputButton = new JoystickButton(manipulator, 7);
 //		outputButton.whileHeld(new RunIntake(Robot.getPref("intakeDirection", 1), true, Robot.intake));
 //		intakeButton = new JoystickButton(manipulator, 6);
@@ -54,14 +54,14 @@ public class OI {
 		//uncomment this line below when intake put back on
 //		intakeButton.whileHeld(new RunIntake(-Robot.getPref("intakeDirection", 1), false, Robot.intake));
 
-		intakeGearButton = new JoystickButton(manipulator, 2);
-		intakeGearButton.whenPressed(new PickupGear());
+//		intakeGearButton = new JoystickButton(manipulator, 2); /**green button*/
+//		intakeGearButton.whenPressed(new PickupGear());
 		
-		toggleAndRunIntakeButton = new JoystickButton(manipulator, 3);
-		toggleAndRunIntakeButton.whenPressed(new ToggleIntake(false, true, Robot.intake));
+//		toggleAndRunIntakeButton = new JoystickButton(manipulator, 3); /**red button*/
+//		toggleAndRunIntakeButton.whenPressed(new ToggleIntake(false, true, Robot.intake));
 		
-		deployGearButton = new JoystickButton(manipulator, 4);
-		deployGearButton.whenPressed(new DeployGear());
+//		deployGearButton = new JoystickButton(manipulator, 4); /**orange/yellow button*/
+//		deployGearButton.whenPressed(new DeployGear());
 		
 		backwardsClimbCauseSomeonePutItOnBackwards = new JoystickButton(manipulator, 5);
 		backwardsClimbCauseSomeonePutItOnBackwards.whileHeld(new Climb(Robot.climber, -1));
@@ -77,7 +77,7 @@ public class OI {
 
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
 		autoShootRoutineButton.whileHeld(new AutoShootRoutine());
-		gradualDriveButton = new JoystickButton(rightJoy, 1);
+		gradualDriveButton = new JoystickButton(rightJoy, 6);
 		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
 		shiftGearsButton = new JoystickButton(rightJoy, 2);
 		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
@@ -85,19 +85,38 @@ public class OI {
 		takePicButton.whileHeld(new WriteToNT("SmartDashboard/Vision/takePicture", true));
 		takePicButton.whenReleased(new WriteToNT("SmartDashboard/Vision/takePicture", false));
 		intakeUpButton = new JoystickButton(rightJoy, 1);
+		intakeUpButton.whenPressed(new ToggleIntake(false, true, Robot.intake));
+		
+		deployGearButton = new JoystickButton(rightJoy, 5); /**orange/yellow button*/
+		deployGearButton.whenPressed(new DeployGear());
+		
 		//toggleAndRunIntakeButton.whenPressed(new ToggleIntake(true, true, Robot.intake));
 
 		leftJoy = new Joystick(0);
 
-		shootFromHopperButton = new JoystickButton(leftJoy, 3);
-		shootFromHopperButton.whenPressed(new SetTurretToShootingFromHopper(Robot.shooter));
-		//shootFromAirshipButton = new JoystickButton(leftJoy, 5);
-		//shootFromAirshipButton.whenPressed(new SetTurretToShootingFromLift(Robot.shooter));
-		switchDriveButton = new JoystickButton(leftJoy, 4);
-		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
+		winchButton = new JoystickButton(leftJoy, 3); /**blue button*/
+		winchButton.whileHeld(new Climb(Robot.climber, 1));
+
+		intakeGearButton = new JoystickButton(leftJoy, 6); /**green button*/
+		intakeGearButton.whenPressed(new PickupGear());
+//		shootFromHopperButton = new JoystickButton(leftJoy, 3);
+//		shootFromHopperButton.whenPressed(new SetTurretToShootingFromHopper(Robot.shooter));
+//		shootFromAirshipButton = new JoystickButton(leftJoy, 6);
+//		shootFromAirshipButton.whenPressed(new SetTurretToShootingFromLift(Robot.shooter));
+		shootOutButton = new JoystickButton(leftJoy, 1); /**top button (idk left or right)*/
+		shootOutButton.whileHeld(new RunShooter(Robot.shooter, 0));
+		turnTurretButton = new JoystickButton(leftJoy, 4); /**bottom button (idk left or right)*/
+		turnTurretButton.whileHeld(new TurnTurret(Robot.shooter));
+//		switchDriveButton = new JoystickButton(leftJoy, 4);
+//		switchDriveButton.whenPressed(new ToggleDriveType(Robot.drivetrain));
 		autoAlignGearRoutineButton = new JoystickButton(leftJoy, 2);
 //		autoAlignGearRoutineButton.whileHeld(new AutoAlignGear(false));
 		
+		feedOutButton = new JoystickButton(leftJoy, 9);
+		feedOutButton.whileHeld(new RunFeeder(Robot.getPref("feederDirection", 1), Robot.shooter));
+		
+		toggleAndRunIntakeButton = new JoystickButton(leftJoy, 5); /**red button*/
+		toggleAndRunIntakeButton.whenPressed(new ToggleIntake(false, true, Robot.intake));
 		//uncomment this line below when intake put back on
 		autoAlignGearRoutineButton.whileHeld(new AutoDeliverGear(Robot.drivetrain, Robot.intake));
 

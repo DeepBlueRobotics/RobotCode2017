@@ -117,7 +117,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void drive() {
 		currentSpeed = Robot.oi.rightJoy.getY();
-		currentTurn = Robot.oi.leftJoy.getX();
+		currentTurn = Robot.oi.rightJoy.getX();
 		if (currentDrive == DriveTypes.ARCADE) {
 			if(SmartDashboard.getBoolean("runningGearRoller", false)
 					&& Math.abs(currentSpeed) > Robot.getPref("gearLimitSpeed", .23)) {

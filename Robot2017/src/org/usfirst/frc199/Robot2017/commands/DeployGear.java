@@ -28,7 +28,7 @@ public class DeployGear extends CommandGroup {
     	addSequential(new AutoDelay(.2, Robot.intake, Robot.drivetrain));
     	addParallel(new ToggleIntake(true,true, Robot.intake));
 //    	addParallel(new DriveBackwardsGearDelivery(0.6, Robot.getPref("backOutSpeed", 1), Robot.drivetrain));
-    	addParallel(new AutoDrive(-12, 0, Robot.drivetrain));
+    //	addParallel(new AutoDrive(-12, 0, Robot.drivetrain));
   //  	addParallel(new ToggleIntake(true, true, Robot.intake));
 //    	addSequential(new ToggleIntake(true, true, Robot.intake));
 //    	addSequential(new AutoDelay(.5, Robot.intake, Robot.drivetrain));

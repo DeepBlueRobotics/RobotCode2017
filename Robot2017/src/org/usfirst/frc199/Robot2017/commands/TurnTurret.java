@@ -12,9 +12,10 @@ public class TurnTurret extends Command {
 	private double speed;
 	private ShooterInterface shooter;
 
-	public TurnTurret(double speed, ShooterInterface shooter) {
-		this.speed = speed;
+	public TurnTurret(ShooterInterface shooter) {
+		//this.speed = speed;
 		this.shooter = shooter;
+		requires(Robot.drivetrain);
 		requires(Robot.shooter);
 	}
 
@@ -24,7 +25,8 @@ public class TurnTurret extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		shooter.runTurretMotor(Robot.oi.manipulator.getX());
+//		shooter.runTurretMotor(Robot.getPref("TurretSpeed", 0));
+		shooter.runTurretMotor(Robot.getPref("TurretSpeed", 0) * Robot.oi.leftJoy.getY());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

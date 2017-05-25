@@ -80,9 +80,9 @@ public class RobotMap {
 //			intakeIntakeMotor.setInverted(true);
 			gearRoller = new VictorSP(2);
 			gearRoller.setInverted(true);
-			
+			//shooter in 2    feeder in  4
 			shooterFeedMotor = new VictorSP(4);
-			shooterFloorBeltMotor = new VictorSP(5);
+			shooterFloorBeltMotor = new VictorSP(7);
 			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			// multiplies value 0 to 1 by 360 to get degrees
@@ -112,6 +112,8 @@ public class RobotMap {
 			gearRoller = new VictorSP(2);
 			gearRoller.setInverted(true);
 			shooterFeedMotor = new VictorSP(4);
+
+			shooterFloorBeltMotor = new VictorSP(7);
 			hoodServo = new Servo(9);
 			turretTurnMotor = new VictorSP(6);
 			// multiplies value 0 to 1 by 360 to get degrees

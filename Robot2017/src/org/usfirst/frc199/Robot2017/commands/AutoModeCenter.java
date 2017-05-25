@@ -21,7 +21,7 @@ public class AutoModeCenter extends CommandGroup {
 	 *            true for red, false for blue
 	 */
 	public AutoModeCenter(boolean alliance) {
-
+/*
 		double direction = 1;
 		if (alliance)
 			direction = -1;
@@ -75,8 +75,11 @@ public class AutoModeCenter extends CommandGroup {
 		/*
 		 * //METHOD 2: addSequential(new FollowTrajectory((AIRSHIP_DIAGONAL / 2)
 		 * + 36, (AIRSHIP_DIAGONAL / 2) + 36, direction*90));
-		 */
+		 
 		
+		*/
+		
+		//Big boink theory
 		addSequential(new DeployGear());
 		addSequential(new DeployGearEnding());
 
