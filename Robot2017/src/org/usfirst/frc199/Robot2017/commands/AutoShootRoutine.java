@@ -6,7 +6,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Theoretically uses vision to autonomously aim towards the boiler and shoot. 
+ * 
+ * NOT TESTED, AND DEFINITELY NOT YET FUNCTIONAL
  */
 public class AutoShootRoutine extends CommandGroup {
 

@@ -35,7 +35,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private final Encoder leftEncoder = RobotMap.drivetrainLeftEncoder;
 	private final Encoder rightEncoder = RobotMap.drivetrainRightEncoder;
 
-	private final Compressor compressor = RobotMap.drivetrainCompressor;
 	private final DoubleSolenoid shiftPiston = RobotMap.drivetrainShiftPiston;
 
 	private final AHRS gyro = RobotMap.ahrs;
@@ -49,8 +48,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	private PID angularVelocityPID = new PID("DriveAngularVelocity");
 
 	// Variables for motion profiling and acceleration control
-	private double prevEncoderRate = 0, prevGyroRate = 0, prevTime = 0, driveLimit = 0, turnLimit = 0, prevLeftEnc = 0,
-			prevRightEnc = 0;
+	private double prevEncoderRate = 0, prevGyroRate = 0, prevTime = 0, driveLimit = 0, turnLimit = 0, 
+		prevLeftEnc = 0, prevRightEnc = 0;
 	private double gyroCalibrationInitalValue = 0, gyroDriftRate = 0;
 	private Timer gyroDriftTimer = new Timer();
 
@@ -76,44 +75,48 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * This method initializes the command used in teleop
+	 * Initializes the teleop command
 	 */
 	public void initDefaultCommand() {
 		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
 
 	/**
-	 * Changes the drive type
+	 * Rotate the drive type between Arcade, Tank, Drift Tank, and Drift Arcade in that order
 	 */
 	public void toggleDriveType() {
-		if (currentDrive == DriveTypes.ARCADE) {
-			currentDrive = DriveTypes.TANK;
-		} else if (currentDrive == DriveTypes.TANK) {
-			currentDrive = DriveTypes.DRIFT_TANK;
-			rightDriveVelocityPID.setTarget(0, true);
-			leftDriveVelocityPID.setTarget(0, true);
-		} else if (currentDrive == DriveTypes.DRIFT_TANK) {
-			currentDrive = DriveTypes.DRIFT_ARCADE;
-			rightDriveVelocityPID.setTarget(0, true);
-			leftDriveVelocityPID.setTarget(0, true);
-		} else if (currentDrive == DriveTypes.DRIFT_ARCADE) {
-			currentDrive = DriveTypes.ARCADE;
-			rightDriveVelocityPID.setTarget(0, true);
-			leftDriveVelocityPID.setTarget(0, true);
+		switch (currentDrive) {
+			case ARCADE: 
+				currentDrive = DriveTypes.TANK;
+				break;
+			case TANK:
+				currentDrive = DriveTypes.DRIFT_TANK;
+				rightDriveVelocityPID.setTarget(0, true);
+				leftDriveVelocityPID.setTarget(0, true);
+				break;
+			case DRIFT_TANK:
+				currentDrive = DriveTypes.DRIFT_ARCADE;
+				rightDriveVelocityPID.setTarget(0, true);
+				leftDriveVelocityPID.setTarget(0, true);
+				break;
+			case DRIFT_ARCADE:
+			default:
+				currentDrive = DriveTypes.ARCADE;
+				rightDriveVelocityPID.setTarget(0, true);
+				leftDriveVelocityPID.setTarget(0, true);
+				break;
 		}
 	}
 
 	/**
-	 * 
-	 * @return either DriveTypes.ARCADE, DriveTypes.TANK or
-	 *         DriveTypes.DRIFT_TANK
+	 * @return the drivetype, which is either DriveTypes.ARCADE, DriveTypes.TANK or DriveTypes.DRIFT_TANK
 	 */
 	public DriveTypes getDriveType() {
 		return currentDrive;
 	}
 
 	/**
-	 * Allows toggling between arcade and tank teleop driving
+	 * Drives the robot from joystick input based on the drivetype that's currently set
 	 */
 	public void drive() {
 		currentSpeed = Robot.oi.rightJoy.getY();
@@ -126,8 +129,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 			SmartDashboard.putNumber("currentSpeed", currentSpeed);
 			arcadeDrive(currentTurn, currentSpeed);
+
 		} else if (currentDrive == DriveTypes.TANK) {
 			robotDrive.tankDrive(-Robot.oi.leftJoy.getY(), Robot.oi.rightJoy.getY());
+
 		} else if (currentDrive == DriveTypes.DRIFT_TANK) {
 			double leftValue = -Robot.oi.leftJoy.getY();
 			if (Math.abs(leftValue) < Robot.getPref("Tank deadband", .1)) {
@@ -140,6 +145,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 				rightDriveVelocityPID.setTarget(0, true);
 			}
 			unevenTankDrive(leftValue, rightValue);
+
 		} else if (currentDrive == DriveTypes.DRIFT_ARCADE) {
 			double turnValue = Robot.oi.leftJoy.getX();
 			double speedValue = -Robot.oi.rightJoy.getY();
@@ -161,16 +167,20 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		}
 	}
 
+	/**
+	 * Drives the robot in arcade drive
+	 * @param speed speed to drive at
+	 * @param turn  speed to turn at
+	 */
 	public void arcadeDrive(double speed, double turn) {
 		robotDrive.arcadeDrive(speed, turn);
 	}
 
 	/**
-	 * Accounts for drift when in arcade drive. Sets each motor's respective
-	 * target speed based on speed to joystick ratios
+	 * Accounts for drift when in arcade drive. Drives based on joystick ratios
 	 */
 	public void unevenArcadeDrive(double speedJoy, double turnJoy) {
-		//ratios convert joystick values (1 to -1) to in/s
+		//ratios convert joystick values (1 to -1) to inches per second
 		double ratio = Robot.getPref("lowGearSpeedRatio", 68);
 		if(shiftedHigh) ratio = Robot.getPref("highGearSpeedRatio", 175);
 		setRightSpeedTarget(ratio*(speedJoy - turnJoy));
@@ -179,7 +189,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 	
 	/**
-	 * Accounts for drift when in arcade drive. Sets each motor's respective target speed
+	 * Accounts for drift when in arcade drive. Drives based on target speed in inches per second
 	 * @param speedInchesPerSec speed in inches per second
 	 */
 	public void specialUnevenArcadeDrive(double speedInchesPerSec){

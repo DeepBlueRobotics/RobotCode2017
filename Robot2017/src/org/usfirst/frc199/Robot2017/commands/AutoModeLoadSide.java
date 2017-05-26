@@ -15,20 +15,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * 
  * Next, it reverses the path it took to the boiler, turns away from the boiler
  * and backs up towards it, then shoots
+ * 
+ * FUNCTIONAL
  **/
 public class AutoModeLoadSide extends CommandGroup {
 
 	/***
-/	 * 
 	 * @param alliance true for blue, false for red
 	 */
 	public AutoModeLoadSide(boolean alliance) {
-
-//		final double LENGTH_1 = Robot.getPref("Forward Travel LoadSide", 98.55);
-		//in from front end of robot to point on field
-
-//		final double LENGTH_2 = Robot.getPref("Diagonal Travel LoadSide", 11);
-		//in from front end of robot to lift (after pivot)
 		
 		double forward;
 		if (alliance) forward = Robot.getPref("Auto Blue Load Forward", 110);
@@ -43,33 +38,12 @@ public class AutoModeLoadSide extends CommandGroup {
 
 		final double LENGTH_2 = diagonal - (Robot.getPref("Robot length", 39) -
 				Robot.getPref("Distance from pivot point to front of robot", 19.5));
-
-		/*
-		 * METHOD 2 INSTANCE VARIABLES: final double DIST_TO_LIFT =
-		 * Robot.getPref("Wall To Lift", 114.3); //in. from alliance wall to
-		 * lift (approx.) final double ROBOT_CENTER_TO_PEG =
-		 * Robot.getPref("Robot center to peg (Horizontal)", 30.739); //in
-		 * horizontally from front of lift to the peg final double LIFT_TO_PEG =
-		 * Robot.getPref("Lift Corner to Peg (Vertical) LoadSide", 17.647); //in
-		 * vertically from front of lift to the peg final double ROBOT_LENGTH =
-		 * Robot.getPref("Robot Length", 0);
-		 */
-		
-		//uncomment this paragraph below when intake put back on
-//		addSequential(new ToggleIntake(true, true, Robot.intake));
-//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
-//		addSequential(new ToggleIntake(true, true, Robot.intake));
-//		addSequential(new AutoDelay(0.25, Robot.intake, Robot.drivetrain));
-//		addSequential(new ToggleIntake(true, false, Robot.intake));
-//		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
-//		addSequential(new ToggleIntakeRamp(true, true, Robot.intake));
 		
 		// METHOD 1
 		// Drives to hexagon
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
 
 		// Turns toward lift
-//		addSequential(new AutoDrive(0, direction * 60, Robot.drivetrain));
 		if(alliance)
 			addSequential(new AutoDrive(0, -60, Robot.drivetrain));
 		else
@@ -79,39 +53,6 @@ public class AutoModeLoadSide extends CommandGroup {
 		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
 		
 		// drives up to lift and aligns
-		//addSequential(new AutoAlignGear(false));
-
-		// METHOD 2:
-		/*
-		 * addSequential(new FollowTrajectory(direction*ROBOT_CENTER_TO_PEG,
-		 * DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG, RIGHT*60));
-		 * addSequential(new AutoAlignGear(false));
-		 */
-
-		// METHOD 1:
-		// backs up
-//		addSequential(new AutoDrive(0 - LENGTH_2, 0, Robot.drivetrain));
-//
-//		// Turns away from lift
-//		addSequential(new AutoDrive(0, (0 - direction) * 60, Robot.drivetrain));
-//
-//		// backs up
-//		addSequential(new AutoDrive(6 - LENGTH_1, 0, Robot.drivetrain));
-//
-//		/*
-//		 * // Method 2 addSequential(new
-//		 * FollowTrajectory((0-direction)*ROBOT_CENTER_TO_PEG, LEFT *
-//		 * (DIST_TO_LIFT - ROBOT_LENGTH + LIFT_TO_PEG - 12), LEFT* 60));
-//		 */
-//
-//		// turns away from boiler, aligns and drives backward towards it
-//		addSequential(new AutoDrive(0, (0 - direction) * 90, Robot.drivetrain));
-//
-//		addSequential(new AutoDrive(0, Robot.vision.getAngleToBoiler(), Robot.drivetrain));
-//		addSequential(new AutoDrive(36 - Robot.vision.getDistanceToBoiler(), 0, Robot.drivetrain));
-
-		// Aims and shoots
-//		addSequential(new AutoShoot(Robot.vision.getDistanceToBoiler(), 10, Robot.shooter));
 		
 		addSequential(new DeployGear());
 		addSequential(new DeployGearEnding());

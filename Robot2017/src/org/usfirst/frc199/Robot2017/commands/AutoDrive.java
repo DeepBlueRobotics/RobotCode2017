@@ -5,7 +5,12 @@ import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
 /**
- *
+ * Autonomously drives the robot forward or backward for a set distance, 
+ * or turns it to a certain target angle, implementing PID control loops. 
+ * Can turn and then drive, or only turn and only drive depending on which
+ * argument is zero.
+ * 
+ * FUNCTIONAL
  */
 public class AutoDrive extends Command {
 
@@ -13,6 +18,12 @@ public class AutoDrive extends Command {
 	DrivetrainInterface drivetrain;
 	boolean angle, angleDone;
 
+	/**
+	 * 
+	 * @param targetDist - the target distance to be traveled, negative if backwards
+	 * @param targetAngle - the target angle to be turned, negative if to the left
+	 * @param drivetrain - specific instantiation of the drivetrain to be used
+	 */
 	public AutoDrive(double targetDist, double targetAngle, DrivetrainInterface drivetrain) {
 		requires(Robot.drivetrain);
 		this.targetDist = targetDist;
@@ -24,17 +35,14 @@ public class AutoDrive extends Command {
 		angleDone = false;
 	}
 
-	// Called just before this Command runs the first time
 	public void initialize() {
 		drivetrain.resetEncoder();
 		drivetrain.resetGyro();
 		drivetrain.setDistanceTarget(targetDist);
 		drivetrain.setAngleTarget(targetAngle);
-//		drivetrain.shiftLow();
 
 	}
 
-	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		if(angle && !angleDone) {
 			angleDone = drivetrain.angleReachedTarget();
@@ -48,7 +56,6 @@ public class AutoDrive extends Command {
 		}
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
 	public boolean isFinished() {
 		if(angle)
 			return drivetrain.angleReachedTarget();
@@ -56,14 +63,11 @@ public class AutoDrive extends Command {
 
 	}
 
-	// Called once after isFinished returns true
 	public void end() {
 		drivetrain.stopDrive();
 		drivetrain.setShifterNeutral();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
 	protected void interrupted() {
 		end();
 	}
