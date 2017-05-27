@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="MotionProfiling2017/src"/>
+	<classpathentry kind="src" path="Robot2017/src"/>
+	<classpathentry kind="src" path="ShooterOffset/src"/>
+	<classpathentry kind="src" path="Widgets2017/src"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/cscore.jar"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/CTRLib.jar"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/junit.jar"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/mockito-all-1.10.19.jar"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/navx_frc.jar"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/NetworkTables.jar"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/opencv.jar"/>
+	<classpathentry kind="lib" path="Robot2017/build/jars/WPILib.jar"/>
+	<classpathentry kind="lib" path="Robot2017/dist/FRCUserProgram.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/CTRLib.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/camviewer_compat.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/cscore-sources.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/cscore.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/mockito-all-1.10.19.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/navx_frc.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/NetworkTables-sources.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/NetworkTables.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/opencv-sources.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/opencv.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/SmartDashboard.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/WPILib-sources.jar"/>
+	<classpathentry kind="lib" path="Robot2017/libs/jars/WPILib.jar"/>
+	<classpathentry kind="lib" path="Widgets2017/jars/SmartDashboard.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
