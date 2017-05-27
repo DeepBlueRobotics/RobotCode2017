@@ -81,6 +81,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
 	}
 
+ //  _____  _____  _______      ________  _____ 
+ // |  __ \|  __ \|_   _\ \    / /  ____|/ ____|
+ // | |  | | |__) | | |  \ \  / /| |__  | (___  
+ // | |  | |  _  /  | |   \ \/ / |  __|  \___ \ 
+ // | |__| | | \ \ _| |_   \  /  | |____ ____) |
+ // |_____/|_|  \_\_____|   \/   |______|_____/                                            
+
 	/**
 	 * Rotate the drive type between Arcade, Tank, Drift Tank, and Drift Arcade in that order
 	 */
@@ -120,7 +127,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 */
 	public void drive() {
 		currentSpeed = Robot.oi.rightJoy.getY();
-		currentTurn = Robot.oi.rightJoy.getX();
+		currentTurn = Robot.oi.leftJoy.getX();
+
 		if (currentDrive == DriveTypes.ARCADE) {
 			if(SmartDashboard.getBoolean("runningGearRoller", false)
 					&& Math.abs(currentSpeed) > Robot.getPref("gearLimitSpeed", .23)) {
@@ -169,8 +177,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	/**
 	 * Drives the robot in arcade drive
-	 * @param speed speed to drive at
-	 * @param turn  speed to turn at
+	 * @param speed - speed to drive at
+	 * @param turn  - speed to turn at
 	 */
 	public void arcadeDrive(double speed, double turn) {
 		robotDrive.arcadeDrive(speed, turn);
@@ -190,11 +198,11 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	
 	/**
 	 * Accounts for drift when in arcade drive. Drives based on target speed in inches per second
-	 * @param speedInchesPerSec speed in inches per second
+	 * @param speed - the speed in inches per second
 	 */
-	public void specialUnevenArcadeDrive(double speedInchesPerSec){
-		setRightSpeedTarget(speedInchesPerSec);
-		setLeftSpeedTarget(speedInchesPerSec);
+	public void specialUnevenArcadeDrive(double speed){
+		setRightSpeedTarget(speed);
+		setLeftSpeedTarget(speed);
 		updateBothSpeedPID();
 	}
 
@@ -210,13 +218,15 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		updateBothSpeedPID();
 	}
 
+	/**
+	 * @return whether the robot is in high gear or not
+	 */
 	public boolean inHighGear() {
 		return shiftPiston.get().toString().equals("kReverse");
 	}
 
 	/**
-	 * Forces the robot's turn and move speed to change at a max of 5% each
-	 * iteration
+	 * Forces the robot's turn and move speed to change at a max of 5% each iteration
 	 */
 	public void gradualDrive() {
 		if (currentDrive == DriveTypes.ARCADE) {
@@ -224,80 +234,44 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			currentTurn += Math.signum(Robot.oi.leftJoy.getX() - currentTurn) * 0.05;
 			robotDrive.arcadeDrive(currentTurn, currentSpeed);
 		} else {
-			robotDrive.tankDrive(leftMotor.get() + Math.signum(Robot.oi.leftJoy.getY() - leftMotor.get()) * 0.05,
-					rightMotor.get() + Math.signum(Robot.oi.rightJoy.getY() - rightMotor.get()) * 0.05);
+			double leftChange = Math.signum(Robot.oi.leftJoy.getY() - leftMotor.get()) * 0.05;
+			double rightChange = Math.signum(Robot.oi.rightJoy.getY() - rightMotor.get()) * 0.05;
+			robotDrive.tankDrive(leftMotor.get() + leftChange, rightMotor.get() + rightChange);
 		}
 	}
 
 	/**
-	 * For autonomous period, drives to angle given and then to distance given.
+	 * For autonomous period, drives to angle given and then to the distance given.
 	 */
 	public void autoDrive() {
-		 if (!angleReachedTarget()) {
-			 updateAnglePID();
-		 } else {
+		 if (angleReachedTarget()) {
 			 updateDistancePID();
+		 } else {
+			 updateAnglePID();
 		 }
 	}
 
 	/**
-	 * Just stops the robot, setting its motors to zero. Usually called after a
-	 * command finishes.
+	 * Stops the robot, setting its motors to zero. Usually called after a command finishes.
 	 */
 	public void stopDrive() {
 		unevenArcadeDrive(0, 0);
 		arcadeDrive(0, 0);
 	}
 
+ //  _____ _____  _____ _______       _   _  _____ ______                       _   _  _____ _      ______ 
+ // |  __ \_   _|/ ____|__   __|/\   | \ | |/ ____|  ____|    ___         /\   | \ | |/ ____| |    |  ____|
+ // | |  | || | | (___    | |  /  \  |  \| | |    | |__      ( _ )       /  \  |  \| | |  __| |    | |__   
+ // | |  | || |  \___ \   | | / /\ \ | . ` | |    |  __|     / _ \/\    / /\ \ | . ` | | |_ | |    |  __|  
+ // | |__| || |_ ____) |  | |/ ____ \| |\  | |____| |____   | (_>  <   / ____ \| |\  | |__| | |____| |____ 
+ // |_____/_____|_____/   |_/_/    \_\_| \_|\_____|______|   \___/\/  /_/    \_\_| \_|\_____|______|______|
+
 	/**
-	 * @return the distance that the robot moved relative to the encoders' last
-	 *         reset
+	 * @return the average of the left and right distances in inches that the robot moved relative to the encoders' 
+	 * 		last reset
 	 */
 	public double getDistance() {
 		return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
-	}
-
-	/**
-	 * Gets the distancePID Only used in tests
-	 * 
-	 * @return the distancePID
-	 */
-	public PID getDistancePID() {
-		return distancePID;
-	}
-
-	/**
-	 * Sets the distance for PID target
-	 * precondition: MUST reset encoders AND gyro
-	 * 
-	 * @param targetDistance - the target distance being set to PID
-	 */
-	public void setDistanceTarget(double targetDistance) {
-		distancePID.setRelativeLocation(0);
-		distancePID.setTarget(targetDistance);
-		distancePID.update(getDistance());
-		anglePID.setRelativeLocation(0);
-		anglePID.setTarget(0);
-		anglePID.update(getAngle());
-	}
-
-	/**
-	 * Updates and tests/runs distancePID
-	 * Incorporates anglePID to account for not driving straight
-	 */
-	public void updateDistancePID() {
-		distancePID.update(getDistance());
-		anglePID.update(getAngle());
-		unevenArcadeDrive(distancePID.getOutput(), anglePID.getOutput());
-	}
-
-	/**
-	 * Checks to see if the distance PID has reached the target
-	 * 
-	 * @return Whether distance target has been reached
-	 */
-	public boolean distanceReachedTarget() {
-		return distancePID.reachedTarget();
 	}
 
 	/**
@@ -308,12 +282,36 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * Gets the anglePID Only used in tests
+	 * Only used in tests
+	 * 
+	 * @return the distancePID
+	 */
+	public PID getDistancePID() {
+		return distancePID;
+	}
+
+	/**
+	 * Only used in tests
 	 * 
 	 * @return the anglePID
 	 */
 	public PID getAnglePID() {
 		return anglePID;
+	}
+
+	/**
+	 * Sets the distance for PID target.
+	 * PRECONDITION: Must reset encoders AND gyro
+	 * 
+	 * @param targetDistance - the target distance being set to PID
+	 */
+	public void setDistanceTarget(double targetDistance) {
+		distancePID.setRelativeLocation(0);
+		distancePID.setTarget(targetDistance);
+		distancePID.update(getDistance());
+		anglePID.setRelativeLocation(0);
+		anglePID.setTarget(0);
+		anglePID.update(getAngle());
 	}
 
 	/**
@@ -328,11 +326,28 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
+	 * Updates and tests/runs distancePID.
+	 * Incorporates anglePID to account for not driving straight
+	 */
+	public void updateDistancePID() {
+		distancePID.update(getDistance());
+		anglePID.update(getAngle());
+		unevenArcadeDrive(distancePID.getOutput(), anglePID.getOutput());
+	}
+
+	/**
 	 * Updates and tests/runs anglePID
 	 */
 	public void updateAnglePID() {
 		anglePID.update(getAngle());
 		unevenArcadeDrive(0, anglePID.getOutput());
+	}
+
+	/** 
+	 * @return Whether distance target has been reached by the PID
+	 */
+	public boolean distanceReachedTarget() {
+		return distancePID.reachedTarget();
 	}
 
 	/**
@@ -344,23 +359,59 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return anglePID.reachedTarget();
 	}
 
-	// NEW PIDS START HERE!!!
+	/**
+	 * Resets the encoders to return zero at that point
+	 */
+	public void resetEncoder() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
+
+	/**
+	 * Resets the gyro to return zero at that point
+	 */
+	public void resetGyro() {
+		gyro.reset();
+	}
+
+ //  _____ _____ _____               ______ _   _  _____ ____  _____  ______ _____   _____ 
+ // |  __ \_   _|  __ \     ___     |  ____| \ | |/ ____/ __ \|  __ \|  ____|  __ \ / ____|
+ // | |__) || | | |  | |   ( _ )    | |__  |  \| | |   | |  | | |  | | |__  | |__) | (___  
+ // |  ___/ | | | |  | |   / _ \/\  |  __| | . ` | |   | |  | | |  | |  __| |  _  / \___ \ 
+ // | |    _| |_| |__| |  | (_>  <  | |____| |\  | |___| |__| | |__| | |____| | \ \ ____) |
+ // |_|   |_____|_____/    \___/\/  |______|_| \_|\_____\____/|_____/|______|_|  \_\_____/ 
+
 
 	/**
 	 * @return the speed of the left side of the robot at the current time
 	 */
 	public double getLeftSpeed() {
 		return leftEncoder.getRate();
-
 	}
 
 	/**
-	 * Gets the leftSpeedPID Only used in tests
+	 * @return the speed of the right side of the robot at the current time
+	 */
+	public double getRightSpeed() {
+		return rightEncoder.getRate();
+	}
+
+	/**
+	 * Only used in tests
 	 * 
 	 * @return the leftSpeedPID
 	 */
 	public PID getLeftSpeedPID() {
 		return leftDriveVelocityPID;
+	}
+
+	/**
+	 * Only used in tests
+	 * 
+	 * @return the rightSpeedPID
+	 */
+	public PID getRightSpeedPID() {
+		return rightDriveVelocityPID;
 	}
 
 	/**
@@ -374,19 +425,37 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
+	 * Sets the right speed for PID target
+	 * 
+	 * @param targetSpeed - the target right speed being set to PID
+	 */
+	public void setRightSpeedTarget(double targetSpeed) {
+		rightDriveVelocityPID.setTarget(targetSpeed, false);
+		rightDriveVelocityPID.update(rightEncoder.getRate());
+	}
+
+	/**
 	 * Updates and tests/runs leftDriveSpeedPID
 	 */
 	public void updateLeftSpeedPID() {
 		leftDriveVelocityPID.update(leftEncoder.getRate());
 		leftMotor.set(leftDriveVelocityPID.getOutput());
 	}
-	
-	public void updateBothSpeedPID() { 
 
-		leftDriveVelocityPID.update(leftEncoder.getRate());
-
+	/**
+	 * Updates and tests/runs rightDriveSpeedPID
+	 */
+	public void updateRightSpeedPID() {
 		rightDriveVelocityPID.update(rightEncoder.getRate());
-
+		rightMotor.set(rightDriveVelocityPID.getOutput());
+	}
+	
+	/**
+	 * Updates and tests/runs both left and right speed PIDs
+	 */
+	public void updateBothSpeedPID() { 
+		leftDriveVelocityPID.update(leftEncoder.getRate());
+		rightDriveVelocityPID.update(rightEncoder.getRate());
 		robotDrive.tankDrive(leftDriveVelocityPID.getOutput(), -rightDriveVelocityPID.getOutput());
 	}
 
@@ -399,43 +468,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return leftDriveVelocityPID.reachedTarget();
 	}
 
-	// STARTS RIGHT HALF
-
-	/**
-	 * @return the speed of the right side of the robot at the current time
-	 */
-	public double getRightSpeed() {
-		return rightEncoder.getRate();
-
-	}
-
-	/**
-	 * Gets the rightSpeedPID Only used in tests
-	 * 
-	 * @return the rightSpeedPID
-	 */
-	public PID getRightSpeedPID() {
-		return rightDriveVelocityPID;
-	}
-
-	/**
-	 * Sets the right speed for PID target
-	 * 
-	 * @param targetSpeed - the target right speed being set to PID
-	 */
-	public void setRightSpeedTarget(double targetSpeed) {
-		rightDriveVelocityPID.setTarget(targetSpeed, false);
-		rightDriveVelocityPID.update(rightEncoder.getRate());
-	}
-
-	/**
-	 * Updates and tests/runs rightDriveSpeedPID
-	 */
-	public void updateRightSpeedPID() {
-		rightDriveVelocityPID.update(rightEncoder.getRate());
-		rightMotor.set(rightDriveVelocityPID.getOutput());
-	}
-
 	/**
 	 * Checks to see if the right speed PID has reached the target
 	 * 
@@ -445,11 +477,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return rightDriveVelocityPID.reachedTarget();
 	}
 
-	// NEW PIDS END HERE!
-
 	/**
 	 * @return the average speed of the two sides of the robot at the current
-	 *         time
+	 * 		time
 	 */
 	public double getVelocity() {
 		return (leftEncoder.getRate() + rightEncoder.getRate()) / 2;
@@ -458,8 +488,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Sets targets for tracking velocity of robot for motion profiling
 	 * 
-	 * @param linVelTarget
-	 * @param angVelTarget
+	 * @param linVelTarget - the target linear velocity
+	 * @param angVelTarget - the target angle velocity
 	 */
 	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
 		velocityPID.setRelativeLocation(0);
@@ -482,17 +512,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	}
 
 	/**
-	 * Checks to see if the speed PID has reached the target
-	 * 
-	 * @return Whether speed target has been reached
+	 * @return Whether speed target has been reached by the PID
 	 */
 	public boolean velocityReachedTarget() {
 		return velocityPID.reachedTarget();
 	}
 
-	/**
-	 * Gets the angular acceleration
-	 * 
+	/** 
 	 * @return the angular acceleration
 	 */
 	public double getAngularAcceleration() {
@@ -508,10 +534,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return gyro.getRate();
 	}
 
-	/**
-	 * Checks to see if the angular velocity PID has reached the target
-	 * 
-	 * @return Whether angular velocity PID has reached the target
+	/** 
+	 * @return whether angular velocity PID has reached the target
 	 */
 	public boolean angularVelocityPIDReachedTarget() {
 		return angularVelocityPID.reachedTarget();
@@ -556,6 +580,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		prevTime = Timer.getFPGATimestamp();
 	}
 
+ //  _    _ _   _______ _____             _____  ____  _   _ _____ _____ 
+ // | |  | | | |__   __|  __ \     /\    / ____|/ __ \| \ | |_   _/ ____|
+ // | |  | | |    | |  | |__) |   /  \  | (___ | |  | |  \| | | || |     
+ // | |  | | |    | |  |  _  /   / /\ \  \___ \| |  | | . ` | | || |     
+ // | |__| | |____| |  | | \ \  / ____ \ ____) | |__| | |\  |_| || |____ 
+ //  \____/|______|_|  |_|  \_\/_/    \_\_____/ \____/|_| \_|_____\_____|
+
 	/**
 	 * Converts volts from ultrasonic sensors into inches based on equation
 	 * derived from testing.
@@ -569,7 +600,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Gets the voltage from one of two ultrasonic sensors.
 	 * 
-	 * @param side tells which ultrasonic sensor to pull data from (left or
+	 * @param side - tells which ultrasonic sensor to pull data from (left or
 	 *            right) if side true, gets left voltage if side false, gets
 	 *            right voltage
 	 */
@@ -583,14 +614,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	/**
 	 * Calculates the distance the robot needs to drive to reach target distance
-	 * from wall based on the average of the current US sensor readings. Uses
-	 * the average of the readings because this is measured before the robot
-	 * auto truns but is used to execute auto drive after the robot auto turns.
-	 * The average distance from the wall will not change in and ideal scenario
-	 * because the distance from the robot center will not change. Henceforth,
-	 * average is used.
+	 * from wall based on the average of the current ultrasonic sensor readings.
+	 * Uses the average because this is measured before the robot auto turns but 
+	 * is used to execute auto drive after the robot auto turns. The average
+	 * distance from the wall will not change in an ideal scenario because the
+	 * distance from the robot center will not change. Henceforth, average is used.
 	 * 
-	 * @return the distance to be antered into a drive PID
+	 * @return the distance to be entered into a drive PID
 	 */
 	public double getUSDistToDrive() {
 		double leftDist = convertVoltsToInches(getUSVoltage(true));
@@ -609,19 +639,44 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		return Math.toDegrees(Math.atan((leftDist - rightDist) / (distBtwnUSsensors)));
 	}
 
+ //   _____ ______          _____      _____ _    _ _____ ______ _______ 
+ //  / ____|  ____|   /\   |  __ \    / ____| |  | |_   _|  ____|__   __|
+ // | |  __| |__     /  \  | |__) |  | (___ | |__| | | | | |__     | |   
+ // | | |_ |  __|   / /\ \ |  _  /    \___ \|  __  | | | |  __|    | |   
+ // | |__| | |____ / ____ \| | \ \    ____) | |  | |_| |_| |       | |   
+ //  \_____|______/_/    \_\_|  \_\  |_____/|_|  |_|_____|_|       |_|   
+
 	/**
 	 * Shifts gears to whatever state they are not in
 	 */
 	public void shiftGears() {
-		if (!shiftedHigh) {
-			// shift to high gear
-			shiftPiston.set(DoubleSolenoid.Value.kReverse);
-			shiftedHigh = true;
-		} else {
+		if (shiftedHigh) {
 			// shift to low gear
 			shiftPiston.set(DoubleSolenoid.Value.kForward);
 			shiftedHigh = false;
+		} else {
+			// shift to high gear
+			shiftPiston.set(DoubleSolenoid.Value.kReverse);
+			shiftedHigh = true;
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.usfirst.frc199.Robot2017.DashboardInterface#displayData()
+	 */
+	public void shiftLow(){
+		shiftPiston.set(DoubleSolenoid.Value.kForward);
+		shiftedHigh = false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.usfirst.frc199.Robot2017.DashboardInterface#displayData()
+	 */
+	public void shiftHigh(){
+		shiftPiston.set(DoubleSolenoid.Value.kReverse);
+		shiftedHigh = true;
 	}
 
 	/**
@@ -630,6 +685,13 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	public void setShifterNeutral() {
 		shiftPiston.set(DoubleSolenoid.Value.kOff);
 	}
+
+ //  __  __ _____  _____  _____ 
+ // |  \/  |_   _|/ ____|/ ____|
+ // | \  / | | | | (___ | |     
+ // | |\/| | | |  \___ \| |     
+ // | |  | |_| |_ ____) | |____ 
+ // |_|  |_|_____|_____/ \_____|
 
 	/**
 	 * Monitors current draw of drivetrain
@@ -646,36 +708,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			return true;
 		return false;
 	}
-
-	/**
-	 * Resets the encoders to return zero at that point
-	 */
-	public void resetEncoder() {
-		leftEncoder.reset();
-		rightEncoder.reset();
-	}
-
-	/**
-	 * Resets the gyro to return zero at that point
-	 */
-	public void resetGyro() {
-		gyro.reset();
-	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.usfirst.frc199.Robot2017.DashboardInterface#displayData()
-	 */
-	public void shiftLow(){
-		shiftPiston.set(DoubleSolenoid.Value.kForward);
-		shiftedHigh = false;
-	}
-	
-	public void shiftHigh(){
-		shiftPiston.set(DoubleSolenoid.Value.kReverse);
-		shiftedHigh = true;
-	}
-
 	@Override
 	public void displayData() {
 		putNumber("Average Speed", getVelocity());
