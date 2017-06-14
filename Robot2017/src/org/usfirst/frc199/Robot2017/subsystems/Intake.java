@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends Subsystem implements IntakeInterface {
 
 	private final DoubleSolenoid pivotPiston = RobotMap.intakePivotPiston;
+	// used to toggle between the old gear mech states
 	private final DoubleSolenoid flipperFlapper = RobotMap.flipperFlapper;
 	private final SpeedController intakeMotor = RobotMap.intakeIntakeMotor;
 
@@ -54,17 +55,24 @@ public class Intake extends Subsystem implements IntakeInterface {
 		flashLED.set(DoubleSolenoid.Value.kForward);
 	}
 
+ //  _____ _   _ _______       _  ________ 
+ // |_   _| \ | |__   __|/\   | |/ /  ____|
+ //   | | |  \| |  | |  /  \  | ' /| |__   
+ //   | | | . ` |  | | / /\ \ |  < |  __|  
+ //  _| |_| |\  |  | |/ ____ \| . \| |____ 
+ // |_____|_| \_|  |_/_/    \_\_|\_\______|
+
 	/**
-	 * Returns the current value of the intakeMotor
+	 * @return the current value of the intake motor
 	 */
 	public double getIntake() {
 		return intakeMotor.get();
 	}
 
 	/**
-	 * Rruns the intake motor at a set speed
+	 * Runs the intake motor at a set speed
 	 * 
-	 * @param speed - the speed you want the intake motor to run at -1 -> 1
+	 * @param speed the speed you want the intake motor to run at -1 -> 1
 	 */
 	public void runIntake(double speed) {
 		intakeMotor.set(speed);
@@ -75,15 +83,14 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 * Runs intake at a speed based on drive speed
 	 */
 	public void controlledIntake(boolean isBackwards) {
-		if (isBackwards) {
+		if (isBackwards) 
 			intakeMotor.set(-1);
-		} else {
+		else 
 			intakeMotor.set((Robot.getPref("intakeDirection", 1)) * (0.5 * Robot.drivetrain.getAverageMotors() + 0.8));
-		}
 	}
 
 	/**
-	 * Returns whether or not the pdp detects the intake drawing more current
+	 * Returns whether or not the PDP detects the intake drawing more current
 	 * than allowed
 	 */
 	public boolean intakeCurrentOverflow() {
@@ -102,34 +109,11 @@ public class Intake extends Subsystem implements IntakeInterface {
 	}
 
 	/**
-	 * Runs the gearRoller a certain direction
-	 * 
-	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
-	 */
-
-	public void runRoller(double speed) {
-		gearStartupTimer.reset();
-		gearStartupTimer.start();
-		if(Math.abs(speed) > 0.1) maxCurrent = 0;
-		gearRoller.set(speed);
-	}
-
-	/**
-	 * Gets if the gear is in the gear intake, pushing either switch
-	 * 
-	 * @return if the gear intake limit switches are pushed
-	 */
-	public boolean getSwitch() {
-		return gearIntakeSwitch.get();
-	}
-
-	/**
 	 * Moves the intake up if it is down, and vice versa, or moves intake in
 	 * specified direction
 	 * 
-	 * @param giveDirection - Is intake direction given? If not, just toggle.
-	 * @param down - If giveDirection, should the intake go down? If not
-	 *            giveDirection, doesn't matter
+	 * @param giveDirection if true, sets to given direction, else, toggles direction
+	 * @param down true = down, false = up; used when giveDirection is true
 	 */
 	public void toggleIntake(boolean giveDirection, boolean down) {
 		if (giveDirection) {
@@ -148,16 +132,11 @@ public class Intake extends Subsystem implements IntakeInterface {
 			intakeIsDown = !intakeIsDown;
 		}
 	}
-	
+
 	public void toggleIntake() {
 		toggleIntake(false, false);
-//		if (!intakeIsDown) {
-//			pivotPiston.set(DoubleSolenoid.Value.kReverse);
-//		} else {
-//			pivotPiston.set(DoubleSolenoid.Value.kForward);
-//		}
-//		intakeIsDown = !intakeIsDown;
 	}
+
 
 	public void raiseIntake() {
 		pivotPiston.set(DoubleSolenoid.Value.kForward);
@@ -177,15 +156,21 @@ public class Intake extends Subsystem implements IntakeInterface {
 	}
 
 	/**
-	 * @return if the intake is up or not
+	 * @return if the intake is up
 	 */
 	public boolean intakeIsDown() {
 		return intakeIsDown;
 	}
 
+ //  ______ _      _____ _____     ______ _               _____  
+ // |  ____| |    |_   _|  __ \   |  ____| |        /\   |  __ \ 
+ // | |__  | |      | | | |__) |  | |__  | |       /  \  | |__) |
+ // |  __| | |      | | |  ___/   |  __| | |      / /\ \ |  ___/ 
+ // | |    | |____ _| |_| |       | |    | |____ / ____ \| |     
+ // |_|    |______|_____|_|       |_|    |______/_/    \_\_|     
+
 	/**
-	 * Sets flipperFlapper to forward unless it already is, then sets to
-	 * backwards
+	 * Toggles the flipper flapper state between forwards and backwards
 	 */
 	public void toggleFlipperFlapper() {
 		if (!flipperIsUp) {
@@ -218,11 +203,41 @@ public class Intake extends Subsystem implements IntakeInterface {
 		flipperFlapper.set(DoubleSolenoid.Value.kOff);
 	}
 
+ //   _____ ______          _____  
+ //  / ____|  ____|   /\   |  __ \ 
+ // | |  __| |__     /  \  | |__) |
+ // | | |_ |  __|   / /\ \ |  _  / 
+ // | |__| | |____ / ____ \| | \ \ 
+ //  \_____|______/_/    \_\_|  \_\
+ 
+	/**
+	 * Runs the gear roller a certain direction
+	 * 
+	 * @param speed -1 for kreverse, 0 for koff, and 1 for kforward
+	 */
+
+	public void runRoller(double speed) {
+		gearStartupTimer.reset();
+		gearStartupTimer.start();
+		if(Math.abs(speed) > 0.1) 
+			maxCurrent = 0;
+		gearRoller.set(speed);
+	}
+
+	/**
+	 * Used for Intake v2
+	 * Gets if the gear is in the gear intake, pushing either switch
+	 * 
+	 * @return if the gear intake limit switches are pushed
+	 */
+	public boolean getSwitch() {
+		return gearIntakeSwitch.get();
+	}
+
 	/**
 	 * @return if the gear has been lifted or not
 	 */
 	public boolean gearLifted(boolean isTriggered) {
-		// return if gear lifted or not
 		if (AI.getVoltage() > 0.15) {
 			tim.reset();
 			tim.start();
@@ -233,15 +248,16 @@ public class Intake extends Subsystem implements IntakeInterface {
 		} else {
 			return (AI.getVoltage() > 0.15);
 		}
-		// if (AI.getVoltage() > 0.15) {
-		// AItriggered = true;
-		// tim.reset();
-		// tim.start();
-		// return true;
-		// } else {
-		// if(tim.get() > 5) AItriggered = false;
-		// return false;
-		// }
+	}
+
+	/**
+	 * Used for Intake v3y
+	 * @return if the intake has picked up the gear or not
+	 */
+	@Override
+	public boolean haveGear() {
+		return pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > Robot.getPref("gearInCurrent", 38) 
+				&& gearStartupTimer.get() > 0.75;
 	}
 
 	/*
@@ -251,10 +267,17 @@ public class Intake extends Subsystem implements IntakeInterface {
 		AItriggered = false;
 	}
 
-	@Override
+ //  __  __ _____  _____  _____ 
+ // |  \/  |_   _|/ ____|/ ____|
+ // | \  / | | | | (___ | |     
+ // | |\/| | | |  \___ \| |     
+ // | |  | |_| |_ ____) | |____ 
+ // |_|  |_|_____|_____/ \_____|
+
 	/**
 	 * Displays data to SmartDashboard
 	 */
+	@Override
 	public void displayData() {
 		if(pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > Robot.getPref("gearInCurrent", 38)) {
 			SmartDashboard.putBoolean("iCanHazGear", true);
@@ -262,7 +285,6 @@ public class Intake extends Subsystem implements IntakeInterface {
 
 		putString("Flap piston status", flipperFlapper.get().toString());
 		putNumber("Intake current draw", pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 2)));
-//		putNumber("Sending to intake", getIntake());
 		putString("Intake piston status", pivotPiston.get().toString());
 		putBoolean("Intake is down", intakeIsDown);
 		putBoolean("Gear has been lifted", gearLifted(false));
@@ -275,11 +297,5 @@ public class Intake extends Subsystem implements IntakeInterface {
 		SmartDashboard.putNumber("Intake max current", maxCurrent);
 		putNumber("Gear timer", gearStartupTimer.get());
 		putNumber("Roller output", gearRoller.get());
-	}
-
-	@Override
-	public boolean haveGear() {
-		return pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > Robot.getPref("gearInCurrent", 38) 
-				&& gearStartupTimer.get() > 0.75;
 	}
 }

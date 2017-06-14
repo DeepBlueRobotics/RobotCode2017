@@ -23,8 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class Shooter extends Subsystem implements ShooterInterface {
-	double targetAngle = Robot.getPref("targetAngle", 0); // angle that the ball
-															// hits the boiler
+	double targetAngle = Robot.getPref("targetAngle", 0); // angle that the ball hits the boiler at
 	double height = Robot.getPref("relativeHeightOfBoiler", 10);
 	double encoderAngleRatio = Robot.getPref("encoderAngleRatio", 1);
 
@@ -34,8 +33,8 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	private final double ro = 1.225;
 	private final double r = 0.0635;
 	private final double k = drag * ro * Math.PI * r * r / 2;
-	private final double thetaErr = 0.05; // CHANGE LATER
-	private final double velErr = 0.05; // CHANGE LATER
+	private final double thetaErr = 0.05; // CHANGE LATER (?)
+	private final double velErr = 0.05; // CHANGE LATER (?)
 
 	private final double turretDiam = 7.71;
 	
@@ -59,6 +58,9 @@ public class Shooter extends Subsystem implements ShooterInterface {
 
 	double[][] distances = new double[48][45];
 
+	/**
+	 * Math to calculate the shooting angle and velocity
+	 */
 	public Shooter() {
 		super();
 		putString("~TYPE~", "Shooter");
@@ -101,7 +103,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Sets the feeder motor's speed (from -1.0 to 1.0).
 	 * 
-	 * @param rate - speed to give the feeder motor
+	 * @param rate speed to give the feeder motor
 	 */
 	public void runFeederMotor(double speed) {
 		feedMotor.set(speed);
@@ -109,7 +111,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	
 	/**
 	 * Sets the floor belt motor's speed (from -1.0 to 1.0)
-	 * @param speed - speed to give the feeder motor
+	 * @param speed speed to give the feeder motor
 	 */
 	public void runFloorBeltMotor(double speed){
 		floorBeltMotor.set(speed);
@@ -118,7 +120,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Sets the shooter motor's speed (from -1.0 to 1.0). For CANTalon AutoShoot
 	 * 
-	 * @param rate - speed to give the shooter motor
+	 * @param rate speed to give the shooter motor
 	 */
 	public void runShootMotor(double speed) {
 		double targetSpeed = speed;
@@ -160,7 +162,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Tells the shooter motor's PID the target speed to reach.
 	 * 
-	 * @param targetRate - target speed for shooter motor PID
+	 * @param targetRate target speed for shooter motor PID
 	 */
 	public void setShooterPIDTarget(double targetRate) {
 		shooterPID.setTarget(targetRate);
@@ -194,7 +196,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Used only in TestPID
 	 * 
-	 * @param target - the target value for PID
+	 * @param target the target value for PID
 	 * @return speed of motor
 	 */
 	public double updateSpeed(double target) {
@@ -207,7 +209,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * Passes the distance of the robot from the boiler through an equation to
 	 * compute the speed at which we should be shooting.
 	 * 
-	 * @param distance - in meters of the front of the robot from the boiler
+	 * @param distance in meters of the front of the robot from the boiler
 	 * @return the ideal exit speed of the ball in meters per second and the
 	 *         ideal angle in degrees in an array
 	 */
@@ -244,7 +246,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Used for turret only
 	 * 
-	 * @param angle - in degrees
+	 * @param angle in degrees
 	 * @return the target distance in inches
 	 */
 	public double convertAngleToTargetDistance(double angle) {
@@ -289,9 +291,9 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Sets the turret motor's speed (from -1.0 to 1.0).
 	 * 
-	 * @param rate - speed to give the turret motor
+	 * @param rate speed to give the turret motor
 	 * 
-	 * @param rate - speed to give the turret motor
+	 * @param rate speed to give the turret motor
 	 */
 	public void runTurretMotor(double speed) {
 		turretMotor.set(speed);
@@ -300,7 +302,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Tells the turret motor's PID the target speed to reach.
 	 * 
-	 * @param targetRate - target speed for turret motor PID
+	 * @param targetRate target speed for turret motor PID
 	 */
 	public void setTurretPIDTarget(double target) {
 		turretPID.setTarget(target);
@@ -352,7 +354,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	/**
 	 * Sets the hood servo's position (from 0.0 to 1.0).
 	 * 
-	 * @param position - position to give the hood servo
+	 * @param position position to give the hood servo
 	 */
 	public void setHoodServo(double position) {
 		hoodServo.set(position);
@@ -362,7 +364,7 @@ public class Shooter extends Subsystem implements ShooterInterface {
 	 * Sets the hood angle in radians using the hood servo. Uses math to turn
 	 * that angle into an argument for setHoodServo().
 	 * 
-	 * @param targetShootAngle - angle from ground for the ball to exit to give
+	 * @param targetShootAngle angle from ground for the ball to exit to give
 	 *            the hood
 	 */
 	public void setHoodAngle(double targetShootAngle) {

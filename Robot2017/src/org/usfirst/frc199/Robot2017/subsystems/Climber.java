@@ -30,7 +30,7 @@ public class Climber extends Subsystem implements ClimberInterface {
 
 	/**
 	 * Uses the winch to let the robot climb.
-	 * @param the speed that you want the winch to run on between -1 and 1
+	 * @param speed the speed that you want the winch to run on between -1 and 1
 	 */
 	public void runClimber(double speed) {
 		winchMotor.set(speed);

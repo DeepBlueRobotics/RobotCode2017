@@ -177,8 +177,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	/**
 	 * Drives the robot in arcade drive
-	 * @param speed - speed to drive at
-	 * @param turn  - speed to turn at
+	 * @param speed speed to drive at
+	 * @param turn speed to turn at
 	 */
 	public void arcadeDrive(double speed, double turn) {
 		robotDrive.arcadeDrive(speed, turn);
@@ -198,7 +198,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	
 	/**
 	 * Accounts for drift when in arcade drive. Drives based on target speed in inches per second
-	 * @param speed - the speed in inches per second
+	 * @param speed the speed in inches per second
 	 */
 	public void specialUnevenArcadeDrive(double speed){
 		setRightSpeedTarget(speed);
@@ -303,7 +303,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Sets the distance for PID target.
 	 * PRECONDITION: Must reset encoders AND gyro
 	 * 
-	 * @param targetDistance - the target distance being set to PID
+	 * @param targetDistance the target distance being set to PID
 	 */
 	public void setDistanceTarget(double targetDistance) {
 		distancePID.setRelativeLocation(0);
@@ -317,7 +317,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Sets the angle for PID target
 	 * 
-	 * @param targetAngle - the target angle in being set to PID
+	 * @param targetAngle the target angle in being set to PID
 	 */
 	public void setAngleTarget(double targetAngle) {
 		anglePID.setRelativeLocation(0);
@@ -417,7 +417,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Sets the left speed for PID target
 	 * 
-	 * @param targetSpeed - the target left speed being set to PID
+	 * @param targetSpeed the target left speed being set to PID
 	 */
 	public void setLeftSpeedTarget(double targetSpeed) {
 		leftDriveVelocityPID.setTarget(targetSpeed, false);
@@ -427,7 +427,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Sets the right speed for PID target
 	 * 
-	 * @param targetSpeed - the target right speed being set to PID
+	 * @param targetSpeed the target right speed being set to PID
 	 */
 	public void setRightSpeedTarget(double targetSpeed) {
 		rightDriveVelocityPID.setTarget(targetSpeed, false);
@@ -488,8 +488,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Sets targets for tracking velocity of robot for motion profiling
 	 * 
-	 * @param linVelTarget - the target linear velocity
-	 * @param angVelTarget - the target angle velocity
+	 * @param linVelTarget the target linear velocity
+	 * @param angVelTarget the target angle velocity
 	 */
 	public void setVelocityTarget(double linVelTarget, double angVelTarget) {
 		velocityPID.setRelativeLocation(0);
@@ -544,10 +544,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Uses PID to reach target velocity
 	 * 
-	 * @param v - linear velocity in inches/second
-	 * @param w - angular velocity in degrees/second
-	 * @param a - acceleration in inches/second/second
-	 * @param alpha - angular acceleration in degrees/second/second
+	 * @param v linear velocity in inches/second
+	 * @param w angular velocity in degrees/second
+	 * @param a acceleration in inches/second/second
+	 * @param alpha angular acceleration in degrees/second/second
 	 */
 	public void followTrajectory(double v, double w, double a, double alpha) {
 		velocityPID.setTarget(v);
@@ -600,7 +600,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	/**
 	 * Gets the voltage from one of two ultrasonic sensors.
 	 * 
-	 * @param side - tells which ultrasonic sensor to pull data from (left or
+	 * @param side tells which ultrasonic sensor to pull data from (left or
 	 *            right) if side true, gets left voltage if side false, gets
 	 *            right voltage
 	 */
@@ -730,8 +730,6 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 		putNumber("Left DT Signal", leftMotor.get());
 		putNumber("Right DT Signal", rightMotor.get());
 
-//		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
-//		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
 		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
 		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
 		SmartDashboard.putBoolean("isTrue", currentSpeed > Robot.getPref("gearLimitSpeed", .23));
