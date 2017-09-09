@@ -16,7 +16,7 @@ public class DeployGear extends CommandGroup {
     	addParallel(new FlashLED(Robot.intake));
     	addParallel(new RunGearRollerOut(Robot.intake));
     	addSequential(new AutoDelay(.2, Robot.intake, Robot.drivetrain));
-    	addParallel(new ToggleIntake(true,true, Robot.intake));
+    	addParallel(new ToggleGearIntake(true,true, Robot.intake));
     	addParallel(new AutoDrive(-12, 0, Robot.drivetrain));
     }
     

@@ -3,15 +3,18 @@ package org.usfirst.frc199.Robot2017.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc199.Robot2017.Robot;
 import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
+import org.usfirst.frc199.Robot2017.subsystems.ShooterInterface;
 
 /**
  *
  */
 public class TeleopDrive extends Command {
 	DrivetrainInterface driver;
+	ShooterInterface turret;
 
-	public TeleopDrive(DrivetrainInterface drive) {
+	public TeleopDrive(DrivetrainInterface drive, ShooterInterface shooter) {
 		this.driver = drive;
+		turret = shooter;
 		requires(Robot.drivetrain);
 	}
 
@@ -26,7 +29,8 @@ public class TeleopDrive extends Command {
 		if (driver.currentControl()) {
 			driver.shiftGears();
 		}
-
+		
+		turret.runTurretMotor(Robot.oi.manipulator.getThrottle());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

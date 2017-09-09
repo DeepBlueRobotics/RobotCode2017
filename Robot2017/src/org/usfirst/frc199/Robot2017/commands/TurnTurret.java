@@ -24,7 +24,7 @@ public class TurnTurret extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		shooter.runTurretMotor(Robot.oi.manipulator.getX());
+		shooter.runTurretMotor(speed);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -40,6 +40,6 @@ public class TurnTurret extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		shooter.runTurretMotor(0);
+		end();
 	}
 }

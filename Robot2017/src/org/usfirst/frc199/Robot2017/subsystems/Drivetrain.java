@@ -78,7 +78,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Initializes the teleop command
 	 */
 	public void initDefaultCommand() {
-		setDefaultCommand(new TeleopDrive(Robot.drivetrain));
+		setDefaultCommand(new TeleopDrive(Robot.drivetrain, Robot.shooter));
 	}
 
 	/**
@@ -90,22 +90,35 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 				currentDrive = DriveTypes.TANK;
 				break;
 			case TANK:
-				currentDrive = DriveTypes.DRIFT_TANK;
-				rightDriveVelocityPID.setTarget(0, true);
-				leftDriveVelocityPID.setTarget(0, true);
-				break;
-			case DRIFT_TANK:
-				currentDrive = DriveTypes.DRIFT_ARCADE;
-				rightDriveVelocityPID.setTarget(0, true);
-				leftDriveVelocityPID.setTarget(0, true);
-				break;
-			case DRIFT_ARCADE:
 			default:
 				currentDrive = DriveTypes.ARCADE;
 				rightDriveVelocityPID.setTarget(0, true);
 				leftDriveVelocityPID.setTarget(0, true);
 				break;
 		}
+	
+//	public void toggleDriveType() {
+//		switch (currentDrive) {
+//			case ARCADE: 
+//				currentDrive = DriveTypes.TANK;
+//				break;
+//			case TANK:
+//				currentDrive = DriveTypes.DRIFT_TANK;
+//				rightDriveVelocityPID.setTarget(0, true);
+//				leftDriveVelocityPID.setTarget(0, true);
+//				break;
+//			case DRIFT_TANK:
+//				currentDrive = DriveTypes.DRIFT_ARCADE;
+//				rightDriveVelocityPID.setTarget(0, true);
+//				leftDriveVelocityPID.setTarget(0, true);
+//				break;
+//			case DRIFT_ARCADE:
+//			default:
+//				currentDrive = DriveTypes.ARCADE;
+//				rightDriveVelocityPID.setTarget(0, true);
+//				leftDriveVelocityPID.setTarget(0, true);
+//				break;
+//		}
 	}
 
 	/**

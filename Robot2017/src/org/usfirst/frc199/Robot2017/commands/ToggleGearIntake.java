@@ -9,18 +9,18 @@ import org.usfirst.frc199.Robot2017.subsystems.IntakeInterface;
 /**
  *
  */
-public class ToggleIntake extends Command {
+public class ToggleGearIntake extends Command {
 	IntakeInterface intake;
 	boolean firstTime = true;
 	boolean giveDirection = false;
 	boolean down = true;
-	Timer tim = new Timer();
+	Timer tim;
 	
 	/**
 	 * @param giveDirection you want a specific direction to be set, not just toggle to whatever
 	 * @param down you want the intake to go down (only used when giveDirection true)
 	 * */
-	public ToggleIntake(boolean giveDirection, boolean down, IntakeInterface intake) {
+	public ToggleGearIntake(boolean giveDirection, boolean down, IntakeInterface intake) {
 		requires(Robot.intake);
 		this.intake = intake;
 		this.giveDirection = giveDirection;
@@ -29,6 +29,7 @@ public class ToggleIntake extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		tim = new Timer();
 		firstTime = true;
 		tim.start();
 	}
