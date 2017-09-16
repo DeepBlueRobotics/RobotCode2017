@@ -132,8 +132,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Drives the robot from joystick input based on the drivetype that's currently set
 	 */
 	public void drive() {
-		currentSpeed = Robot.oi.rightJoy.getY();
-		currentTurn = Robot.oi.leftJoy.getX();
+		currentSpeed = Robot.oi.leftJoy.getY();
+		currentTurn = Robot.oi.rightJoy.getX();
 
 		if (currentDrive == DriveTypes.ARCADE) {
 			if(SmartDashboard.getBoolean("runningGearRoller", false)
@@ -692,6 +692,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
+		putBoolean("High gear", shiftedHigh);
+		
 		putNumber("Average Speed", getVelocity());
 		
 		putNumber("Left Joystick Y", Robot.oi.leftJoy.getY());

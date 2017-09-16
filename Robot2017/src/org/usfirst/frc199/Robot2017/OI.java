@@ -12,6 +12,8 @@ public class OI {
 	public JoystickButton autoAlignGearRoutineButton;
 	public Joystick leftJoy;
 	public JoystickButton shiftGearsButton;
+	public JoystickButton shiftToHighGearButton;
+	public JoystickButton shiftToLowGearButton;
 	public JoystickButton gradualDriveButton;
 	public JoystickButton autoShootRoutineButton;
 	public JoystickButton takePicButton;
@@ -84,8 +86,12 @@ public class OI {
 		gradualDriveButton = new JoystickButton(rightJoy, 1);
 		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
 		
-		shiftGearsButton = new JoystickButton(rightJoy, 2);
-		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
+//		shiftGearsButton = new JoystickButton(rightJoy, 2);
+//		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
+		shiftToHighGearButton = new JoystickButton(rightJoy, 3);
+		shiftToHighGearButton.whenPressed(new ShiftToHighGear(Robot.drivetrain));
+		shiftToLowGearButton = new JoystickButton(rightJoy, 2);
+		shiftToLowGearButton.whenPressed(new ShiftToLowGear(Robot.drivetrain));
 		
 		autoShootRoutineButton = new JoystickButton(rightJoy, 4);
 		autoShootRoutineButton.whileHeld(new AutoShootRoutine());
