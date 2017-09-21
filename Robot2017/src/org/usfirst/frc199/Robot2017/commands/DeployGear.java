@@ -16,8 +16,10 @@ public class DeployGear extends CommandGroup {
     	addParallel(new FlashLED(Robot.intake));
     	addParallel(new RunGearRollerOut(Robot.intake));
     	addSequential(new AutoDelay(.2, Robot.intake, Robot.drivetrain));
+    	addParallel(new ShiftToHighGear(Robot.drivetrain));
     	addParallel(new ToggleGearIntake(true,true, Robot.intake));
-    	addParallel(new AutoDrive(-12, 0, Robot.drivetrain));
+//    	addParallel(new AutoDrive(-6, 0, Robot.drivetrain));
+    	addParallel(new DriveBackwardsGearDelivery(0.15, 0.7, Robot.drivetrain));
     }
     
 }

@@ -142,6 +142,10 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 			}
 
 			SmartDashboard.putNumber("currentSpeed", currentSpeed);
+			if(Robot.oi.rightJoy.getRawButton(1)) {
+				currentTurn *= Robot.getPref("precise turn multiplier", 0.5);
+			}
+			
 			arcadeDrive(currentTurn, currentSpeed);
 
 		} else if (currentDrive == DriveTypes.TANK) {
@@ -692,7 +696,7 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 	@Override
 	public void displayData() {
-		putBoolean("High gear", shiftedHigh);
+		SmartDashboard.putBoolean("High gear", shiftedHigh);
 		
 		putNumber("Average Speed", getVelocity());
 		
@@ -715,12 +719,9 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 
 //		putNumber("PDP_Left_Drive", pdp.getCurrent(13));
 //		putNumber("PDP_Right_Drive", pdp.getCurrent(15));
-		SmartDashboard.putNumber("Left enc speed", leftEncoder.getRate());
-		SmartDashboard.putNumber("Right enc speed", rightEncoder.getRate());
-		SmartDashboard.putBoolean("isTrue", currentSpeed > Robot.getPref("gearLimitSpeed", .23));
 		putNumber("Sending to left motor", leftMotor.getRaw());
 		putNumber("Sending to right motor", rightMotor.getRaw());
-		putString("Current drive", currentDrive.toString());
+		SmartDashboard.putString("Current drive", currentDrive.toString());
 		putNumber("Right US Voltage", rightUSsensor.getVoltage());
 		putNumber("Left US Dist", convertVoltsToInches(getUSVoltage(true)));
 		putNumber("Left US Voltage", leftUSsensor.getVoltage());

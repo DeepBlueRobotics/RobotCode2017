@@ -18,16 +18,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoModeBoilerSide extends CommandGroup {
 
 	/***
-	 * @param alliance true for blue, false for red
+	 * @param blueAlliance true for blue, false for red
 	 */
-	public AutoModeBoilerSide(boolean alliance) {
+	public AutoModeBoilerSide(boolean blueAlliance) {
 		double forward;
-		if (alliance) forward = Robot.getPref("Auto Blue Boiler Forward", 121);
-		else forward = Robot.getPref("Auto Red Boiler Forward", 121);
+		if (blueAlliance) {
+			forward = Robot.getPref("Auto Blue Boiler Forward", 121);
+		} else {
+			forward = Robot.getPref("Auto Red Boiler Forward", 121);
+		}
 		
 		double diagonal;
-		if (alliance) diagonal = Robot.getPref("Auto Blue Boiler Diagonal", 15);
-		else diagonal = Robot.getPref("Auto Red Boiler Diagonal", 15);
+		if (blueAlliance) {
+			diagonal = Robot.getPref("Auto Blue Boiler Diagonal", 15);
+		} else {
+			diagonal = Robot.getPref("Auto Red Boiler Diagonal", 15);
+		}
 		
 		final double LENGTH_1 = forward - (Robot.getPref("Robot length", 39) -
 								Robot.getPref("Distance from pivot point to front of robot", 19.5));
@@ -37,13 +43,15 @@ public class AutoModeBoilerSide extends CommandGroup {
 
 		// METHOD 1:
 		// Drives to airlift
+		addParallel(new ShiftToLowGear(Robot.drivetrain));
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
 
 		// Turns toward lift
-		if(alliance)
+		if(blueAlliance) {
 			addSequential(new AutoDrive(0, 60, Robot.drivetrain));
-		else
+		} else {
 			addSequential(new AutoDrive(0, -60, Robot.drivetrain));
+		}
 	
 
 		//Drives toward lift

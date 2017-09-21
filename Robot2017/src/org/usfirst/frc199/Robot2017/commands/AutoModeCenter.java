@@ -19,8 +19,9 @@ public class AutoModeCenter extends CommandGroup {
 	 * @param alliance - true for red, false for blue
 	 */
 	public AutoModeCenter(boolean alliance) {		
-
-		addSequential(new AutoDrive(78, 0, Robot.drivetrain));
+		
+		addParallel(new ShiftToLowGear(Robot.drivetrain));
+		addSequential(new AutoDrive(/**Robot.getPref("CenterAutoDist", 75)*/ 74, 0, Robot.drivetrain));
 		
 		addSequential(new DeployGear());
 		addSequential(new DeployGearEnding());

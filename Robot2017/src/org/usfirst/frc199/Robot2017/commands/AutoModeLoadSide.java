@@ -26,12 +26,18 @@ public class AutoModeLoadSide extends CommandGroup {
 	public AutoModeLoadSide(boolean alliance) {
 		
 		double forward;
-		if (alliance) forward = Robot.getPref("Auto Blue Load Forward", 110);
-		else forward = Robot.getPref("Auto Red Load Forward", 116);
+		if (alliance) {
+			forward = Robot.getPref("Auto Blue Load Forward", 110);
+		} else {
+			forward = Robot.getPref("Auto Red Load Forward", 116);
+		}
 		
 		double diagonal;
-		if (alliance) diagonal = Robot.getPref("Auto Blue Load Diagonal", 50);
-		else diagonal = Robot.getPref("Auto Red Load Diagonal", 50);
+		if (alliance) {
+			diagonal = Robot.getPref("Auto Blue Load Diagonal", 50);
+		} else {
+			diagonal = Robot.getPref("Auto Red Load Diagonal", 50);
+		}
 		
 		final double LENGTH_1 = forward - (Robot.getPref("Robot length", 39) -
 				Robot.getPref("Distance from pivot point to front of robot", 19.5));
@@ -41,14 +47,16 @@ public class AutoModeLoadSide extends CommandGroup {
 		
 		// METHOD 1
 		// Drives to hexagon
+		addParallel(new ShiftToLowGear(Robot.drivetrain));
 		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
 
 		// Turns toward lift
-		if(alliance)
+		if(alliance) {
 			addSequential(new AutoDrive(0, -60, Robot.drivetrain));
-		else
+		} else {
 			addSequential(new AutoDrive(0, 60, Robot.drivetrain));
-
+		}
+		
 		// Drive Forward
 		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
 		

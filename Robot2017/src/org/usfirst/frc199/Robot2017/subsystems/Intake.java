@@ -257,7 +257,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 	 */
 	public void displayData() {
 		if(pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > Robot.getPref("gearInCurrent", 38)) {
-			SmartDashboard.putBoolean("iCanHazGear", true);
+			putBoolean("iCanHazGear", true);
 		}
 
 		putString("Flap piston status", flipperFlapper.get().toString());
@@ -272,7 +272,7 @@ public class Intake extends Subsystem implements IntakeInterface {
 		putNumber("Intake current draw", pdp.getCurrent(2));
 		if(pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1)) > maxCurrent && gearStartupTimer.get() > 0.75) 
 			maxCurrent = pdp.getCurrent((int) Robot.getPref("Intake PDP channel", 1));
-		SmartDashboard.putNumber("Intake max current", maxCurrent);
+		putNumber("Intake max current", maxCurrent);
 		putNumber("Gear timer", gearStartupTimer.get());
 		putNumber("Roller output", gearRoller.get());
 	}

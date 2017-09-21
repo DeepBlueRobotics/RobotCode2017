@@ -83,8 +83,8 @@ public class OI {
 		
 		rightJoy = new Joystick(1);
 		
-		gradualDriveButton = new JoystickButton(rightJoy, 1);
-		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
+//		gradualDriveButton = new JoystickButton(rightJoy, 1);
+//		gradualDriveButton.whileHeld(new GradualDrive(Robot.drivetrain));
 		
 //		shiftGearsButton = new JoystickButton(rightJoy, 2);
 //		shiftGearsButton.whenPressed(new ToggleDrivetrainShift(Robot.drivetrain));
