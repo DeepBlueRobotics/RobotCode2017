@@ -37,6 +37,9 @@ public class OI {
 	public JoystickButton backwardsClimbCauseSomeonePutItOnBackwards;
 
 	public OI() {
+		if (true) {
+			throw new Error("I'm broken");			
+		}
 		manipulator = new Joystick(2);
 		
 		/**for old ground ball intake*/
