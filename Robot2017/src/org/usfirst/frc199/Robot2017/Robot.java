@@ -115,22 +115,22 @@ public class Robot extends IterativeRobot {
 		switch (Robot.getPref("Auto location", "Dead reckoning")) {
 		case "Left":
 			if (blueAlliance) {
-				autonomousCommand = new AutoModeBoilerSide(blueAlliance);
+				autonomousCommand = new AutoModeBoilerSide(blueAlliance, drivetrain);
 //				autonomousCommand = new AutoModeBoilerSide(!blueAlliance);
 			} else {
-				autonomousCommand = new AutoModeLoadSide(blueAlliance);
+				autonomousCommand = new AutoModeLoadSide(blueAlliance, drivetrain);
 //				autonomousCommand = new AutoModeLoadSide(blueAlliance);
 			}
 			break;
 		case "Right":
 			if (blueAlliance) {
-				autonomousCommand = new AutoModeLoadSide(blueAlliance);
+				autonomousCommand = new AutoModeLoadSide(blueAlliance, drivetrain);
 			} else {
-				autonomousCommand = new AutoModeBoilerSide(blueAlliance);
+				autonomousCommand = new AutoModeBoilerSide(blueAlliance, drivetrain);
 			}
 			break;
 		case "Center":
-			autonomousCommand = new AutoModeCenter(blueAlliance);
+			autonomousCommand = new AutoModeCenter(blueAlliance, drivetrain);
 			break;
 		case "Dead reckoning":
 //			autonomousCommand = new AutoModeBasic();

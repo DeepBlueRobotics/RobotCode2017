@@ -1,6 +1,7 @@
 package org.usfirst.frc199.Robot2017.commands;
 
 import org.usfirst.frc199.Robot2017.Robot;
+import org.usfirst.frc199.Robot2017.subsystems.DrivetrainInterface;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -23,47 +24,49 @@ public class AutoModeLoadSide extends CommandGroup {
 	/***
 	 * @param alliance true for blue, false for red
 	 */
-	public AutoModeLoadSide(boolean alliance) {
+	public AutoModeLoadSide(boolean blueAlliance, DrivetrainInterface drivetrain) {
 		
-		double forward;
-		if (alliance) {
-			forward = Robot.getPref("Auto Blue Load Forward", 110);
+		double l = Robot.getPref("Robot length", 39);
+		double x = Robot.getPref("Horz dist to pivot pt from left", 17.41915241);
+		double h = Robot.getPref("Vert dist to pivot pt from back", 11.15142947);
+		double b = Robot.getPref("Auto buffer", 1);
+		double theta = Math.toDegrees(Math.atan(x/h));
+		double hPlusxSquared = Math.pow(h, 2) + Math.pow(x, 2);
+		double d1;
+		double d2;
+		double df;
+		double dt;
+		
+		if(blueAlliance){
+			d1 = Robot.getPref("Auto Blue Load Forward", 110);
+			d2 = Robot.getPref("Auto Blue Load Diagonal", 50);
+			df = d1 - l - h;
+			theta = -theta;
+			dt = d2 + hPlusxSquared - b;
 		} else {
-			forward = Robot.getPref("Auto Red Load Forward", 116);
+			d1 = Robot.getPref("Auto Red Load Forward", 110);
+			d2 = Robot.getPref("Auto Red Load Diagonal", 50);
+			df = d1 - l + h;
+			dt = d2 - hPlusxSquared - b;
 		}
 		
-		double diagonal;
-		if (alliance) {
-			diagonal = Robot.getPref("Auto Blue Load Diagonal", 50);
-		} else {
-			diagonal = Robot.getPref("Auto Red Load Diagonal", 50);
-		}
 		
-		final double LENGTH_1 = forward - (Robot.getPref("Robot length", 39) -
-				Robot.getPref("Distance from pivot point to front of robot", 19.5));
-
-		final double LENGTH_2 = diagonal - (Robot.getPref("Robot length", 39) -
-				Robot.getPref("Distance from pivot point to front of robot", 19.5));
 		
 		// METHOD 1
+		
+		//Shift to low gear
+		addParallel(new ShiftToLowGear(drivetrain));
 		// Drives to hexagon
-		addParallel(new ShiftToLowGear(Robot.drivetrain));
-		addSequential(new AutoDrive(LENGTH_1, 0, Robot.drivetrain));
+		addSequential(new AutoDrive(df, 0, drivetrain));
 
 		// Turns toward lift
-		if(alliance) {
-			addSequential(new AutoDrive(0, -60, Robot.drivetrain));
-		} else {
-			addSequential(new AutoDrive(0, 60, Robot.drivetrain));
-		}
-		
+		addSequential(new AutoDrive(0, theta, drivetrain));
+
 		// Drive Forward
-		addSequential(new AutoDrive(LENGTH_2, 0, Robot.drivetrain));
+		addSequential(new AutoDrive(dt, 0, drivetrain));
 		
 		// drives up to lift and aligns
-		
 		addSequential(new DeployGear());
 		addSequential(new DeployGearEnding());
-
 	}
 }
