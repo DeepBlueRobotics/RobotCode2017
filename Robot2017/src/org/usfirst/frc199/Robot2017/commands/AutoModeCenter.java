@@ -20,9 +20,8 @@ public class AutoModeCenter extends CommandGroup {
 	 */
 	public AutoModeCenter(boolean alliance) {		
 		
-		addParallel(new ShiftToLowGear(Robot.drivetrain));
+    	addParallel(new ShiftToLowGear(Robot.drivetrain));
 		addSequential(new AutoDrive(/**Robot.getPref("CenterAutoDist", 75)*/ 74, 0, Robot.drivetrain));
-		
 		addSequential(new DeployGear());
 		addSequential(new DeployGearEnding());
 

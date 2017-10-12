@@ -132,8 +132,8 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * Drives the robot from joystick input based on the drivetype that's currently set
 	 */
 	public void drive() {
-		currentSpeed = Robot.oi.leftJoy.getY();
-		currentTurn = Robot.oi.rightJoy.getX();
+		currentSpeed = Robot.oi.leftJoy.getY() * Robot.getPref("multDriveSpeed", 1.0);
+		currentTurn = Robot.oi.rightJoy.getX() * Robot.getPref("multTurnSpeed", 1.0);
 
 		if (currentDrive == DriveTypes.ARCADE) {
 			if(SmartDashboard.getBoolean("runningGearRoller", false)
@@ -685,12 +685,12 @@ public class Drivetrain extends Subsystem implements DrivetrainInterface {
 	 * @see org.usfirst.frc199.Robot2017.DashboardInterface#displayData()
 	 */
 	public void shiftLow(){
-		shiftPiston.set(DoubleSolenoid.Value.kForward);
+		shiftPiston.set(DoubleSolenoid.Value.kReverse);
 		shiftedHigh = false;
 	}
 	
 	public void shiftHigh(){
-		shiftPiston.set(DoubleSolenoid.Value.kReverse);
+		shiftPiston.set(DoubleSolenoid.Value.kForward);
 		shiftedHigh = true;
 	}
 
