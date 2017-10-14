@@ -122,18 +122,18 @@ public class AutoChooser extends StaticWidget {
     
     private void updateTable() {
         String autoLocationValue = autoBox.getSelectedItem() + "";
-        if(autoLocationValue.equals("Boiler")){
-        	if(blue)
-        		autoLocationValue = "Left";
-        	else
-        		autoLocationValue = "Right";
-        }
-        else if(autoLocationValue.equals("Load")){
-        	if(blue)
-        		autoLocationValue = "Right";
-        	else
-        		autoLocationValue = "Left";
-        }
+//        if(autoLocationValue.equals("Boiler")){
+//        	if(blue)
+//        		autoLocationValue = "Left";
+//        	else
+//        		autoLocationValue = "Right";
+//        }
+//        else if(autoLocationValue.equals("Load")){
+//        	if(blue)
+//        		autoLocationValue = "Right";
+//        	else
+//        		autoLocationValue = "Left";
+//        }
         prefs.putString("Auto location", autoLocationValue);
         prefs.putBoolean("Blue", blue);
     }

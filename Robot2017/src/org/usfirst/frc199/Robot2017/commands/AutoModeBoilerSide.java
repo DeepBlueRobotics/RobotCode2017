@@ -26,7 +26,7 @@ public class AutoModeBoilerSide extends CommandGroup {
 		double l = Robot.getPref("Robot length", 36.375);
 		double x = Robot.getPref("Horz dist to pivot pt from left", 17.41915241);
 		double h = Robot.getPref("Vert dist to pivot pt from back", 11.15142947);
-		double b = Robot.getPref("Auto buffer", 1);
+		double b = Robot.getPref("Auto buffer", 3);
 		double theta = Math.toDegrees(Math.atan(x/h));
 		double hPlusxSquared = Math.pow(h, 2) + Math.pow(x, 2);
 		double d1;
