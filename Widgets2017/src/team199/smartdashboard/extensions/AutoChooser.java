@@ -3,7 +3,7 @@ package team199.smartdashboard.extensions;
 import edu.wpi.first.smartdashboard.gui.StaticWidget;
 import edu.wpi.first.smartdashboard.properties.Property;
 import edu.wpi.first.smartdashboard.robot.Robot;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
+//import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
 import java.awt.Color;
@@ -24,10 +24,14 @@ import javax.swing.JPanel;
  */
 public class AutoChooser extends StaticWidget {
 
-    public static final String NAME = "Auto Mode Chooser";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static final String NAME = "Auto Mode Chooser";
     private final JLabel title = new JLabel("Auto Mode Chooser");
     private final JPanel mainPanel = new JPanel();
-    private final JComboBox autoBox = new JComboBox();
+    private final JComboBox<String> autoBox = new JComboBox<String>();
     private final JCheckBox redBox = new JCheckBox();
     private final JCheckBox blueBox = new JCheckBox();
     private final JLabel blueLbl = new JLabel("Blue");

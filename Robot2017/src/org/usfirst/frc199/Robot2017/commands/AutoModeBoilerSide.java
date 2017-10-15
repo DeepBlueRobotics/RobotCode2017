@@ -34,17 +34,18 @@ public class AutoModeBoilerSide extends CommandGroup {
 		double df;
 		double dt;
 		
-		if(!blueAlliance){
+		if(!blueAlliance) /*right side*/ {
 			d1 = Robot.getPref("Auto Red Boiler Forward", 110);
 			d2 = Robot.getPref("Auto Red Boiler Diagonal", 50);
 			df = d1 - l - h;
 			theta = -theta;
 			dt = d2 + hPlusxSquared - b;
-		} else {
+		} else /*left side*/ {
 			d1 = Robot.getPref("Auto Blue Boiler Forward", 110);
 			d2 = Robot.getPref("Auto Blue Boiler Diagonal", 50);
-			df = d1 - l + h;
-			dt = d2 - hPlusxSquared - b;
+			df = d1 /*- l + h*/;
+//			dt = d2 - l /*hPlusxSquared*/ - b;
+			dt = 7;
 		}
 		
 		
